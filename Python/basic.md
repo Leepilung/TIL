@@ -86,3 +86,103 @@ print(a)
 | `\000` |                         널 문자                         |
 
 이 중에서도 활용빈도가 높은 것들은 `\n`, `\t`, `\\`, `\'`, `\"` 이다.
+
+예시)
+
+```
+>>> Multiline = "Life is too short\nYou need python"
+Life is too short
+You need python
+```
+
+그러나 이 경우 문장이 지저분해지고 길어진다.
+
+큰 따음표나 작은 따음표를 사용하는 것이 훨씬 깔끔하다.
+
+예시)
+
+```
+multiline='''(""")
+Life is too short
+You need python
+'''(""")
+```
+
+## 문자열 인덱싱
+
+```m
+a = "Life is too short, You need Python"
+```
+
+변수 a에 저장한 문자열의 번호를 매겨 보면 다음과 같다.
+
+```m
+Life is too short, You need Python
+0         1         2         3
+0123456789012345678901234567890123
+```
+
+파이썬은 숫자를 0부터 센다. 이점에 유의해야 한다.
+
+## 문자열 포매팅
+
+> 숫자 대입의 경우 (%d)
+
+```m
+>>> "I eat %d apples." % 3
+'I eat 3 apples.'
+```
+
+%에 숫자를 대입하는 경우에는 %d문자를 이용한다.
+
+> 문자열 대입의 경우 (%s)
+
+```m
+>>> "I eat %s apples." % "five"
+'I eat five apples.'
+```
+
+숫자 대신 문자열을 넣는 경우엔 %d가 아닌 %s 문자열을 사용해야 한다.
+
+> 두가지 값 이상을 넣는 경우
+
+```m
+>>> number = 10
+>>> day = "three"
+>>> "I ate %d apples. so I was sick for %s days." % (number, day)
+'I ate 10 apples. so I was sick for three days.'
+```
+
+| 코드 |           설명           |
+| ---- | :----------------------: |
+| %s   |      문자열(String)      |
+| %c   |   문자 1개(character)    |
+| %d   |      정수(Integer)       |
+| %f   | 부동소수(floating-point) |
+| %o   |          8진수           |
+| %x   |          16진수          |
+| %%   | Literal % (문자 % 자체)  |
+
+> 포메팅 연산자 %s
+
+%s는 뒤에 삽입되는 모든 문자를 문자열로 인식한다.
+
+```m
+>>> "I have %s apples" % 3
+'I have 3 apples'
+>>> "rate is %s" % 3.234
+'rate is 3.234'
+```
+
+3을 문자열 안에 삽입하려면 %d를 사용하고, 3.234를 삽입하려면 %f를 사용해야 한다.  
+하지만 %s를 사용하면 이런 것을 생각하지 않아도 된다.  
+ 왜냐하면 %s는 자동으로 % 뒤에 있는 값을 문자열로 바꾸기 때문이다.
+
+> 포메팅 연산자 %d와 %를 같이 쓸 때는 %%를 쓴다.
+
+```m
+>>> "Error is %d%%." % 98
+'Error is 98%.'
+```
+
+다음의 형태를 기억해두자.
