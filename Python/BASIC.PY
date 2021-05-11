@@ -1,3 +1,2 @@
-print("=" * 50)
-print("My program")
-print("=" * 50)
+Multiline = "Life is too short\nYou need python"
+print(Multiline)
