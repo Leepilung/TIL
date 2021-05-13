@@ -38,3 +38,18 @@ def 더하기(a,b):
 
 result = 더하기(3,4)
 print(result)
+
+#input 사용예제
+숫자 = input("숫자를 입력하시오")
+
+print(숫자)
+
+
+#Print 사용 예제
+변수1 = 2021
+print(변수1)
+
+print("hello","my","yesterday")
+
+for i in range(3):
+    print(i, end=(" "))
