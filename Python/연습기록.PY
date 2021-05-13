@@ -53,3 +53,46 @@ print("hello","my","yesterday")
 
 for i in range(3):
     print(i, end=(" "))
+
+# 파일 생성
+f = open("새파일.txt", 'w')
+f.close
+
+# 파일 경로지정 생성
+f = open("/home/ek3434/TIL/Python/새파일.txt","w")
+f.close
+
+#파일 쓰기모드로 작성
+f = open("/home/ek3434/TIL/Python/새파일.txt","w")
+for 변수 in range(1, 5):
+    데이터 = "%d번째 줄입니다.\n" % 변수
+    f.write(데이터)
+f.close()
+
+#파일 읽기모드(루프사용)
+f = open("/home/ek3434/TIL/Python/새파일.txt","r")
+while True:
+    line = f.readline()
+    if not line: break
+    print(line)
+f.close()
+
+#파일 읽기모드(readlines)
+f = open("/home/ek3434/TIL/Python/새파일.txt","r")
+line = f.readlines()
+for 줄 in line:
+    print()
+f.close()
+
+
+#파일 읽기모드(read사용)
+f = open("/home/ek3434/TIL/Python/새파일.txt","r")
+데이터 = f.read()
+print(데이터)
+f.close
+
+#with문
+f = open("/home/ek3434/TIL/Python/새파일.txt",'w')
+f.write("삶은 매우 짧다. 파이썬이 필요하다")
+f.close()
+
