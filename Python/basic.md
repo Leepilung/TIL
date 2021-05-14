@@ -314,6 +314,7 @@ Life is too short, You need Python
 > f문자열 포매팅은 표현식을 지원한다
 
 <ul><li><span style="color:gray">※ 표현식이란 문자열 안에서 변수와 +, -와 같은 수식을 함께 사용하는 것을 말한다.</li></ul>
+
 ```m
 >>> age = 30
 >>> f'나는 내년이면 {age+1}살이 된다.'
@@ -323,6 +324,7 @@ Life is too short, You need Python
 > 딕셔너리
 
 <ul><li><span style="color:gray">※ 딕셔너리는 Key와 Value라는 것을 한 쌍으로 갖는 자료형이다.</li></ul>
+
 ```m
 >>> d = {'name':'홍길동', 'age':30}
 >>> f'나의 이름은 {d["name"]}입니다. 나이는 {d["age"]}입니다.'
