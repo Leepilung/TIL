@@ -616,3 +616,35 @@ print(a.pow())
 1000
 
 ```
+
+## 메서드 오버라이딩
+
+이번에는 Fourcal 클래스를 다음과 같이 실행해보자.
+
+```m
+>>> a = FourCal(4, 0)
+>>> a.div()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+    result = self.first / self.second
+ZeroDivisionError: division by zero
+```
+
+Fourcal 클래스의 객체 a에 4와 0값을 설정하고 div메소드를 호출하면 4를 0으로 나누려고 하기 때문에 ZeroDivisionError 오류가 발생한다.
+
+하지만 0으로 나눌때 오류가 아닌 0을 돌려주고 싶다면 다음과 같이 만들면 된다.
+
+Fourcal 클래스를 상속하는 SafeFourcal 클래스를 만들어보자.
+
+```m
+class SafeFOurcal(Fourcal):
+    def div(self):
+        if self.second == 0:
+            return 0
+        else:
+            return self.first / self.second
+```
+
+SafeFourcal 클래스는 Fourcal 클래스에 있는 div메소드를 동일한 이름으로 다시 작성하였다.
+
+이렇게 부모 클래스(상속한 클래스 = Fourcal)에 있는 메소드를 동일한 이름으로 다시만드는 것을 메소드 오버라이딩(Overriding)
