@@ -23,13 +23,13 @@ class Fourcal:
         result = self.first / self.second
         return result
 
-a = Fourcal(10,20)
-print(a.first)
-print(a.second)
-print(a.add())
-print(a.div())
-print(a.mul())
-print(a.sub())
 
-b = Fourcal(20,30)
-print(a.div())
+class MoreFourcal(Fourcal):
+    def pow(self):
+        result = self.first ** self.second
+        return result
+
+a = MoreFourcal(10,3)
+
+print(a.pow())
+
