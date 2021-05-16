@@ -57,6 +57,7 @@ print(b.sub())
 print(b.mul())
 print(b.div())
 
+#생성자 생성하여 사칙연산 구문 만들기
 class Fourcal:
     def __init__(self, first, second):
         self.first = first
