@@ -557,3 +557,62 @@ print(a.sub())
 ```
 
 ## 클래스의 상속
+
+상속(Inheritance)란 "물려받다"라는 뜻으로 '재산을 상속받다'라고 할 때의 상속과 같은 의미이다. 클래스에도 이 개념을 적용 할 수 있다.
+
+어떤 클래스를 만들 때 다른 클래스의 기능을 물려받을 수 있게 만드는 것이다.
+
+이번에는 상속 개념을 사용하여 우리가 만든 Fourcal 클래스에 a<sup>b</sup>을 구할 수 있는 기능을 추가해 보자.
+
+앞에서 Fourcal 클래스는 이미 만들어 놨으므로 이를 상속하는 MoreFourcal 클래스는 다음과 같이 만들 수 있다.
+
+```m
+class MoreFourcal(Fourcal):
+   pass
+
+```
+
+클래스를 상속하기 위해선 다음처럼 클래스 이름 뒤 괄호 안에 상속할 클래스 이름을 넣어주면 된다.
+
+- <span style = color:gray> calss 이름(상속할 클래스 이름)</sapn>
+
+MoreFourcal 클래스는 Fourcal 클래스를 상속했으므로 Fourcal 클래스의 모든 기능을 사용할 수 있다.
+
+확인해보자.
+
+```m
+class MoreFourcal(Fourcal):
+    pass
+
+a = MoreFourcal(10,20)
+
+print(a.add())
+print(a.mul())
+print(a.div())
+print(a.sub())
+
+30
+200
+0.5
+-10
+
+```
+
+> 왜 상속을 해야 할까?
+
+보통 상속은 기존 클래스를 변경하지 않고 기능을 추가하거나 기존 기능을 변경하려고 할 때 사용한다.
+
+이제 원래 목적인 a의 제곱(a<sup>b</sup>)을 게싼하는 MoreFourcal 클래스를 들어보자.
+
+```m
+class MoreFourcal(Fourcal):
+    def pow(self):
+        result = self.first ** self.second
+        return result
+
+a = MoreFourcal(10,3)
+
+print(a.pow())
+1000
+
+```
