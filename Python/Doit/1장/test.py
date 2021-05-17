@@ -1,11 +1,12 @@
+##전역 변수와 함수 내의 지역변수의 객체 식별번호 출력
 
-print('왼쪽 아래가 직각인 이등변 삼각형을 출력합니다.')
+x = 33 #전역 변수(함수 내부, 외부에서 사용 가능)
 
-n = int(input('짧은 변의 길이를 입력하시오 : '))
-for i in range(n):
-    for _ in range(n - i - 1):
-        print(' ', end="")
-    for _ in range(i +1):
-        print('*' ,end ='')
-    print()
+def putid():
+    y = 33
+    print(f'id(y) = {id(y)}')
+
+print(f'id(33) = {id(33)}')
+print(f'id(x) = {id(x)}')
+putid()
 
