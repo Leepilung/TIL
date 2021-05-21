@@ -1,27 +1,26 @@
-#주어진 배열에서 반복되는 숫자를 전부 제거하는 함수를 만들어보세요.
-#A[start] == A[i] -> len(A)
-#start = 0 -> start < len(A)
-A = [1, 1, 2, 2, 4, 4, 4, 1]
-# start = 0 A =[1,2,2,4,4,4,1] -> start = 1
-# start = 1 A =[1,2,4,4,4,1] -> start = 2
-# start = 2 A =[1,2,4,4,1] -> 
+#배열이 회전 (이진탐색 사용해야함) ex =[1,2,3,4,5,6] 
+#배열이 회전하고서도 회전 이전 배열에서의 첫번째 원소값을 찾아야함.
+#오름차순 기준 배열이 회전하지않고 정렬된채로 유지. end > start (6 > 1)
+#n번 회전했을떄 기준 [5,6,1,2,3,4] end < start (4<5)
+#변하는 부분이 찾는값이라고 가정하면 위 배열에셔 6,1사이
+#변하는 부분 왼쪽의 모든 원소 > 배열의 첫번째 원소 6 > 5
+#변하는 부분의 오른쪽의 모든 원소 < 배열의 첫번째 원소 1 < 5
+#mid를 시작0, 끝값 len(num-1)로 잡으면 0+5 // 2 = 2 ex[2]로 생각하면
+#mid는 배열의 3번째값이 된다. 회전했을때 배열 [5,6,1,2,3,4]로 놓고보면
+#mid는 배열의 첫번째 원소 5보다 작기때문에 1 < 5
+#mid부분의 왼쪽에서 변하는 점을 찾아야한다.mid-1
+#만약 mid > 첫번째 원소 일경우 mid의 오른쪽 부분에서 찾는다. mid+1
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        start , end = 0, len(nums)-1
 
-# start = 0 A =[1,2,2,4,4,4,1] -> start = 0 LEN(A) = 7 start = 0 < len 6
-# start = 0 A[0] != A[1] -> else -> start += 1 start =1 
-# start = 1 A[1] == A[2] -> DLEA[2] A = [1,2,4,4,4,1] - start = 1 LEN(A) =6 start = 1 < len 5
-# start = 1 A[1] != A[2] -> else -> start +=1 start =2
-# start = 2 A[2] == A[3] -> DLE A[3] A = [1,2,4,4,1] -> start = 2 LEN(A) = 5 start = 2 < len 4
-# start = 2 A[2] == A[3] -> DLE A[3] A = [1,2,4,1] -> start = 2 LEN(A) = 4 start = 2 < len 3
-# start = 2 A[2] != A[3] -> else -> start +=1 start =3 start 3 <= len(3)
-# start = 3 A[3] != A[4] -> else -> start +=1 start =4
+        while start < end:
+            mid = (start + end) // 2
 
-def duplication(A):
-    start = 0
-    while start < len(A)-1:
-        if A[start] == A[start +1]:
-            del A[start+1]
-        else:
-            start += 1
-    return len(A)
+            if nums[mid] > nums[end]:   #mid = 5면 end = 4가 되는 경우
+                start = mid + 1     #찾아야 하는 범위를 mid의 우측이기 때문에
+            else:                #nums[mid] <= nums[end]의 경우
+                end = mid           #찾아야 하는 범위가 mid의 좌측이기때문에
+        
+        return nums[start]      #범위를 줄이고 줄이다보면 결국 num[start]값부분이 찾는값이 되기때문
 
-print(duplication(A))
