@@ -1,6 +1,4 @@
-from 문제풀이.a import mySqrt
-
-
+#leetCode sqrt 알고리즘 문제
 class Solution(object):
     def mySqrt(self, x):
         left = 0
