@@ -10,10 +10,10 @@
 
 class Solution:
     def numJewelsInStones(self, jewels: str, stones: str) -> int:
-        sepjewels = list(jewels)    #[a,A]
+        sepjewels = set(jewels)    #[a,A]
         getjewel = 0
 
-        for i in stones:
-            if i in sepjewels:
-                getjewel += 1
+        for i in stones:            #a,A,A,b,b,b,b,b로 출력됨
+            if i in sepjewels:      #출력되는 i 가 [a,A]중에 있을경우
+                getjewel += 1       #getjewel 1가산 a~b까지 반복
         return getjewel
