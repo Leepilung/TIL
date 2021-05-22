@@ -14,14 +14,14 @@ def seq_search(seq: Sequence, key: Any) -> int:
         if a[i] == key:
             break
         i += 1
-    return -1 if i == len(seq) else i
+    return -1 if i == len(seq) else i   #검색 실패의 경우
 
-if __name__ : '__main__':
+if __name__ : '__main__':       #name = main일 경우 if 아래 실행.
     num = int(input('원소 수를 입력하시오. : ')     #num값을 입력
     x = [None] * num                             # 원소 수가 num인 배열 생성
 
     for i in range(num):
-        x[i] = int(input(f'x[{i}]'))
+        x[i] = int(input(f'x[{i}]'))    #원소 수, 원소 값 입력 부분
 
     ky = int(input('검색할 값을 입력하세요.: '))    # 검색할 ky를 입력받는 함수
 
