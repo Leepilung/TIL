@@ -13,7 +13,7 @@ for j in stone:
 #이중 for문은 시간복잡도가 커져서 사용 X.
 #결과값 예상대로 나옴 (for j in stone = ㅁ,)
 
-j in sepjewels for j in stone #가능한가? -> 확인 불가능
+#j in sepjewels for j in stone #가능한가? -> 확인 불가능
 
 #변수 하나를 초기값 0으로 설정.
 #a A A b b b b b가 sepjewels에 있을경우 아무 변수 1씩 증가시키고
