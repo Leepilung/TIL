@@ -1,4 +1,4 @@
-class chained
+class Chainedhash
     """체인법으로 해시 클래스 구현"""
 
     def __init__(self, capacity: int) -> None:
