@@ -13,12 +13,12 @@ def bin_search(a: Sequence, key: Any) -> int:       # 시퀀스 a에서 key와 �
         elif a[pc] < key:                           
             pl = pc +1                              # 검색 범위를 뒤쪽 절반으로 좁힘.
         else:
-            pl = pc -1                              # 검색 범위를 앞쪽 절반으로 좁힘.
+            pr = pc -1                              # 검색 범위를 앞쪽 절반으로 좁힘.
         if pl > pr:
             break
         return -1                                   # 검색 실패
         
-if __name__ == '__main__':
+if __name__ == '__main__':                   # 모듈 실행부분
     num = int(input('원소 수를 입력하세요.: '))
     x = [None] * num
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         while True:
             x[i] = int(input(f'x[{i}]: '))
             if x[i] >= x[i - 1]:                    # 직전에 입력한 원소값보다 더 큰값을 입력시 종료.
-                break
+                break                               # 이진 검색에서는 검색대상 배열이 오름차순으로 정렬되어야 하기 때문
     ky = int(input('검색할 값을 입력하세요. : '))
     idx = bin_search(x, ky)
 
