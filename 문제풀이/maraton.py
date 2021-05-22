@@ -4,8 +4,8 @@
 # 참가자들을 딕테이션으로 키 값으로 입력. 빈 딕테이션 생성 필요.
 # p가 딕테이션에 없을경우 벨류값 0부여. 있을경우 +1씩 가산(동명이인)
 # 아예 출력 None일경우 () completion에 없는 케이스 이므로 이 경우가 탈락자에 해당
-participant = ["leo", "kiki", "eden"]
-completion = ["eden", "kiki"]
+participant = ["mislav", "stanko", "mislav", "ana"]
+completion = ["stanko", "ana", "mislav"]
 
 def solution(participant, completion):
     answer = ''
