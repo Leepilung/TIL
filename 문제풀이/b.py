@@ -1,39 +1,20 @@
-def binary_search(s, e):
-    while True:
-        mid = (s + e)// 2
-        if (mid ** 2) == N:
-            return mid
-        elif mid ** 2> N:
-            e = mid
-        else:
-            s = mid
+#보석 돌 풀이+실험용 시트
 
-def bin_search(a: Sequence, key: Any) -> int:
-    pl = 0                                          # 검색 범위 맨 앞 원소의 인덱스
-    pr = len(a) - 1                                 # 검색 범위 맨 끝 원소의 인덱스
+jewels = 'aA'
+stone = 'aAAbbbbb'
+sepjewels = list(jewels)
+print(sepjewels)
+# -> a와 A가 남음.
+for j in stone:
+#인덱스로 표시하기때문에     
+#결과값 print(j)하면a, A, A, b,b,b,b,b로 나옴
+#위 부분은 함수에서 바꾸면 j for j in stone 이 꼴로 변환 가능.
+#그렇다면 저 반복문 sepjewels in j 꼴 쓰려면?
+#이중 for문은 시간복잡도가 커져서 사용 X.
+#결과값 예상대로 나옴 (for j in stone = ㅁ,)
 
-    while True:
-        pc = (pl + pr) // 2                         #중앙 원소의 인덱스
-        if a[pc] == key:
-            return pc                               #pc = key값 즉 검색 성공시
-        elif a[pc] < key:                           
-            pl = pc +1                              # 검색 범위를 뒤쪽 절반으로 좁힘.
-        else:
-            pl = pc -1                              # 검색 범위를 앞쪽 절반으로 좁힘.
-        if pl > pr:
-            break
-        return -1            
+j in sepjewels for j in stone #가능한가? -> 확인 불가능
 
+#변수 하나를 초기값 0으로 설정.
+#a A A b b b b b가 sepjewels에 있을경우 아무 변수 1씩 증가시키고
 
-#배열이 [5,6,1,2,3,4]
-nums = [5,6,2,3,4,]
-start = 0
-end = len(nums-1)
-
-start < end 
- mid = start + end //2
-start = 0, end = 5
- 처음시작 mid = 0+5 // 2 = 2  num[2] = 1, end= nun[5] = 4
- num[mid] < num[end] -> end = mid
-
-    
