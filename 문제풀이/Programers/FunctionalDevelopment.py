@@ -2,9 +2,8 @@ def solution(progresses, speeds):
     answer = []
     timegab = []
     count = 1
-    import math
     for i,j in zip(progresses,speeds):    
-        timegab.append(math.ceil((100 - i) / j))
+        timegab.append(-((i - 100) // j))
         while len(timegab) >= 2 :
             if timegab[0] < timegab[1]:
                 timegab.pop(0)
