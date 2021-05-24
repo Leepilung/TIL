@@ -4,11 +4,9 @@
 
 def solution(priorities, location):
     answer = 0
-    maxpir = priorities.copy()
-    maxpir.sort()
 
     while len(priorities) != 0:
-        if priorities[0] == maxpir(-1):
+        if priorities[0] == max(priorities):
             answer += 1
             priorities.pop(0)
             if location == 0:
@@ -18,8 +16,7 @@ def solution(priorities, location):
                 
         else:
             priorities.append(priorities.pop(0))
-            if location = 0:
+            if location == 0:
                 location = len(priorities) -1
             else: 
                 location -= 1
-    return answer
