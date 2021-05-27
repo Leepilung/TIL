@@ -1,21 +1,14 @@
-7 3 9를 기준으로 해봅시다.
-len(timegab) = 3
-while len(timegab) >0
-    if timegab[0] < timegab[1]: 
-        timegab.pop[0]
+* 이중 for문 전개 양상 정리
 
-    elif itmegab[0] >= timegab[1]:
-        timegab.pop[1]
-        count +=1
+for i in range(1,n):
+    for j in range(i,0,-1):
+        print(f'i= {i}  ',end ='')
+        print(f'j= {j}  ',end = '')
 
-7 >= 3 -> 3을빼버림 ->  7 9 count +=1가산해줘서 count 2
-그럼 현재 timegab = [7,9]
-반복문 다시 돌면서 7 < 9
-    timegab[0]를 pop 해버리고
-    answer.append(count) -> count 2가 answer에 append 되서 count = [2]
-    timegab = [9]
-    count = 1 로 초기화
+i= 1  j= 1  
+i= 2  j= 2  i= 2  j= 1  
+i= 3  j= 3  i= 3  j= 2  i= 3  j= 1  
+i= 4  j= 4  i= 4  j= 3  i= 4  j= 2  i= 4  j= 1  
+i= 5  j= 5  i= 5  j= 4  i= 5  j= 3  i= 5  j= 2  i= 5  j= 1  
+i= 6  j= 6  i= 6  j= 5  i= 6  j= 4  i= 6  j= 3  i= 6  j= 2  i= 6  j= 1
 
-while 문을 못돌죠 len(timegab) = 1이되니까 불가능.
-
-test case 
