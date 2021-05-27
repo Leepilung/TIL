@@ -21,7 +21,7 @@ class FixedStack:
 
     def __len__(self) -> int:
         ' 스택에 쌓여있는 데이터 갯수를 반환하는 함수'
-        return sefl.ptr
+        return self.ptr
 
     def is_empty(self) -> bool:
         '스택이 비어있는지를 판단하는 함수'
