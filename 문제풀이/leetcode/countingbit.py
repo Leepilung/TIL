@@ -7,7 +7,11 @@
 #우선 for문 사용해서 n까지 나열해야함.
 #그 후에 형변환을 하던 해서 1의 갯수를 전부 세고 결과값 배열에 append시키는 방향으로 
 #빈 배열 필요함. 위 예시에서 0부터 시작하므로 [0]넣고 시작.
+
 class Solution:
     def countBits(self, n: int) -> List[int]:
-        nums1 = [0]
-        for i in range(1,n+1):
+        nums_of_one = []  #0부터 n까지 반복하도록 for문 설정. 
+        for i in range(n+1):
+           nums_of_one.append(bin(i).count('1'))    #문자열'1'카운트
+        
+        return nums_of_one
