@@ -1,9 +1,13 @@
-# bin(int(n)) -> 입력값 정수형 n을 2진수로 변환하는 내장함수. 
-# 안에 1이 몇개있는지 확인하는건 count
-a = 2
-b = []
 
-for i in range(a+1):
-    b.append(bin(i).count('1'))
+txt = ('ABCDEFGHIJKLMP')
+skip = [None] * 256
+pat = ('ABC')
 
-print(b)
+for pt in range(256):
+    skip[pt] = len(pat)
+    print(pt)
+for pt in range(len(pat)):
+    print(pt)
+    
+    
+print(pt)
