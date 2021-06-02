@@ -1,15 +1,24 @@
-#3진법 로직 변환(10진법을 N진법으로 변환)
+letter = {
+    '2' : ['a','b','c'],
+    '3' : ['d','e','f'],
+    '4' : ['g','h','i'],
+    '5' : ['j','k','l'],
+    '6' : ['m','n','o'],
+    '7' : ['p','q','r','s'],
+    '8' : ['t','u','v'],
+    '9' : ['w','x','y','z']
+}
 
-num = 45
-answer = ''
+print(letter['2'][0])
 
+print(len(letter['2']))
 
-while num >= 1:
-    rest = num % 3
-    num //= 3
-    answer += str(rest)
+string = '23'
 
-
-
-answer = int(answer, 3)
-
+for i in string:
+    lst = letter[string]
+    result = []
+    for j in lst:
+        for m in lst:
+            result.append(j+m)
+            print(result)
