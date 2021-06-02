@@ -22,10 +22,12 @@ class Solution:
             return []
         self.traverse(0, '', ans, digits)
         return ans
+
     def traverse(self, index: int, current: str, ans: List[str], digits: str):
         if index == len(digits):
             ans.append(current)
             return
         chars = letterMap.get(digits[index])
+        
         for char in chars:
             self.traverse(index + 1, current + char, ans, digits)
