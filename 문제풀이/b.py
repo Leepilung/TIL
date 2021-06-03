@@ -1,24 +1,10 @@
-letter = {
-    '2' : ['a','b','c'],
-    '3' : ['d','e','f'],
-    '4' : ['g','h','i'],
-    '5' : ['j','k','l'],
-    '6' : ['m','n','o'],
-    '7' : ['p','q','r','s'],
-    '8' : ['t','u','v'],
-    '9' : ['w','x','y','z']
-}
+brown = 8
+yellow = 1
 
-print(letter['2'][0])
+y1 = (brown+4)/4 + (((brown+4)/2)**2 -4*(brown+yellow))**0.5 /2
 
-print(len(letter['2']))
+y2 = (brown+4)/4 - (((brown+4)/2)**2 -4*(brown+yellow))**0.5 /2
 
-string = '23'
+print(y1)
 
-for i in string:
-    lst = letter[string]
-    result = []
-    for j in lst:
-        for m in lst:
-            result.append(j+m)
-            print(result)
+print(y2)
