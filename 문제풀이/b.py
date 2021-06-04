@@ -1,10 +1,10 @@
-brown = 8
-yellow = 1
+record = ["Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"]
 
-y1 = (brown+4)/4 + (((brown+4)/2)**2 -4*(brown+yellow))**0.5 /2
-
-y2 = (brown+4)/4 - (((brown+4)/2)**2 -4*(brown+yellow))**0.5 /2
-
-print(y1)
-
-print(y2)
+for i in range(len(record)):
+    a = record[i].split()
+    if a[0] == 'Enter':
+        print(f"{a[2]}님 이 들어왔습니다.")
+    if a[0] == 'Leave':
+        print(f"{a[1]}님이 나갔습니다.")
+    print(a)
+    
