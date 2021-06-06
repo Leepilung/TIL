@@ -11,7 +11,7 @@ def solution(s):
         array_s = list(s[i:]+s[:i])
 
         while array_s:
-            if array_s[0] == '(' or array_s[0] ==  '[' or array_s[0] ==  '{':
+            if array_s[0] in ['(','[','{']:
                 stack.append(array_s[0])
                 array_s.pop(0)
             else:
@@ -20,7 +20,7 @@ def solution(s):
                 else:
                     stack.append(array_s[0])
                     array_s.pop(0)
-                    if stack[-2] + stack[-1] == '[]' or stack[-2] + stack[-1] == '()' or stack[-2] + stack[-1] == '{}':
+                    if stack[-2] + stack[-1] in ['()','[]','{}']:
                         stack.pop(-1)
                         stack.pop(-1)
                         continue
