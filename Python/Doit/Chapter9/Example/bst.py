@@ -1,5 +1,5 @@
 # 책 p 385 이진 검색 트리 구현 실습 예제
-# test 9-1a ~
+# test 9-1a ~ 9-1f까지 합친 파일.
 
 from __future__ import annotations
 from typing import Any, Type
