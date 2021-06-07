@@ -1,28 +1,50 @@
-# 스택 사용 -> 대부분 통과하나 일부 런타임 에러 실패. + 효율성 통과 실패.
-# heap 사용. heapqpop -> 작은값을 알아서 빼줌. 
-# heappush -> 인수로 받은값 알아서 최소로 정렬하고 넣음.
-# 
+# N 진수 게임
+# 숫자를 0부터 시작해서 차례대로 말한다. 첫 번째 0, 두번째 1, ~~열번째 9
+# 10이상의 숫자 한 자리씩 끊어서 말함. 열 한번째 = 10의자리 1, 열두번째 0 이런식 0,1,2,3,4,5,6,7,8,9,1,0,1,1,1,2 이런식
+# 이진수의 경우 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1 이런식.
+# 진법 n 구해야할 숫자 갯수 t, 게임참가 인원 m, 튜브 순서 p
 
-import heapq
+# n = 2 t =4 m =2 p =1 이면 2진법, 구해야할숫자 4개, 인원2명, 순서 1번째. -> 0(튜브) 1(상대) 1(튜브), 0(상대), 1(튜브), 1(상대), 1(튜브), 0(상대)
+# 여기서 튜브꺼 0,1,1,1,만 출력,
+# 인덱스 써봅시다.
+# 미리 구해야할 숫자는 1000개까지고. 튜브의 순서는 2부터 100까지. 그럼 숫자의 최대치는 100000.
+# 10진수 기준으로 우선 해봅시다.
+# 1,2,3,4,5,6,~ 이런순일거고
+# 구해야할 숫자의 계산식은 0부터 시작. 튜브가 말해야 하는 차례는 튜브의 차례에 오는 해당 숫자 나열의 인덱스.
+# 0,2,4,6,8,1,1,1,1,1,1~ 이런순
+# 10진수 -> n진법 알고리즘 필요함.
+# 순서대로 다 짜보기
+# 마지막에 소문자로 출력되서 오류 -> upper() 붙임 -> 통과
 
-scoville = [1, 2, 3, 9, 10, 12]
-K = 7
-answer = 0
-heap = []
-for i in scoville:
-    heapq.heappush(heap,i)
-print('heap =',heap)
+t = 16
+m = 2
+p = 2
+n = 16
+answer = ''
+stack = []
+#10진법 -> n진수 변환 부분
+import string
 
-while heap[0] <= K:
-    bucket = heapq.heappop(heap) + (heapq.heappop(heap)*2)
-    heapq.heappush(heap,bucket)
-    answer +=1
-    print(bucket)
-    print(heap)
-    if heap[0] <= K and len(heap) <= 1:
-        answer = -1
-        break
-    if heap[0] >= K:
-        break
-print(heap)
-print(answer)
+tmp = '0123456789ABCDEF' 
+def convert(num, base) :
+    q, r = divmod(num, base)
+    if q == 0 :
+        return tmp[r] 
+    else :
+        return convert(q, base) + tmp[r]
+
+# m p t 조건에 맞는 숫자배열 생성.
+numlist = list(range(0,m*t))    #말해야하는 순번-1부터 ~ 참가인원 *구할 숫자개수까지,m번까지.
+print(numlist)
+for i in numlist:   #n 진수로 변환. convert 함수사용.
+    stack.append(convert(i,n))  # 리스트 안의 내용을
+print(stack)   
+stack = ''.join(stack)  # 전부 합쳤다가
+print(stack)
+stack = list(stack) # 전부 쪼개러 개별단위의 리스트형태로 바꾸기.
+print(stack)
+
+for j in range(p-1,m*t,m):
+    answer += stack[j]
+
+print(answer.upper())
