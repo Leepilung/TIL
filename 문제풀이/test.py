@@ -1,30 +1,23 @@
-#x의 길이는 0 <= x < s s보단 작아야함.
+# 폰북 배열 예시 기준으로 119가 포함되있는지 아닌지 확인하려면
+# 119와 97674223과 1195524421 비교
+# index 가 0~2까지면 0이랑 1 비교 0이랑 2비교를 해야함.
+# 시작 출력 for문 사용해서 그 다음거랑 비교.
+# test 케이스 1번 index 1과 3이 매칭이 안됨. 나머진 잘 통과.
+# 해결방법 난해하네 스바 
+# while문 사용해서 인덱스 하나를 나머지 인덱스 전체랑 비교ㅕ하면 시간복잡도 N^2이라 제한사항 1000000 이라 시간초과 무조건적 달성
+# 인덱스 3을 2로 떙겨와보기 + 리스트값 변화 없어야함 스택으로 다시 넣기? 케이스많아지면 의미 없음. -> 정렬 사용해보기
+# 숫자로된 문자열의 정렬 기준 -> ["1234", "1235", "567",'1112414'] 일 때 ['1112414', '1234', '1235', '567'] 로 정렬됨.
+# ["12","123","1235","567","88"] -> ['12', '123', '1235', '567', '88']로 변화 없음. 정렬기준 무조건 문자열의 인덱스별로 작은값 기준.
+# sort 사용 -> 통과. 숫자롣된 문자열 사용시 sort기준 위와 같은것같은데 따로 정리 필요.(복습시)
+# sort 사용시 phone_book[i]와 그다음 정렬되는 문자열 phone_book[i+1]은 같은 접두어를 가질경우 바로 뒤에 정렬되므로 조건 성립. 
 
 
-s = "[)(]"
-stack = []
-answer = 0
-
-for i in range(len(s)):
-    array_s = list(s[i:]+s[:i])
-    print(f'arry_s의{i}번째 배열입니다',array_s)
-    while array_s:
-        if array_s[0] == '(' or array_s[0] ==  '[' or array_s[0] ==  '{':
-            stack.append(array_s[0])
-            array_s.pop(0)
-        else:
-            if len(stack) == 0:
-                break
-            else:
-                stack.append(array_s[0])
-                array_s.pop(0)
-                if stack[-2] + stack[-1] == '[]' or stack[-2] + stack[-1] == '()' or stack[-2] + stack[-1] == '{}':
-                    stack.pop(-1)
-                    stack.pop(-1)
-                    continue
-        print(f'array_s의 {i}번째 루프결과입니다.',array_s)
-        print(F'stack의 {i}번째 루프 결과입니다.',stack)
-    if len(array_s) == 0 and stack == 0:
-        answer +=1
-    print('answer = ',answer)
-print('정답 : ',answer)
+phone_book = ["12","123","1235","567","88"]
+print(phone_book)
+phone_book.sort()
+print(phone_book)
+for i in range(len(phone_book) -1):      # 0 ~ 2까지 ->  이경우 0이랑 2는 비교안함. while문? 
+    if len(phone_book[i]) <= len(phone_book[i+1]):
+        if phone_book[i] == phone_book[i+1][:len(phone_book[i])]:
+            answer = False
+            break
