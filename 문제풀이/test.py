@@ -1,23 +1,56 @@
-# 폰북 배열 예시 기준으로 119가 포함되있는지 아닌지 확인하려면
-# 119와 97674223과 1195524421 비교
-# index 가 0~2까지면 0이랑 1 비교 0이랑 2비교를 해야함.
-# 시작 출력 for문 사용해서 그 다음거랑 비교.
-# test 케이스 1번 index 1과 3이 매칭이 안됨. 나머진 잘 통과.
-# 해결방법 난해하네 스바 
-# while문 사용해서 인덱스 하나를 나머지 인덱스 전체랑 비교ㅕ하면 시간복잡도 N^2이라 제한사항 1000000 이라 시간초과 무조건적 달성
-# 인덱스 3을 2로 떙겨와보기 + 리스트값 변화 없어야함 스택으로 다시 넣기? 케이스많아지면 의미 없음. -> 정렬 사용해보기
-# 숫자로된 문자열의 정렬 기준 -> ["1234", "1235", "567",'1112414'] 일 때 ['1112414', '1234', '1235', '567'] 로 정렬됨.
-# ["12","123","1235","567","88"] -> ['12', '123', '1235', '567', '88']로 변화 없음. 정렬기준 무조건 문자열의 인덱스별로 작은값 기준.
-# sort 사용 -> 통과. 숫자롣된 문자열 사용시 sort기준 위와 같은것같은데 따로 정리 필요.(복습시)
-# sort 사용시 phone_book[i]와 그다음 정렬되는 문자열 phone_book[i+1]은 같은 접두어를 가질경우 바로 뒤에 정렬되므로 조건 성립. 
+# 눌렀을때 각 손과 2580 버튼의 거리값을 계산해야됨. 예시처럼. 2차원배열 써야될거같은데
+# 여기서 거리값을 뭐로 계산해야되냐.. 각각의 인덱스를 빼는방식으로 계산? -> 절대값 써야되는데 거리가 나오나? 아닌거같은데 
+# 핸드폰 번호 1번 기점으로 2중 배열로 좌표 딕셔너리로 설정. x.y처럼
+# 왼손 오른손의 시작지점이 각각 *와 #에서 시작.
+# 1,4,7 누르면 결에 L입력, 왼손이 누른 버튼으로 이동.
+# 반대로 3,6,9 누르면 결과에 R입력, 오른손 누른버튼으로 이동해야됨.
+# 2,5,8,0 누를 경우가 문제. 2,5,8,0 눌렀을 경우, 거리 계산 해줘야하는데
+# 뭐로해주냐.. 예시를 기준으로 잡으면 1 눌러서 left_finger (0,0)
+# 3눌러서 rightfinger 3 = (0,2), 4눌러서 left_finger = currnet = phone[4] = (1,0)
+# 5누를 경우 phone[5] = (1,1) 
+# 현재 rihgtfinger = phone[3] = (0,2) // leftfinger = phone[4] = (1,0)   
+# 그럼 각각의 index 0 과 1을 뺀 각각의 절대값을 합치면 절대적인 거리 구할 수 있음.
+# 거리 더 낮은쪽이 가까운쪽이 되므로 해당 경우의 수 입력해주고 같을 경우 조건에 맞추기.
+numbers = [1, 3, 4, 5, 8, 2, 1, 4, 5, 9, 5]
+hand = "right"
+result = "LRLLLRLLRRL"
 
+def solution(numbers, hand):
+    answer = ''
+    phone = {
+        1 : (0, 0),   2 : (0, 1),   3 : (0, 2),
+        4 : (1, 0),   5 : (1, 1),   6 : (1, 2),
+        7 : (2, 0),   8 : (2, 1),   9 : (2, 2),
+      '*' : (3, 0),   0 : (3, 1), '#' : (3, 2)
+    }
+    left_finger =  phone['*']
+    right_finger = phone['#']
+    
+    for i in numbers:
+        current = phone[i]
+        if i in [1,4,7]:
+            answer += 'L'
+            left_finger = current
 
-phone_book = ["12","123","1235","567","88"]
-print(phone_book)
-phone_book.sort()
-print(phone_book)
-for i in range(len(phone_book) -1):      # 0 ~ 2까지 ->  이경우 0이랑 2는 비교안함. while문? 
-    if len(phone_book[i]) <= len(phone_book[i+1]):
-        if phone_book[i] == phone_book[i+1][:len(phone_book[i])]:
-            answer = False
-            break
+        elif i in[3,6,9]:
+            answer += 'R'
+            right_finger = current
+        
+        else: # if i in [2,5,8,0]:
+            left_distance = abs(left_finger[0] - current[0]) + abs(left_finger[1] - current[1])
+            right_distance = abs(right_finger[0] - current[0]) + abs(right_finger[1] - current[1])
+
+            if left_distance < right_distance:
+                answer += 'L'
+                left_finger = current
+            elif left_distance > right_distance:
+                answer += 'R'
+                right_finger = current
+            else: # right_distance == left_distance
+                if hand == 'left':
+                    answer += 'L'
+                    left_finger = current
+                else:
+                    answer += 'R'
+                    right_finger = current
+    return answer
