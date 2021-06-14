@@ -1,55 +1,23 @@
-matrix =[[0,1,2,0],[3,4,5,2],[1,3,1,5]]
-index = []
+gas = [5,1,2,3,4]
+cost =[4,4,1,5,1]
+# totalcost += gas[i] - cost[i] >0 -> 이걸 i까지 반복?
+# 우선 sum(gas) == sum(cost) -> 이조건 아녔음. 가스가 더많으면 노 상관.
+# i에서 시작. 일주가 가능하다면 시작위치를 반환함. 총합은 15로 같으나. index 3에서 시작한다고 가정할 경우
+# 4충전 -> 1소모 + 5충전 = 8 -> 2소모 + 1충전 = 7 -> 3소모 2충전 = 6 -> 4소모 3충전 = 5 -> 5소모 일주 성공.
+# [5,1,2,3,4] // [4,4,1,5,1]
+# gas[3] - cost[3] + gas[4] - cost[4] + gas[0] - cost[0] + gas[1] - cost[1] + gas[2] - cost[2] 
+# 4      - 1        +  5    - 2       + 1      - 3       + 2      - 4       + 3      - 5
+#[5,1,2,3,4] // [4,4,1,5,1]
+# gas[4] - cost[4] + gas[0] - cost[0] + gas[1] - cost[1] + gas[2] - cost[2]   gas[3] - cost[3] 
+#     4  -  1      
+if sum(gas) < sum(cost):
+    print(-1)
 
-for i in range(len(matrix)):
-    for j in range(len(matrix[i])):
-        if matrix[i][j] == 0:
-            index.append((i,j))
-            print(i)
-            print(j)
-            
-print(index)
-print(index[0][0]) # -> 1
-print(index[0][1]) # -> 1
-
-print('-------------------------')
-while len(index) != 0:
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            matrix[i][index[0][1]] = 0
-            matrix[index[0][0]][j] = 0
-            
-    index.pop(0)
-
-print(index)
-print(matrix)
-
-print('-----------------------------------')
-
-# 00 01 02      
-# 10 11 12       -> 11이 0이면 01 10 12 21 죄다 0이되야함.
-# 20 21 22
-matrix = [[1,1,1],[1,0,1],[1,1,1]]
-print(matrix)
-
-rows = set()
-column = set()
-m = len(matrix)
-n = len(matrix[0])
-for i in range(m):
-    for j in range(n):
-        if matrix[i][j] == 0:
-            rows.add(i)
-            column.add(j)
-print(rows)
-print(column)
-
-for i in list(rows):
-    for j in range(n):
-        matrix[i][j] = 0
-print(matrix)
-
-for i in range(m):
-    for j in list(column):
-        matrix[i][j] = 0
-print(matrix)
+starti = 0
+totalcost = 0
+for i in range(len(gas)):
+    totalcost += gas[i] - cost[i]
+    if totalcost < 0:
+        starti = i + 1
+        totalcost = 0
+print(starti)
