@@ -1,4 +1,5 @@
 # LeetCode 118. Pascal's Triangle
+# Related Topic - Array(정렬)
 # https://leetcode.com/problems/pascals-triangle/
 # 정수 numRows이 주어지면 그 정수의 크기만큼 2중배열 생성
 # 그리고 그 안의 수는 파스칼의 삼각형(가운데는 그위의 2개의 합) 규칙성으로 채워야 함
