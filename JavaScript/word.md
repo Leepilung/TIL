@@ -66,8 +66,6 @@ REPL(Read Eval Print Loop)는 글자 그대로 읽고(read), 평가하고(eval),
 2. 테스트 가능한 어플을 만들 때 의존성이 있으면 유닛테스트 작성이 어려움.
 3. 유닛테스트의 목적 자체가 다른 모듈로부터 독립적으로 테스트하는 것을 요구하기 때문.
 
-
-
 ## 템플릿 리터럴(Template Literal)
 
 템플릿 리터럴이란 자바스크립트에서 문자열을 입력하는 방식이다. 기존에는 var str = 'Hello ES6'와 같은 방식으로 사용하였으나 ES6에서는 백틱(back-tick)이라는 기호(`)를 사용하여 정의한다.
@@ -75,41 +73,44 @@ REPL(Read Eval Print Loop)는 글자 그대로 읽고(read), 평가하고(eval),
 ```mm
 const str = `Hello ES6`;
 ```
+
 위와 같이 백틱을 이용하게 되면 여러 줄에 걸쳐 문자열을 정의할 수도 있고, 자바스크립트의 변수를 문자열 안에 바로 연결할 수 있는 이점이 생긴다.
 
-
->여러 줄에 걸쳐 문자열 선언하기
-
+> 여러 줄에 걸쳐 문자열 선언하기
 
 기존 자바스크립트의 문자열 선언 방식인 작은 따옴표(')의 문제점은 아래와 같았다.
+
 ```m
-var str = 'Template literals are string literals allowing embedded expressions. \n' + 
-'You can use multi-line strings and string interpolation features with them. \n' + 
+var str = 'Template literals are string literals allowing embedded expressions. \n' +
+'You can use multi-line strings and string interpolation features with them. \n' +
 'They were called "template strings" in prior editions of the ES2015 specification.';
 ```
-위와 같이 작은 따옴표를 이용하여 긴 문자열을 선언하게 되면 자동으로 개행이 되지 않기 때문에 라인 브레이커(line breaker)인 \n를 개행할 곳 중간 중간에 추가해야 했다. 
+
+위와 같이 작은 따옴표를 이용하여 긴 문자열을 선언하게 되면 자동으로 개행이 되지 않기 때문에 라인 브레이커(line breaker)인 \n를 개행할 곳 중간 중간에 추가해야 했다.
 
 이렇게 되면 문장이 길면 길수록 +와 \n를 계속 추가해줘야 하는 번거로움이 생긴다.
 
 그러나 백틱을 이용해서 문자열을 선언하게 되면 위와 같이 개행할 필요가 없다.
+
 ```mm
 const str = `Template literals are string literals allowing embedded expressions.
 You can use multi-line strings and string interpolation features with them.
 They were called "template strings" in prior editions of the ES2015 specification.`;
 ```
 
-
-
 ## Raw strings (원래 문자열)
+
 Raw string은 이스케이프 문자를 해석하지 않은 일반 문자열이다.
 
 String.raw 태그함수를 사용하면 템플릿 문자열을 입력한 대로 출력할 수 있다.
+
 ```mm
 let s = String.raw`xy\n${1+1}z`;
 console.log(s);     //xy\n2z
 ```
 
 태그 함수를 만들어 원래의 문자열을 반환하려면 첫 번째 인자의 raw 프로퍼티를 사용하면 된다.
+
 ```mm
 let tag = function(strings) {
     return strings.raw[0];
@@ -123,11 +124,13 @@ console.log(str);       //Hello\nWorld.
 
 ## 조건문 3항 연산자 '`?`'
 
-if, else와 다르게 3항연산자로 사용된다. 
+if, else와 다르게 3항연산자로 사용된다.
 
 이렇게도 사용된다.
+
 ```mm
 var a = 123;
 a = a > 100 ? 100 : a < 50 ? 50 : a;
 ```
+
 조건식은 우선 a > 100이고 ? 뒤에서 100 : a는 각각 True일 때의 값과 False일 때의 값이다. 위의 식은 a가 100보다 작다면 false 식(a < 50)을 다시 판단하여 또다시 True(50)나 false(a)값을 반환한다고 보면 된다.
