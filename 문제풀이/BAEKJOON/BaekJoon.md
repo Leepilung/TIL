@@ -20,6 +20,8 @@ while문 // 10952 10951 1110
 
 1차원 배열 // 10818 2562 2577 3052 1546 8958 4344
 
+함수 // 15596 4673 1065
+
 ## 복습해야할 문제
 
 입출력과 사칙연산 // [1000](https://www.acmicpc.net/problem/1330 "A+B알고리즘")
@@ -37,3 +39,6 @@ while문 // [10952](https://www.acmicpc.net/problem/10952 "A+B -5 알고리즘")
 [1110](https://www.acmicpc.net/problem/1110 "더하기 사이클 알고리즘")
 
 1차원 배열 // [4344](https://www.acmicpc.net/problem/4344 "평균은 넘겠지")
+
+함수 // [4673](https://www.acmicpc.net/problem/4673 "셀프 넘버")
+[1065](https://www.acmicpc.net/problem/1065 "한수")
