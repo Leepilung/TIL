@@ -22,6 +22,8 @@ while문 // 10952 10951 1110
 
 함수 // 15596 4673 1065
 
+문자열 // 11654 11720 10809 2675 1157 1152 2908 5622 2941 1316
+
 ## 복습해야할 문제
 
 입출력과 사칙연산 // [1000](https://www.acmicpc.net/problem/1330 "A+B알고리즘")
@@ -42,3 +44,6 @@ while문 // [10952](https://www.acmicpc.net/problem/10952 "A+B -5 알고리즘")
 
 함수 // [4673](https://www.acmicpc.net/problem/4673 "셀프 넘버")
 [1065](https://www.acmicpc.net/problem/1065 "한수")
+
+문자열 // [2675](https://www.acmicpc.net/problem/2675 "문자열 반복")
+[2941](https://www.acmicpc.net/problem/2941 "크로아티아 알파벳")
