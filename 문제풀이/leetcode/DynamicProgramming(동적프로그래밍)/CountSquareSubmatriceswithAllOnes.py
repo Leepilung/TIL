@@ -1,4 +1,5 @@
 # LeetCode 1277. Count Square Submatrices with All Ones
+# https://leetcode.com/problems/count-square-submatrices-with-all-ones/
 # m x n 꼴로 0과 1로된 행렬이 주어지면 모든 행렬을 포함하는 하위 제곱 행렬의 수를 구해야 함.
 #Input: matrix = 일때 Output은 15.
 #[[0,1,1,1],    1로된 길이가 1인 square의 수는 10

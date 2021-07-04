@@ -1,4 +1,5 @@
 # LeetCode - > 338. Counting Bits 알고리즘
+# https://leetcode.com/problems/counting-bits/
 # 인풋으로 n = 2를 부여받으면 이를 자동 이진수 변환하여 n을 0부터 2까지 나열하여 이진수변환한 후 그 안에 포함된 1을 출력
 # ex1) Input : n = 2 Output : [0,1,1] 설명부분 : 0 --> 0     1 --> 1        2 --> 10
 # ex2) Input : n = 5 Output : [0,1,1,2,1,2] 설명부분 : 0 --> 0   1 --> 1  2 --> 10    3 --> 11    4 --> 100   5 --> 101
