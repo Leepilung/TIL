@@ -1,5 +1,6 @@
-# LeetCode Letter Combinations of a Phone 알고리즘
+# LeetCode 17. Letter Combinations of a Phone 알고리즘
 # https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+# *Topic - Hash Table, BackTracking
 # 번호 입력받으면 그번호의 영문자 조합으로 출력될 수 있는 모든 경우의 수 출력
 # digits의 최대 길이는 4 ex)2345
 # digits[i]의 범위는 2~9까지.

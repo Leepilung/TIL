@@ -1,5 +1,6 @@
 # LeetCode Max Area of Island 알고리즘
 # https://leetcode.com/problems/max-area-of-island/
+# *Topic - Array, DFS, BFS
 # 섬은 1로 되어있고, 섬중에서 가장 큰 섬의 크기를 구하라.
 # 섬을 돌면서 1을 전부 끄고 1을 끌때마다 섬의 크기를 스택에다가 넣는 방식으로
 # 스택 가산하는 방식 채용. 선언된 함수에서 설정된 변수를 다른 함수에서 사용하고 싶을경우 self. 구문 붙여줘야함.

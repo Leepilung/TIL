@@ -1,4 +1,5 @@
-#Jewels and Stone 알고리즘
+# LeetCode 771.Jewels and Stone 알고리즘
+# https://leetcode.com/problems/jewels-and-stones/
 #문자열이 주어지면 보석속에 있는 문자열이 돌에 얼마나있는지를 계산해야함.
 #ex) Jewels = "aA" Stone = "aAAbbbbb" 일경우
 #Jewels = aA를 a와 A로 나눠야하고 각각의 문자가 stone에 얼마있는지를 계산해야함

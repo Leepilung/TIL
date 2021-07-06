@@ -1,3 +1,5 @@
+# LeetCode 26. Remove Duplicates from Sorted Array
+# https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 #주어진 배열에서 반복되는 숫자를 전부 제거하는 함수를 만들어보세요.
 #A[start] == A[i] -> len(A)
 #start = 0 -> start < len(A)
