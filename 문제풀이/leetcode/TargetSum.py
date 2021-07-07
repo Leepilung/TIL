@@ -1,5 +1,6 @@
 # LeetCode 494. Target Sum
 # https://leetcode.com/problems/target-sum/
+# *Related Topic - Array, Dynamic Programming, BackTracking
 # 정수배열 nums와 정수 target이 주어짐.
 # nums에 +와 -를 붙여서 target이 되는 식의 개수를 구해야함.
 # target이 3이면 -1 +1 +1 +1 +1, +1 -1 +1 +1 +1이 다름.
