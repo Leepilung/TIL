@@ -1096,3 +1096,240 @@ undefined
 - 배열은 다른 배열을 포함한 모등 유형의 데이터를 포함할 수 있다.
 
 ---
+
+# 조건과 루프
+
+조건은 간단하지만 코드 실행 흐름을 제어하는 강력한 방법을 제공한다. 루프를 사용하면 적은 코드로 반복적 작업을 수행할 수 있다.
+
+종류는 다음과 같다.
+
+- if 조건
+- switch 문
+- whild, do ... while, for, for ... in 루프
+
+## 코드 블록
+
+코드 블록은 다음 예제 코드와 같이 중괄호로 묶인 0개 이상의 표현식으로 구성된다.
+
+```m
+ {
+... var a = 1;
+... var b = 3;
+... }
+```
+
+블록은 무제한 중첩시킬 수 있다.
+
+```m
+{
+    var a = 1;
+    var b = 2;
+    var c, d;
+    {
+        c = a+b;
+        {
+            d = a-b;
+        }
+    }
+}
+```
+
+## if 조건
+
+if 조건의 간단한 예로 어떠한 형태를 가지는지 알아보자
+
+```m
+> var result = '', a =3;
+undefined
+> if (a>2) {
+... result = 'a is greater than 2';
+... }
+'a is greater than 2'
+```
+
+if 조건은 다음과 같이 구성된다.
+
+- if 문
+- 괄호 안의 조건
+- 조건이 만족되면 실행되는 {}로 둘러싸인 코드 블록
+
+조건(괄호 안의 부분)은 항상 부울 값을 반환하며 다음을 포함할 수 있다.
+
+- 논리 연산, ! 또는 &&, ||
+- ===, !=, >등의 비교
+- 부울로 변환될 수 있는 모든 값 또는 변수
+- 위의 조합
+
+## else 절
+
+if 조건에는 else 문을 선택적으로 사용할 수 있다. 조건이 false로 평가되면 실행되는 코드 블록이 온다.
+
+```m
+> if (a > 2) {
+... result = 'a is greater than 2';
+... } else {
+... result = 'a is NOT greater tahn 2';
+... }
+'a is greater than 2'
+```
+
+if 문과 else문 사이에 else..if 조건은 무제한으로 올 수 있다.
+
+```m
+> if (a >2 || a < -2) {
+... result = 'a is not between -2 and 2';
+... } else if ( a === 0 && b === 0) {
+... result = 'both a and b are zeros';
+... } else if (a === b) {
+... result = 'a and b are equal';
+... } else {
+... result = 'give up';
+... }
+'a is not between -2 and 2'
+```
+
+## 변수가 존재하는지 확인
+
+변수가 존재하는지 확인할 필요가 있을 때가 종종 있다. 이를 수행하는 가장 쉬운 방법은 변수를 if문의 조건 부분에 넣는것이다. 그러나 가장 좋은 방법은 아니다. 변수가 존재하는지 테스트하는 예제를 살펴보자
+
+```m
+var result = '';
+> if (asdfaf) {
+... result = 'yes';
+... }
+Uncaught ReferenceError: asdfaf is not defined
+> result;
+''
+```
+
+코드의 최종 결과가 yes이기 때문에 분명히 동작한다. 하지만 첫째, 코드는 오류를 생성했다. asdfaf가 정의되지 않았고, 우리가 원하는 동작이 아니다.
+
+둘째, if(asdfaf)가 false를 반환했다고 해서 asdfaf가 정의되지 않았음을 의미하지는 않는다. asdfaf가 정의되고 초기화됐지만 false 또는 0과 같은 값을 포함할 수 있다.
+
+고로 변수가 정의돼 있는지 알아보는 더 좋은 방법은 typeof를 사용하는 것이다.
+
+```m
+> if (typeof somevar !== "undefined") {
+... result = 'yes';
+... }
+undefined
+> result
+''
+```
+
+typeof 연산자는 항상 문자열을 반환하므로, 문자열 'undefined'와 비교할 수 있다. somevar 변수는 선언됐지만 아직 값이 할당되지 않았을 수도 있고 동일한 결과를 얻을 수 있다.
+
+따라서 이와 같이 typeof로 테스트하면 ,실제로 변수가 undefined 값이 아닌 다른 값을 가지고 있는지를 테스트 하는 것이다.
+
+````m
+> var somevar;
+undefined
+> if (typeof somevar !== 'undefined') {
+... result = 'yes';
+... }
+undefined
+> result
+''
+
+> somevar = undefined
+undefined
+> if (typeof somevar !== 'undefined') {
+... result = 'yes';
+... }
+undefined
+> result
+''
+
+변수가 정의되지 않고 undefined가 아닌 다른 값으로 초기화 되었다면, 다음 예제와 같이 typeof에 의해 반환된 유형은 더 이상 'undefined'가 아니다.
+
+```m
+> somevar = 123;
+123
+> if (typeof somevar !== "undefined") {
+... result = 'yes';
+... }
+'yes'
+> result
+'yes'
+>
+````
+
+## 대체 if 구문
+
+간단한 조건이 있을 때 if 구문을 사용할 수있다.
+
+```m
+> if (a === 1) {
+... result = 'a is one';
+... } else {
+... result = 'a is not one';
+... }
+'a is one'
+```
+
+다음과 같이 작성도 가능하다.
+
+```m
+> var a = 1;
+undefined
+> var result = (a === 1) ? "a is one" :" ais not one";
+undefined
+> result
+'a is one'
+```
+
+이 구문에서 변수 = 조건 ? a : b 형태로 되있는데 조건에 부합하여 true값이면 a를 아니면 b를 출력하는 양식이다.
+
+간단한 조건에서만 사용해야 하는 구문이다.
+
+숫자가 특정 범위, 50~ 100사이인지 확인한다고 가정해보자.
+
+```m
+> var a = 123;
+undefined
+> a = a > 100 ? 100 : a < 50 ? 50 : a;
+100
+```
+
+`?:`는 세 개의 피연산자가 필요하기 때문에 삼항 연산자 라고도 불린다.
+
+## 스위치
+
+if 조건을 사용하고 너무 많은 else if 문을 사용한다면 if를 switch로 변경하는 것을 고려해 볼 수 있다.
+
+```m
+> var a = '1',
+... result = '';
+undefined
+> switch (a) {
+... case 1:
+... result = 'Number 1';
+... break;
+... case '1':
+... result = 'String 1';
+... break;
+... default:
+... result = 'I don't know';
+... break;
+}
+```
+
+실행 결과는 'String 1'이다.
+
+switch문의 전개 과정을 살펴보자
+
+- 괄호 안의 표현식, 표현식은 보통 변수를 포함하지만, 값을 반환하는 어떤 것도 될 수 있다.
+- 중괄호로 묶인 다수의 case 블록
+- 각 case문 다음엔 표현식이 온다.표현식의 결과는 switch 문 다음에 나오는 표현식과 비교된다. 비교 결과가 true이면, case와 콜론 다음에 나오는 코드가 실행된다.
+- case 블록의 끝을 알리는 break 문이 있다. 이 break문에 도달하면 switch문은 종료된다. 누락되 있을 경우에는 다음 case 블록으로 넘어간다.
+- 코드 블록의 끝에 default 문으로 표시되는 선택적인 디폴트 case가 있다. 앞의 case중 하나도 true로 평가되지 않으면 이 defualt case가 실행된다.
+
+단계별 절차로는 다음과 같다.
+
+1. 괄호 안의 switch 표현식을 평가.
+2. 첫 번째 case로 이동, 그 값을 1단계의 값과 비교
+3. 2단계의 비교 결과가 true이면, case 블록의 코드를 실행한다.
+4. case블록이 실행된 후, 끝에 break문이 있으면 switch를 벗어난다.
+5. break가 없거나 2단계에서 false가 반환되면, 다음 case 블록으로 이동한다.
+6. 2~5 단계를 반복한다.
+7. 4단계에서 벗어나지 못하면, default 문의 코드를 실행한다.
