@@ -948,3 +948,67 @@ undefined
 ## 심볼
 
 ES6에는 심볼(symbol)이 도입되었다.
+
+```m
+> var atom = Symbol()
+undefined
+```
+
+심볼을 생성할 때 new 연산자는 사용하지 않는다. new 연산자를 사용하면 오류가 발생하기 때문이다.
+
+```m
+> var atom = new symbol()
+Uncaught ReferenceError: symbol is not defined
+```
+
+또한 symbol의 설명을 기술할 수도 있다.
+
+```mm
+> var atom = Symbol('atomic symbol')
+> atom
+Symbol(atomic symbol)
+```
+
+심볼을 설명하자면 심볼은 심볼들이 여기저기 흩어져 있는 큰 프로그램을 디버깅할 때 매우 편리하다.
+
+Symbol의 가장 중요한 속성은 고유하고 불변이라는 점이다.
+
+```mm
+> console.log(Symbol() === Symbol())
+false
+undefined
+> console.log(Symbol('atom') === Symbol('atom'))
+false
+undefined
+```
+
+심볼은 고유한 식별자가 필요한 곳에서 속성 키로 사용된다는 정도만 우선 이해하자.
+
+## 원시 데이터 유형 요약
+
+> 자바스크립트에는 다섯 가지 원시 데이터 유형이 있다.
+
+- 숫자
+- 문자열
+- 부울
+- Undefined
+- Null
+
+> 원시 데이터 유형이 아닌 것은 모두 객체이다.
+
+- 원시 데이터 유형은 양수 및 음수의 정수, 부동 소수점, 16진수, 8진수, 지수, 특수문자 NaN, Infinity가 될 수 있다.
+
+> 문자열 데이터 유형에는 따옴표로 묶인 문자가 표함된다. 템플릿 리터럴을 사용하는 경우 표현식을 포함시킬 수 있다.
+
+> 부울 데이터 유형의 유일한 값은 true와 false이다.
+
+> 널(Null) 데이터 유형의 유일한 값은 undefined이다.
+
+> 다음의 6가지 false 값을 제외한 모든 값은 부울로 변환하면 true가 된다.
+
+- " "
+- null
+- undefined
+- 0
+- NaN
+- false
