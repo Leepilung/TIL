@@ -160,7 +160,723 @@ undefined
 '>' 기호는 사용자가 입력한 코드를 보여준다. 콘솔에 출력된 결과를 의미한다.
 
 ```
-콘솔에서 변수를 정의헀을때 출력값이 undefined로 출력됨을 알 수 있다. 이렇게 나오는 이유는 입력 값을 평가할 때 콘솔은 반환 값을 출력한다. var =1 과 같은 일부 표현식은 명시적으로 아무 것도 반환하지 않는다.
+콘솔에서 변수를 정의헀을때 출력값이 undefined로 출력됨을 알 수 있다. 이렇게 나오는 이유는 입력 값을 평가할 때 콘솔은 반환 값을 출력한다. var =1 과 같은 일부 표현식은 명시적으로 아무 것도 반환하지 않는다. 이 경우 암시적으로 특별 값인 `UNDEFINED`를 반환한다. 표현식이 어떤 값을 반환하면, 결과 값이 출력된다. 모든 콘솔이 undefined 값을 출력하지는 않는다.
+```
 
+# 연산자
 
+연산자(Operator)는 하나 또는 두 개의 값을 받아 연산을 수행하고 값을 반환한다.
+
+용어를 명확하게 이해하기 위해 간단한 예를 살펴보자
+
+```
+> 1+2;
+3
+```
+
+- `+` 기호는 연산자다.
+- 연산은 더하기다.
+- 입력 값은 1과 2이다(피연산자(operand라고도 부른다)
+- 결과 값은 3이다.
+- 전체를 표현식(expression)이라고 부른다.
+
+표현식에서 값 1, 2를 직접 사용하는 대신 변수를 사용할 수도 있다.
+
+```
+> var a = 1
+undefined
+> var b = 2;
+undefined
+> a + 1;
+2
+> b +2;
+4
+> a + b;
+3
+> var c = a + b;
+undefined
+> c;
+3
+```
+
+기본 산술 연산자의 종류는 다음과 같다
+|연산자 기호| 연산 | 예제 |
+|:-----:|:------:|:-----------------------------------:|
+|`+`|덧셈|>1+2; = 3|
+|`-`|뺼셈|>99.99-11; = 88.99|
+|`*`|곱셈|>2\*3; = 6|
+|`/`|나눗셈|>6/4; = 1.5|
+|`%`|모듈러(Modulo),나머지|>6%3; = 0 5%3; = 2 가끔은 숫자가 짝수인지 홀수인지 테스트하는 용도로도 사용한다.
+|`++`|값을 1씩 증가| 후행 증가는 입력 값이 반환된 후 증가한다. 예를 들면 다음과 같다. var a =123; var b = a++ >b; = 123 >a; = 124 그러나 선행 증가는 반대다. 입력 값이 1만큼 증가된 후 반환된다. 예를 들면 다음과 같다. >var a = 123; >var b = ++a; >b = 124; >a; = 124|
+|`--`|값을 1씩 감소|위으 값의 증가와 같이 후행 감소와 그 반대의 경우 2개로 나뉜다. 후행 감소의 경우 var a = 123; var b = a--; b; = 123 a; = 122의 형태이고 반대의 경우인 var a = 123; var b = --a; b; = 122 a; = 122의 값을 가진다.|
+
+var a = 1;또한 연산자이다. 간단한 할당(assignment) 연산이며 =는 간단한 대입 연산자이다.
+
+또한 대입 연산자와 산술 연산자의 조합인 연산자도 있다. 이것을 복합(compound) 연산자라고 한다.
+
+```
+> a +=3;
+8
+> a -=5
+3
+> a *=2;
+6
+> a /=5;
+1.2
+> a %= 2;
+1.2
+> a %= 1.2;
+0
+>
+```
+
+자바 스크립트는 항상 세미콜론으로 표현식을 끝낸다. 세미 콜론이 들어가지 않는다면 오류의 원인이 될 수 있으므로 항상 표현식을 종료하는 위치를 명시적으로 표기해야 한다.
+
+---
+
+# 원시 데이터 유형
+
+1. 숫자(Number) : 부동 소수점 숫자와 정수를 포함한다. -1, 100, 3.14는 모두 숫자로 취급된다.
+2. 문자열(string)임의의 개수의 문자로 구성된다. 예를 들어 a, one, one 2 three는 모두 문자열로 취급이다.
+3. 부울(boolean) : true 또는 false가 될 수 있다.
+4. 정의되지 않음(Undefined) : 존재하지 않는 변수에 접근하려고 할 때 특별한 값인 undefined를 받는다. 변수에 값을 할당하지 않고 선언할 때도 마찬가지이다.
+5. Null : 하나의 값, 즉 null 값만 가질 수 있는 또 다른 특별한 데이터 유형이다.
+   값이 없거나 빈 값임을 의미한다. 변수가 null값을 가지면 여전히 정의돼 있다는 것이다.
+
+위의 5가지 원시 유형 중 어느 것에도 속하지 않는 값이 객체(object)이다. null또한 객체로 간주된다.
+
+- 원시
+- 비 원시
+
+자바스크립트의 데이터 유형은 크게 이 2가지로 나뉜다고 보면 된다.
+
+## typeof 연산자 (값 유형 찾기)
+
+변수 또는 값의 유형을 알고 싶다면 특별한 typeof 연산자를 사용할 수 있다.
+typeof 연산자를 사용했을 때 반환 값은 다음 중 하나이다.
+
+- 숫자(number)
+- 문자열(string)
+- 부울(boolean)
+- 정의되지 않음(undefined)
+- 객체(object)
+- 함수(function)
+
+## 숫자
+
+가장 간단한 숫자는 정수이다. 변수에 1을 대입하고 typeof 연산자를 사용하면 다음과 같이 number 문자열을 반환한다.
+
+```
+> var n = 1;
+undefined
+> typeof n;
+'number'
+> n = 2341;
+2341
+> typeof n;
+'number'
+```
+
+위의 예제에서 두 번째로 변수의 값을 설정할 때에는 var문이 필요하지 않았다.
+
+숫자에는 부동 소수점도 사용이 가능하다.
+
+```
+> var n2 = 1.23;
+undefined
+> typeof n2;
+'number'
+```
+
+> 8진수와 16진수
+
+숫자가 0으로 시작하면 8진수로 간주된다.
+
+```
+> var n3 = 0377;
+undefined
+> typeof n3;
+'number'
+> n3
+255
+```
+
+예제에서 마지막 줄은 8진수 값을 10진수 표현으로 출력한다.
+ES6는 접두사 0o를 제공하여 8진수를 나타낸다.
+
+CSS에서는 색상을 정의하는 몇가지 옵션이 있다. CSS 스타일시트에서는 색상을 정의하는데 16진수 값을 사용하는데
+
+- 10진수 값을 사용해 R,G,B의 양(0~255)를 지정한다. 예를 들어 RGB(0,0,0)은 검정이며 RGB(255,255,255)는 하얀색이다.
+- 16진수를 사용하고 각 R,G,B 값에 대해 두 개의 문자를 지정한다. 예를 들어 #000000은 검은색, #ff0000은 빨간색이다. ff가 255의 16진수 값이기 때문이다.
+
+자바스크립트에서 16진수 값 앞에는 0x를 넣을 수 있다.
+
+```
+> var n4 = 0x00;
+undefined
+> typeof n4
+'number'
+> n4;
+0
+> var n5 = 0xff;
+undefined
+> typeof
+... n5
+'number'
+> n5
+255
+```
+
+---
+
+## 바이너리 리터럴
+
+ES6에서는 0b(또는 0B) 프리픽스(prefix)를 사용해 다음과 같이 바이너리 정수를 나타낼 수 있다.
+
+```
+> console.log(0b111);
+7
+undefined
+> console.log(0b1111);
+15
+undefined
+```
+
+## 지수 리터럴
+
+le1(또는 le+1이나 1E1, 1E+1이라고도 쓴다)은 숫자 1뒤에 0이 오는것을 나타낸다. 즉 10이다.
+
+유사하게 2E+3 숫자 2 뒤에 세 개의 0이 있음을 나타낸다. 즉 2000이다.
+
+```
+> 1e1;
+10
+> 1e+1;
+10
+> 1e+2;
+100
+> 2e+3;
+2000
+```
+
+2e+3은 숫자 2의 오른쪽으로 소수점 3자리를 이동시키는 것을 의미한다. 반대로 2e-3도 있다.
+
+## 무한대
+
+자바스크립트에는 무한대(infinity)라는 특별한 값이 있다. 자바스크립트가 처리할 수 없는 너무 큰 숫자를 나타낸다.
+
+```
+> typeof Infinity
+'number'
+> Infinity;
+Infinity
+> 1e309;
+Infinity
+```
+
+자바스크립트에서 처리할 수있는 가장 큰 수는 1.797631348623157e+308이고 가장 작은 수는 5e-324ㅇ이다.
+
+그리고 0으로 나누면 무한대가 된다.
+
+```
+> var a = 6 /0 ;
+undefined
+> a
+Infinity
+```
+
+Infinity가 가장 큰 숫자인데 가장 작은 숫자는 -Infinity와 같이 무한대 앞에 -기호를 붙이면 된다.
+
+```
+> var i = -Infinity;
+undefined
+> i
+-Infinity
+> typeof i
+'number'
+```
+
+그리고 Infinity와 -Infinity를 합치면 0이 출력되는게 아닌 `NaN(Not a Number)`가 된다.
+
+```
+> Infinity - Infinity
+NaN
+> -Infinity + Infinity;
+NaN
+```
+
+ES6에는 이 값이 Infinity인지 아닌지를 확인시켜주는 isFinite()메소드가 추가됐다.
+
+## NaN
+
+NaN은 그 이름에도 숫자이기도 한 특별한 값이다.
+
+```mm
+> typeof NaN;
+'number'
+```
+
+그러나 숫자를 가정하고 연산을 수행하면 연산은 실패하고 NaN을 받는다. 예를 들어 10에 문자 'f'를 곱하려고 하면 'f'는 곱셉을 위한 유효한 피연산자가 아니기 때문에 결과는 NaN이 나온다.
+
+```mm
+> var a = 10 * 'f';
+undefined
+> a
+NaN
+```
+
+NaN은 전염성이 있어 산술 연산에 NaN이 하나만 있어도 전체 결과는 NaN이 되버린다.
+
+```
+> 1+2+NaN;
+NaN
+```
+
+> Number.isNaN
+
+이 메소드는 값이 NaN인지 아닌지를 판별한다.
+
+```mm
+> console.log(Number.isNaN('test'));
+false
+undefined
+> console.log(Number.isNaN(123));
+false
+undefined
+> console.log(Number.isNaN(NaN));
+true
+undefined
+> console.log(Number.isNaN(123/'ab'));
+true
+undefined
+```
+
+그러나 이건 값이 NaN인지 아닌지만 판단하기 때문에 숫자인지 아닌지 여부를 판단하는 데는 사용하기 힘들다.
+
+그렇기 때문에 모질라에선 다음과 같이 폴리필(polyfill) 메소드를 제안한다고 한다.
+
+```mm
+> function isNumber(value) {
+... return typeof value == 'number' && !Number.isNaN(value);
+... }
+```
+
+> Number.isInteger
+
+Number.isInteger는 Es6의 새로운 메소드이다. 숫자가 유한하고 소수점을 포함하지 않으면 True를 반환한다.
+
+```mm
+> console.log(Number.isInteger('test'));
+false
+undefined
+> console.log(Number.isInteger(Infinity));
+false
+undefined
+> console.log(Number.isInteger(NaN));
+false
+undefined
+> console.log(Number.isInteger(123))
+true
+undefined
+> console.log(Number.isInteger(1.23))
+false
+undefined
+```
+
+---
+
+## 문자열
+
+문자열은 텍스트를 나타내는 데 사용되는 일련의 문자다. 작은 따음표나 큰 따옴표 사이에 있는 값은 문자열로 간주된다. 즉 1은 숫자지만 '1' 은 문자열이 되는 것이다. 문자열과 함계 사용하면 typeof는 'string'문자열을 반환한다.
+
+그리고 아무것도 입력하지 않은 경우에도 여전히 문자열(빈 문자열)이다.
+
+```m
+var s = ''; typeof s;
+'string'
+```
+
+그리고 파이썬때와 마찬가지로 문자열 끼리 더하기 기호를 사용하면 문자열 연결(concatenation)연산이 된다. 두 문자열을 연결해 반환한다.
+
+```m
+> var s1 = 'web';
+undefined
+> var s2 = 'site';
+undefined
+> var s = s1 + s2;
+undefined
+> s
+'website'
+> typeof s;
+'string'
+```
+
+문자열을 연결하려는 경우 모든 피연산자가 문자열인지 확인을 해야 한다.
+
+## 문자열 변환
+
+산술 연산의 피연산자에 '1'과 같이 숫자 같은 문자열을 사용하면, 백그라운드에서 문자열은 숫자로 변환된다.
+
+```m
+> var s = '1';
+undefined
+> s = 3* s;
+3
+> typeof s;
+'number'
+> var s = '1';
+undefined
+> s
+'1'
+> typeof s
+'string'
+> s++;
+1
+> typeof s;
+'number'
+```
+
+이는 모호함 때문에 덧셈을 제외한 모든 산술 연산에 적용된다.
+
+숫자 같은 문자열을 숫자로 변환하는 쉬운 방법은 1을 곱하는 것이다.
+
+```m
+> var s = '100'; typeof s;
+'string'
+> s = s * 1;
+100
+> typeof s;
+'number'
+```
+
+그러나 반환이 실패하면 NaN을 받는다.
+
+```m
+> var movie = '101 dalma';
+undefined
+> movie * 1;
+NaN
+```
+
+## 특수 문자열
+
+> `\\`
+
+`\\` 에서 `\`는 이스케이프 문자이다. 문자열 내에서 따옴표를 사용하려면 이스케이프 처리해서 자바스크립트가 문자열의 끝으로 처리하지 않도록 한다.
+
+ex ) var s = 'i don\t know' : 자바스크립트는 i don만 문자열로 판단하고 나머지는 무효로 처리하기 때문에 오류다.
+다음과 같은 형태는 유효하다.
+
+```
+> var s = 'i don\'t know';
+undefined
+> s
+"i don't know"
+
+> var s = "i don't know"
+undefined
+> s
+"i don't know
+```
+
+> `\n`
+
+줄의 끝을 의미한다.
+
+```
+> var a = '\n1\n2\n3';
+>s;
+'
+1
+2
+3
+'
+```
+
+> `\t`
+
+탭을 의미한다.
+
+```
+var s = '1\t2';
+>s;
+'1 2'
+```
+
+---
+
+## 문자열 템플릿 리터럴
+
+ES6에서는 템플릿 리터럴을 도입했다. 템플릿 리터럴이란 표현식이 내장된 단일, 다중 행 문자열이다.
+
+예를 들어
+
+```m
+> var log_level ='debug'
+undefined
+> var log_message = 'meltdown';
+undefined
+> console.log('Log level: ' + log_level + ' - message : ' + log_message);
+Log level: debug - message : meltdown
+```
+
+위의 형태를 템플릿 리터럴을 사용하면 다음과 같이 수행할 수 있다.
+
+```m
+> console.log(`Log level: ${log_level} - message : ${log_message}`)
+Log level: debug - message : meltdown
+```
+
+파이썬에서 format 사용했을 때와 유사하다.
+
+템플릿 리터럴은 일반적인 큰 따옴표 또는 작은 따옴표 대신 백틱(back-tick) (``) 문자로 묶는다.
+
+템플릿 리터럴 자리표시자는 달러 기호와 중괄호(${~~~~~~~})의 형태로 표시된다.
+
+함수 호출을 내장시킬 수도 있다.
+
+```m
+> var a = 10;
+undefined
+> var b = 10;
+undefined
+> function sum(x,y){
+... return x+y
+... }
+undefined
+> function multi(x,y){
+... return x*y
+... }
+undefined
+> console.log(`Sum is ${sum(a,b)} and Multi would be ${multi(a,b)}.`);
+Sum is 20 and Multi would be 100.
+```
+
+템플릿 리터럴은 여러줄 문자열 구문을 단순화 시킬 수 도 있다.
+
+```m
+> console.log("This is line one \n" + "and this is line two")
+This is line one
+and this is line two
+```
+
+```m
+> console.log(`This is line one and this is line two`);
+This is line one and this is line tw
+```
+
+또한 ES6에는` 태그된 템플릿 리터럴`이라는 흥미롱운 리터럴 유형이 있다.
+
+함수를 사용하여 출력을 수정할 수 있다. 템플릿 리터럴에 표현식을 프리픽스로 사용하면 프리픽스는 호출할 함수로 간주된다.
+
+---
+
+# 부울
+
+부울 데이터 유형에 속하는 값은 두 가지뿐이다.
+
+```m
+> var b= false
+undefined
+> typeof b
+'boolean'
+
+> var a = true;
+undefined
+> typeof a
+'boolean'
+```
+
+true 또는 false에 따옴표를 사용하면 문자열이 된다.
+
+```m
+> var b = 'true';
+undefined
+> typeof b;
+'string'
+```
+
+## 논리 연산자
+
+부울 값을 사용하는 논리 연산자에는 다음과 같은 세 가지 연산자가 있다.
+
+- ! - 논리 NOT(부정)
+- && - 논리 AND
+- || - 논리 OR
+
+예제를 통해 더 살펴보자
+
+not(!)의 사용법이다.
+
+```m
+> var b = !true;
+undefined
+> b
+false
+> var b = !!true;
+undefined
+> b
+true
+```
+
+부울이 아닌 값에 논리 연산자를 사용하면 백그라운드에서 값이 다음과 같이 부울로 변한다.
+
+```m
+> var b = 'one';
+undefined
+> !b
+false
+```
+
+문자열 'one'은 부울 true로 변화한 다음 부정되어 false로 출력된다.
+
+```m
+> var b = 'one';
+undefined
+> !!b
+true
+```
+
+not(!)을 2번쓰면 다음과 같이 true로 출력됨을 알 수있다.
+
+이렇게 임의의 값을 이중 부정을 상용해 부울 등식으로 변환할 수 있다.
+false로 변환되는 다음을 제외하고는 대부분의 값은 true로 변환된다.
+
+- 빈 문자열 ""
+- null
+- undefined
+- 숫자 0
+- 숫자 NaN
+- 부울 false
+
+위의 6개의 값은 false로 참조되지만 나머지는 모두 true로 변환된다.
+
+그리고 논리 연산의 경우 !가 가장 높은 우선 순위를 가지며, 달리 괄호가 없다면 가장 먼저 계산된다. 그 다음 우선순위에 따라 &&와 ||가 계산된다.
+
+## 지연 평가
+
+여러 논리연산이 차례로 진행될 경우, 어느 시점이 되면 결과가 명확해지고 마지막 연산이 최종 결과에 영향을 미치지 않기 때문에 마지막 연산은 수행되지 않는다.
+
+ex)
+
+```
+> true || true || ture || true || teur;
+true
+```
+
+모두 or연산이고 피연산자 중 하나가 true이면 결과는 true가 되기 때문에 뒤의 어떤 값이 나오던 결과는 true로 고정된다. 따라서 자바스크립트 엔진은 지연 평가를 결정하고 최종 결과에 영향을 미치지 않는 코드를 평가하는 불필요한 작업을 피한다. 이 단락 동작은 다음 코드 블록과 콘솔에서 실험하여 확인할 수 있다.
+
+```m
+> var b = 5
+undefined
+> true || (b = 6);
+true
+> b
+5
+> true && (b = 6);
+6
+> b
+6
+```
+
+위의 예제는 또 다른 흥미로운 동작을 보여준다. 자바스크립트가 논리 연산에서 피연산자로 부울이 아닌 표현식을 발견하면 결과로 부울이 아닌 값을 반환한다.
+
+```m
+> true || 'something';
+true
+> true && 'somthing';
+'somthing'
+> true && 'something' && true;
+true
+```
+
+다음으로 변수에 변수가 정의돼 있으면 그 값이 유지되고 그렇지 않으면 값이 10으로 초기화 되는 형태이다.
+
+```m
+> var num = num || 10;
+undefined
+> num
+10
+```
+
+그러나 이 형태는 num이 정의돼 있고 0 또는 6개의 false값 중 하나로 초기화되면, 코드가 예상대로 동작하지 않는다.
+
+```m
+> var num = 0;
+undefined
+> var num = num || 10;
+undefined
+> num
+10
+```
+
+---
+
+# 비교
+
+비교 연산자에는 다양한 종류가 있다.
+
+> `==`
+
+동등 비교 연산자로 두 연산자가 같으면 true를 반환한다. 피연산자는 비교되기 전에 동일한 유형으로 변환된다. 느슨한 비교로 불린다.
+
+```m
+> 1 == 1;
+true
+> 1 == 2;
+false
+> 1 == '1';
+true
+```
+
+> `===`
+
+동등 및 유형 비교 연산자다. 두 연산자가 같고 동일한 유형이면 true를 반환한다. 엄격한 비교로 불린다.
+
+```m
+> 1 === '1';
+false
+> 1 === 1;
+true
+```
+
+> `!=`
+
+비 동등 비교이다. 서로 같지 않을 경우 true를 반환한다.
+
+```m
+> 1 != 1;
+false
+> 1 != '1';
+false
+> 1 != 2
+true
+```
+
+> `!==`
+
+유형 변환 없이 비동등 비교 연산자 이다. 피연산자가 같지 않거나 유형이 다른 경우 true를 반환한다.
+
+```m
+> 1 !==1;
+false
+> 1 !== '1';
+true
+```
+
+> `>`
+
+크기 비교 연산자 중 하나이다. 왼쪽 피연산자가 오른쪽보다 클 경우 true를 반환한다.
+
+> `>=`
+
+왼쪽 피연산자가 오른쪽 피연산자보다 크거나 같으면 true를 반환한다.
+
+반대는 동일하다.
+
+NaN의 경우 자기 자신을 포함한 그 어떠한 것과도 같지 않다.
+
+```m
+> NaN == NaN;
+false
 ```
