@@ -880,3 +880,71 @@ NaN의 경우 자기 자신을 포함한 그 어떠한 것과도 같지 않다.
 > NaN == NaN;
 false
 ```
+
+## Undefined와 Null
+
+존재 하지 않는 변수를 사용하려고 할 경우 다음과 같은 오류가 발생한다.
+
+```
+> foo
+Uncaught ReferenceError: foo is not defined
+```
+
+typeof 연산자를 사용하는 경우는 오류가 아니다. "undefined" 문자열이 반환된다.
+
+```
+> typeof foo;
+'undefined'
+```
+
+변수에 값을 지정하지 않고 변수를 선언하는 경우도 오류가 아니다. 그러나 typeof는 여전히 "undefined"를 반환한다.
+
+```
+> var someavar;
+undefined
+> someavar
+undefined
+> typeof someavar
+'undefined'
+```
+
+이것은 변수를 초기화하지 않고 선언할 경우 자바스크립트가 undefined로 변수를 자동으로 초기화 하기 때문이다.
+
+반면 null 값은 자바스크립트가 백그라운드에서 할당하지 않는다.
+
+```m
+> var a = null;
+undefined
+> a
+null
+> typeof a;
+'object'
+```
+
+null과 undefined의 차이는 작지만 경우에 따라 아주 중요할 수 있다.
+
+```m
+> var i = 1 + undefined;
+undefined
+> i
+NaN
+> var i = 1 + null;
+undefined
+> i
+1
+```
+
+이는 null과 undefined가 다른 원시 유형으로 변환되기 때문이다.
+
+- 숫자로 변환
+  > 1 \* undefined = NaN
+- NaN으로 변환
+  > 1 \* null = 0
+- 부울로 변환
+  > !!undefined = false // !!null = false
+- 문자열로 변환
+  > "value : " + null; = "value: null"
+
+## 심볼
+
+ES6에는 심볼(symbol)이 도입되었다.
