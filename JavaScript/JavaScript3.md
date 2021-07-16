@@ -9,7 +9,7 @@
 객체는 배열과 비슷하지만, 직접 키를 정의한다는 점이 다르다. 숫자 인덱스만 사용할 수 있는 것은 아니며, first_name, age등과 같이 친숙한 키를 사용할 수 있다.
 
 ```mm
-var herp = {
+var hero = {
   breed : 'Turtle',
   occupation : 'Ninja'
 };
@@ -64,3 +64,104 @@ var dog = {
   }
 };
 ```
+
+## 해시와 연관 배열
+
+일부 프로그래밍 언어에는 다음 둘 사이에 차이가 있다.
+
+- 일반 배열, 인덱스 배열 또는 열거 배열로도 불린다.
+- 연관 배열, 해시 또는 딕셔너리로도 불린다.
+
+자바스크립트는 배열을 사용해 인덱스 배열과 객체를 표시해서 연관배열을 나타낸다. 자바스크립트에서 해시를 원한다면 객체를 사용하면 된다.
+
+## 객체의 속성 접근
+
+객체의 속성에 접근하는 방법은 두 가지가 있다.
+
+- 대괄호 표기법을 사용하는 방법(ex : hero['occupation']0
+- 도트 표기법을 사용하는 방법(ex : hero.occupation)
+
+도트 표기법은 읽고 쓰기에 더 쉽지만, 언제나 사용할 수 있는 것은 아니다.
+
+왜냐하면 속성 이름을 인용하는 경우에도 동일한 규칙이 적용되기 때문이다. 또한 속성의 이름이 유효한 변수 이름이 아닌 경우, 도트 표기법을 사용할 수 없다.
+
+다음의 hero 객체를 통해 살펴보자.
+
+```mm
+var hero = {
+  breed : 'Turtle',
+  occupation : 'Ninja'
+};
+```
+
+도트 표기법으로 속성에 접근하는 예이다.
+
+```mm
+hero.breed;
+"Turtle"
+```
+
+대괄효 표기법으로 속성에 접근하는 예도 살펴보자
+
+```mm
+hero['occupation'];
+"Ninja"
+```
+
+존재하지 않는 속성에 접근하면 다음과 같이 undefined를 반환한다.
+
+```mm
+'Hair color is' + hero.hair;
+"Hair color isundefined"
+```
+
+또한 객체는 다른 객체를 포함한 모든 데이터를 포함할 수 있다.
+
+```mm
+var book = {
+  name : 'Catch',
+  publish : 1961,
+  author : {
+    firstname : 'Joseph',
+    lastname : 'Hellen'
+  }
+};
+```
+
+book 객체의 author 속성에 포함된 객체의 firstname 속성을 가져오려면 다음과 같은 코드를 사용한다.
+
+```mm
+book.author.firstname
+"Joseph"
+```
+
+대괄호 표기법을 사용한 예제를 살펴보자.
+
+```mm
+book['author']['firstname']
+"Joseph"
+```
+
+그리고 두 표기법을 혼합해도 동작한다.
+
+```mm
+book.author['firstname']
+"Joseph"
+
+book.publish
+1961
+
+book['author'].lastname
+"Hellen"
+```
+
+그리고 대괄호과 필요한 또 다른 경우는 접근해야 하는 속서으이 이름을 미리 알 수 없는 경우이다.
+런타임시 동적으로 변수에 저장되는 경우가 해당된다.
+
+```mm
+var key = 'firstname';
+book.author[key];
+"Joseph"
+```
+
+예제에서 key값은 변수값으로 주어지며 미리 지정되지 않는다.
