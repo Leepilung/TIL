@@ -261,3 +261,153 @@ var hero ={
 hero.sayName();
 "Rafaelo"
 ```
+
+따라서 this를 사용하면 실제로 이 객체 또는 현재 객체에 접근할 수 있다.
+
+## 생성자 함수
+
+객체를 생성하는 방법에는 생성자 함수를 사용하는 방법도 있다. 예제를 통해 살표보자.
+
+```mm
+function Hero() {
+  this.occupation = 'Ninja'
+}
+```
+
+이제 이 함수를 사용해 객체를 생성하려면, 다음과 같이 new 연산자를 사용한다.
+
+```mm
+var hero = new Hero();
+hero.occupation;
+"Ninja"
+```
+
+생성자 함수를 사용하면 새로운 객체를 만들 때 매개변수를 사용할 수 있는 이점이 있다.
+하나의 매개변수를 받아 이것을 name 속성에 할당하도록 생성자를 수정해 보자.
+
+```mm
+function Hero(name) {
+	this.name = name;
+  this.occupation = 'Ninja';
+  this.whoAreYou = function () {
+    return "I'm " +
+      this.name +
+      " and I'm a " +
+      this.occupation;
+	};
+}
+```
+
+이제 동일한 생성자를 사용해 서로 다른 객체를 생성할 수 있다.
+
+```mm
+var h1 = new Hero('Michelangelo');
+var h2 = new Hero('Donatello');
+
+h1.whoAreYou();
+"I'm Michelangelo and I'm a Ninja"
+
+h2.whoAreYou();
+"I'm Donatello and I'm a Ninja"
+```
+
+생성자로 설계된 함수를 new 연산자를 생략해 호출해도 오류가 아니다. 하지만 기대했던 결과를 제공하지는 않는다.
+
+```mm
+var h = Hero('Leonardo')
+typeof h;
+"undefined"
+```
+
+new 연산자가 없으므로 새로운 객체가 생성되지 않앗다. 함수가 다른 일반 함수처럼 호출됐으므로 변수 h에는 함수가 반환하는 값이 포함된다. 이 함수는 아무것도 반환하지 않는다(return 문이 없다). 따라서 실제로 h에 할당된 undefined를 반환한다. 이 경우 this는 전역 개체를 참조한다.
+
+## 전역 개체
+
+앞에서 전역 변수에 대해(그리고 가급적 사용하지 말 것) 조금 알아보았다. 그리고 자바스크립트 프로그램은 호스트 환경에서 실행된다는 것도 알고 있다. 호스트 환경은 전역 객체를 제공하고, 모든 전역 변수는 전역 객체의 속성으로 접근할 수 있다.
+
+호스트 환경이 웹브라우저인 경우, 전역 객체는 window로 호출된다. 전역 객체에 접근하는 또 다른 방법은(대부분의 환경에서도 동일) 생성자 함수 바깥에서 this 키워드를 사용하는 것이다.
+
+예를 들어, 다음과 같이 함수 외부에서 전역 변수를 선언할 수 있다.
+
+```mm
+var a = 1;
+```
+
+그런 다음, 이 전역 변수에 다양한 방법으로 접근할 수 있다.
+
+- 변수 a로
+- 전역 객체의 속성으로(ex, window['a'] = 1 or window.a = 1 )
+- this로 참조되는 전역 객체의 속성으로 (this.a = 1)
+
+생성자 함수를 정의하고 new 연산자 없이 호출하는 경우로 돌아가 보자. 이 경우, this는 전역 객체를 참조하고 this에 설정된 모든 속성은 window의 속성이 된다.
+
+생성자 함수를 선언하고 new 없이 호출하면 "undefined"를 반환한다.
+
+```mm
+function hero(name) {
+  this.name = name;
+}
+
+var h = Hero('Leonardo')
+typeof h;
+"undefined"
+typeof h.name;
+TypeError: can't access property "name", h is undefined
+```
+
+Hero 함수 안에 this 키워드가 있기 때문에, name이라는 전역 변수(전역 객체의 속성)이 생성됐다.
+
+```mm
+name;
+"Leonardo"
+window.name;
+"Leonardo"
+```
+
+new를 사용해 동일한 생성자 함수를 호출하면, 새 객체가 반환되고 this가 이 객체를 참조한다.
+
+```mm
+var h2 = new Hero('Michelangelo');
+typeof h2;
+"object"
+h2.name;
+"Michelangelo"
+```
+
+앞에서 봤던 내장된 전역 함수 역시 window 객체의 메소드로 호출할 수 있다. 따라서 다음 두 호출의 결과는 같다.
+
+```mm
+parseInt('101 dalmatians');
+101
+window.parseInt('101 dalmatians');
+101
+```
+
+## 생성자 속성
+
+객체가 생성되면 특별한 constructor 속성이 백그라운드로 객체에 할당된다. 이것은 this 객체를 생성하는데 사용되는 생성자 함수의 참조를 포함한다.
+
+```mm
+h2.constructor;
+function Hero(name) {
+  this.name = name;
+}
+```
+
+constructor 속성이 함수에 대한 참조를 포함하고 있으므로, 이 함수를 호출해 새 객체를 생성할 수도 있다. 다음 코드는 "객체 h2가 어떻게 생성됐는지 모르겠지만. 이와 비슷한 다른 객체가 필요하다"고 말한다.
+
+```mm
+var h3 = new h2.constructor('Rafaello');
+h3.name;
+"Rafaello"
+```
+
+객체 리터럴 표기법을 사용해 객체를 만든 경우, 객체의 생성자는 내장된 Object() 생성자 함수다.
+
+```mm
+var o = {};
+o.constructor;
+function Object()
+typeof o.constructor;
+"function"
+```
