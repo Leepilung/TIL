@@ -165,3 +165,99 @@ book.author[key];
 ```
 
 예제에서 key값은 변수값으로 주어지며 미리 지정되지 않는다.
+
+## 객체의 메소드 호출
+
+메소드는 함수의 속성 중 하나일 뿐이므로 속성에 접근하는 것과 동일한 방법으로 메소드에 접근할 수 있다. 메소드 호출은 다른 함수 호출과 동일하다. 메소드 이름 뒤에 괄호를 추가하면 실행된다.
+
+```mm
+var hero = {
+  breed : 'Turtle',
+  occupation : 'Ninja',
+  say : function () {
+    return ' I am ' + hero.occupation;
+  }
+};
+
+hero.say();
+"I am Ninja"
+```
+
+메소드에 전달할 매개변수가 있으면 일반 함수처럼 처리할 수 있다.
+
+```mm
+hero.say('a', 'b', 'c');    // " I am Ninja"
+```
+
+배열과 유사한 대괄호를 사용하여 속성에 접근할 수 있기 때문에, 대괄호를 사용해 메소드에 접근하고 호출할 수 있다.
+
+```mm
+hero['say'] // " I am Ninja"
+```
+
+그러나 이 방법은 코드 작성시에는 메소드 이름을 알 수 없고 런타임시에 정의되는 경우가 아니라면, 일반적인 관행은 아니다.
+
+```mm
+var method = 'say';
+hero[method](); // " I am Ninja"
+```
+
+## 속성 / 메소드 변경
+
+자바스크립트를 사용하면 언제든지 기존 객체의 속성과 메소드를 변경할 수 있다. 새로운 속성의 추가, 삭제도 포함된다. 빈 객체로 시작하고 나중에 속성을 추가할 수도 있다.
+
+속성이 없는 객체는 다음과 같다.
+
+```
+var hero ={};
+```
+
+> "빈" 객체
+
+이 색션에서 "빈(blank)" 객체인 var hero = {}으로 시작했다. 이 객체가 실제로 비어 있고 쓸모 없는 것은 아니기 때문에, 따옴표 안에 공백이 있다.
+
+1. 존재하지 않는 속성에 접근하는 코드는 다음과 같다.
+   ```mm
+   typeof hero.breed;
+   "undefined"
+   ```
+2. 두 개의 속성과 메소드를 추가한다.
+   ```mm
+   hero.breed = 'turtle';
+   hero.name = 'Leonardo';
+   hero.sayName = function () {
+       return hero.name;
+   };
+   ```
+3. 메소드를 호출한다.
+   ```mm
+   hero.sayName();
+   "Leonardo"
+   ```
+4. 속성을 삭제한다.
+   ```mm
+   delete hero.name;
+   true
+   ```
+5. 메소드를 다시 호출하면 더 이상 삭제된 name속성을 찾을 수 없다.
+   ```mm
+   hero.sayName();
+   "undefined"
+   ```
+
+## this 값 사용
+
+앞의 예제에서 sayName() 메소드는 hero.name을 사용해 hero 객체의 name 속성에 접근했다.
+
+그러나 메소드 내부에 있을 때 메소드가 속한 객체에 접근할 수 있는 또 다른 방법이 있다. 이 메소드는 특별한 값 this를 사용한다.
+
+```mm
+var hero ={
+  name : 'Rafaelo',
+  sayName :  function () {
+    return this.name;
+  }
+};
+hero.sayName();
+"Rafaelo"
+```
