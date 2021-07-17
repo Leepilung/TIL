@@ -411,3 +411,21 @@ function Object()
 typeof o.constructor;
 "function"
 ```
+
+## instanceof 연산자
+
+instanceof 연산자를 사용하면 객체가 constructor 함수로 생성됐는지 테스트할 수 있다.
+
+```mm
+function Hero() {}
+var h = new Hero();
+var o = {};
+h instanceof Hero;
+true
+h instanceof Object;
+true
+o instanceof Object;
+true
+```
+
+함수 이름 뒤에 괄호를 넣지 않도록 주의하자(h instanceof Hero()를 사용하지 않는다.) 이것은 이 함수를 호출하지 않고 다른 변수와 마찬가지로 이름으로 참조하기 때문이다.
