@@ -429,3 +429,210 @@ true
 ```
 
 함수 이름 뒤에 괄호를 넣지 않도록 주의하자(h instanceof Hero()를 사용하지 않는다.) 이것은 이 함수를 호출하지 않고 다른 변수와 마찬가지로 이름으로 참조하기 때문이다.
+
+## 객체를 반환하는 함수
+
+constructor 함수와 new 연산자를 사용해 객체를 생성하는 방법 외에도 일반 함수를 사용해서 new 연산자 없이 객체를 생성할 수도 있다. 약간의 준비 작업을 수행하면 반환 값으로 객체를 가지는 함수를 만들 수 있다.
+
+다음은 객체를 생성하는 간단한 factory() 함수다.
+
+```mm
+function factory(name) {
+  return {
+    name : name
+  };
+}
+```
+
+factory() 함수를 사용하는 다음 예제를 살펴보자.
+
+```mm
+var o = factory('one');
+o.name;
+"one"
+o.constructor;
+function Object()
+```
+
+constructor 함수와 함께 this 키워드 대신 return 객체를 사용할 수도 있다. 즉, constructor 함수의 디폴트 행동을 수정할 수 있음을 의미한다.
+
+```mm
+function C() {
+  this.a = 1;
+}
+var c = new C();
+c.a;
+
+function C2() {
+  this.a = 1;
+  return {b: 2};
+}
+var c2 = new C2();
+typeof c2.a
+"undefined"
+c2.b;
+2
+```
+
+a 속성을 포함하는 this 객체를 반환하는 대신, 생성자는 b 속성을 포함하는 다른 객체를 반환했다. 이것은 반환 값이 객체인 경우에만 가능하다. 그렇지 않고 객체가 아닌 것을 반환하려고 시도할 경우, 생성자는 일반적인 동작을 수행하고 this를 반환한다.
+
+생성자 함수 안에서 객체를 생성하는 방법을 생각해 보면 this라는 변수는 함수의 맨 위에서 정의된 다음 마지막에 반환된다고 생각할 수 있다.
+
+```mm
+function C() {
+  // var this = {}; // 의사 코드, 수행할 수 없다.
+  this.a = 1;
+  // return this
+}
+```
+
+## 객체 전달
+
+객체를 다른 변수에 할당하거나 함수에 전달하려면 해당 객체에 대한 참조만 전달하면 된다.
+
+또한 참조를 변경하면 실제로는 원본 객체를 수정하는 것이다.
+
+```mm
+var original = {home : 1};
+var mycopy = original;
+mycopy.home;
+1
+mycopy.home = 100;
+100
+original.home;
+1
+```
+
+객체를 함수에 전달할 때도 똑같이 적용된다.
+
+```mm
+var original = {home : 100};
+var nullify = function (o) { o.home = 0; };
+nullify(original);
+original.home
+0
+```
+
+## 객체 비교
+
+객체를 비교할 때, 동일한 객체에 대한 두 개의 참조를 비교할 때만 true가 된다. 똑같은 메소드와 속성을 가지고 있는 서로 다른 두 개별 객체를 비교하면 결과는 false가 된다.
+
+예를 들어
+
+```mm
+var fido = {breed : 'dog'}
+var benji = {breed : 'dog'}
+
+benji === fido;
+false
+benji == fido;
+false
+```
+
+로 서로 다르다. 그러나 여기서 mydog라는 변수를 만들어 비교하면
+
+```mm
+var mydog = benji;
+
+mydog === benji
+true
+mydog == benji
+true
+mydog == fido
+false
+mydog === fido;
+false
+```
+
+가 출력된다.
+
+# ES6 객체 리터럴
+
+ES6에서는 속성 초기화및 함수 정의에 대한 몇 가지 약식 구문을 제공한다.
+
+```mm
+let a =1
+let b =2
+let val = {a : a, b: b}
+
+console.log(val)
+Object { a: 1, b: 2 }
+```
+
+속성값을 할당하는 일반적인 방법이다. 변수의 이름과 속성 키가 같은 경우 ES6에서는 약식 구문을 사용할 수 있다.
+
+메소드 정의에서도 비슷한 구문을 사용할 수 있다. 메소드는 단순히 값이 함수인 객체의 속성이다.
+
+```mm
+let vehicle = "car"
+function vehicleType () {
+  return "truck"
+}
+let car = {
+  [vehicle + '_model'] : "Ford"
+}
+let truck = {
+  [vehicleType + '_model'] : 'Merecedz'
+}
+
+console.log(car) // {"car_model":"Ford"}
+console.log(truck) // {"truck_model":"Mercedez"}
+```
+
+car 객체를생성할 때 변수 vehicle의 값을 고정된 문자열과 연결해 속성키를 만든다. 두 번째 코드에서는 함수가 반환한 값을 고정된 문자열과 연결하여 속성을 생성한다. 이 속성 키 게산 방법은 객체를 생성할 때 많은 유연성을 제공해서 보일러플레이트와 반복 코드를 제거할 수 있게 해준다.
+
+## 객체 속성과 어트리뷰트
+
+각 객체는 몇 가지 속성을 가지고 있다. 각각의 속성은 키와 어트리뷰트로 구성된다. 속성의 상태는 이들 어트리뷰트에 저장된다. 모든 속성은 다음과 같은 어트리뷰트를 가진다.
+
+- Enumerable(부울) : 객체의 속성을열거할 수 있는지 여부를 나타낸다. 시스템 속성은 열거 가능하지 않지만 사용자 특성은 열거 가능하다. 특별한 이유가 없는 한 이 속성은 변경하지 않는다.
+
+- Configurable(부울) : 이 속성이 false이면, 속성을 삭제하거나 편집할 수 없다.
+
+Object.getOwnPropertyDescriptor() 메소드를 사용하면 객체의 속성을 검색할 수 있다.
+
+```mm
+let obj = {
+  age : 25
+}
+
+console.log(Object.getOwnPropertyDescriptor(obj, 'age'));
+Object { value: 25, writable: true, enumerable: true, configurable: true }
+```
+
+또한 Object.dfineProperty() 메소드를 사용하여 속성을 정의할 수 있다.
+
+```mm
+let obj = {
+  age : 25
+}
+
+Object.defineProperty(obj,'age', { configuralbe: false })
+
+console.log(Object.getOwnPropertyDescriptor(obj,'age'));
+Object { value: 25, writable: true, enumerable: true, configurable: true }
+```
+
+이런 메소드를 실제로 사용하지는 않지만 개체 속성과 어트리뷰트를 이해할 필요가 있어서 사용했다.
+
+## ES6 객체 메소드
+
+ES6는 객체에 대한 몇 가지 정적 헬퍼 메소드를 도입했다. Object.assign은 인기있는 믹스인(mixin)을 대체하여 객체의 얕은 복사를 수행하는 헬퍼 메소드이다.
+
+### Object.assign을 사용하여 속성 복사
+
+```mm
+let a = {}
+Object.assign(a, { age : 25 })
+console.log(a)
+Object { age: 25 }
+```
+
+Object.assign의 첫 번째 매개변수는 원본 속성이 복사되는 대상이다. 동일한 대상 객체가 호출자에게 반환된다. 원본 객체에 포함되지 않은 속성은 무시되지만 기존 속성은 덮어 쓰여진다.
+
+```mm
+let a = {age : 23, gender : 'male'}
+Object.assign(a, { age:25})
+console.log(a)
+Object { age: 25, gender: "male" } // age는 덮어씌여지지만, gender는 무시.
+```
