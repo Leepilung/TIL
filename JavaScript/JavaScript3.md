@@ -251,6 +251,8 @@ var hero ={};
 
 그러나 메소드 내부에 있을 때 메소드가 속한 객체에 접근할 수 있는 또 다른 방법이 있다. 이 메소드는 특별한 값 this를 사용한다.
 
+- this는 -> 선언이 실행 되는 시점의 나의 문맥을 나타낸다.
+
 ```mm
 var hero ={
   name : 'Rafaelo',
@@ -635,4 +637,154 @@ let a = {age : 23, gender : 'male'}
 Object.assign(a, { age:25})
 console.log(a)
 Object { age: 25, gender: "male" } // age는 덮어씌여지지만, gender는 무시.
+```
+
+Object.assign은 복수의 소스 객체를 받을 수 있다.
+
+```mm
+console.log(Object.assign({a:1,b:2},{a:2},{c:4},{b:3}))
+Object { a: 2, b: 3, c: 4 }
+```
+
+주의할 점은 열거 가능한 속성만 Object.assign()을 사용해 복사할 수 있다는 점이다.
+
+## Object.is와 값 비교
+
+앞에서 동등 연산자 ===에 대해 알아봤따. 그러나 NaN이나 -0, +0의 경우 엄격한 동등 연산자 `===`가 일관성 없이 동작한다.
+
+```mm
+console.log(NaN===NaN)
+false
+console.log(+0===-0)
+true
+console.log(Object.is(NaN,NaN))
+true
+console.log(Object.is(+0,-0))
+false
+```
+
+위 두가지 경우를 제외하고는 Object.is()는 === 연산자로 안전하게 바꿀 수 있다.
+
+## 디스트럭처링
+
+자바스크립트 객체 및 배열 표기법은 JSON 포맷과 유사하다. 객체와 배열을 정의한 다음 여기에서 요소를 검색한다. ES6는 객체 및 배열의 속성/멤버에 접근하는 방식을 크게 향상시키는 편리한 구문을 제공한다.
+
+```mm
+var config = {
+  server : 'localhost',
+  port : '8080'
+}
+var server = config.server;
+var port = config.port;
+```
+
+위의 예제에서 config 객체에서 server와 port 값을 추출하여 지역 변수에 할당했다. 하지만 이 객체에서 많은 속성이 있고, 그 중 일부가 중첩된 경우 간단한 작업은 매우 지루해질 수 있다.
+
+ES6 디스트럭처링(분할 할당)구문을 사용하면 할당문의 왼쪽에 객체 리터럴을 사용할 수 있다. 다음 예제에서 몇 개의 속성과 config 객체를 정의한다. 뒤에서 디스트럭처링을 사용하여 할당문의 왼쪽에 있는 개별 속성에 객체 config을 할당한다.
+
+```mm
+let config = {
+  server : 'localhost',
+  port : '8080',
+  timeout : 900,
+}
+
+let {server,port} = config
+console.log(server, port)
+```
+
+보다시피 server와 port는 속성 이름이 지역 변수와 동일하기 때문에 config 객체에서 할당된 속성을 가진 지역 변수다.
+
+지역 변수에 할당할 때 특정 속성을 선택할 수도 있다.
+
+```mm
+let {timeout : t} = config
+console.log(t) // 900
+```
+
+예제에서는 config 객체에서 timeout을 선택해 지역 변수 t에 할당한다.
+
+디스트럭처링 구문을 사용해서 이미 선언된 변수에 값을 할당할 수도 있다. 이 경우 할당하는 주변에 괄호를 써야 한다.
+
+```mm
+let config = {
+  server : 'localhost',
+  port : '8080',
+  timeout : 900,
+}
+
+let server = '127.0.0.1';
+let port = '80';
+({server,port} = config)  // 할당하는 주변을 ( )로 둘러싼다.
+console.log(server,port); // 'localhost 8080'
+```
+
+디스트럭처링 표현식이 표현식의 오른쪽으로 평가되기 때문에 값을 할당하는 어느 곳이든 사용할 수 있다.
+
+```mm
+
+let config = {
+  server : 'localhost',
+  port : '8080',
+  timeout : 900,
+}
+
+let server = '127.0.0.1';
+let port = '80';
+let timeout = '100';
+
+function startserver(configValue){
+  console.log(configValue)
+}
+startserver({server,port,timeout} = config)
+Object { server: "localhost", port: "8080", timeout: 900 }
+```
+
+객체에 존재하지 않는 속성 이름을 가진 변수를 지정하면, 지역변수는 undefined 값을 가지게 된다. 그러나 디스트럭처링 할당에서 변수를 사용할 때, 선택적으로 디폴트 값을 지정해 줄 수 있다.
+
+```mm
+let config = {
+  server : 'localhost',
+  port : '8080'
+}
+
+let {server,port,timeout =0} = config
+console.log(timeout)  // 0 출력
+```
+
+위 예에서 존재하지 않는 속성 timeout에 대해 디폴트값을 제공해 지역 변수에 undefined 값이 할당되지 않도록 한 것이다.
+
+디스트럭처링은 배열에서도 동작하며 구문도 객체의 구문과 아주 유사하다. 객체 리터럴 구문을 array : literals로 대체하기만 하면 된다.
+
+```mm
+const arr = ['a','b']
+const [x,y] = arr
+console.log(x,y) // 'a','b' 출력
+```
+
+보다시피 위의 구문들이랑 완전히 똑같은 구문들이다. 배열 arr을 정의한 다음 나중에 디스트럭처링 구문으 사용하여 해당 배열의 요소를 두 개의 지역 변수 x, y에 할당했다.
+
+여기에서 할당은 배열의 요소 순서에 따라 진행된다. 요소의 위치만 신경쓰면, 원하는 경우 일부를 건너뛸 수도 있다.
+
+```mm
+const days = ['Thursday','Friday','Saturday','Sunday']
+const[,,sat,sun] = days
+console.log(sat,sun) // Saturday Sunday 출력
+```
+
+위 예제에서 인덱스 2,3의 요소가 필요하다. 따라서 인덱스 0, 1의 요소는 무시하고 출력된다.
+
+또한 배열 디스트럭처링은 두 변수의 값을 교환할 때 temp 변수를 사용하지 않아도 되게 해준다.
+
+```mm
+let a = 1, b=2;
+[b,a] = [a,b]
+console.log(a,b); // 2 1 출력
+```
+
+그리고 나머지 연산자(...)를 사용해서 나머지 요소를 추출하고 배열에 할당할 수 있다. 나머지 연산자는 디스트럭처링에서 마지막 연산자로만 사용할 수 있다.
+
+```mm
+const [x, ...y] = ['a', 'b', 'c'];
+console.log(x,y) // x = a 출력 , y = Array [ "b", "c" ] 출력
 ```
