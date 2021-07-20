@@ -490,3 +490,31 @@ JavaScript 의 엄격모드는 JavaScript 의 제한된 버전을 선택하여 �
 ## 시맨틱(Semantics)
 
 프로그래밍에서,시맨틱은 코드 조각의 의미를 나타낸다.
+
+## 래퍼 객체(wrapper object)
+
+```mm
+var str = "문자열";   // 문자열 생성
+
+var len = str.length; // 문자열 프로퍼티인 length 사용
+```
+
+위 예제에서 생성한 문자열 str은 객체가 아닌데도 length 속성을 사용할 수 있다.
+
+프로그램이 문자열 리터럴 str의 속성을 참조하려고 하면, 자바스크립트는 new String(str)을 호출한 것처럼 문자열 리터럴을 객체로 자동 변환해주기 때문이다.
+
+이렇게 생성된 임시 객체는 String 객체의 메소드를 상속받아 속성을 참조하는 데 사용된다. 이후 속성의 참조가 끝나면 사용된 임시 객체는 자동으로 삭제된다.
+
+이렇게 숫자, 문자열, 불리언 등 원시 타입의 프로퍼티에 접근하려고 할 때 생성되는 임시 객체를 래퍼 객체(wrapper object)라고 한다.
+
+ex)
+
+```mm
+var str = "문자열";           // 문자열 리터럴 생성
+var strObj = new String(str); // 문자열 객체 생성
+str.length;                   // 리터럴 값은 내부적으로 래퍼 객체를 생성한 후에 length 속성을 참조함.
+str == strObj;                // 동등 연산자는 리터럴 값과 해당 래퍼 객체를 동일하게 봄.
+str === strObj;               // 일치 연산자는 리터럴 값과 해당 래퍼 객체를 구별함.
+typeof str;                   // string 타입
+typeof strObj;                // object 타입
+```
