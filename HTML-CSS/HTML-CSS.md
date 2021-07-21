@@ -76,3 +76,23 @@ border : solid red;
 ```
 
 와 같은 형태로 입력하면 된다.
+
+# button
+
+## button - type
+
+button의 type은 크게 3종류로 나뉜다. 종류로는 button / submit / reset이 있다.
+
+> button
+
+button은 말그대로 클릭을 할 수 있는 버튼이 브라우저 창에 생기며, 클릭해도 아무런 기능이 없다. 이와 같은 button은 자바스크립트와 같은 다른 언어의 함수 및 기능을 구현하면, 해당 기능을 실행하기 위한 대상의 역할을 한다.
+
+> submit
+
+submit은 `<input type="submit>`과 동일한 기능을 수행하며, 서버로 데이터를 전달하는 역할을 하는 타입이다. 참고로 아무런 타입 붕여 없이 `"<button>버튼</button>"`과 같이 설정해도 button의 기본 디폴트 값이 submit이다.
+
+> reset
+
+button을 감싸고 있는 form 데이터에 입력된 데이터를 초기화하는 타입이다.
+
+ㅈ
