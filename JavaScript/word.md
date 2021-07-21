@@ -518,3 +518,36 @@ str === strObj;               // 일치 연산자는 리터럴 값과 해당 래
 typeof str;                   // string 타입
 typeof strObj;                // object 타입
 ```
+
+# Property(속성)이란?
+
+기본적으로 property란 어떤 값을 나타낸다. 그런데 이 값이 다른 값과 연관을 가지고 있을 때 `property`라고 부른다.
+
+예를 들어 length라는 property가 있는데 이 property는 문자열 안에 있는 문자의 양을 정수로 나타낸 값을 담고 있다.
+
+이하는 MDN에서 정의하는 Property이다.
+
+Property란 해당 Object의 특징이다. Property는 보통 데이터 구조와 연관된 속성을 나타낸다. Property에는 2가지 종류가 있다.
+
+- 인스턴스 property들은 특정 object 인스턴스의 특정한 데이터를 가지고 ㅇ있다.
+- Static Property들은 모든 object 인스턴스들에게 공유 된 데이터를 가지고 있다.
+
+property는 이름(a string)과 값(primitive, method 또는 object reference). 보통 "프로퍼티가 object를 가지고 있다"라고 말하는 것은 "property가 object reference"를 가지고 있다는 것을 줄여서 말한 것이라는 것을 기억하자. property의 값이 변한 후에도 object는 그대로 남아있기 때문에 이걸 구분하는 것은 중요하다.
+
+> Property와 method의 관계
+
+프로퍼티는 object를 위해서 데이터를 저장한다.
+
+메소드는 object가 요청 받을 수 있는 액션이다.
+
+또한 일반적으로 함수를 담은 프로퍼티를 메소드라고 부른다.
+
+> property에 접근하는 방법
+
+프로퍼티에 접근하는 방법은 2가지가 있다. 대괄호로 접근하거나 점 표기법을 이용한다.
+
+```js
+var text = "purple haze";
+test["length"]; //11
+test.length; //11
+```
