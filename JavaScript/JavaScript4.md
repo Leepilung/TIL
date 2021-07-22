@@ -341,3 +341,206 @@ let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 console.log(numbers.find((n) => n > 5)); // 6
 console.log(numbers.findIndex((n) => n > 5)); // 5
 ```
+
+# Function
+
+함수는 객체이다. Function()이라는 내장 생성자 함수가 있으며 이는 함수를 생성하는 대체 방법으로 사용될 수 있다.
+다음은 함수를 정의하는 예제들이다.
+
+```js
+function sum(a, b) {
+  // 함수 선언
+  return a + b;
+}
+sum(1, 2);
+3;
+var sum = function (a, b) {
+  // 함수 표현식
+  return a + b;
+};
+sum(1, 3);
+4;
+
+var sum = new Function("a", "b", "return a + b;");
+sum(1, 4);
+5;
+```
+
+Function() 생성자를 사용할 때는 먼저 매개변수 이름을 문자열로 전달한 다음 함수 본문의 소스 코드를 문자열로 전달한다. 그러나 이 소스 코드 평가는 eval() 함수와 동일한 단점을 지니고 있어 가능하면 피ㅏ하는 것이 좋다.
+
+## 함수 객체의 속성
+
+함수는 Function() 생성자 함수에 대한 참조를 가진 constructor 속성이 있다.
+
+```js
+function myfunc(a) {
+  return a;
+}
+myfunc.constructor;
+function Function()
+```
+
+함수는 또한 length 속성을 가진다. 이 속성은 함수가 원하는 공식 매개변수의 수를 가진다.
+
+```js
+function myfunc(a, b, c) {
+  return true;
+}
+
+myfunc.length;
+3;
+```
+
+## prototype 속성 사용하기
+
+함수 객체에서 가장 널리 사용되는 속성 중 하나는 prototype 속성이다. 나중에 다시 다룰 내용이기 때문에 가볍게만 알아보자면
+
+- function 객체의 prototype 속성은 다른 객체를 가리킨다.
+- 이 function을 생성자로 사용할 때만 이점이 빛을 발한다.
+- 이 function으로 생성된 모든 객체는 prototype 속성에 대한 참조를 유지하며 해당 속성을 자체 속성으로 사용할 수 있다.
+
+prototype 속성을 보여주는 간단한 예제를 살펴보자. name 속성 이름과 say() 메소드를 가진 간단한 객체를 사용할 것이다.
+
+```js
+var ninja = {
+  name : 'Ninja'
+  say : function () {
+    return 'I am a ' + this.name;
+  }
+};
+```
+
+함수를 생성하면 (본문이 없는 함수더라도), 새로운 객체를 가리키는 prototype 속성이 자동으로 생김을 확인할 수 있다.
+
+```js
+function F() {}
+
+typeof F.prototype;
+("object");
+```
+
+prototype 속성은 수정이 흥미롭다. 속성을 추가하거나 디폴트 객체를 다른 객체로 변경할 수 있다. prototype에 ninja를 지정해 보자.
+
+```js
+F.prototype = ninja;
+```
+
+이제 F() 함수를 constuctor 함수로 사용하면 F.prototype의 속성을 자신의 속성처럼 접근할 수 있는 새로운 객체 baby_ninja를 생성하여 실행시켜보면 다음과 같은 결과를 가진다.
+
+```js
+var baby_ninja = new F();
+baby_ninja.name;
+("Ninja");
+baby_ninja.say();
+("I am a Ninja");
+```
+
+## 함수 객체의 메소드
+
+최상위 부모 객체의 자손인 Function 객체는 toString()같은 디폴트 메소드를 가져온다. 함수에서 호출될 때 toString() 메소드는 함수의 소스 코드를 반환한다.
+
+```js
+function myfunc(a, b, c) {
+  return a + b + c;
+}
+myfunc.toString();
+"function myfunc(a, b, c) {
+  return a + b + c;
+}"
+```
+
+내장 함수의 소스 코드를 들여다보면 함수 본문 대신 [native code] 문자열이 반환된다.
+
+```js
+parseInt.toString();
+"function parseInt() {
+    [native code]
+}"
+```
+
+보다시피 toString()을 사용하면 개발자가 정의한 메소드와 내가 정의한 메소드를 구별할 수 있다.
+
+## call & apply
+
+함수 객체는 `call()`과 `apply()` 메소드를 가진다. 이런 메소드를 사용하면 함수를 호출할 때 인수를 전달할 수 있다.
+
+또한 이 메소드를 사용하면 다른 객체의 메소드를 빌려서 자신의 메소드인 것처럼 호출할 수 있다. 코드를 재사용하는 쉽고 좋은 방법이다.\
+
+예들 들어 say() 메소드를 포함한 some_obj 객체가 있다고 가정해 보자.
+
+```js
+var some_obj = {
+  name: "Ninja",
+  say: function (who) {
+    return "Haya " + who + ", I am " + this.name;
+  },
+};
+```
+
+say() 메소드를 호출해 자신의 name속성에 접근할 수 있다. 이 메소드는 내부적으로 this.name을 사용하는 것이다.
+
+```js
+some_obj.say("Dude");
+("Haya Dude, I am Ninja");
+```
+
+이제 name속성만 갖는 간단한 객체 my_obj를 생성해 보자.
+
+```js
+var my_obj = { name: "Scripting Guru" };
+```
+
+my_obj는 some_obj 객체의 say() 메소드가 너무 좋아 자신의 메소드처럼 호출하고 싶다고 가정해보자. 이럴땐 say() 함수 객체의 call() 메소드를 사용하면 가능하다.
+
+```js
+some_obj.say.call(my_obj, "Jude");
+("Haya Jude, I am Scripting Guru");
+```
+
+잘 동작하지만 동작 방법을 자세히 살펴볼 필요가 있다. my_obj 객체와 Jude 문자열 두 매개변수를 전달하여 say()함수 객체의 call() 메소드를 호출했다.
+
+결과는 say().가 호출될 때, this값에 대한 참조가 my_obj를 가르킨다는 것이다. 이렇게 하면 this.name이 Ninja가 아닌 my_obj의 Scripting guru를 반환한다.
+
+call() 메소드를 호출할 때, 더 많은 매개변수를 전달하려면 이들을 추가하면 된다.
+
+```js
+some_obj.say.call(my_obj, "a", "b", "c");
+("Haya a, I am Scripting Guru");
+```
+
+call()에 첫 번째 매개변수로 객체를 전달하지 않거나 null을 전달하면, 전역 객체로 가정한다.
+
+apply() 메소드는 call()과 같은 방식으로 동작하지만, 다른 객체의 메소드로 전달할 모든 매개변수가 배열로 전달된다는 차이점이 있다.
+
+```js
+some_obj.someMethod.apply(my_obj, ["a", "b", "c"]);
+some_obj.someMethod.call(my_obj, "a", "b", "c");
+```
+
+위의 두 줄은 서로 동일하다.
+
+## 인수 객체 재검토
+
+앞에서 함수에 전달된 모든 매개변수의 값을 포함하고 있는 arguments에 접근하는 방법을 알아봤다.
+
+```js
+function f() {
+  return arguments;
+}
+f(1,2,3);
+Arguments { 0: 1, 1: 2, 2: 3, … }
+```
+
+arguments는 배열처럼 보이지만, 실제로는 배열과 비슷한 객체이다. 인덱스된 요소와 length 속성을 포함하고 있으므로 배열과 유사하다. 그러나 유사성은 여기까지다. 인수는 sort() 또는 slice() 같은 배열 메소드를 제공하지 않는다.
+
+그러나 arguments를 배열로 변환할 수 있으며, 배열의 모든 이점을 활용할 수 있다.
+
+```js
+function f() {
+  var args = [].slice.call(arguments);
+  return args.reverse();
+}
+
+f(1, 2, 3, 4);
+Array(4)[(4, 3, 2, 1)];
+```
