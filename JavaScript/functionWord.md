@@ -47,3 +47,98 @@ element.addEventListener("click", doSomething, {
 - passive - 부울린. true 면 콜백 함수내부에 preventDefault() 가 있다 하더라도 실행되지 않음.
 
 https://developer.mozilla.org/ko/docs/Web/API/EventTarget/addEventListener
+
+# .attr()과 .prop()
+
+## .attr()과 .prop()의 차이점
+
+- .attr()은 HTML의 속성을 취급한다
+- .prop()는 JavaScript 프로퍼티를 취급한다.
+
+> 여기서 attr에서 언급한 속성이란?
+
+    속성은 HTML 요소에 대한 추가 정보를 전달하며 name="value"쌍으로 제공된다. HTML 요소의 속성을 설정하고 소스 코드를 작성하는 동안 HTML 요소를 정의 할 수 있다.
+
+간단한 예를 들자면
+
+```html
+<input id="hanq" type="text" value="java" />
+```
+
+여기서 "type", "value", "id"는 입력 요소의 속성이다.
+
+> 반대로 프로퍼티란?
+
+    프로퍼티는 HTML DOM 트리의 특성을 나타낸다.  브라우저가 사용자의 HTML 코드를 파싱하면 해당 DOM 노드가 생성되어 객체가되므로 프로퍼티가 있다. 위의 예제의 경우 브라우저가 입력을 렌더링하면 align, alt, autofocus, baseURI 등의 다른 속성이 추가된다.
+
+    attr()은 요소의 현재 상태의 원래 값을 제공하므로 javascript / jquery를 통해 수정 된 요소의 값을 가져 오는 데에는 prop()를 사용한다.
+
+.prop()는 지정한 선택자를 가진 첫번째 요소의 속성값을 가져오거나 속성값을 추가한다. HTML 입장에서의 속성(attribute)가 아닌 JavaSCript 입장에서의 속성(property)이다.
+
+예제 모음
+
+> prop1
+
+```js
+.prop( propertyName )
+// 속성값을 가져온다
+```
+
+> prop2
+
+```js
+.prop( propertyName, value )
+// 속성값을 추가한다.
+```
+
+> Style
+
+```css
+<input style="font:arial;"/>
+```
+
+- .attr('style') = 일치된 요소에 대해 인라인 스타일을 반환한다. ("font:arial;")
+- .prop('style') = 스타일 선언 객체를 반환한다.(CSSStyleDeclaration)
+
+> Value
+
+```js
+<input value="hello" type="text" />;
+
+$("input").prop("value", "i changed the value");
+```
+
+- .attr('value') = 'hello' 반환
+- .prop('value') - 'i changed the value' 반환
+
+하지만 value를 getter/setting 하기에는 .val() 메서드가 낫다.
+
+> 체크박스
+
+<input id="hanq" type="checkbox" checked /> 체크박스를 클릭해주세요
+
+<script>
+var $checkbox = $('#hanq');
+
+$($checkbox).on('change', function() {
+  alert($checkbox.attr('checked'));
+  // checked속성의 값을 표시 → "checked"
+  alert($checkbox.prop('checked'));
+  // checked프로파티값을 표시 → true / false
+});
+</script>
+
+```js
+alert($checkbox.attr("checked"));
+// checked속성의 값을 표시 → "checked"
+alert($checkbox.prop("checked"));
+// checked프로파티값을 표시 → true / false
+```
+
+다음과 같이 작동한다.
+
+> 특징
+
+- attr() - HTML attribute 값이 모두 String 으로 넘어온다.
+- prop() - 자바스크립트의 프로퍼티 값이 넘어오기 때문에 boolean, date, function 등도 가져올 수 있다
+- .prop()는 .attr() 보다 약 2.5 배 빠르다
