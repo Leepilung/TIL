@@ -588,3 +588,97 @@ replace에 문자열을 전달하는 예제는 다음과 같다.
 "pool".replace(/o/g, "*");
 ("p**l");
 ```
+
+## Error 객체
+
+오류가 발생하면, 오류 조건을 알고 우아한 방법으로 이를 복구할 수 있는 메커니즘을 마련하는 것이 좋다. 자바스크립트는 오류 처리에 도움이 되는 try, catch, finally 문을 제공한다.
+
+오류가 생기면 오류 객체가 던져진다. Error 객체는 EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError의 내장 생성자 중 하나를 사용하여 생성된다. 이들 생성자는 모두 Error에서 상속받는다.
+
+오류를 발생시키고, 어떤일이 발생하는지 보자. 오류를 일으키는 가장 간단한 바법중 하나는 존재하지 않는 함수를 호출하는 것이다.
+
+```js
+iDontExist();
+Uncaught ReferenceError: iDontExist is not defined
+```
+
+오류 표시는 브라우저나 호스트 환경에 따라 다르다.
+
+오류를 처리하는 방법은 catch 문 당므에 try 문만 사용하면 된다.
+
+```js
+try {
+  iDontExist();
+} catch (e) {
+  // 동작 수행
+}
+```
+
+당므의 코드는 사용자에게 오류를 숨긴다.
+
+여기서
+
+- try 문 다음에 코드 블록이 온다.
+- catch 문 다음에 괄호 안에 변수 이름과 다른 코드 블록이 온다.
+
+오류가 있는지 여부와 상관없이 실행되는 선택 사항인 finally 문 뒤에도 역시 코드 블록이 올 수 있다.
+
+앞의 예제에서, catch 문 다음에 나오는 코드 블록은 아무 일도 하지 않지만 오류를 복구하는데 도움이 되는 코드를 작성하거나, 최소한 사용자에게 특별한 조건이 있음을 알리는데 사용할 수 있다.
+
+catcha문 다음의 괄호 안에 있는 변수 e는 Error 객체를 포함한다. 다른 객체와 마찬가지로 이 객체 역시 속성과 메소드를 가지고 있다. 아쉽게도 브라우저별로 이 속성과 메소드를 다르게 구현하지만, e.name과 e.message는 동일하게 구현됐다.
+
+```js
+try {
+  iDontExist();
+} catch (e) {
+  alert(e.name + ": " + e.message);
+} finally {
+  alert("Finally!");
+}
+```
+
+이러면 e.name과 e.message를 표시하는 alert()와 그리고 Finally!를 표시하는 alert()가 나타난다.
+
+내가 실험한 Firefox 환경에서는 ReferenceError: iDontExist is not defined가 표시된다. 이것은 두 사실을 말해준다
+
+- e.name 메소드는 오류 객체를 생성하는데 사용된 생성자의 이름을 포함한다.
+- 오류 객체는 호스트 환경(브라우저)에 따라 달라지기 때문에 오류 유형(e.name의 값)에 따라 코드가 달라지게 동작하게 만드는 것이 다소 까다롭다.
+
+또한 new Error()나 다른 오류 생성자를 사용해 오류 객체를 직접 생성한 다음 thorw문을 사용해 잘못된 조건이 있음을 자바스크립트 엔진에 알릴 수도 있다.
+
+예를 들어 maybeExists() 함수를 호출한 후 계산을 하는 시나리오를 생각해 보자.
+maybeExists()가 존재하지 않거나 계산 결과에 문제가 있는지 여부에 관계 없이 모든 오류를 일관된 방식으로 트랩하고자 한다.
+
+```js
+try {
+  var total = maybeExists();
+  if (total === 0) {
+    throw new Error("Division by zero!");
+  } else {
+    alert(50 / total);
+  }
+} catch (e) {
+  alert(e.name + ": " + e.message);
+} finally {
+  alert("Finally!");
+}
+```
+
+이 코드는 maybeExists()가 정의돼 있는지 여부와 반환되는 값에 따라 다른 메시지를 보여준다.
+
+- maybeExists()가 존재하지 않으면, 파이어폭스에서는 ReferenceError: iDontExist is not defined가 표시된다.
+- maybeExists()가 0을 반환하면, Error: Division by zero!가 표시된다.
+- maybeExists()가 2를 반환하면, 25가 표시된다.
+
+모든 경우에 Finally!라는 두 번째 메시지가 표시된다.
+
+일반 오류인 thrownewError('Divisionbyzero!')를 던지는 대신에, 원하는 경우 thrownewRangeError('Divisionbyzero!')와 같이 보다 구체적인 오류 메시지를 지정할 수도 있다. 또한 생성자가 필요하지 않다. 단순히 일반 객체를 던지면 된다.
+
+```js
+throw {
+  name: "MyError",
+  message: "OMG! Something terrible has happened",
+};
+```
+
+이렇게 하면 오류 이름에 대해 모든 브라우저에서 제어가 가능하다.
