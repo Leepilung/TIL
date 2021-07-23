@@ -686,3 +686,220 @@ n.toString(16);
 "11"(3).toString(10);
 ("3");
 ```
+
+# String
+
+String() 생성자 함수를 사용해 문자열 객체를 만들 수 있다.
+
+문자열 객체는 텍스트를 조작하는데 편리한 메소드를 제공한다.
+
+String객체와 primitve 문자열 데이터 유형간의 차이점을 예제를 통해 알아보자.
+
+```js
+var primitive = "Hello";
+typeof primitive;
+("string");
+
+var obj = new String("world");
+typeof obj;
+("object");
+```
+
+String 객체에서 primitive 값을 추출하려면 Object 객체에서 상속된 valueof() 또는 toString() 메소드를 사용할 수 있다.
+
+```js
+var obj = new String("world");
+("world");
+obj.valueOf();
+("world");
+obj.toString();
+("world");
+obj + "";
+("world");
+```
+
+primitive 문자열은 객체가 아니므로 메소드나 속성이 없다. 그러나 자바스크립트는 primitive 문자열을 객체로 처리하는 구문을 제공한다.
+
+다음 예제에서는 primitve 문자열을 객체처럼 취급할 때마다 stirng 객체가 백그라운드에서 생성되고 파괴된다.
+
+```js
+"potato".length;
+6;
+"tomato"[0];
+("t");
+"potatoes"["potatoes".length - 1];
+("s");
+```
+
+다음은 primitive 문자열과 String 객체의 차이점을 보여주는 예제이다. 이 예제에서는 붕울로 변환한다. 빈 문자열은 false값이지만 모든 문자열 객체는 ture이다.(모든 객체는 true이기 때문이다.)
+
+```js
+Boolean("");
+true;
+Boolean(new String(""));
+true;
+```
+
+Number(), Boolean()과 마찬가지로 new 없이 String()함수를 사용하면, 매개변수가 원시 값으로서 반환된다.
+
+```js
+String(1);
+"1"
+typeof String(1);
+"string"
+
+new String(1);
+String { "1" }
+typeof new String(1);
+"object"
+```
+
+string()에 객체를 전달하면, 이 객체의 toString() 메소드가 먼저 호출된다.
+
+```js
+String({ p: 1 });
+("[object Object]");
+String([1, 2, 3]);
+("1,2,3");
+String([1, 2, 3]) === [1, 2, 3].toString();
+true;
+```
+
+## 문자열 객체의 몇 가지 메소드
+
+문자열 객체에서 호출할 수 있는 몇가지 메소드를 실험해 보자.
+
+우선 객체를 생성하는 것부터 시작하자
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.toUpperCase();
+("CHOCOLATE ICECREAM");
+s.toLowerCase();
+("chocolate icecream");
+```
+
+`charAt() `메소드는 지정한 위치에서 발견된 문자를 알려주며 대괄호를 사용하는 것과 동일하다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.charAt(0);
+("C");
+s[0];
+("C");
+```
+
+존재하지 않는 위치를 charAt()에 전달하면 빈 문자열을 받는다. 인덱스로는 undefined가 출력된다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.charAt(103);
+("");
+s[103];
+undefined;
+```
+
+다음은 `indexOf()` 메소드를 사용하면 문자열 내에서 검색할 수 있다. 일치하는 항목이 있으면 메소드는 첫 번째 일치 항목이 있는 위치를 반환한다.
+
+검색을 시작할 위치를 옵션으로 지정할 수도 있다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.indexOf("I");
+10;
+s.indexOf("o", 1); // 검색 위치를 옵션으로 지정한 경우. 위치는 0부터 시작함.
+2;
+s.indexOf("o", 3);
+4;
+```
+
+반대로 문자열의 끝에서 검색을 시작하는 `lastIndexOf()`도 있다. 특이한 점은 문자열의 위치는 결국 앞에서부터 계산하여 반환한다는 점이다.
+
+그리고 일치하는 것이 없으면 -1의 위치를 반환한다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.lastIndexOf("I");
+10;
+s.lastIndexOf("z");
+-1;
+```
+
+대소문자를 구분하지 않는 검색의 경우, 먼저 문자열을 소문자로 변환한 다음 검색하면 용이하다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.toLowerCase().indexOf("Chocolate".toLowerCase());
+0;
+```
+
+0값을 받으면, 문자열의 일치하는 부분이 위치 0에서 시작한다는 것을 의미한다.
+
+또한 문자열에 다른 문자열이 들어있는지 확인하는 방법으로는 indexOf()를 활용한 결과를 숫자 -1과 비교하는 것이다.
+
+```js
+if (s.indexOf("Couch") !== -1);
+```
+
+`slice()`와 `substring()`은 시작 및 끝 위치를 지정하면 문자열의 일부를 반환한다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.slice(1, 5);
+("hoco");
+s.substring(1, 5);
+("hoco");
+```
+
+slice()와 substring()의 차이는 부정 인수를 다루는 방법이 다르다는 것이다.
+
+substring()은 이를 0으로 처리하는 반면, slice()는 이름 문자열의 길이에 추가한다.
+
+따라서 매개변수 (1,-1)을 두 메소드에 전달하면 substring(1,0)은 slice(1,s.length-1)과 동일하다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.slice(1, -1);
+("hocolate Icecrea");
+s.substring(1, -1);
+("C");
+```
+
+그 다음으로 split() 메소드는 `분리자(seperator)`로 전달한 다른 문자열을 사용하여 문자열에서 배열을 생성한다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.split(" ");
+Array[("Chocolate", "Icecream")];
+```
+
+split() 메소드는 배열에서 문자열을 생성하는 join() 메소드의 반대라고 볼 수 있다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.split(" ").join(" ");
+("Chocolate Icecream");
+```
+
+`concat()`은 + 연산자가 primitive 문자열에 처리하는 것과 동일한 방식으로 문자열을 합친다.
+
+```js
+var s = new String("Chocolate Icecream");
+
+s.concat("Cake");
+("Chocolate IcecreamCake");
+```
+
+앞에서 알아본 일부 메소드는 새로운 primitive 문자열을 반환하지만, 원본 문자열을 수정하지는 않는다.
+
+앞에서 나열한 모든 메소드를 호출한 이후에도 초기 문자열은 여전히 동일하다는 점을 기억해야 한다.
