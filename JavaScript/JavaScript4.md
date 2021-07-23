@@ -620,3 +620,69 @@ true;
 ```
 
 Boolean 객체는 특별한 메소드를 제공하지 않아 일반적인 부울값을 사용하는 것이 좋다.
+
+# Number
+
+Number() 함수는 다음과 같이 사용할 수 있다.
+
+- 객체를 생성하는 constructor 함수
+- 어떤 값을 숫자로 변환하는 일반 함수, parseInt() or parseFloat()을 사용하는 것과 유사하다.
+
+```js
+var n = Number('12.12');
+n;
+12.12
+typeof n;
+"number"
+
+var n = new Number('12.12');
+n;
+Number { 12.12 }
+typeof n;
+"object"
+```
+
+함수는 객체이기 때문에 속성을 가질 수 있다. Number() 함수에는 수정할 수 없는 내장 속성이 있다.
+
+```js
+Number.MAX_VALUE;
+1.7976931348623157e308;
+Number.MIN_VALUE;
+5e-324;
+Number.POSITIVE_INFINITY;
+Infinity;
+Number.NEGATIVE_INFINITY;
+-Infinity;
+```
+
+그리고 Number 객체는 toFixed(), toPrecision(), toExponential()과 같은 세 가지 메소드를 제공한다.
+
+```js
+var n = new Number(123.456);
+n.toFixed(1);
+("123.5");
+```
+
+명시적으로 Number 객체를 먼저 만들지 않고도 이 메소드를 사용할 수 있다. 이 경우 자동으로 Number 객체가 생성되고 파괴된다.
+
+```js
+(12345).toExponential();
+("1.2345e+4");
+```
+
+그리고 다른 모든 객체와 마찬가지로 Number 객체 역시 toString() 메소드를 제공한다.
+
+Number 객체와 함께 사용하는 경우, 이 메소드는 선택적인 `기수(radix)` 매개변수를 사용할 수 있다.
+
+```js
+var n = new Number(255);
+
+n.toString();
+("255");
+n.toString(10);
+("255");
+n.toString(16);
+"ff"(3).toString(2);
+"11"(3).toString(10);
+("3");
+```
