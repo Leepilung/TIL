@@ -544,3 +544,79 @@ function f() {
 f(1, 2, 3, 4);
 Array(4)[(4, 3, 2, 1)];
 ```
+
+## 객체 유형 추정
+
+arguments 객체가 배열 객체와 매우 흡사하다는 것은 앞의 내용을 통해 알 수 있었다.
+둘 사이의 차이점은 명확하게 무엇일까? tpyeof는 배열에 사용될 떄 객체를 반환한다. 그렇다면 과연 객체와 배열의 차이를 어떻게 알 수 있을까?
+
+이 문제의 해결책은 Object 객체의 toString() 메소드이다. 이 메소드는 주어진 객체를 생성하는데 사용되는 내부 클래스 이름을 제공한다.
+
+```js
+Object.prototype.toString.call({});
+("[object Object]");
+Object.prototype.toString.call([]);
+("[object Array]");
+```
+
+Object 생성자의 프로토타입에 정의된 대로 원래의 toString() 메소드를 호출해야 한다. 그렇지 않으면 Array함수의 toString()을 호출할 때 배열 객체의 특정 용도에 맞게 재정의 되어 다른 결과를 얻게 된다.
+
+```js
+[1, 2, 3].toString();
+("1,2,3");
+// 이 코드는 다음 코드와 동일하다.
+Array.prototype.toString.call([1, 2, 3]);
+("1,2,3");
+```
+
+# Boolean
+
+다음은 아주 간단한 세 개의 객체 Boolean, number, string에 대해 알아보자.
+
+우선 Boolean() 생성자를 알아보자.
+
+```js
+var b = new Boolean();
+```
+
+위 코드는 원시 부울린 값이 아닌 새로운 객체 b를 생성한다는 것을 알아야 한다.
+
+원시값을 구하려면 valueof() 메소드를 호출해야 한다.
+
+```js
+var b = new Boolean();
+
+b;
+Boolean { false }
+
+typeof b;
+"object"
+
+typeof b.valueOf();
+"boolean"
+
+b.valueOf();
+false
+```
+
+전체적으로 Boolean() 생성자로 생성된 객체는 상속받은 메소드나 속성 이외에는 제공하지 않기 때문에 그다지 유용하지 않다.
+
+또한 Boolean() 함수는 new 없이 일반 함수로 호출될 때, 부울이 아닌 값을 부울값으로 변환한다.
+
+```js
+Boolean("test");
+true;
+Boolean("");
+false;
+Boolean({}); // 빈 객체도 입력값이 있는걸로 취급해서 true 출력됨.
+true;
+```
+
+앞에서 배웠듯 자바스크립트에서는 여섯 가지의 false값을 제외하고는 객체를 포함한 모든 값은 true이다. 결국 new Boolean()으로 생성된 모든 Boolean() 객체 또한 true라는 것을 의미한다.
+
+```js
+Boolean(new Boolean(false));
+true;
+```
+
+Boolean 객체는 특별한 메소드를 제공하지 않아 일반적인 부울값을 사용하는 것이 좋다.
