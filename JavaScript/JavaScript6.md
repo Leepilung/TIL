@@ -259,3 +259,52 @@ console.log(typeof genObj.next === "function"); // true 출력
 ```
 
 위의 예제는 제너레이터 함수가 이터러블 규약을 준수함을 확인시켜 준다.
+
+## 제너레이터 반복
+
+제너레이터는 이터레이터며 이터러블을 지원하는 모든 ES6 구조와 마찬가지로 제너레이터를 반복하는 데 사용할 수 있다.
+
+첫 번째 방법은 for ...of 루프를 사용하는 것이다.
+
+```js
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+for (const i of logger()) {
+  console.log(i);
+}
+a;
+b;
+```
+
+여기선 제너레이터 객체를 생성하지 않는다. For...of 루프는 이터러블을 지원하고 제너레이터는 자연스럽게 이 루프에 들어간다.
+
+스프레드연산자를 사용해 이터러블을 배열로 바꿀 수 있다. 다음 예제를 보자.
+
+```js
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+const arr = [...logger()];
+console.log(arr);
+Array[("a", "b")];
+```
+
+마지막으로 다음과 같이 제너레이터에 디스트럭처링 구문을 사용할 수 있다.
+
+```js
+function* logger() {
+  yield 'a'
+  yield 'b'
+}
+
+const [x,y] = logger()
+console.log(x,y)
+a b
+```
+
+제너레이터는 비동기 프로그래밍에서 중요한 역할을 한다. 또한 제너레이터는 협업 멀티 태스킹 함수를 작성하는 데에도 도움이 된다.
