@@ -111,3 +111,151 @@ for (let i of iter) {
 이 예제를 더 작은 조각으로 나눠 보자. 우리는 지금 이터러블 객체를 생성하고 있다. 이미 익숙한 객체 리터럴 구문을 사용해 iter 객체를 생성한다. 이 객체의 특별한 것 중 하나는 [Symbol.iterator] 메소드다.
 
 이 메소드 정의는 계산된 속성과 앞 장에서 이미 설명한 ES6 단축형 메소드 정의 구문을 조합해 사용한다. 이 객체에는 [Symbol.iterator] 메소드가 포함돼 있으므로 이 객체는 반복 가능하거나 또는 이터러블 프로토콜을 따른다. 또한 이 메서드는 next() 메소드를 통해 반복 동작을 정의하는 이터레이터 객체를 반환한다. 이제 이 객체는 for...of 루프와 함께 사용할 수 있다.
+
+# 제너레이터
+
+이터레이터와 이터러블과 밀접하게 연관된 제너레이터(generator)는 ES6의 기능 중 가장 많이 언급되고 있는 기능 중 하나이다. 제너레이터 함수는 제너레이터 객체를 반환한다. 이 용어는 처음에 다소 혼란스럽게 들릴 수 있다.
+
+함수를 작성하면 함수의 동작을 이해할 수 있다. 함수는 한줄 한줄 실행되고, 마지막 줄이 실행되면 종료된다. 함수가 선형적으로 실행되면 함수에 따른 나머지 코드도 따라서 실행된다. 그러나 멀티 스레딩이 지원되는 언어에서, 이런 실행 흐름은 중단될 수 있고, 완료된 작업이 부분적으로 서로 다른 스레드, 프로세스 또는 채널 간 공유될 수 있다. 자바스크립트는 단일 스레드이므로 지금은 다중 스레드와 관련된 문제를 처리할 필요가 없다.
+
+그러나 제너레이터 함수는 일시 중지됐다가 다시 시작할 수 있다. 여기서 중요한 부분은 제너레이터 함수 자체가 일시 중지를 선택하는 것이며 외부 코드에 의해서는 일시 중지될 수 없다는 점이다. 실행 중에 함수 yield 키워드를 사용해 일시 중지시킨다. 제너레이터 함수가 일시 중지되면, 함수 외부의 코드에 의해서만 다시 시작할 수 있다.
+
+필요한 만큼 여러 번 제너레이터 함수를 일시 중지했다가 다시 시작할 수 있다. 제너레이터 함수에서 인기있는 패턴은 무한 루프를 작성하고 필요할 때 일시 중지시켰다가 다시 시작하는 것이다.
+
+이해해야 할 또 다른 중요한 부분은 제너레이터 함수가 양방향 메시지 전달을 허용한다는 점이다. yield 키워드를 사용해 함수를 일시 중지할 때마다 메시지가 제너레이터 함수에서 전송되고, 함수가 다시 시작되면 제너레이터 함수로 메시지가 다시 전달된다.
+
+예제를 통해 알아보자.
+
+```js
+function* generatorFunc() {
+  console.log('1'); //---------> A
+  yield; // ------------> B
+  console.log('2'); // ------------> C
+}
+const generatorObj = generatorFunc();
+console.log(generatorObj.next());
+1
+Object { value: undefined, done: false }
+```
+
+아주 간단한 제너레이터 함수 예라고 한다. 이해가 필요한 부분이 꽤있지만 말이다.
+
+우선 function 키워드 바로 다음에 별표(\*)가 있음을 알 수 있다. 이것은 함수가 제너레이터 함수임을 나타내는 구문이다. 함수 이름 바로 앞에 별표를 두는 것도 괜찮다. 다음 두 코드는 모두 유효한 선언이다.
+
+```js
+function* f() {}
+function* f() {}
+```
+
+함수 내에서 진짜 마술은 yield 키워드에서 일어난다고 보면 된다. yield 키워드를 만나면, 함수가 일시 중지된다. 더 진행하기 전에 함수가 어떻게 호출되는지 알아보자.
+
+```js
+function* generatorFunc() {
+  console.log('1'); //---------> A
+  yield; // ------------> B
+  console.log('2'); // ------------> C
+}
+const generatorObj = generatorFunc();
+generatorObj.next();
+1
+Object { value: undefined, done: false }
+```
+
+제너레이터 함수를 호출하면, 일반 함수처럼 실행되지 않고 제너레이터 객체를 반환한다. 이 제너레이터 객체를 사용해 제너레이터 함수의 실행을 제어할 수 있다. 제너레이터 객체의 next() 메소드는 함수의 실행을 다시 시작한다.
+
+next()를 처음 호출하면 함수의 첫 번째 줄('A'로 표시)까지 실행이 진행되고, yield 키워드를 만나면 일시 중지된다. next() 함수를 다시 호출하면 실행이 중지된 지점에서 다음 줄로 실행이 재개된다.
+
+```js
+function* generatorFunc() {
+  console.log('1'); //---------> A
+  yield; // ------------> B
+  console.log('2'); // ------------> C
+}
+console.log(generatorObj.next());
+2
+Object { value: undefined, done: true }
+```
+
+함수 본문 전체가 실행되면, 제너레이터 객체에서 next()를 호출해도 아무 효과가 없다. 앞에서 제너레이터 함수는 양방향 메시지 전달을 허용한다고 했다. 어떻게 동작할까? 앞의 예에서 제너레이터 함수를 다시 시작할때마다 done과 value의 두값을 가진 객체를 받는다. 에제의 경우, 값(value)로 undefined를 받았다. 이는 yield 키워드로 어떤 값도 반환하지 않기 때문이다. yield 키워드를 사용하여 값을 반환하면 호출하는 함수가 이를 받는다.
+
+```js
+function* logger() {
+  console.log("start");
+  console.log(yield);
+  console.log(yield);
+  console.log(yield);
+  return "end";
+}
+
+var genObj = logger();
+// next의 첫 번째 호출은 함수의 시작부터 첫 번째 yield문까지 진행된다.
+
+console.log(genObj.next());
+//start , Object { value: undefined, done: false } 출력
+
+console.log(genObj.next("Save"));
+// Save , Object { value: undefined, done: false } 출력
+
+console.log(genObj.next("Our"));
+// Our , Object { value: undefined, done: false } 출력
+
+console.log(genObj.next("Souls"));
+// Souls , Object { value: "end", done: true } 출력
+```
+
+이 예제의 실행 흐름을 단계별로 추적해 보자. 제너레이터 함수는 세 개의 일시 중지(yield)를 가지고 있다. 다음과 같은 줄을 작성하여 제너레이터 객체를 생성할 수 있다.
+
+```js
+var genObj = logger();
+```
+
+next 메소드를 호출해 제너레이터 함수의 실행을 시작한다. 이 메소드는 첫 번째 yield까지 실행을 시작한다. 첫 번째 호출에서 next()메소드에 값을 전달하지 않았다.
+
+이 next() 메소드의 목적은 제너레이터 함수를 시작하는 것이다. next() 메소드를 다시 호출하면서, 이번에는 "Save" 값을 매개변수로 전달한다. 이 값은 실행이 다시 시작될 때 yield에 의해 수신되며 콘솔에 값이 출력되는 것을 볼 수 있다.
+
+```js
+Save , Object { value: undefined, done: false }
+```
+
+next() 메소드를 두 개의 다른 값으로 다시 호출하면 출력은 앞의 코드와 비슷하다. 마지막으로 next() 메소드를 호출하면, 실행이 끝나고 제너레이터 함수는 호출하 코드에 end 값을 반환한다.
+실행이 끝나면 done은 true로 설정되고, value에는 함수에서 반환된 값, 즉 end가 지정된다.
+
+```js
+Souls , Object { value: "end", done: true }
+```
+
+첫 번째 next() 메소드의 목적은 제너레이터 함수의 실행을 시작하는 것이다. 이 함순는 첫 번째 yield 키워드로 이동하므로 첫 번째 next() 메소드에 전달된 값은 무시된다.
+
+지금까지의 논의에서, 제너레이터 객체가 이터레이터 규약을 준수한다는 것을 알 수 있다. 그렇다면 예제를 통해 이를 한번 확인해 보자.
+
+```js
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+var genObj = logger();
+// 제너레이터 객체는 제너레이터 함수를 사용하여 작성된다.
+
+console.log(typeof genObj[Symbol.iterator] === "function"); // true 출력
+// 이터러블
+
+console.log(typeof genObj.next === "function"); // true 출력
+// 이터레이터 (next() 메소드를 가짐)
+
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+var genObj = logger();
+// 제너레이터 객체는 제너레이터 함수를 사용하여 작성된다.
+
+console.log(typeof genObj[Symbol.iterator] === "function"); // true 출력
+// 이터러블
+
+console.log(typeof genObj.next === "function"); // true 출력
+// 이터레이터 (next() 메소드를 가짐)
+```
+
+위의 예제는 제너레이터 함수가 이터러블 규약을 준수함을 확인시켜 준다.
