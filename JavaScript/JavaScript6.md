@@ -496,3 +496,46 @@ console.log(arr);
 
 Array(3)[[1, "one"][(2, "two")][(3, "three")]];
 ```
+
+## 세트
+
+Set은 값의 모음이다. 세트에서 값을 추가하고 제거할 수 있다. 배열과 비슷해 보이지만, 세트는 같은 값을 두번 허용하지 않는다. set의 값은 어떤 유형도 가능하다.
+
+배열과는 얼마나 다를까? Set은 멤버쉽 테스트를 신속하게 수행할 수 있도록 설계됐다. 이 작업을 수행하는 데 있어서 배열은 상대적으로 느리다. Set 동작은 Map 동작과 비슷하다.
+
+```js
+const s = new Set();
+s.add("first");
+s.has("first"); // true
+s.delete("first"); // ture
+s.has("first"); // false
+```
+
+맵과 마찬가지로 이터레이터를 통해 Set을 생성할 수 있다.
+
+```js
+const colors = new Set(["red", "white", "blue"]);
+```
+
+Set에 값을 추가할 때, 값이 이미 존재하면 아무 일도 일어나지 않는다. 마찬가지로 Set에서 값을 삭제할 때, 값이 존재하지 않으면 아무 일도 일어나지 않는다.
+
+# WeakMap과 WeekSet
+
+Weakmap과 WeakSet은 Map과 Set과 비슷하지만 제한된 API를 가진다. 그리고 각각 비슷하게 동작한다.하지만 몇 가지 차이점이 있다.
+
+- WeakMap은 new와 has(), get(), set(), delete() 메소드만 지원한다.
+- WeakSet은 new와 has(), add(), and delete()만 지원한다.
+- WeakMap의 키는 반드시 객체여야 한다.
+- WeakSet의 값은 반드시 객체여야 한다.
+- WeakMap을 반복할 수는 없다. 값에 접근할 수 있는 유일한 방법은 키를 사용하는 것이다.
+- WeakSet을 반복할 수 없다.
+- WeakMap이나 WeakSet을 지울 수 없다.
+
+WeakMap을 먼저 이해해 보자. Map과 WeakMap의 차이점은 WeakMap 자체가 가비지 컬렉션(garbage collection)을 허용한다는 것이다. WeakMap의 키는 약하게 유지된다. WeakMap 키는 가비지 컬렉터가 참조 카운트를 수행할 때 캉운트되지 않으며, 가능한 경우에 가비지 처리된다.
+
+WeakMap은 맵에 보관중인 객체의 수명주기에 대해 어떤 제어도 하지 못할 때 유용하다.
+WeakMap을 사용할 때, 수명주기가 길더라도 객체가 메모리를 점유하지 않기 때문에 메모리 누출에 대해 걱정할 필요가 없다.
+
+WeakSet에도 동일한 구현 세부사항이 적용된다. 그러나 WeakSet을 반복할 수 없으므로, WeakSet의 유즈 케이스는 많지 않다.
+
+또한 ES6 컬렉션에 새롭게 추가된 Maps와 Sets, WeakMaps, WeakSets들은 모두 추가 이터레이터 메소드인 .entries()와 .values(), .keys()를 가진다.
