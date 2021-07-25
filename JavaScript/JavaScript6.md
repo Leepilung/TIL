@@ -308,3 +308,191 @@ a b
 ```
 
 제너레이터는 비동기 프로그래밍에서 중요한 역할을 한다. 또한 제너레이터는 협업 멀티 태스킹 함수를 작성하는 데에도 도움이 된다.
+
+# 컬렉션
+
+ES6는 Map과 WeakMap, Set, WeakSet의 네 가지 데이터 구조를 도입했다. 자바스크립트는 파이썬, 루비등과 비교해서 해시(hash)나 맵(map) 데이터 구조 또는 딕셔너리(dictionary)를 지원하는 표준 라이브러리가 빈약하다.
+
+문자열 키를 객체와 매핑해 Map의 동작을 구현하는 몇 가지 해킹 방법이 개발됐으나 이런 해킹에는 부작용이 생겼다. 따라서 이런 데이터 구조에 대한 언어 지원이 절실히 요구돼었기 때문에 ES6에서는 표준 딕셔너리 데이터 구조를 지원한다.
+
+## 맵(Map)
+
+Map은 임의의 값을 key로 허용한다. keys는 값에 매핑된다. 맵을 사용하면 값에 빠르게 접근할 수 있따.
+
+```js
+const m = new Map(); // 빈 맵을 생성
+m.set("first", 1); // 키와 관련된 값 설정
+console.log(m.get("first")); // 키를 사용해 값을 가져온다
+1;
+```
+
+생성자(constructor)를 사용하여 빈 Map을 생성한다. set() 메소드를 사용해 Map에 키와 연관된 값의 항목을 추가하고 기존 항목을 동일한 키로 겹쳐 쓸 수 있다. 이와 반대되는 메소드인 get()은 키와 연관된 값을 가져오고, 맵에 해당 항목이 없으면 undefined를 가져온다.
+
+다음과 같이 맵에서 사용할 수 있는 다른 헬퍼 메소드도 있다.
+
+```js
+console.log(m.has("first")); // 키가 있는지 검사한다
+// true 출력
+m.delete("first");
+console.log(m.has("first")); // false 출력
+
+m.set("foo", 1);
+m.set("bar", 0);
+
+// Map { foo → 1, bar → 0 } 출력
+
+console.log(m.size); // 2 출력
+m.clear(); // 전체 맵을 지운다.
+console.log(m.size); // 0 출력
+```
+
+다음 이터러블 [키,값] 쌍을 이용하여 Map을 생성할 수 있다.
+
+```js
+const m2 = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+```
+
+그리고 다음과 같이 구문에 set() 메소드를 연결할 수 있다.
+
+```js
+const m3 = new Map().set(1, "one").set(2, "two").set(3, "three");
+```
+
+모든 값을 키로 사용할 수 있다. 객체의 경우, 문자열만 키가 될 수 있지만, 컬렉션의 경우 이 제한이 없어졌다. 객체를 키로 사용할 수도 있지만 그다지 사용되는 방법은 아니다.
+
+```js
+const obj = {};
+const m2 = new Map([
+  [1, "one"],
+  ["two", "two"],
+  [obj, "three"],
+]);
+
+console.log(m2.has(obj));
+true;
+```
+
+## 맵 반복
+
+기억해야할 중요한 점 중 하나는 맵에서 순서가 중요하다는 점이다. 맵은 요소가 추가된 순서가 유지된다.
+
+Map을 반복할 때는 keys, values, entries, 이렇게 세 가지 이터러블을 사용할 수 있다.
+
+keys() 메소드는 다음과 같이 Map의 키에 대한 이터러블을 반환한다.
+
+```js
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+
+for (const k of m.keys()) {
+  console.log(k);
+}
+1;
+2;
+3;
+```
+
+마찬가지로 values() 메소드는 다음 예제와 같이, Map의 값에 대한 이터러블을 반환한다.
+
+```js
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+
+for (const v of m.values()) {
+  console.log(v);
+}
+one;
+two;
+three;
+```
+
+entries() 메소드는 다음 코드에서 볼 수 있듯, [키, 값] 쌍의 형식으로 Map의 항목을 반환한다.
+
+```js
+const m = new Map ([
+  [ 1 , 'one' ],
+  [ 2, 'two' ],
+  [ 3 , 'three' ],
+]);
+
+for (const entry of m.entries()) {
+  console.log(entry[0], entry[1]);
+}
+1 one
+2 two
+3 three
+```
+
+위의 예제는 더 간결하게 만들 수 있다.
+
+```js
+const m = new Map ([
+  [ 1 , 'one' ],
+  [ 2, 'two' ],
+  [ 3 , 'three' ],
+]);
+
+for (const [key, value] of m.entries()) {
+  console.log(key, value);
+}
+1 one
+2 two
+3 three
+```
+
+더 더욱 간단하게도 가능하다.
+
+```js
+const m = new Map ([
+  [ 1 , 'one' ],
+  [ 2, 'two' ],
+  [ 3 , 'three' ],
+]);
+
+for (const [key, value] of m) {
+  console.log(key, value);
+}
+1 one
+2 two
+3 three
+```
+
+## 맵을 배열로 변환
+
+스프레드 연산자(...)는 Map을 배열로 변환하려는 경우 편리하다.
+
+```js
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+
+const keys = [...m.keys()];
+console.log(keys)[(1, 2, 3)];
+```
+
+맵은 이터러블이므로, 스프레드 연산자를 사용하여 전체 Map을 배열로변환할 수 있다.
+
+```js
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+
+const arr = [...m];
+console.log(arr);
+
+Array(3)[[1, "one"][(2, "two")][(3, "three")]];
+```
