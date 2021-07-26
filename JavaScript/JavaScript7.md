@@ -276,7 +276,7 @@ for (i in params) {
 url += query.join("&");
 ```
 
-이렇게 하ㅓ면 다음과 같은 url 문자가 생긴다.
+이렇게 하면 다음과 같은 url 문자가 생긴다.
 
     "http://example.org/page.php?productid=666&section=products"
 
@@ -382,3 +382,50 @@ false;
 newtoy.constructor.prototype.propertyIsEnumerable("price");
 true;
 ```
+
+## IsPrototypeOf() 메소드 사용하기
+
+객체는 또한 IsPrototypeOf() 메소드도 가지고 있다. 이 메소드는 특정 객체가 다른 객체의 프로토타입으로 사용되는지 여부를 알려준다.
+
+monkey를 예로 들어보자.
+
+```js
+var monkey = {
+  hair: true,
+  feeds: "bananas",
+  breathes: "air",
+};
+```
+
+이제 Human 생성자 함수를 만들고 monkey를 가리키도록 prototype 속성을 설정한다.
+
+```js
+function Human(name) {
+  this.name = name;
+}
+
+Human.prototype = monkey;
+Object { hair: true, feeds: "bananas", breathes: "air" }
+```
+
+그 다음, george라는 새로운 Human 객체를 생성하고, monkey가 george의 프로토타입인지 확인해 보면 true가 나온다.
+
+```js
+var george = new Human("George");
+
+monkey.isPrototypeOf(george);
+true;
+```
+
+프로토타입이 무엇인지 알고 있어야 프로토타입이 monkey인 것이 사실인지 확인해 볼 수 있다. 아는 것이 아무것도 없다면, 프로토타입이 맞는지 물어볼 수가 없다.
+
+그렇다면 객체에 직접 프로타타입이 무엇인지 물어볼 수는 없을까? 대답은 모든 브라우저에서까진 아니지만 대부분의 브라우저에선 Object.getPrototypeOf()의 사용이 가능하다는 것이다.
+
+```js
+Object.getPrototypeOf(george).feeds;
+("bananas");
+Object.getPrototypeOf(george) === monkey;
+true;
+```
+
+getPrototypeOf()를 지원하지 않는 일부ES5 이전 환경에서는 `__proto__` 라는 특별 속성을 사용할 수 있다.
