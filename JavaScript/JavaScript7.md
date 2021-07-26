@@ -429,3 +429,137 @@ true;
 ```
 
 getPrototypeOf()를 지원하지 않는 일부ES5 이전 환경에서는 `__proto__` 라는 특별 속성을 사용할 수 있다.
+
+## secret `__proto__` link
+
+prototype 속성은 현재 객체에 없는 속성에 접근하려고 할 때 사용된다.
+
+monkey라는 객체를 가정해보고, 이를 Human() 생성자로 객체를 만들 때 프로토타입으로 사용해 보자.
+
+```js
+var monkey = {
+  hair : true,
+  breathes: 'air'
+};
+
+function Human(name) {}
+Human.prototype = monkey;
+Object { hair: true, breathes: "air" }
+```
+
+이제 developer 객체를 만들고 다음과 같은 속성을 지정해 보자.
+
+```js
+var developer = new Human();
+developer.feeds = "pizza";
+developer.hacks = "JavaScript";
+```
+
+이제 이 속성에 접근해보자.(예를 들어, hacks는 developer 객체의 속성이다.)
+
+```js
+developer.hacks;
+("JavaScript");
+```
+
+feeds 속성은 다음과 같이 객체에서도 찾을 수 있다.
+
+```js
+developer.feeds;
+("pizza");
+```
+
+breathes 속성은 developer 객체의 속성으로 존재하지 않으므로, prototype 객체로 연결되는 비밀 링크나 통로가 있는 것처럼 프로토타입이 조회된다.
+
+```js
+developer.breathes;
+("air");
+```
+
+비밀 링크는 대부분의 최시니 자바스크립트 환경에서 `__proto__` 속성으로 노출된다.
+
+```js
+developer.__proto__ === monkey;
+true;
+```
+
+이 비밀 속성을 학습 목적으로 사용할 수는 있지만, 실제 스크립트에서 사용하는것은 좋지 않다. 모든 브라우저에서 지원하지 않기 때문에 스크립트가 정상 동작하지 않을 것이다.
+
+prototype은 해당 객체를 만드는데 사용되는 생성자 함수의 속성인 반면, `__proto__`는 인스턴스의 속성이므로 `__proto__`는 prototype과 동일하지 않다.
+
+```js
+typeof developer.__proto__;
+("object");
+typeof developer.prototype;
+("undefined");
+typeof developer.constructor.prototype;
+("object");
+```
+
+`__proto__`는 학습이나 디버깅 목적으로만 사용해야 한다.
+
+# 내장 객체 보강
+
+Array, String, 그리고 Object와 Function 같이 내장된 생성자 함수로 만든 객체는 프로토타입을 사용해 보강(또는 향상)시킬 수 있다. 예를 들면, Array 프로토타입에 새 메소드를 추가하고, 모든 배열에서 이 메소드를 사용할 수 있다.
+
+PHP에는 배열에 값이 있는지 여부를 알려주는 in_array()라는 함수가 있다. 자바스크립트에 in_array() 메소드는 없지만, 동일한 목적으로 사용할 수 있는 indexOf()가 있다. 예제를 통해 알아보고 Array.prototype에 추가해 보자.
+
+```js
+Array.prototype.inArray = function (needle) {
+  for (var i = 0, len = this.length; i < len; i++) {
+    if (this[i] === needle) {
+      return true;
+    }
+  }
+  return false;
+};
+```
+
+이제 모든 배열은 새 메소드에 접근할 수 있다. 다음 코드를 테스트해 보자.
+
+```js
+colors.inArray("red");
+true;
+colors.inArray("yellow");
+false;
+```
+
+어플리케이션에서 자주 단어를 역순으로 입력해야 하는 경우가 이싸고 가정해 보자. 문자열 객체에 내장된 reverse() 메소드가 있으면 좋을 것이다. Array.prototype.reverse()를 빌려서 String 프로토타입에 reverse() 메소드를 쉽게 추가할 수 있다.
+
+```js
+String.prototype.reverse = function () {
+  return Array.prototype.reverse.apply(this.split("")).joint("");
+};
+```
+
+이 코드는 split() 메소드를 사용해 문자열에서 배열을 만든 다음, 이 배열에서 reverse()메소드를 호출해 역순으로 배열을 생성한다. 그런 다음 결과 배열을 join() 메소드를 사용해 문자열로 되돌린다.
+
+```js
+"bumblebee".reverse();
+("eebelbmub");
+```
+
+## 내장 객체 보강
+
+프로토타입을 통해 내장 객체를 보강하는 것은 강력한 기술이며, 자바스크립트를 ㅇ우리가 원하는 모양으로 만들 수 있게 해준다. 그러나 이 방법을 사용하기 전에 우리는 항상 우리의 선택을 다시 한 번 고민해야 한다.
+
+그 이유는 우리가 사용중인 서드 파티 라이브러리나 위젯에 관계없이 동일한 방식으로 동작하기를 기대하기 때문이다. 핵심 객체를 수정하면, 사용자와 관리자를 혼란스럽게 할 수 있으며, 오류또한 발생할 수 있따.
+
+자바스크립트가 발전하고 브라우저 벤더는 지속적으로 더 많은 기능을 지원하고 있다. 우리가 프로토타입에 추가한 메소드가 향후에 내장 메소드가 될 수도 있다. 이 경우 우리가 ㅊ추가한 메소드는 더 이상 필요하지 않게 된다. 또한 이렇게 추가한 메소드를 사용해 이미 많은 코드를 작성했는데 이 메소드가 새롭게 내장된 메소드의 구현과 다르다면 어떻게 해야할까?
+
+내장 프로토타입을 보강하는 가장 보편적이고 수용할 수 있는 유스 케이스는 구형 브라우저에 새로운 기능(ECMA에서 이미 표준화 됐고 새로운 브라우저에 구현된 기능)을 지원할 수 있도록 추가하는 것이다. 이러한 확장은 `심(shim)`또는 `폴리필(polyfill)`로 알려져 있다.
+
+프로토타입을 보강할 때, 구현하기 전에 먼저 메소드가 있는지 확인해야 한다. 메소드가 있다면 브라우저의 네이티브 구현을 사용할 수 있다.
+
+예를 들어 문자열에 trim() 메소드를 추가해 보자. 이 메소드는 ES5에는 있지만, 구형 브라우저에서는 지원하지 않는 메소드이다.
+
+```js
+if (typeof String.prototype.trim !== "function") {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|s+$/g, "");
+  };
+}
+
+" hello ".trim();
+("hello");
+```
