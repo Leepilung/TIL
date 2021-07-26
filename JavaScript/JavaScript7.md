@@ -563,3 +563,125 @@ if (typeof String.prototype.trim !== "function") {
 " hello ".trim();
 ("hello");
 ```
+
+## 프로토타입 따라잡기
+
+프로토타입을 다룰 때 고려해야할 두 가지 중요한 사항은 다음과 같다.
+
+- prototype 객체를 완전히 대체할 때를 제외하고는 프로토타입 체인은 살아있다.
+- prototype.constructor 메소드는 안정적이지 않다.
+
+간단한 생성자 함수와 두 개의 객체를 생성해 보자.
+
+```js
+function Dog() {
+  this.tail = true;
+}
+var benji = new Dog();
+var rusty = new Dog();
+```
+
+benji와 rusty 객체를 생성한 후에도, Dog() 프로토타입에 속성을 추가할 수 있으며 기존 객체에서도 새 속성에 접근할 수 있다. say() 메소드를 추가해보자.
+
+```js
+Dog.prototype.say = function () {
+  return "Woof!";
+};
+```
+
+이제 두 객체 모두 메소드에 접근할 수 있다.
+
+```js
+benji.say();
+("Woof!");
+rusty.say();
+("Woof!");
+```
+
+이 시점에서 객체를 생성하는 데 사용된 생성자 함수가 무엇인지 확인해 보면 제대로 보고할 것이다.
+
+```js
+benji.constructor === Dog;
+true;
+rusty.constructor === Dog;
+true;
+```
+
+이제 prototype 객체를 새로운 객체로 완전히 덮어 씌워 보자.
+
+```js
+Dog.prototype = {
+  paws : 4,
+  hair : true
+};
+Object { paws: 4, hair: true }
+```
+
+이전 객체가 새로운 프로토타입의 속성에 접근하지 못한다. 다음과 같이 이전 프로토타입 객체를 가리키는 비밀 링크를 여전히 유지하고 있다.
+
+```js
+typeof benji.paws;
+("undefined");
+benji.say();
+("woof!");
+typeof benji.__proto__.say;
+("function");
+typeof benji.__proto__.paws;
+("undefined");
+```
+
+지금부터 새로 만들 객체는 다음과 같이 업데이트된 프로토타입 객체를 사용한다.
+
+```js
+var lucy = new Dog();
+
+lucy.say();
+TypeError: lucy.say is not a function
+
+lucy.paws;
+4
+```
+
+비밀 `__proto__` 링크는 다음 코드 행에 표시된 대로 새 프로토타입 객체를 가리킨다.
+
+```js
+typeof lucy.__proto__.say;
+("undefined");
+typeof lucy.__proto__.paws;
+("number");
+```
+
+이제 새 객체의 constructor 속성은 더 이상 올바르게 보고하지 않는다. Dog()를 가리킬 것으로 기대하지만, 다음 예제에서 볼 수 있듯이 대신 Object()를 가리킨다.
+
+```js
+lucy.constructor;
+function Object()
+
+benji.constructor;
+function Dog() {
+    this.tail = true
+}
+```
+
+다음과 같이 프로토타입을 완전히 덮어 쓴 후 constructor 속성을 다시 설정하면, 이 혼란을 쉽게 방지할 수 있다.
+
+```js
+function Dog() {}
+Dog.prototype = {};
+new Dog().constructor === Dog;
+false;
+
+Dog.prototype.constructor = Dog;
+new Dog().constructor === Dog;
+true;
+```
+
+## 프로토타입 요약
+
+- 모든 함수에는 prototype 이라는 속성이 있다. 처음에는 빈 객체, 즉 자체 속성이 없는 객체를 포함한다.
+- prototype 객체에 속성ㅇ과 메소드를 추가할 수 있다. 또한 다른 객체로 완전히 대체할 수도 있다.
+- 생성자 함수(new와 함께)를 사용해 객체를 생성하면, 객체는 생성자의 프로토타입을 가리키는 비밀 링크를 가져와서 프로토타입의 속성에 접근할 수 있다.
+- 객체의 자체 속성이 동일한 이름의 프로토타입 속성보다 우선한다.
+- hasOwnProperty() 메소드를 사용해 객체 자체의 속성과 prototype 속성을 구별한다.
+- 프로토타입 체인이 있다. foo.bar를 실행했는데 foo 객체에 bar 속성이 없으면, 자바스크립트 인터프리터는 프로토타입에서 bar 속성을 찾는다. 그래도 발견되지 않으면, 프로토타입의 프로토탕입을 검색하고 이런 검색을 Object.prototype에 도달할 때까지 계속한다.
+- 내장된 생성자 함수의 프로토타입을 보강할 수 있으며, 모든 객체는 추가된 내용에 접근할 수 있다. Array.prototype.flip에 함수를 할당하면, 모든 배열은 [1,2,3].flip()과 같이 즉시 flip() 메소드를 사용할 수 있다. 그러나 반드시 추가하고자 하는 메소드/속성이 이미 있는지 확인해서 우리의 스크립트를 미래에 대비할 수 있도록 한다.
