@@ -1,918 +1,790 @@
-# JavaScript 2
+# JavaScript3 내용 정리
 
-# 함수
+# 객체
 
-함수를 마스터하는 것은 프로그래밍 언어를 배움에 있어 매우 중요한 기술이다. 자바스크립트는 함수를 많이 사용하고, 언어의 유연성과 표현력의 상당 부분이 함수에서 비롯된다.
+자바스크립트는 고전적인 객체지향 프로그래밍을 변형해 사용한다. 객체지향 프로그래밍은 가장 널리 사용되는 프로그래밍 패러다임 중 하나이며, 자바와 C++같은 대부분의 프로그래밍 언어의 주류가 됐다.
 
-## \* 함수란 무엇인가?
+앞에서 알아봤듯, 배열은 값의 목록일 뿐이다. 각 값은 0에서 시작하여 각 값에 대해 1씩 증가하는 인덱스(숫자 키)를 갖고 있다.
 
-함수를 사용하면 코드를 그룹화하고 이름을 지정해 그 이름으로 재사용할 수 있다.
-
-```m
-function sum(a,b) {
-... var c = a+b;
-... return c;
-... }
-```
-
-함수를 구성하는 부분은 다음과 같다.
-
-- function 키워드
-- 함수 이름(위의 경우 sum)
-- 함수의 매개변수(위의 경우 a, b). 함수는 매개변수를 사용하지 않거나, 또는 원하는 매개 변수를 사용할 수 있으며, 매개변수는 쉼표로 구분한다.
-- 코드 블록 = 함수 본문이라고도 한다.
-- return문 = 함수는 항상 값을 반환한다. 값을 명시적으로 반환하지 않으면, 암시적으로 undefined를 반환한다.
-
-함수는 단일 값만 반환할 수 있다. 더 많은 값을 반환해야 하는 경우, 배열을 반환하면 된다.
-
-위의 예제와 같은 구문을 함수 선언이라고 한다.
-
-## \* 함수 호출
-
-함수를 사용하려면 함수를 호출 해야 한다. 간단히 함수의 이름을 사용하여 호출하면 된다. 선택적으로 괄호 안에 매개변수를 제공할 수도 있다.
-
-두 개의 인수를 전달하여 sum() 함수를 호출하고, 함수가 반환하는 값을 변수 result에 할당해 보자.
-
-```m
-> var result = sum(1,2);
-undefined
-> result
-3
-```
-
-## \* 매개변수
-
-함수를 정의할 때, 함수가 호출될 때 필요한 `매개변수`를 지정할 수 있다. 힘스기 매개변수를 필요로 하지 않을 수도 있지만, 필요한 경우 이를 전달하지 않으면 undefined 값이 지정된다.
-
-다음 예제에선 1과 undefined를 합산하려고 시도하기 때문에 함수는 NaN을 반환한다.
-
-```m
-> sum(1)
-NaN
-```
-
-sum은 저 위에서 정의한 함수이다.
-
-기술적으로 매개변수와 인수(argument)는 서로 다르지만, 두 용어는 종종 같은 의미로 사용된다. 매개변수는 함수와 함께 정의되며, 인수는 호출될 때 함수에 전달된다.
-
-```m
-> function sum(a,b) {
-... return a + b;
-... }
-undefined
-> sum(1,2)
-3
-```
-
-위의 예제에서 a와 b는 매개변수이고, 1과 2는 인수다.
-
-자바스크립트는 인수를 받는 데 있어 까다롭지 않다. 함수가 필요로 하는 개수 이상의 인수를 전달하여도 여분의 인수는 무시된다.
-
-```m
-> sum(1,2,3,4,5);
-3
-```
-
-게다가 받아들이는 매개변수의 수에 유연한 함수를 작성할 수 있다. 이는 각 함수 내부에서 자동으로 생성되는 특별한 값인 arguments 덕분에 가능하다.
-단순히 전달받은 모든 인수를 반환하는 함수는 다음과 같다.
-
-```m
-> function args() {
-... return arguments;
-... }
-undefined
-> args();
-[Arguments] {}
-> args(1,2,3,4,true,'ninja');
-[Arguments] { '0': 1, '1': 2, '2': 3, '3': 4, '4': true, '5': 'ninja' }
-```
-
-원본은 리스트형태인데 왜 딕셔너리 형태로 나오는지는 모르겠다.
-
-arguments를 사용하면 다음 예제와 같이 sum() 함수를 개선해 여러 개의 인수를 허용하거나 동작하게 만들 수 있다.
-
-ex)
-
-```m
-> function sumSteroids() {
-... var i
-... res = 0,
-... number_of_params = arguments.length;
-... for (i=0; i<number_of_params; i++) {
-..... res += arguments[i];
-..... }
-... return res;
-... }
-```
-
-이제 예제를 호출해보자.
-
-```m
-> sumSteroids(1,1,1);
-3
-> sumSteroids(1,2,3,4);
-10
-> sumSteroids(1,2,3,4,5,5,6,3,1)
-30
-> sumSteroids(5)
-5
-> sumSteroids();
-0
-```
-
-arguments.length 표현식은 함수가 호출될 때 전달받은 인수의 수를 반환하고 res 값에 for문을 통해 arguments의 인덱스에 해당하는 값을 더해 출력한다.
-
-위의 함수 sumSteroids에서 arguments가 배열처럼 보이지만 사실은 배열이 아니라 배열과 비슷한 객체라는 것을 알아야 한다.
-
-그리고 ES6 함수 매개변수는 디폴트 값, 나머지 매개변수를 가질 수 있으며, 구조화가 가능하다.
-
-## 디폴트 매개변수
-
-함수 매개변수에 디폴트 값을 지정할 수 있다. 함수를 호출할 때 매개변수가 생략되면 매개변수에 지정된 디폴트 값이 사용된다.
+객체는 배열과 비슷하지만, 직접 키를 정의한다는 점이 다르다. 숫자 인덱스만 사용할 수 있는 것은 아니며, first_name, age등과 같이 친숙한 키를 사용할 수 있다.
 
 ```mm
-> function render(fog_level = 0, spark_level=100) {
-... console.log(`Fog Levle : ${fog_level} and spark level : ${spark_level}`)
-... }
-
-> render()
-Fog Levle : 0 and spark level : 100
-> render(15,20)
-Fog Levle : 15 and spark level : 20
-```
-
-render의 함수에서 매개변수를 별도로 설정하지 않으면 설정해놓은 초기값이 출력되고, 별도로 입력하면 해당 값들을 인수로 받아 출력한다.
-
-매개 변수의 디폴트 값을 제공할때 다른 매개변수도 참조할 수 있다.
-
-```m
-> function t(fog_level=1, spark_level=fog_level){
-... console.log(`Fog level: ${fog_level} and spark_level:${spark_level}`)
-... }
-> t()
-Fog level: 1 and spark_level:1
-```
-
-디폴트 매개변수에는 자체 범위가 없다. 이 범위는 함수의 외부 함수 범위와 함수의 내부 범위 사이에 끼어 있다. 매개변수가 내부 범위의 변수에 의해 가려지면, 내부 변수를 사용할 수 없다.
-
-```m
-> var scope = 'outer';
-
-> function scoper(val=scope) {
-... var scope = 'inner';
-... console.log(val);
-... }
-
-> scoper()
-outer
-```
-
-val이 scope 변수의 내부 정의에 의해 가려질 것으로 예상하겠지만, 디폴트 매개변수가 자체 범위를 가져 val에 할단된 값은 내부 범위에 영향을 받지 않는다.
-
-## 나머지 매개변수
-
-나머지 매개변수를 사용하면 배열 형태로 함수에 임의의 수의 매개변수를 보낼 수 있다.
-
-나머지 매개변수는 반드시 매개변수 목록의 마지막 매개변수여야 하며, 하나의 나머지 매개변수만 가능하다.
-
-마지막 일반 매개변수 앞에 나머지 연산자(...)를 두면 매개변수가 나머지 매개변수임을 타나낸다.
-
-```mm
-> function sayThing(tone,...quotes){
-... console.log(Array.isArray(quotes));
-... console.log(`In ${tone} voice, I say ${quotes}`)
-... }
-
-> sayThing("Morgan Freeman", "Something serious","Imploding Univers","Amen");
-true
-In Morgan Freeman voice, I say Something serious,Imploding Univers,Amen
-```
-
-함수에 전달된 첫 번째 매개변수는 tone으로 받는 반면, 나머지 매개변수는 배열로 받는다.
-
-나머지 매개변수는 argument 변수를 대체할 수 있다.
-
-## 스프레드 연산자
-
-스프레드 연산자는 나머지 연산자와 모양은 동일하지만 정반대의 기능을 수행한다. 스프레드 연산자는 함수를 호출하거나 배열을 정의할 때 인수를 제공하는 데 사용된다. 또한 배열을 받아 배열의 요소를 개별 변수로 분리한다.
-
-```m
-> function sumAll(a,b,c){
-... return a+b+c
-... }
-
-> console.log(sumAll(...number))
-21
-```
-
-sumAll() 함수를 호출할 때, 스프레드 연산자(...)를 사용하고 number 배열을 함수 호출에 전달한다. 그런 다음 배열은 개별 변수 a,b,c로 나뉜다.
-
-스프레드 연산자는 자바스크립트의 배열 기능을 향상시킨다. 다른 배열로 구열된 배열을 생성하려고 하면 기존 배열 구문은 이를 지원하지 않는다. push, splice, conact등을 사용해야 한다. 그러나 스프레드 연산자를 사용하면 간단하다.
-
-```mm
-> var mideweek = ['Wed','Thu'];
-undefined
-> var weekend = ['Sat','Sun'];
-undefined
-> var week = ['Mon','Tue',...mideweek, 'Fri', ...weekend];
-undefined
-> console.log(week)
-[
-  'Mon', 'Tue',
-  'Wed', 'Thu',
-  'Fri', 'Sat',
-  'Sun'
-]
-```
-
-# 사전 정의된 함수
-
-자바 스크립트의 내장 함수들 중엔 유용한 함수가 많다.
-
-- parseInt()
-- parseFloat()
-- isNaN()
-- isFinite()
-- encodeURI()
-- decodeURI()
-- encodeURIComponent()
-- decodeURIComponent()
-- eval()
-
-## ParseInt()
-
-ParseInt() 함수는 모든 유형의 입력(대부분 문자열)을 받아 정수로 만든다. 실패하면 NaN을 반환한다.
-
-```mm
-> parseInt('abc123');
-NaN
-> parseInt('1abc23');
-1
-> parseInt('123abc');
-123
-```
-
-그리고 이 함수는 선택적인 두 번째 매개변수인 기수(radix)를 사용해 숫자의 유형(10,16,2진수 등)을 알려준다. 예를 들어 FF 문자열에서 10진수를 추출하려고 하면 의미가 없다.
-결과는 NaN이지만, FF를 16진수로 시도하면 255가 된다.
-
-```mm
-> parseInt('FF',10);
-NaN
-> parseInt('FF',16);
-255
-```
-
-또 다른 예는 베이스 10(10진수)와 베이스 8(8진수)인 문자열을 파싱(parsing -> parseInt랑 여관있는듯?)하는 것이다.
-
-```mm
-> parseInt('0377', 10);;
-377
-> parseInt('0377', 8);;
-255
-```
-
-parseInt()를 호출할 때 두 번째 인수를 생략하면 함수는 다음 예외를 제외하고 모두 10(10진수)로 가정한다.
-
-- 0x로 시작하는 문자열을 전달하면 기수는 16(16진수)로 가정한다.
-- 전달한 문자열ㅇ이 0으로 시작하면 기수를 8(8진수)로 가정한다.
-
-```mm
-> parseInt('377'); // 아무것도 없어 10진수로 가정한 경우
-377
-> console.log(0o377); // 8진수로 가정한 경우
-255
-undefined
-> parseInt('0x377'); // 16진수로 가정한 경우
-887
-```
-
-가장 안전한 방법은 기수를 지정해 주는 것이다.
-
-## parseFloat()
-
-parseFloat() 함수는 parseInt() 함수와 비슷하지만, 입력에서 숫자를 추추할 때 10진수를 찾는다.
-
-```mm
-> parseFloat('123');
-123
-> parseFloat('1.23');
-1.23
-> parseFloat('1.23.00');
-1.23
-> parseFloat('1.23abc.00');
-1.23
-> parseFloat('a.bc1.23.00');
-NaN
-```
-
-parseInt()와 마찬가지로 parseFloat()는 예상치 못한 문자가 나타나면 준자열의 나머지 부분에 사용할 수 있는 숫자가 있더라도 이를 무시한다.
-
-그리고 parseFloat()함수는 parseInt()함수와 달리 입력값의 지수를 이해한다.
-
-```mm
-> parseFloat('123e-2');
-1.23
-> parseFloat('1e10');
-10000000000
-> parseInt('1e10'); // parseInt는 지수를 문자열로 인식함.
-1
-```
-
-## isNaN()
-
-isNaN을 사용하면 산술 연산에서 안전하게 사용할 수 있는 유효한 숫자인지 확인할 수 있다.
-
-이 함수는 parseInt(), paresFloat() 또는 산술 연산이 성공했는지 여부를 확인하는 편리한 방법이기도 하다.
-
-```mm
-> isNaN(NaN);
-true
-> isNaN(123);
-false
-> isNaN(1.23);
-false
-> isNaN(parseInt('abc123'));
-true
-```
-
-이 함수는 또한 입력을 숫자로 변환하려고 시도한다.
-
-```mm
-> isNaN('1.23');
-false
-> isNaN('a1.23');
-true
-```
-
-isNaN() 함수는 특별 값 NaN이 NaN을 포함한 어떤 값과도 같지 않기 때문에 유용하다.
-즉 NaN === NaN은 false다.
-
-## isFinite()
-
-isFinite() 함수는 입력 값이 Infinity나 NaN이 아닌 숫자인지 확인한다.
-
-```mm
-> isFinite(Infinity);
-false
-> isFinite(-Infinity);
-false
-> isFinite(12);
-true
-> isFinite(1e308);
-true
-> isFinite(1e309);
-false
-```
-
-Javascript.md에서 살펴본 바와 같이 자바스크립트에서 가장 큰 숫자는 1.7976931348623157e+308임을 기억하자. 1e309는 따라서 무한대가 된다.
-
-# 변수 범위 ( 매우 중요 )
-
-자바 스크립트의 변수는 블록 범위가 아닌 `함수 범위`에 정의된다는 점을 기억해야 한다. 즉 변수가 함수 내에 정의된 경우, 함수 외부에서 변수가 보이지 않는다.
-
-그러나 if 또는 for 코드 블록 내부에 정으된 경우에는 블록 외부에서도 볼 수 있다. `전역(global) 변수`가 함수외부에서 정의하는 변수를 의미한다. 반면 `지역(local)`변수는 함수 내에서 정의된 변수다. 함수 내부의 코드는 지역 변수뿐만 아니라 모든 전역 변수에도 접근할 수 있다.
-
-다음 예제에서
-
-- f() 함수는 global 변수에 접근할 수 있다.
-- f() 함수 외부에 local 변수는 존재하지 않는다.
-
-```mm
-> var global = 1;
-undefined
-> function f() {
-... var local = 2;
-... global++
-... return global;
-... }
-undefined
-> f()
-2
-> global
-2
-> f()
-3
-> global
-3
-> local
-Uncaught ReferenceError: local is not defined
-```
-
-또한 변수를 선언할 때 var문을 사용하지 않으면, 이 변수는 자동으로 전역 범위로 할당 된다는 점에 유의하자.
-
-```m
-> function a () {locala =2}
-undefined
-> locala
-Uncaught ReferenceError: locala is not defined
-> a()
-undefined
-> locala
-2
-```
-
-함수 a()는 locala 변수를 포함하고 있다. 함수를 호출하기 전에는 변수가 존재하지 않는다. 함수를 처음 호출하면 local 변수가 전역 범위로 생성된다. 그 다음에 함수 밖에서 locala 변수에 접근하면 사용이 가능하다.
-
-## 변수 호이스팅
-
-```mm
-var a = 123;
-
-> function f() {
-... alert(a);
-... var a = 1;
-... alert(a);
-... }
-```
-
-첫번째 alert() 함수는 123을 표시하고 두 번째는 1을 표시할 것으로 기대할 것이다. 그러나 다르다.
-
-첫번째 alert()는 undefined를 표시한다. 이는 함수 내에서 지역 범위가 전역 범위보다 더 중요하기 때문이다. 다라서 지역 변수는 같은 이름의 전역 변수를 덮어 쓴다.
-
-첫번째 alert() 당시 a 변수는 아직 지정되지 않았지만(따라서 undefined 값), 호이스팅(hoisting)이라는 특별한 동작으로 인해 여전히 지역 공간에 존재한다.
-
-자바스크립트 프로그램 실행이 새 함수로 들어가면, 함수에서 선언된 모든 변수가 함수의 맨 위로 이동하거나 호이스팅(위로 올라간다) 된다. 또한 선언만 호이스팅되는데, 이는 변수의 존재만 맨 위로 이동함을 의미한다.
-모든 할당은 원래 위치 그대로 남아있는다.
-
-위의 예제에서 지역 변수 a의 선언은 맨 위로 호이스팅 됐다. 선언만 호이스팅 됐고 1로 할당은 아니다.
-다음 예제와 같이 써있다고 생각하면 된다.
-
-```mm
-> function f() {
-... var a;
-... alert(a)
-... a =1;
-... alert(a);
-... }
-```
-
-## 블록 범위
-
-ES6에서는 범위를 선언할 때 추가 범위를 제공한다. 또한 변수를 선언할 수 있는 let과 const 키워드를 도입했다.
-
-### let
-
-let으로 선언된 변수는 블록 범위를 가진다. 변수는 현재 블록 내에만 존재한다. var로 선언된 변수는 앞에서 살펴본 것과 같이 함수 범위를 가진다.
-
-```mm
-> var a = 1;
-
-> {
-... let a = 2;
-... console.log( a );
-... }
-2
-
-> console.log( a )
-1
-```
-
-중괄화 '{' '}' 사이의 범위가 블록이다.
-
-자바스크립트에서는 블록이 범위와 관련이 없어 관용적으로 사용해야할 필요가 있다. 그리고 let키워드를 사용해 블록 범위 변수를 생성할 수 있다. 블록 내부에서 생성된 변수 a는 블록 내에서 사용할 수 있다. 블록 범위 변수를 선언할 때, 일반적으로 let 선언을 블록의 맨 위에 추가하는 것이 좋다.
-
-```mm
-> function swap(a,b) {
-... if (a>0 && b>0) {
-..... let tmp=a;
-..... a=b;
-..... b=tmp;
-..... }
-... console.log(a,b);
-... console.log(tmp);
-... reutrn [a,b];
-... }
-
-> swap(1,2);
-2 1
-Uncaught ReferenceError: tmp is not defined
-    at swap (REPL80:8:13)
-```
-
-보다시피 .tmp는 let으로 선언되어 정의된 블록에섬나 사용이 가능하다. 실제 코드를 작성할 때에는 블록 범위 변수 사용을 최대화해야 한다. var 선언을 사용해야 하는 아주 특별한 이유가 있지 않는 한, 블록 범위 변수를 사용해야 한다.
-
-그러나 let 키워드를 잘못 사용했을 때의 문제점이 있다.
-
-let 키워드를 사용해 동일한 함수 또는 블록 범위 내에서 동일한 변수를 재선언할 수 없다.
-
-```mm
-> function blocker(x){
-... if(x){
-..... let f;
-..... let f;
-let f;
-    ^
-
-Uncaught SyntaxError: Identifier 'f' has already been declared
-```
-
-ES7에서 let 키워드로 선언된 변수는 블록 범위로 호이스팅된다. 그러나 선언 전에 변수를 참조하면 오류가 발생한다.
-
-## const
-
-const 키워드로 선언된 변수는 값에 대한 읽기 전용 참조를 생성한다. 이것은 참조의 값이 변경 불가능하다는 것을 의미하지는 않는다. 그러나 변수 식별자는 다시 할당할 수 없다. 상수는 let키워드를 사용하여 생성된 변수와 마찬가지로 블록 범위다. 또한 선언할 때 변수에 값을 할당해야 한다.
-
-```mm
-> const car = {}
-undefined
-> car.tyres =4
-4
-> car
-{ tyres: 4 }
-```
-
-예제에서 상수 car에 {}값을 할당했다. 한번 할당되면 이 참조는 변경할 수 없다.
-
-```mm
-> const car = 123
-Uncaught SyntaxError: Identifier 'car' has already been declared
-```
-
-- 가능하다면 const를 사용해라. 값이 변하지 않는 모든 변수에 이 키워드를 사용한다.
-- var의 사용은 최대한 피해라.
-
-## 함수는 데이터
-
-자바스크립트의 함수는 실제로 데이터다. 그러므로 다음과 같이 함수를 만들어 변수에 함수를 할당할 수 있다.
-
-```mm
-> var f = function() {
-... return 1;
-... }
-```
-
-함수를 정의하는 이런 방식을 함수 리터럴 표기법 이라고 한다.
-
-function() { return 1;} 부분은 `함수 표현식`이다. 함수 표현식은 선택 사항으로 이름을 가질 수 있으며, NFE(Named Function expression) = 이름있는 함수 표현식이 된다.
-
-따라서 자바스크립트 함수는 데이터지만 다음과 같은 두 가지 중요한 특징을 가진 특별한 종류의 데이터다.
-
-- 코드를 포함한다
-- 실행 가능하다.
-
-함수를 실행하는 방법은 이름 뒤에 괄호를 추가하는 것이다.
-
-```mm
-> var sum = function (a,b) {
-... return a + b;
-... };
-
-> var add = sum;
-> typeof add;
-'function'
-> add(1,2)
-3
-```
-
-변수의 이름 지정 규칙과 동일한 규칙이 함수의 이름 지정에도 적용된다. 함수 이름은 숫자로 시작할 수 없고 문자 ,숫자, 밑줄 문자 및 달러 기호의 조합을 포함할 수 있다.
-
-## 익명 함수
-
-```mm
-var f = function (a) {
-    return a;
+var hero = {
+  breed : 'Turtle',
+  occupation : 'Ninja'
 };
 ```
 
-함수 표현식을 변수에 지정하지 않고 사용되는 경우 `익명 함수`라고도 불린다.
+위의 코드에서
 
-- 익명 함수를 매개변수로 다른 함수에 전달할 수 있다. 수신 함수는 전달받은 함수로 유용한 작업을 할 수 있다.
-- 익명 함수를 정의하고 바로 실행할 수 있다.
+- 객체를 참조하는 변수의 이름은 hero다.
+- 배열을 정의하는데 사용하는 '[' 과 ']' 대신, 객체에는 '{' 와 '}'를 사용한다.
+- 객체에 포함된 요소(속성 Property)는 쉼표로 구분한다.
+- 키 / 값의 쌍은 key:value와 같이 콜론으로 나눈다.
 
-## 콜백 함수
-
-함수는 변수에 할당된 다른 데이터와 마찬가지로, 정의되고 복사되어 다른 함수의 인수로 전달할 수 있다.
-
-두 개의 함수를 매개 변수로 받아 실행하고, 각각의 합계를 반환하는 함수의 예를 보여준다.
+키는 선택적으로 따옴표로 묶을 수 있다. 예를 들어 다음 키는 모두 동일하다.
 
 ```mm
-> function invokeAdd(a,b) {
-... return a() + b();
-... }
+var hero = {occcpation : 1}
+var hero = {"occupation": 1}
+var hero = {'occupation': 1}
 ```
 
-이제 하드 코딩된 값만 반환하는 함수 선언 패턴을 사용하여 두 가지 간단한 추가 함수를 정의해 보자.
+속성의 이름에 따옴표를 사용하지 않는 것이 좋다(입력이 줄어들기 때문) 하지만 따옴표를 사용해야 하는 경우가 있다.
+
+- 속성 이름이 자바스크립트 예약어(reserve word)중 하나인 경우
+- 공백이나 특수문자(`문자`,`숫자`,`_`,`$` 이 이외의 문자)가 포함된 경우
+- 숫자로 시작되는 경우
+
+즉 속성의 이름으로 선택한 이름이 자바스크립트 변수로 유효한 이름이 아니면, 따옴표로 묶어야 한다.
 
 ```mm
-> function one() {
-... return 1;
-... }
-
-> function two() {
-... return 2;
-... }
-
-> invokeAdd(one,two);
-3
+var o = {
+  $somthing : 1,
+  'yesorno' : 'yes',
+  '!@)#!@()' : true
+};
 ```
 
-그렇게 하면 다음과 같은 결과를 얻을 수 있다.
+위의 예제들로 사용한것들 전부 유효한 객체이다. 두 번째, 세 번째 속성에는 따옴표가 필요하다. 그렇지 않을경우 오류가 발생한다.
 
-함수를 매개 변수로 전달하는 또 다른 예제는 익명 함수를 사용하는 것이다.
+## 요소, 속성, 메소드 및 멤버
+
+배열에 대해 말할 때, 배열에 요소(element)가 들어 이싿고 말한다. 객체에 대해선 객체에 속성(property)이 들어있다고 말한다. 자바스크립트에서는 큰 차이가 없으며 사람들에게 익숙한 용어들이다.
+
+함수는 데이터일 뿐이므로, 객체의 속성은 함수를 가르킬 수 있다. 함수를 가리키는 속성을 `메소드(method)`라고 한다.
+
+다음 예제에서 talk는 메소드이다.
 
 ```mm
-> invokeAdd(function () {return 1;}, function() {return 2;});
-3
+var dog = {
+  name : 'Benji',
+  talk : function() {
+    alert('Woof, woof!');
+  }
+};
 ```
 
-함수 A를 다른 함수 B에 전달하고 B가 A를 실행하면, A를 롤백 함수라고 말한다.
+## 해시와 연관 배열
 
-만약 A에 이름이 없으면 익명 콜백 함수라고 말할 수 있다.
+일부 프로그래밍 언어에는 다음 둘 사이에 차이가 있다.
 
-콜백 함수는 언제 유용할까?
+- 일반 배열, 인덱스 배열 또는 열거 배열로도 불린다.
+- 연관 배열, 해시 또는 딕셔너리로도 불린다.
 
-- 이름을 지정할 필요 없이 함수를 전달할 수 있다. 즉 변수가 적어진다.
-- 함수를 호출하는 책임을 다른 함수에 위임할 수 있다. 즉, 작성할 코드가 적어짐을 의미한다.
-- 실행 연기 또는 호출 차단 해제로 성능을 향상시킬 수 있다.
+자바스크립트는 배열을 사용해 인덱스 배열과 객체를 표시해서 연관배열을 나타낸다. 자바스크립트에서 해시를 원한다면 객체를 사용하면 된다.
 
-> 콜백 예제
+## 객체의 속성 접근
 
-값을 반환하고 다른 함수로 전달하는 함수가 있다. 예제에서 첫 번째 함수인 multiplyByTwo()는 세 개의 매개변수를 받아 2를 곱하는 루프를 돌은 다음, 결과가 들어있는 배열을 반환한다.
+객체의 속성에 접근하는 방법은 두 가지가 있다.
 
-두 번째 함수 addOne()은 값을 받아 1을 더한 다음 반환한다.
+- 대괄호 표기법을 사용하는 방법(ex : hero['occupation']0
+- 도트 표기법을 사용하는 방법(ex : hero.occupation)
+
+도트 표기법은 읽고 쓰기에 더 쉽지만, 언제나 사용할 수 있는 것은 아니다.
+
+왜냐하면 속성 이름을 인용하는 경우에도 동일한 규칙이 적용되기 때문이다. 또한 속성의 이름이 유효한 변수 이름이 아닌 경우, 도트 표기법을 사용할 수 없다.
+
+다음의 hero 객체를 통해 살펴보자.
 
 ```mm
-> function multiplyByTwo(a,b,c) {
-... var i, ar = [];
-... for ( i=0; i<3; i++) {
-..... ar[i] =arguments[i] * 2;
-..... }
-... return ar;
-... }
-undefined
-> function addOne(a) {
-... return a +1;
-... }
+var hero = {
+  breed : 'Turtle',
+  occupation : 'Ninja'
+};
 ```
 
-다음 함수를 테스트 해보자.
+도트 표기법으로 속성에 접근하는 예이다.
 
 ```mm
-> multiplyByTwo(1,2,3);
-[ 2, 4, 6 ]
-> addOne(100)
+hero.breed;
+"Turtle"
+```
+
+대괄효 표기법으로 속성에 접근하는 예도 살펴보자
+
+```mm
+hero['occupation'];
+"Ninja"
+```
+
+존재하지 않는 속성에 접근하면 다음과 같이 undefined를 반환한다.
+
+```mm
+'Hair color is' + hero.hair;
+"Hair color isundefined"
+```
+
+또한 객체는 다른 객체를 포함한 모든 데이터를 포함할 수 있다.
+
+```mm
+var book = {
+  name : 'Catch',
+  publish : 1961,
+  author : {
+    firstname : 'Joseph',
+    lastname : 'Hellen'
+  }
+};
+```
+
+book 객체의 author 속성에 포함된 객체의 firstname 속성을 가져오려면 다음과 같은 코드를 사용한다.
+
+```mm
+book.author.firstname
+"Joseph"
+```
+
+대괄호 표기법을 사용한 예제를 살펴보자.
+
+```mm
+book['author']['firstname']
+"Joseph"
+```
+
+그리고 두 표기법을 혼합해도 동작한다.
+
+```mm
+book.author['firstname']
+"Joseph"
+
+book.publish
+1961
+
+book['author'].lastname
+"Hellen"
+```
+
+그리고 대괄호과 필요한 또 다른 경우는 접근해야 하는 속서으이 이름을 미리 알 수 없는 경우이다.
+런타임시 동적으로 변수에 저장되는 경우가 해당된다.
+
+```mm
+var key = 'firstname';
+book.author[key];
+"Joseph"
+```
+
+예제에서 key값은 변수값으로 주어지며 미리 지정되지 않는다.
+
+## 객체의 메소드 호출
+
+메소드는 함수의 속성 중 하나일 뿐이므로 속성에 접근하는 것과 동일한 방법으로 메소드에 접근할 수 있다. 메소드 호출은 다른 함수 호출과 동일하다. 메소드 이름 뒤에 괄호를 추가하면 실행된다.
+
+```mm
+var hero = {
+  breed : 'Turtle',
+  occupation : 'Ninja',
+  say : function () {
+    return ' I am ' + hero.occupation;
+  }
+};
+
+hero.say();
+"I am Ninja"
+```
+
+메소드에 전달할 매개변수가 있으면 일반 함수처럼 처리할 수 있다.
+
+```mm
+hero.say('a', 'b', 'c');    // " I am Ninja"
+```
+
+배열과 유사한 대괄호를 사용하여 속성에 접근할 수 있기 때문에, 대괄호를 사용해 메소드에 접근하고 호출할 수 있다.
+
+```mm
+hero['say'] // " I am Ninja"
+```
+
+그러나 이 방법은 코드 작성시에는 메소드 이름을 알 수 없고 런타임시에 정의되는 경우가 아니라면, 일반적인 관행은 아니다.
+
+```mm
+var method = 'say';
+hero[method](); // " I am Ninja"
+```
+
+## 속성 / 메소드 변경
+
+자바스크립트를 사용하면 언제든지 기존 객체의 속성과 메소드를 변경할 수 있다. 새로운 속성의 추가, 삭제도 포함된다. 빈 객체로 시작하고 나중에 속성을 추가할 수도 있다.
+
+속성이 없는 객체는 다음과 같다.
+
+```
+var hero ={};
+```
+
+> "빈" 객체
+
+이 색션에서 "빈(blank)" 객체인 var hero = {}으로 시작했다. 이 객체가 실제로 비어 있고 쓸모 없는 것은 아니기 때문에, 따옴표 안에 공백이 있다.
+
+1. 존재하지 않는 속성에 접근하는 코드는 다음과 같다.
+   ```mm
+   typeof hero.breed;
+   "undefined"
+   ```
+2. 두 개의 속성과 메소드를 추가한다.
+   ```mm
+   hero.breed = 'turtle';
+   hero.name = 'Leonardo';
+   hero.sayName = function () {
+       return hero.name;
+   };
+   ```
+3. 메소드를 호출한다.
+   ```mm
+   hero.sayName();
+   "Leonardo"
+   ```
+4. 속성을 삭제한다.
+   ```mm
+   delete hero.name;
+   true
+   ```
+5. 메소드를 다시 호출하면 더 이상 삭제된 name속성을 찾을 수 없다.
+   ```mm
+   hero.sayName();
+   "undefined"
+   ```
+
+## this 값 사용
+
+앞의 예제에서 sayName() 메소드는 hero.name을 사용해 hero 객체의 name 속성에 접근했다.
+
+그러나 메소드 내부에 있을 때 메소드가 속한 객체에 접근할 수 있는 또 다른 방법이 있다. 이 메소드는 특별한 값 this를 사용한다.
+
+- this는 -> 선언이 실행 되는 시점의 나의 문맥을 나타낸다.
+
+```mm
+var hero ={
+  name : 'Rafaelo',
+  sayName :  function () {
+    return this.name;
+  }
+};
+hero.sayName();
+"Rafaelo"
+```
+
+따라서 this를 사용하면 실제로 이 객체 또는 현재 객체에 접근할 수 있다.
+
+## 생성자 함수
+
+객체를 생성하는 방법에는 생성자 함수를 사용하는 방법도 있다. 예제를 통해 살표보자.
+
+```mm
+function Hero() {
+  this.occupation = 'Ninja'
+}
+```
+
+이제 이 함수를 사용해 객체를 생성하려면, 다음과 같이 new 연산자를 사용한다.
+
+```mm
+var hero = new Hero();
+hero.occupation;
+"Ninja"
+```
+
+생성자 함수를 사용하면 새로운 객체를 만들 때 매개변수를 사용할 수 있는 이점이 있다.
+하나의 매개변수를 받아 이것을 name 속성에 할당하도록 생성자를 수정해 보자.
+
+```mm
+function Hero(name) {
+	this.name = name;
+  this.occupation = 'Ninja';
+  this.whoAreYou = function () {
+    return "I'm " +
+      this.name +
+      " and I'm a " +
+      this.occupation;
+	};
+}
+```
+
+이제 동일한 생성자를 사용해 서로 다른 객체를 생성할 수 있다.
+
+```mm
+var h1 = new Hero('Michelangelo');
+var h2 = new Hero('Donatello');
+
+h1.whoAreYou();
+"I'm Michelangelo and I'm a Ninja"
+
+h2.whoAreYou();
+"I'm Donatello and I'm a Ninja"
+```
+
+생성자로 설계된 함수를 new 연산자를 생략해 호출해도 오류가 아니다. 하지만 기대했던 결과를 제공하지는 않는다.
+
+```mm
+var h = Hero('Leonardo')
+typeof h;
+"undefined"
+```
+
+new 연산자가 없으므로 새로운 객체가 생성되지 않앗다. 함수가 다른 일반 함수처럼 호출됐으므로 변수 h에는 함수가 반환하는 값이 포함된다. 이 함수는 아무것도 반환하지 않는다(return 문이 없다). 따라서 실제로 h에 할당된 undefined를 반환한다. 이 경우 this는 전역 개체를 참조한다.
+
+## 전역 개체
+
+앞에서 전역 변수에 대해(그리고 가급적 사용하지 말 것) 조금 알아보았다. 그리고 자바스크립트 프로그램은 호스트 환경에서 실행된다는 것도 알고 있다. 호스트 환경은 전역 객체를 제공하고, 모든 전역 변수는 전역 객체의 속성으로 접근할 수 있다.
+
+호스트 환경이 웹브라우저인 경우, 전역 객체는 window로 호출된다. 전역 객체에 접근하는 또 다른 방법은(대부분의 환경에서도 동일) 생성자 함수 바깥에서 this 키워드를 사용하는 것이다.
+
+예를 들어, 다음과 같이 함수 외부에서 전역 변수를 선언할 수 있다.
+
+```mm
+var a = 1;
+```
+
+그런 다음, 이 전역 변수에 다양한 방법으로 접근할 수 있다.
+
+- 변수 a로
+- 전역 객체의 속성으로(ex, window['a'] = 1 or window.a = 1 )
+- this로 참조되는 전역 객체의 속성으로 (this.a = 1)
+
+생성자 함수를 정의하고 new 연산자 없이 호출하는 경우로 돌아가 보자. 이 경우, this는 전역 객체를 참조하고 this에 설정된 모든 속성은 window의 속성이 된다.
+
+생성자 함수를 선언하고 new 없이 호출하면 "undefined"를 반환한다.
+
+```mm
+function hero(name) {
+  this.name = name;
+}
+
+var h = Hero('Leonardo')
+typeof h;
+"undefined"
+typeof h.name;
+TypeError: can't access property "name", h is undefined
+```
+
+Hero 함수 안에 this 키워드가 있기 때문에, name이라는 전역 변수(전역 객체의 속성)이 생성됐다.
+
+```mm
+name;
+"Leonardo"
+window.name;
+"Leonardo"
+```
+
+new를 사용해 동일한 생성자 함수를 호출하면, 새 객체가 반환되고 this가 이 객체를 참조한다.
+
+```mm
+var h2 = new Hero('Michelangelo');
+typeof h2;
+"object"
+h2.name;
+"Michelangelo"
+```
+
+앞에서 봤던 내장된 전역 함수 역시 window 객체의 메소드로 호출할 수 있다. 따라서 다음 두 호출의 결과는 같다.
+
+```mm
+parseInt('101 dalmatians');
+101
+window.parseInt('101 dalmatians');
 101
 ```
 
-이제 세 개의 요소를 가진 myarr 배열이 있고, 각 요소가 두 함수에 전달되어야 한다고 가정해 보자. 먼저 multiplyByTwo()를 호출한다.
+## 생성자 속성
+
+객체가 생성되면 특별한 constructor 속성이 백그라운드로 객체에 할당된다. 이것은 this 객체를 생성하는데 사용되는 생성자 함수의 참조를 포함한다.
 
 ```mm
-> var myarr = [];
-undefined
-> myarr = multiplyByTwo(10,20,30);
-[ 20, 40, 60 ]
-```
-
-이제 루프를 돌아 각 요소를 addOne()에 전달한다.
-
-```m
-> for (var i = 0; i < 3; i++) {
-...     myarr[i] = addOne(myarr[i]);
-... }
-
-> myarr
-[ 21, 41, 61 ]
-```
-
-보다시피 잘 동작하지만 개선의 여지가 있다. 이를 개선하여 콜백 함수를 받고 모든 반복에서 콜백을 호출하도록 바꿔보자.
-
-```mm
-> function multiplyByTwo(a, b, c, callback) {
-... var i, ar = [];
-... for (i = 0; i < 3; i++) {
-..... ar[i] = callback(arguments[i] * 2);
-..... }
-... return ar;
-... }
-```
-
-```mm
-> multiplyByTwo(1, 2, 3, function (a) {
-... return a + 1;
-... });
-[ 3, 5, 7 ]
-```
-
-## 즉시실행 함수
-
-익명함수의 또 다른 응용으로 함수가 정의되는 즉시 호출된다.
-
-```mm
-(
-function (){
-  alert('boo');
-}
-)();
-```
-
-단순히 괄호 안에 함수 표현식을 작성한 다음, 뒤에 또 다른 괄호를 나열하면 된다. 두 번째 괄호는 지금 실행하도록 지시하며 익명 함수가 받을 인수를 지정한다.
-
-즉시실행 함수의 좋은 응용 예는 추가 전역 변수를 생성하지 않고 작업을 하고 싶을 때다.
-
-단점은 물론 동일한 함수를 두 번 실행할 수 없다는 것이다. 즉 즉시실행 함수는 일회성 또는 초기화 작업에 적합하다.
-
-## 내부(비공개) 함수
-
-다른 값들과 마찬가지로 함수 안에서 함수를 정의할 수 있다.
-
-```mm
-function outer(param){
-  function inner(theinput){
-    return theinput * 2;
-  }
-  return 'The result is ' + inner(param);
+h2.constructor;
+function Hero(name) {
+  this.name = name;
 }
 ```
 
-함수 표현식을 사용하면
+constructor 속성이 함수에 대한 참조를 포함하고 있으므로, 이 함수를 호출해 새 객체를 생성할 수도 있다. 다음 코드는 "객체 h2가 어떻게 생성됐는지 모르겠지만. 이와 비슷한 다른 객체가 필요하다"고 말한다.
 
 ```mm
-var outer = function (param){
-  var inner = function (theinput){
-    return theinput * 2;
-  }
-  return 'The result is ' + inner(param);
-}
+var h3 = new h2.constructor('Rafaello');
+h3.name;
+"Rafaello"
 ```
 
-다음과 같이 작성할 수 있다.
-
-전역 outer() 함수를 호출하면, 내부적으로 지역 inner() 함수가 호출된다. inner() 함수가 지역이어서 outer()의 밖에서 접근할 수 없기 때문에 비공개 함수라고 말할 수 있다.
+객체 리터럴 표기법을 사용해 객체를 만든 경우, 객체의 생성자는 내장된 Object() 생성자 함수다.
 
 ```mm
-outer(2);
-"The result is 4"
-outer(8);
-"The result is 16"
-inner(2);
-Uncaught ReferenceError: inner is not defined
+var o = {};
+o.constructor;
+function Object()
+typeof o.constructor;
+"function"
 ```
 
-비공개 함수를 사용하면 다음과 같은 이점이 있다.
+## instanceof 연산자
 
-- 전역 네임스페이스를 깨끗하게 유지할 수 있어 이름 충돌이 발생할 가능성이 줄어든다.
-- 개인 정보 보호 - 필요한 함수만 외부에 노출시키고, 사용하지 않는 나머지 함수는 보이지 않게 유지한다.
-
-## 함수를 반환하는 함수
-
-함수는 항상 값을 반환하고, 명시적으로 return을 기술하지 않으면 undefined를 반환한다.
-
-함수는 하나의 값만 반환할 수 있으며, 함수 역시 반화할 수 있다.
+instanceof 연산자를 사용하면 객체가 constructor 함수로 생성됐는지 테스트할 수 있다.
 
 ```mm
-function a() {
-  alert('A!')
-  return function () {
-    alert('B!')
-  }
-}
+function Hero() {}
+var h = new Hero();
+var o = {};
+h instanceof Hero;
+true
+h instanceof Object;
+true
+o instanceof Object;
+true
 ```
 
-위 예제에서 a() 함수는 작업을 수행(A! 출력)하고, 또 다른 작업을 수행(B! 출력)하는 다른 함수를 반환한다. 반환 값을 변수에 할당한 다음, 이 변수를 일반 함수로 사용할 수 있다.
+함수 이름 뒤에 괄호를 넣지 않도록 주의하자(h instanceof Hero()를 사용하지 않는다.) 이것은 이 함수를 호출하지 않고 다른 변수와 마찬가지로 이름으로 참조하기 때문이다.
+
+## 객체를 반환하는 함수
+
+constructor 함수와 new 연산자를 사용해 객체를 생성하는 방법 외에도 일반 함수를 사용해서 new 연산자 없이 객체를 생성할 수도 있다. 약간의 준비 작업을 수행하면 반환 값으로 객체를 가지는 함수를 만들 수 있다.
+
+다음은 객체를 생성하는 간단한 factory() 함수다.
 
 ```mm
-var newFUnc = a(); // A! 출력
-newFUnc();  // B! 출력
-```
-
-변환된 함수를 새 변수에 할당하지 않고 즉시실행하려면 다른 괄호 세트를 사용하면 된다.
-
-```mm
-a()();  // A! 출력 -> B! 출력
-```
-
-## 사용자 정의 함수
-
-함수는 함수를 반환할 수 있으므로 새 함수로 이전의 함수를 대체할 수 있다. 앞의 예제를 계속 사용하여 a()함수를 호출할 때 반환된 값을 가지고 실제 a()함수를 덮어쓸 수 있다.
-
-```mm
-a = a();
-```
-
-앞의 코드는 A!를 출력하지만, 다음에 a()를 출력할 때는 B!를 출력한다. 이 기능은 함수가 일회성 작업을 수행할 때 유용하다. 이 함수는 호출될 때 불필요한 반복 작업을 피하기 위해 첫 번쨰 호출 후에 스스로를 덮어 쓴다.
-
-함수는 외부에서 재정의 됐고, 반환된 값은 함수에 다시 할당됐다. 그러나 함수는 다음 예젱와 같이 실제로는 내부에서 스스로를 재작성할 수 있다.
-
-```mm
-function a() {
-  alert('A!');
-  a = function () {
-    alert('B!')
+function factory(name) {
+  return {
+    name : name
   };
 }
 ```
 
-이 함수를 처음 호출하면 다음이 수행된다.
-
-- A! 출력 (일회성 예비 작업으로 간주됨)
-- 전역 변수 a를 재정의하고 이 변수에 새 함수를 할당함.
-
-다음에 함수가 호출되면 B!를 출력한다.
+factory() 함수를 사용하는 다음 예제를 살펴보자.
 
 ```mm
-var a = (function () {
-
-  function someSetup() {
-    var setup = 'done';
-  }
-
-  function actualWork() {
-    alert('Worky-Worky');
-  }
-
-  someSetup();
-  retrun actualWork;
-
-}());
+var o = factory('one');
+o.name;
+"one"
+o.constructor;
+function Object()
 ```
 
-앞에서 설명한 몇 가지 기술을 결합한 예제이다.
-
-- 비공개 함수 someSetup()과 acutalWork()가 있다.
-- 즉시실행 함수가 있다. 함수 정의에 괄호를 사용해 자체적으로 호출하는 익명 함수다.
-- 함수가 실행되면, someSetup()을 호출한 당음 함수인 acutalWork 변수에 대한 참조를 반환한다.
-  이 함수를 호출한 결과가 아니라 함수 참조를 반환하기 때문에 retrun문에 괄호가 없다는 점에 유의하자.
-- 전체가 var a = 로 시작하기 때문에 자기 실행 함수의 반환 값은 a에 할당된다.
-
-## 범위 체인
-
-자바스크립트에는 중괄호 범위가 없고 대신 함수 범위가 있다. 함수에 정의된 변수는 함수 밖에서는 볼 수 없지만, 코드 블록(ex if, for 루프)에 정의된 변수는 블록 외부에서도 볼 수 있다.
-
-EX)
+constructor 함수와 함께 this 키워드 대신 return 객체를 사용할 수도 있다. 즉, constructor 함수의 디폴트 행동을 수정할 수 있음을 의미한다.
 
 ```mm
-var a = 1;
-function f() {
-  var b = 1;
-  return a
+function C() {
+  this.a = 1;
 }
-f()
+var c = new C();
+c.a;
+
+function C2() {
+  this.a = 1;
+  return {b: 2};
+}
+var c2 = new C2();
+typeof c2.a
+"undefined"
+c2.b;
+2
+```
+
+a 속성을 포함하는 this 객체를 반환하는 대신, 생성자는 b 속성을 포함하는 다른 객체를 반환했다. 이것은 반환 값이 객체인 경우에만 가능하다. 그렇지 않고 객체가 아닌 것을 반환하려고 시도할 경우, 생성자는 일반적인 동작을 수행하고 this를 반환한다.
+
+생성자 함수 안에서 객체를 생성하는 방법을 생각해 보면 this라는 변수는 함수의 맨 위에서 정의된 다음 마지막에 반환된다고 생각할 수 있다.
+
+```mm
+function C() {
+  // var this = {}; // 의사 코드, 수행할 수 없다.
+  this.a = 1;
+  // return this
+}
+```
+
+## 객체 전달
+
+객체를 다른 변수에 할당하거나 함수에 전달하려면 해당 객체에 대한 참조만 전달하면 된다.
+
+또한 참조를 변경하면 실제로는 원본 객체를 수정하는 것이다.
+
+```mm
+var original = {home : 1};
+var mycopy = original;
+mycopy.home;
 1
-b;
-Uncaught ReferenceError: b is not defined
+mycopy.home = 100;
+100
+original.home;
+1
 ```
 
-a 변수는 전역 공간에 있고 b는 함수 f()의 범위 내에 속해있다. 따라서
-
-- f() 안에서는 a와 b가 모두 보인다.
-- f() 밖에서는 a는 보이지만 b는 보이지 않는다.
-
-outer() 내부에 중첩된 inner()함수를 정의하자면, 자체 범위뿐 아니라 부모의 범위에 있는 변수에 접근할 수 있다. 이는 범위 체인으로 알려져 있으며, 체인은 필요한 만큼 길어질 수 있다.
+객체를 함수에 전달할 때도 똑같이 적용된다.
 
 ```mm
-var global =1;
-function outer() {
-  var outer_local = 2;
-	function inner() {
-    var inner_local = 3;
-    return inner_local + outer_local + global;
-  }
-  return inner();
+var original = {home : 100};
+var nullify = function (o) { o.home = 0; };
+nullify(original);
+original.home
+0
+```
+
+## 객체 비교
+
+객체를 비교할 때, 동일한 객체에 대한 두 개의 참조를 비교할 때만 true가 된다. 똑같은 메소드와 속성을 가지고 있는 서로 다른 두 개별 객체를 비교하면 결과는 false가 된다.
+
+예를 들어
+
+```mm
+var fido = {breed : 'dog'}
+var benji = {breed : 'dog'}
+
+benji === fido;
+false
+benji == fido;
+false
+```
+
+로 서로 다르다. 그러나 여기서 mydog라는 변수를 만들어 비교하면
+
+```mm
+var mydog = benji;
+
+mydog === benji
+true
+mydog == benji
+true
+mydog == fido
+false
+mydog === fido;
+false
+```
+
+가 출력된다.
+
+# ES6 객체 리터럴
+
+ES6에서는 속성 초기화및 함수 정의에 대한 몇 가지 약식 구문을 제공한다.
+
+```mm
+let a =1
+let b =2
+let val = {a : a, b: b}
+
+console.log(val)
+Object { a: 1, b: 2 }
+```
+
+속성값을 할당하는 일반적인 방법이다. 변수의 이름과 속성 키가 같은 경우 ES6에서는 약식 구문을 사용할 수 있다.
+
+메소드 정의에서도 비슷한 구문을 사용할 수 있다. 메소드는 단순히 값이 함수인 객체의 속성이다.
+
+```mm
+let vehicle = "car"
+function vehicleType () {
+  return "truck"
 }
+let car = {
+  [vehicle + '_model'] : "Ford"
+}
+let truck = {
+  [vehicleType + '_model'] : 'Merecedz'
+}
+
+console.log(car) // {"car_model":"Ford"}
+console.log(truck) // {"truck_model":"Mercedez"}
 ```
 
-outer() 실행시 6이 출력된다.
+car 객체를생성할 때 변수 vehicle의 값을 고정된 문자열과 연결해 속성키를 만든다. 두 번째 코드에서는 함수가 반환한 값을 고정된 문자열과 연결하여 속성을 생성한다. 이 속성 키 게산 방법은 객체를 생성할 때 많은 유연성을 제공해서 보일러플레이트와 반복 코드를 제거할 수 있게 해준다.
 
-## 화살표 함수
+## 객체 속성과 어트리뷰트
 
-자바 스크립트는 거의 모든 종류의 화살표 함수를 사용한다.
+각 객체는 몇 가지 속성을 가지고 있다. 각각의 속성은 키와 어트리뷰트로 구성된다. 속성의 상태는 이들 어트리뷰트에 저장된다. 모든 속성은 다음과 같은 어트리뷰트를 가진다.
+
+- Enumerable(부울) : 객체의 속성을열거할 수 있는지 여부를 나타낸다. 시스템 속성은 열거 가능하지 않지만 사용자 특성은 열거 가능하다. 특별한 이유가 없는 한 이 속성은 변경하지 않는다.
+
+- Configurable(부울) : 이 속성이 false이면, 속성을 삭제하거나 편집할 수 없다.
+
+Object.getOwnPropertyDescriptor() 메소드를 사용하면 객체의 속성을 검색할 수 있다.
 
 ```mm
-$(#submit-ntn").click(function (event) {
-  validateForm();
-  submitMessage();
-});
+let obj = {
+  age : 25
+}
+
+console.log(Object.getOwnPropertyDescriptor(obj, 'age'));
+Object { value: 25, writable: true, enumerable: true, configurable: true }
 ```
 
-위의 코드는 전형적인 제이쿼리 이벤트 핸들러라고 한다. 정확히 뭔지는 아직 배우지 않았지만, 이벤트 핸들러인 click()함수는 함수를 매개 변수를 받아들여 인라인 익명 함숲 현식을 만들어 click 함수에 전달한다. 이렇게 익명 함수 표현식을 작성하는 스타일을 람다 함수라고 한다. 그러나 자바스크립트의 람다 구문은 간결하지 않았다.
-
-화살표 함수는 전통적인 함수 표현식보다 더 간결한 구문을 제공한다.
+또한 Object.dfineProperty() 메소드를 사용하여 속성을 정의할 수 있다.
 
 ```mm
-const num = [1,2,3]
-const squares = num.map(function(n){
-  return n*n
-});
-console.log(squares); // [ 1, 4, 9 ]
+let obj = {
+  age : 25
+}
+
+Object.defineProperty(obj,'age', { configuralbe: false })
+
+console.log(Object.getOwnPropertyDescriptor(obj,'age'));
+Object { value: 25, writable: true, enumerable: true, configurable: true }
 ```
 
-화살표 힘수 구문을 사용하면 함수를 다음 코드 행으로 단순화할 수 있다.
+이런 메소드를 실제로 사용하지는 않지만 개체 속성과 어트리뷰트를 이해할 필요가 있어서 사용했다.
+
+## ES6 객체 메소드
+
+ES6는 객체에 대한 몇 가지 정적 헬퍼 메소드를 도입했다. Object.assign은 인기있는 믹스인(mixin)을 대체하여 객체의 얕은 복사를 수행하는 헬퍼 메소드이다.
+
+### Object.assign을 사용하여 속성 복사
 
 ```mm
-const squares_6 = num.map( n => n*n)
+let a = {}
+Object.assign(a, { age : 25 })
+console.log(a)
+Object { age: 25 }
 ```
 
-보다시피 어디에도 function이나 return 키워드가 없다. 함수의 인수가 하나뿐이라면 결국 함수를 identifer => expression으로 작성하게 될 것이다.
-
-여러 개의 인수가 필요할 때는 중괄호 안에 인수 목록을 래핑한다.
-
-- 매개변수 없음 : () => {...}
-- 1개의 매개변수 : a => {...}
-- 여러 개의 매개변수 : (a,b) => {...}
-
-화살표 함수는 표현식 본문뿐만 아니라 코드 블록 본문을 모두 가질 수 있다.
+Object.assign의 첫 번째 매개변수는 원본 속성이 복사되는 대상이다. 동일한 대상 객체가 호출자에게 반환된다. 원본 객체에 포함되지 않은 속성은 무시되지만 기존 속성은 덮어 쓰여진다.
 
 ```mm
-n => { return n+n} // 블록문
-n -> n+n // 표현식
+let a = {age : 23, gender : 'male'}
+Object.assign(a, { age:25})
+console.log(a)
+Object { age: 25, gender: "male" } // age는 덮어씌여지지만, gender는 무시.
+```
+
+Object.assign은 복수의 소스 객체를 받을 수 있다.
+
+```mm
+console.log(Object.assign({a:1,b:2},{a:2},{c:4},{b:3}))
+Object { a: 2, b: 3, c: 4 }
+```
+
+주의할 점은 열거 가능한 속성만 Object.assign()을 사용해 복사할 수 있다는 점이다.
+
+## Object.is와 값 비교
+
+앞에서 동등 연산자 ===에 대해 알아봤따. 그러나 NaN이나 -0, +0의 경우 엄격한 동등 연산자 `===`가 일관성 없이 동작한다.
+
+```mm
+console.log(NaN===NaN)
+false
+console.log(+0===-0)
+true
+console.log(Object.is(NaN,NaN))
+true
+console.log(Object.is(+0,-0))
+false
+```
+
+위 두가지 경우를 제외하고는 Object.is()는 === 연산자로 안전하게 바꿀 수 있다.
+
+## 디스트럭처링
+
+자바스크립트 객체 및 배열 표기법은 JSON 포맷과 유사하다. 객체와 배열을 정의한 다음 여기에서 요소를 검색한다. ES6는 객체 및 배열의 속성/멤버에 접근하는 방식을 크게 향상시키는 편리한 구문을 제공한다.
+
+```mm
+var config = {
+  server : 'localhost',
+  port : '8080'
+}
+var server = config.server;
+var port = config.port;
+```
+
+위의 예제에서 config 객체에서 server와 port 값을 추출하여 지역 변수에 할당했다. 하지만 이 객체에서 많은 속성이 있고, 그 중 일부가 중첩된 경우 간단한 작업은 매우 지루해질 수 있다.
+
+ES6 디스트럭처링(분할 할당)구문을 사용하면 할당문의 왼쪽에 객체 리터럴을 사용할 수 있다. 다음 예제에서 몇 개의 속성과 config 객체를 정의한다. 뒤에서 디스트럭처링을 사용하여 할당문의 왼쪽에 있는 개별 속성에 객체 config을 할당한다.
+
+```mm
+let config = {
+  server : 'localhost',
+  port : '8080',
+  timeout : 900,
+}
+
+let {server,port} = config
+console.log(server, port)
+```
+
+보다시피 server와 port는 속성 이름이 지역 변수와 동일하기 때문에 config 객체에서 할당된 속성을 가진 지역 변수다.
+
+지역 변수에 할당할 때 특정 속성을 선택할 수도 있다.
+
+```mm
+let {timeout : t} = config
+console.log(t) // 900
+```
+
+예제에서는 config 객체에서 timeout을 선택해 지역 변수 t에 할당한다.
+
+디스트럭처링 구문을 사용해서 이미 선언된 변수에 값을 할당할 수도 있다. 이 경우 할당하는 주변에 괄호를 써야 한다.
+
+```mm
+let config = {
+  server : 'localhost',
+  port : '8080',
+  timeout : 900,
+}
+
+let server = '127.0.0.1';
+let port = '80';
+({server,port} = config)  // 할당하는 주변을 ( )로 둘러싼다.
+console.log(server,port); // 'localhost 8080'
+```
+
+디스트럭처링 표현식이 표현식의 오른쪽으로 평가되기 때문에 값을 할당하는 어느 곳이든 사용할 수 있다.
+
+```mm
+
+let config = {
+  server : 'localhost',
+  port : '8080',
+  timeout : 900,
+}
+
+let server = '127.0.0.1';
+let port = '80';
+let timeout = '100';
+
+function startserver(configValue){
+  console.log(configValue)
+}
+startserver({server,port,timeout} = config)
+Object { server: "localhost", port: "8080", timeout: 900 }
+```
+
+객체에 존재하지 않는 속성 이름을 가진 변수를 지정하면, 지역변수는 undefined 값을 가지게 된다. 그러나 디스트럭처링 할당에서 변수를 사용할 때, 선택적으로 디폴트 값을 지정해 줄 수 있다.
+
+```mm
+let config = {
+  server : 'localhost',
+  port : '8080'
+}
+
+let {server,port,timeout =0} = config
+console.log(timeout)  // 0 출력
+```
+
+위 예에서 존재하지 않는 속성 timeout에 대해 디폴트값을 제공해 지역 변수에 undefined 값이 할당되지 않도록 한 것이다.
+
+디스트럭처링은 배열에서도 동작하며 구문도 객체의 구문과 아주 유사하다. 객체 리터럴 구문을 array : literals로 대체하기만 하면 된다.
+
+```mm
+const arr = ['a','b']
+const [x,y] = arr
+console.log(x,y) // 'a','b' 출력
+```
+
+보다시피 위의 구문들이랑 완전히 똑같은 구문들이다. 배열 arr을 정의한 다음 나중에 디스트럭처링 구문으 사용하여 해당 배열의 요소를 두 개의 지역 변수 x, y에 할당했다.
+
+여기에서 할당은 배열의 요소 순서에 따라 진행된다. 요소의 위치만 신경쓰면, 원하는 경우 일부를 건너뛸 수도 있다.
+
+```mm
+const days = ['Thursday','Friday','Saturday','Sunday']
+const[,,sat,sun] = days
+console.log(sat,sun) // Saturday Sunday 출력
+```
+
+위 예제에서 인덱스 2,3의 요소가 필요하다. 따라서 인덱스 0, 1의 요소는 무시하고 출력된다.
+
+또한 배열 디스트럭처링은 두 변수의 값을 교환할 때 temp 변수를 사용하지 않아도 되게 해준다.
+
+```mm
+let a = 1, b=2;
+[b,a] = [a,b]
+console.log(a,b); // 2 1 출력
+```
+
+그리고 나머지 연산자(...)를 사용해서 나머지 요소를 추출하고 배열에 할당할 수 있다. 나머지 연산자는 디스트럭처링에서 마지막 연산자로만 사용할 수 있다.
+
+```mm
+const [x, ...y] = ['a', 'b', 'c'];
+console.log(x,y) // x = a 출력 , y = Array [ "b", "c" ] 출력
 ```

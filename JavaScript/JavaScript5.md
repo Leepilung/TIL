@@ -1,684 +1,541 @@
-# JavaScript 5
+# JavaScript 6
 
-# Math
+# 이터레이터와 제너레이터
 
-Math는 앞에서 본 다른 내장 전역 객체와는 다소 다르다. 함수가 아니므로 new를 사용해 객체를 생성하는데 사용할 수 없다. Math는 수학 연산의 여러 메소드와 속성을 제공하는 내장 전역 객체이다.
+이번에는 새로 도입된 ES6에서 새로 도입된 이터레이터와 제너레이터에 대해 살펴보자.
 
-Math 객체의 속성들은 상수이므로 그 값을 변경할 수 없다. 이름은 모두 대문자로 돼있어 일반 속성과의 차이를 쉽게 구별할 수없다.(Number() 생성자의 상수 속성과 비슷하다)
+그리고 이런 지식을 바탕으로 향상된 컬렉션 구조를 자세히 살펴보자.
 
-> 상수 PI:
+# For ..of 루프
+
+For..of 루프는 이터러블 및 이터레이터 구조와 함께 ES6에 도입됐다. 이 새로운 루프 구조는 기존의 for ...in과 for...each 루프 구조를 대체한다.
+
+for...of 루프는 반복 프로토콜을 지원하기 때문에 배열, 문자열, 맵, 세트 등과 같은 내장 객체 및 반복 가능한 사용자정의 객체에서 사용할 수 있다.
 
 ```js
-Math.PI;
-3.141592653589793;
+const iter = ["a", "b"];
+for (const i of iter) {
+  console.log(i);
+}
+a;
+b;
 ```
 
-> 2의 제곱근
+for...of 루프는 이터러블과 함께 동작하며 배열과 같은 내장 객체는 이터러블이다. 루프 변수를 정의할 때 var 대신 const를 사용했다. const를 사용하면 새로운 바인딩과 저장공간으로 새로운 변수가 만들어지기 때문에 좋은 방법이다.
+
+블록 내에서 루프 변수의 값을 수정하지 않으려면 var 선언에 대해 for...of 루프와 함께 const를 사용해야 한다.
+
+다른 컬렉션도 for..of 루프를 지원한다. 예를 들어 문자열은 유니코드 문장의 시퀀스이므로 for...of 루프는 잘 동작한다.
 
 ```js
-Math.SQRT2;
-1.4142135623730951;
+for (let c of "String") {
+  console.log(c);
+}
+S;
+t;
+r;
+i;
+n;
+g;
 ```
 
-> 오일러 상수
+for...in과 for...of 루프의 차이점은 for...in 루프는 객체의 모든 열거 가능한 속성을 반복한다는 것이다. 반면에 For...of 루프는 특정 목적을 가지고 있다. 객체가 이터러블 프로토콜을 정의하는 방법에 따라 반복 동작을 수행한다.
+
+# 이터레이터와 이터러블
+
+ES6는 데이터를 반복하는 새로운 매커니즘을 도입했다. ES6는 반복 구조를 개선시켰다.이 개선에는 두 가지 주요 개념, 즉 이터레이터와 이터러블이 포함된다.
+
+## 이터레이터
+
+자바스크립트 이러테이터는 next() 메소드를 제공하는 객체다. 이 메소드는 두 개의 속성(done과 value)을 가진 객체 형태로 컬렉션의 다음 항목을 반환한다. 다음 예제에서는 next() 메소드를 통해 배열의 이터레이터를 반환한다.
 
 ```js
-Math.E;
-2.718281828459045;
+// 배열을 받아 이터레이터를 반환
+
+function iter(array) {
+  var nextId = 0;
+  return {
+    next: function () {
+      if (nextId < array.length) {
+        return { value: array[nextId++], done: false };
+      } else {
+        return { done: true };
+      }
+    },
+  };
+}
+
+var it = iter(["Hello", "Iterators"]);
+console.log(it.next().value); // Hello
+console.log(it.next().value); // Iterators
+console.log(it.next().done); // true
 ```
 
-> 2와 10의 자연로그
+위의 예제에서, 배열의 요소가 있는 동안 반복하면서 value와 done을 반환한다. 배열에서 반환할 요소가 없어지면 done을 true로 반환하여 반복이 더 이상 값을 갖지 않음을 나타낸다. 이터레이터에서 요소는 next() 메소드를 반복적으로 사용해 접근한다.
+
+## 이터러블
+
+이터러블은 반복 동작 또는 내부 반복을 정의하는 객체다. 이런 객체 ES6에서 도입된 for...of에서 사용될 수 있다. 배열과 문자열 같은 내장 유형은 디폴트 반복 동작을 정의하고 있다. 이터러블 객체의 경우, @@iterator 메소드를 구현해야 한다. 즉, 객체는 'Symbol.iterator'를 키로 갖는 속성을 가져야 한다.
+
+객체는 키가 'Symbol.iterator'인 메소드를 구현하면 이터러블이 된다. 이 메소드는 next()메소드를 통해 이터레이터를 반환해야 한다. 다음 예제를 통해 이를 명확히 하자.
 
 ```js
-Math.LN2;
-0.6931471805599453;
-Math.LN10;
-2.302585092994046;
+// 이터러블 객체
+// 1. 키가 'Symbol.iterator'인 메소드를 가지고 있는가?
+// 2. 이 메소드는 'next' 메소드를 통해 이터레이터를 반환한다.
+let iter = {
+  0: "Hello",
+  1: "World of",
+  2: "Iterators",
+  length: 3,
+  [Symbol.iterator]() {
+    let index = 0;
+    return {
+      next: () => {
+        let value = this[index];
+        let done = index >= this.length;
+        index++;
+        return { value, done };
+      },
+    };
+  },
+};
+for (let i of iter) {
+  console.log(i);
+}
+("Hello");
+("World");
+("Iterators");
 ```
 
-이 다음은 Math 객체가 제공하는 메소드를 살펴보자.
+이 예제를 더 작은 조각으로 나눠 보자. 우리는 지금 이터러블 객체를 생성하고 있다. 이미 익숙한 객체 리터럴 구문을 사용해 iter 객체를 생성한다. 이 객체의 특별한 것 중 하나는 [Symbol.iterator] 메소드다.
 
-## 난수 생성
+이 메소드 정의는 계산된 속성과 앞 장에서 이미 설명한 ES6 단축형 메소드 정의 구문을 조합해 사용한다. 이 객체에는 [Symbol.iterator] 메소드가 포함돼 있으므로 이 객체는 반복 가능하거나 또는 이터러블 프로토콜을 따른다. 또한 이 메서드는 next() 메소드를 통해 반복 동작을 정의하는 이터레이터 객체를 반환한다. 이제 이 객체는 for...of 루프와 함께 사용할 수 있다.
+
+# 제너레이터
+
+이터레이터와 이터러블과 밀접하게 연관된 제너레이터(generator)는 ES6의 기능 중 가장 많이 언급되고 있는 기능 중 하나이다. 제너레이터 함수는 제너레이터 객체를 반환한다. 이 용어는 처음에 다소 혼란스럽게 들릴 수 있다.
+
+함수를 작성하면 함수의 동작을 이해할 수 있다. 함수는 한줄 한줄 실행되고, 마지막 줄이 실행되면 종료된다. 함수가 선형적으로 실행되면 함수에 따른 나머지 코드도 따라서 실행된다. 그러나 멀티 스레딩이 지원되는 언어에서, 이런 실행 흐름은 중단될 수 있고, 완료된 작업이 부분적으로 서로 다른 스레드, 프로세스 또는 채널 간 공유될 수 있다. 자바스크립트는 단일 스레드이므로 지금은 다중 스레드와 관련된 문제를 처리할 필요가 없다.
+
+그러나 제너레이터 함수는 일시 중지됐다가 다시 시작할 수 있다. 여기서 중요한 부분은 제너레이터 함수 자체가 일시 중지를 선택하는 것이며 외부 코드에 의해서는 일시 중지될 수 없다는 점이다. 실행 중에 함수 yield 키워드를 사용해 일시 중지시킨다. 제너레이터 함수가 일시 중지되면, 함수 외부의 코드에 의해서만 다시 시작할 수 있다.
+
+필요한 만큼 여러 번 제너레이터 함수를 일시 중지했다가 다시 시작할 수 있다. 제너레이터 함수에서 인기있는 패턴은 무한 루프를 작성하고 필요할 때 일시 중지시켰다가 다시 시작하는 것이다.
+
+이해해야 할 또 다른 중요한 부분은 제너레이터 함수가 양방향 메시지 전달을 허용한다는 점이다. yield 키워드를 사용해 함수를 일시 중지할 때마다 메시지가 제너레이터 함수에서 전송되고, 함수가 다시 시작되면 제너레이터 함수로 메시지가 다시 전달된다.
+
+예제를 통해 알아보자.
 
 ```js
-Math.random();
-0.22427714008852984;
-Math.random();
-0.13823068738590527;
-Math.random();
-0.11675484811883297;
+function* generatorFunc() {
+  console.log('1'); //---------> A
+  yield; // ------------> B
+  console.log('2'); // ------------> C
+}
+const generatorObj = generatorFunc();
+console.log(generatorObj.next());
+1
+Object { value: undefined, done: false }
 ```
 
-`random()` 함수는 0과 1사이의 숫자를 반환한다. 따라서 만약 0과 100 사이의 숫자가 필요하다면 다음과 같이 코드를 짜면 된다.
+아주 간단한 제너레이터 함수 예라고 한다. 이해가 필요한 부분이 꽤있지만 말이다.
+
+우선 function 키워드 바로 다음에 별표(\*)가 있음을 알 수 있다. 이것은 함수가 제너레이터 함수임을 나타내는 구문이다. 함수 이름 바로 앞에 별표를 두는 것도 괜찮다. 다음 두 코드는 모두 유효한 선언이다.
 
 ```js
-100 * Math.random();
-83.78142766562566;
-100 * Math.random();
-25.80367596455715;
-100 * Math.random();
-88.3858729536897;
+function* f() {}
+function* f() {}
 ```
 
-두 값 사이의 숫자는 공식 ((max-min) \* Math.random())+min을 사용한다.
-
-예를 들어 2와 10사이의 난수는 다음 수식을 사용하면 된다.
+함수 내에서 진짜 마술은 yield 키워드에서 일어난다고 보면 된다. yield 키워드를 만나면, 함수가 일시 중지된다. 더 진행하기 전에 함수가 어떻게 호출되는지 알아보자.
 
 ```js
-8 * Math.random() + 2;
-5.024658437392145;
+function* generatorFunc() {
+  console.log('1'); //---------> A
+  yield; // ------------> B
+  console.log('2'); // ------------> C
+}
+const generatorObj = generatorFunc();
+generatorObj.next();
+1
+Object { value: undefined, done: false }
 ```
 
-정수만 필요하다면 다음 반올림 메소드 중 하나를 사용 하면 된다.
+제너레이터 함수를 호출하면, 일반 함수처럼 실행되지 않고 제너레이터 객체를 반환한다. 이 제너레이터 객체를 사용해 제너레이터 함수의 실행을 제어할 수 있다. 제너레이터 객체의 next() 메소드는 함수의 실행을 다시 시작한다.
 
-- floor() : 내림
-- cell() : 올림
-- round() : 반올림
-
-예를 들어 0또는 1을 얻으려면 다음과 같은 코드를 이용하면 된다.
+next()를 처음 호출하면 함수의 첫 번째 줄('A'로 표시)까지 실행이 진행되고, yield 키워드를 만나면 일시 중지된다. next() 함수를 다시 호출하면 실행이 중지된 지점에서 다음 줄로 실행이 재개된다.
 
 ```js
-Math.round(Math.random());
+function* generatorFunc() {
+  console.log('1'); //---------> A
+  yield; // ------------> B
+  console.log('2'); // ------------> C
+}
+console.log(generatorObj.next());
+2
+Object { value: undefined, done: true }
+```
+
+함수 본문 전체가 실행되면, 제너레이터 객체에서 next()를 호출해도 아무 효과가 없다. 앞에서 제너레이터 함수는 양방향 메시지 전달을 허용한다고 했다. 어떻게 동작할까? 앞의 예에서 제너레이터 함수를 다시 시작할때마다 done과 value의 두값을 가진 객체를 받는다. 에제의 경우, 값(value)로 undefined를 받았다. 이는 yield 키워드로 어떤 값도 반환하지 않기 때문이다. yield 키워드를 사용하여 값을 반환하면 호출하는 함수가 이를 받는다.
+
+```js
+function* logger() {
+  console.log("start");
+  console.log(yield);
+  console.log(yield);
+  console.log(yield);
+  return "end";
+}
+
+var genObj = logger();
+// next의 첫 번째 호출은 함수의 시작부터 첫 번째 yield문까지 진행된다.
+
+console.log(genObj.next());
+//start , Object { value: undefined, done: false } 출력
+
+console.log(genObj.next("Save"));
+// Save , Object { value: undefined, done: false } 출력
+
+console.log(genObj.next("Our"));
+// Our , Object { value: undefined, done: false } 출력
+
+console.log(genObj.next("Souls"));
+// Souls , Object { value: "end", done: true } 출력
+```
+
+이 예제의 실행 흐름을 단계별로 추적해 보자. 제너레이터 함수는 세 개의 일시 중지(yield)를 가지고 있다. 다음과 같은 줄을 작성하여 제너레이터 객체를 생성할 수 있다.
+
+```js
+var genObj = logger();
+```
+
+next 메소드를 호출해 제너레이터 함수의 실행을 시작한다. 이 메소드는 첫 번째 yield까지 실행을 시작한다. 첫 번째 호출에서 next()메소드에 값을 전달하지 않았다.
+
+이 next() 메소드의 목적은 제너레이터 함수를 시작하는 것이다. next() 메소드를 다시 호출하면서, 이번에는 "Save" 값을 매개변수로 전달한다. 이 값은 실행이 다시 시작될 때 yield에 의해 수신되며 콘솔에 값이 출력되는 것을 볼 수 있다.
+
+```js
+Save , Object { value: undefined, done: false }
+```
+
+next() 메소드를 두 개의 다른 값으로 다시 호출하면 출력은 앞의 코드와 비슷하다. 마지막으로 next() 메소드를 호출하면, 실행이 끝나고 제너레이터 함수는 호출하 코드에 end 값을 반환한다.
+실행이 끝나면 done은 true로 설정되고, value에는 함수에서 반환된 값, 즉 end가 지정된다.
+
+```js
+Souls , Object { value: "end", done: true }
+```
+
+첫 번째 next() 메소드의 목적은 제너레이터 함수의 실행을 시작하는 것이다. 이 함순는 첫 번째 yield 키워드로 이동하므로 첫 번째 next() 메소드에 전달된 값은 무시된다.
+
+지금까지의 논의에서, 제너레이터 객체가 이터레이터 규약을 준수한다는 것을 알 수 있다. 그렇다면 예제를 통해 이를 한번 확인해 보자.
+
+```js
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+var genObj = logger();
+// 제너레이터 객체는 제너레이터 함수를 사용하여 작성된다.
+
+console.log(typeof genObj[Symbol.iterator] === "function"); // true 출력
+// 이터러블
+
+console.log(typeof genObj.next === "function"); // true 출력
+// 이터레이터 (next() 메소드를 가짐)
+
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+var genObj = logger();
+// 제너레이터 객체는 제너레이터 함수를 사용하여 작성된다.
+
+console.log(typeof genObj[Symbol.iterator] === "function"); // true 출력
+// 이터러블
+
+console.log(typeof genObj.next === "function"); // true 출력
+// 이터레이터 (next() 메소드를 가짐)
+```
+
+위의 예제는 제너레이터 함수가 이터러블 규약을 준수함을 확인시켜 준다.
+
+## 제너레이터 반복
+
+제너레이터는 이터레이터며 이터러블을 지원하는 모든 ES6 구조와 마찬가지로 제너레이터를 반복하는 데 사용할 수 있다.
+
+첫 번째 방법은 for ...of 루프를 사용하는 것이다.
+
+```js
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+for (const i of logger()) {
+  console.log(i);
+}
+a;
+b;
+```
+
+여기선 제너레이터 객체를 생성하지 않는다. For...of 루프는 이터러블을 지원하고 제너레이터는 자연스럽게 이 루프에 들어간다.
+
+스프레드연산자를 사용해 이터러블을 배열로 바꿀 수 있다. 다음 예제를 보자.
+
+```js
+function* logger() {
+  yield "a";
+  yield "b";
+}
+
+const arr = [...logger()];
+console.log(arr);
+Array[("a", "b")];
+```
+
+마지막으로 다음과 같이 제너레이터에 디스트럭처링 구문을 사용할 수 있다.
+
+```js
+function* logger() {
+  yield 'a'
+  yield 'b'
+}
+
+const [x,y] = logger()
+console.log(x,y)
+a b
+```
+
+제너레이터는 비동기 프로그래밍에서 중요한 역할을 한다. 또한 제너레이터는 협업 멀티 태스킹 함수를 작성하는 데에도 도움이 된다.
+
+# 컬렉션
+
+ES6는 Map과 WeakMap, Set, WeakSet의 네 가지 데이터 구조를 도입했다. 자바스크립트는 파이썬, 루비등과 비교해서 해시(hash)나 맵(map) 데이터 구조 또는 딕셔너리(dictionary)를 지원하는 표준 라이브러리가 빈약하다.
+
+문자열 키를 객체와 매핑해 Map의 동작을 구현하는 몇 가지 해킹 방법이 개발됐으나 이런 해킹에는 부작용이 생겼다. 따라서 이런 데이터 구조에 대한 언어 지원이 절실히 요구돼었기 때문에 ES6에서는 표준 딕셔너리 데이터 구조를 지원한다.
+
+## 맵(Map)
+
+Map은 임의의 값을 key로 허용한다. keys는 값에 매핑된다. 맵을 사용하면 값에 빠르게 접근할 수 있따.
+
+```js
+const m = new Map(); // 빈 맵을 생성
+m.set("first", 1); // 키와 관련된 값 설정
+console.log(m.get("first")); // 키를 사용해 값을 가져온다
 1;
 ```
 
-숫자 집합 중에서 가장 낮거나 높은 숫자가 필요한 경우 min()과 max() 메소드를 사용할 수 있다. 따라서 페이지에서 날짜의 월을 입력받는 폼이 있을때 다음과 같이 하면 유효한(1~12)를 입력받을 수 있다.
+생성자(constructor)를 사용하여 빈 Map을 생성한다. set() 메소드를 사용해 Map에 키와 연관된 값의 항목을 추가하고 기존 항목을 동일한 키로 겹쳐 쓸 수 있다. 이와 반대되는 메소드인 get()은 키와 연관된 값을 가져오고, 맵에 해당 항목이 없으면 undefined를 가져온다.
+
+다음과 같이 맵에서 사용할 수 있는 다른 헬퍼 메소드도 있다.
 
 ```js
-Math.min(Math.max(1, input), 12);
+console.log(m.has("first")); // 키가 있는지 검사한다
+// true 출력
+m.delete("first");
+console.log(m.has("first")); // false 출력
+
+m.set("foo", 1);
+m.set("bar", 0);
+
+// Map { foo → 1, bar → 0 } 출력
+
+console.log(m.size); // 2 출력
+m.clear(); // 전체 맵을 지운다.
+console.log(m.size); // 0 출력
 ```
 
-또한 Math 객체는 연산자가 없는 수학 연산을 수행하는 기능도 제공한다.
-
-pow()를 사용해 거듭 제곱을 구하거나, sqrt()로 제곱근을 구하거나, sin(), cos() atan()등의 삼각 연산등을 수행할 수 있다.
-
-예로 2의 8제곱이나 9의 제곱근을 계산하자면 다음과 같이 사용하면 된다.
+다음 이터러블 [키,값] 쌍을 이용하여 Map을 생성할 수 있다.
 
 ```js
-Math.pow(2, 8);
-256;
-
-Math.sqrt(9);
-3;
+const m2 = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
 ```
 
-# Date
-
-Date()는 날짜 객체를 생성하는 생성자 함수이다. 다음을 전달하여 새로운 객체를 생성할 수 있다.
-
-- 아무것도 전달하지 않음(디폴트의 경우 오늘 날짜)
-- 날짜 같은 문자열
-- 일, 월, 시간 등이 구별된 값
-- 타임스탬프
+그리고 다음과 같이 구문에 set() 메소드를 연결할 수 있다.
 
 ```js
-new Date();
-Date Wed Jul 21 2021 15:14:20 GMT+0900 (대한민국 표준시)
+const m3 = new Map().set(1, "one").set(2, "two").set(3, "three");
 ```
 
-콘솔에서 Date 객체에서 호출된 toString() 메소드의 결과가 표시된다.
-
-다음은 문자열을 사용해 Date 객체를 초기화하는 몇 가지 예제들이다.
+모든 값을 키로 사용할 수 있다. 객체의 경우, 문자열만 키가 될 수 있지만, 컬렉션의 경우 이 제한이 없어졌다. 객체를 키로 사용할 수도 있지만 그다지 사용되는 방법은 아니다.
 
 ```js
-new Date('2015 11 12');
-Date Thu Nov 12 2015 00:00:00 GMT+0900 (대한민국 표준시)
+const obj = {};
+const m2 = new Map([
+  [1, "one"],
+  ["two", "two"],
+  [obj, "three"],
+]);
 
-new Date('2022 1 1');
-Date Sat Jan 01 2022 00:00:00 GMT+0900 (대한민국 표준시)
-
-new Date('1 mar 2016 5:30');
-Date Tue Mar 01 2016 05:30:00 GMT+0900 (대한민국 표준시)
+console.log(m2.has(obj));
+true;
 ```
 
-Date 생성자는 다른 문자열에서 날짜를 알아낼 수 있지만, 사용자 입력을 생성자로 전달하는 것과 같이 정확한 입력 날짜를 정의하는 것은 신뢰할 수 있는 방법은 아니다.
+## 맵 반복
 
-더 좋은 방법은 Date() 생성자에 다음의 숫자값을 전달하는 것이다.
+기억해야할 중요한 점 중 하나는 맵에서 순서가 중요하다는 점이다. 맵은 요소가 추가된 순서가 유지된다.
 
-- 년
-- 월 -0(1월)~ 11(12월)까지
-- 일 - 1부터 31까지
-- 시간 - 0부터 23까지
-- 분 - 0부터 59까지
-- 초 - 0부터 59까지
-- 밀리초 - 0부터 999까지
+Map을 반복할 때는 keys, values, entries, 이렇게 세 가지 이터러블을 사용할 수 있다.
 
-몇 가지 예제를 살펴보자.
+keys() 메소드는 다음과 같이 Map의 키에 대한 이터러블을 반환한다.
 
 ```js
-new Date(2015, 0, 1, 17, 05, 03, 120);
-Date Thu Jan 01 2015 17:05:03 GMT+0900 (대한민국 표준시)
-```
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
 
-월이 0부터 시작하기 때문에 1이 2월이라는 부분을 주의하자.
-
-```js
-new Date(2016, 1, 28);
-Date Sun Feb 28 2016 00:00:00 GMT+0900 (대한민국 표준시)
-```
-
-허용된 값 보다 큰 값을 전달하면 날짜가 자동으로 다음날로 넘어간다. 예를 들어 2016년 2월 30일은 없으므로 3월 1일이 된다.(2016년은 윤년에 해당된다.)
-
-```js
-new Date(2016, 1, 29);
-Date Mon Feb 29 2016 00:00:00 GMT+0900 (대한민국 표준시)
-
-new Date(2016, 1, 30);
-Date Tue Mar 01 2016 00:00:00 GMT+0900 (대한민국 표준시)
-```
-
-마찬가지로 12월 32일은 다음해 1월 1일로 자동으로 바뀐다.
-
-```js
-new Date(2020, 12, 31);
-Date Sun Jan 31 2021 00:00:00 GMT+0900 (대한민국 표준시)
-
-new Date(2020, 12, 32);
-Date Mon Feb 01 2021 00:00:00 GMT+0900 (대한민국 표준시)
-```
-
-new를 사용하지 않고 Date()를 호출하면, 매개변수의 전달과 관계없이 현재 날짜를 나타내는 문자열이 표시된다. 다음 예제에서는 현재 시간을 보여준다.
-
-```js
-Date();
-("Wed Jul 21 2021 15:21:36 GMT+0900 (대한민국 표준시)");
-
-Date(1, 2, 3, "it dosen't matter");
-("Wed Jul 21 2021 15:22:16 GMT+0900 (대한민국 표준시)");
-
-typeof Date();
-("string");
-typeof new Date();
-("object");
-```
-
-## date 객체를 사용하기위한 메소드
-
-날짜 객체를 생성하면 해당 객체의 많은 메소드를 호출할 수 있다. 대부분의 메소드는 getMonth(), setMonth(), getHours(), setHours() 등과 같이 set*(), get*() 메소드로 나눌 수 있다.
-
-```js
-var d = new Date(2021, 1, 1);
-d.toString();
-("Mon Feb 01 2021 00:00:00 GMT+0900 (대한민국 표준시)");
-```
-
-월을 구하려면 다음 코드를 작성하면 된다.
-
-```js
-d.getMonth();
+for (const k of m.keys()) {
+  console.log(k);
+}
 1;
-```
-
-Date 객체의 모든 메소드 외에도 Date() 함수/객체의 속성인 두 개의 메소드가 더 있다. 이들은 Math 객체 메소드처럼 동작한다. 클래스 기반 언어에서 이런 메소드는 인스턴스를 필요로 하지 않기 때문에 정적이라고 부른다.
-
-Date.parse() 메소드는 문자열을 받아 타임스탬프를 반환한다.
-
-```js
-Date.parse("Jan 11, 2018");
-1515596400000;
-```
-
-Date.UTC() 메소드는 년,월,일등의 모든 매개변수를 받아 표준시의 타임스탬프를 생성한다.
-
-```js
-Date.UTC(2018, 0, 11);
-1515628800000;
-```
-
-new Date() 생성자가 타임스탬프를 허용하므로, Date.UTC()의 결과를 전달할 수 있다.
-또한 다음 예제를 사용하면 new Date()가 로컬 시간에서 동작하는 방식과 UTC()가 표준시에서 동작하는 방식을 볼 수 있다.
-
-```js
-new Date(Date.UTC(2018,0,11));
-Date Thu Jan 11 2018 09:00:00 GMT+0900 (대한민국 표준시)
-
-new Date(2018,0,11);
-Date Thu Jan 11 2018 00:00:00 GMT+0900 (대한민국 표준시)
-```
-
-Date 생성자에 ES5의 nodw() 메소드가 추가되었다. 이는 현재 타임스탬프를 반환한다.
-Date 객체의 getTime() 메소드를 사용하는것과 같은 동작을 하는데 보다 편리한 방법이다.
-
-```js
-Date.now();
-1627021903710;
-
-Date.now() === new Date().getTime();
-true;
-```
-
-날짜의 내부 표현을 정수 타임스탬프로 생각할 수 있으며, 다른 모든 메소드들은 이를 덮어 쓰고 있는것이라고 생각할 수 있다.
-
-## 생일 계산
-
-Date 객체로 작업하는 마지막 예제이다.
-
-내 생일이 미래의 특정 년도에 무슨 요일인지 궁금하다.
-
-```js
-var d = new Date(2022, 6, 20);
-d.getDay();
+2;
 3;
 ```
 
-요일은 0부터 카운트가 시작되니 3은 목요일이 될 것이다.
-
-생일을 축하하기에 목요일은 애매한 날짜이다. 그렇다면 2022년부터 3022년까지 7월 20일이금요일인 횟수와 모든 요일의 분포를 알아보자.
-
-먼저 일주일의 각각의 요일을 위해 7개의 요소를 가진 배열을 초기화해 보자. 이 요소는 카운터로 사용된다. 그다음 루프를 3022까지 증가시키며 카운트를 센다고 가정하자.
+마찬가지로 values() 메소드는 다음 예제와 같이, Map의 값에 대한 이터러블을 반환한다.
 
 ```js
-var stats = [0, 0, 0, 0, 0, 0, 0];
-
-for ( var i = 2022; i < 3022; i ++) {
-  stats[new Date(i, 6, 20).getDay()]++;
-}…
-Array(7) [ 143, 145, 140, 145, 140, 145, 142 ]
-```
-
-금요일은 모두 140번이고 토요일은 145번이다. 쏘쏘한듯 ..?
-
-# RegExp
-
-정규 표현식은 텍스트를 검색하고 조작하는 강력한 방법을 제공한다. 언어별로 정규 표현식 구문의 구현이 다르다. 자바스크립트는 펄(Perl)5 라는 구문을 사용한다.
-
-정규 표현식을 대신하여 정규식 또는 RegExp로 줄여서 말하기도 한다.
-
-정규 표현식은 다음으로 구성된다.
-
-- 텍스트와 매칭하는데 사용되는 패턴
-- 패턴을 사용하는 방법에 대한 자세한 지침을 제공하는 0개 이상의 한정자(modifier)
-
-패턴은 단순히 문자 그대로 매칭시킬 수도 있지만, 가끔은 indexOf()를 사용하는 것이 더 나을 때도 있다. 또한 대부분의 경우, 패턴은 복잡하고 이해하기 어려운 경우가 많다. 정규 표현식의 패턴을 마스터하는 것은 그 자체로 큰 주제이기 때문에 당장 다루지는 않는다.
-
-대신 정규 표현식 사용 지원을 위해 자바스크립트가 구문 및 객체, 메소드와 관련해 제공하는 것을 알아보자.
-
-자바스크립트는 정규 표현식 객체를 만들 수 있는 `RegExp()` 생성자를 제공한다.
-
-```js
-var re = new RegExp("j.*t");
-```
-
-좀더 편리한 정규식 리터럴 표기법도 사용할 수 있다.
-
-```js
-var re = /j.*t/;
-```
-
-위의 예제에서 j.\*t는 정규 표현식 패턴이다. 이는 "j로 시작하고 t로 끝나며, 그사이에 0개 이상의 문자가 있는 모든 문자열을 찾는다" 라는 내용을 의미한다.
-
-별 표(\*)는 "0개 이상"을 의미하며, 점(.)은 "모든 문자"를 의미한다. RegExp() 생성자에 전달될 때, 패턴은 따옴표로 묶어야 한다.
-
-## RegExp 객체의 속성
-
-정규 표현식 객체의 속성은 다음과 같다.
-
-- global : 이 속성이 false(디폴트 값)이면, 첫 번째 일치 항목이 발견되면 검색이 중지된다. 일치하는 모든 값을 찾고자 할 때는 이 값을 true로 설정한다.
-- ignoreCase : 대소문자를 구분하지 않으려면 이 속성의 디폴트 값을 false로 한다.(디폴트값은 대소문자를 구분한다)
-- multiline : 두 줄 이상에 걸친 검색시 디폴트를 false로 한다.
-- lastIndex : 검색을 시작할 위치, 디폴트는 0이다.
-- source : RegExp 패턴을 포함한다.
-
-LastIndex를 제외하면 이들 속성은 객체가 생성되면 변경이 불가능하다.
-
-앞의 목록에 있는 처음 세 항목은 정규식 한정자를 나타낸다. 생성자를 사용해 정규 식 객체를 만드는 경우, 두 번째 매개변수는 다음 문자 조합을 전달할 수 있다.
-
-- global을 나타내는 g
-- ignoreCase를 나타내는 i
-- multiline을 나타내는 m
-
-이들 문자는 어떤 순서로도 사용할 수 있다. 문자가 전달되면 해당 한정자 속성이 true로 설정된다. 다음 예제에서는 모든 한정자가 true로 설정된다.
-
-```js
-var re = new RegExp("j.*t", "gmi");
-```
-
-확인해 보자.
-
-```js
-re.global;
-true;
-
-re.global = false;
-re.global;
-true;
-```
-
-또한 다음과 같이 한번 설정된 값은 바뀌지 않는다.
-
-정규식 리터럴을 사용해 한정자를 설정하려면 닫는 슬래시 다음에 추가하면 된다.
-
-```js
-var re = /j.*t/gi;
-
-re.global;
-```
-
-## RegExtp 객체의 메소드
-
-정규식 객체는 매칭을 찾는데 사용할 수 있는 두가지 메소드 test().와 exec()을 제공한다. 둘 다 문자열 매개변수를 허용한다. test() 메소드는 부울을 반환하고(일치하면 true, 아니면 false), exec()은 일치하는 문자열의 배열을 반환한다.
-
-exec()가 더 많은 일을 하기 때문에 필요한 경우에만 사용하고 그 외는 test()를 사용하는 것이 좋다.
-
-사람들은 종종 데이터의 유효성 검사하는 데 정규 표현식을 사용한다. 이 경우, test()만으로도 충분하다.
-
-이제 예제를 통해 알아보자. 대문자 J때문에 일치하는 항목이 없는 경우이다.
-
-```js
-/j.*t/.test("Javascript");
-false;
-```
-
-대소문자를 구분하지 않는 테스트의 결과는 true가 나온다.
-
-```js
-/j.*t/i.test("Javascript"); // i가 ignoreCase의 약자이기 때문
-true;
-```
-
-exec()을 사용한 동일한 테스트는 배열을 반환하고 다음과 같이 첫 번째 요소에 접근할 수 있다.
-
-```js
-/j.*t/i.exec("Javascript")[0];
-("Javascript");
-```
-
-## 정규 표현식을 인수로 받아들이는 string 메소드
-
-기존에 string 부분에서 indexOf()와 lastindexOf() 메소드를 사용해 텍스트 안을 검색하는 방법을 배웠다. 이들 메소드를 사용하면 검색할 리터럴 문자열 패턴만 지정할 수 있다. 이보다 더 강력한 방법은 정규표현식을 사용하여 텍스트를 찾는 것이다.
-
-문자열 객체가 이 기능을 제공한다.
-
-문자열 객체는 정규 표현식 객체를 매개변수로 받는 다음 메소드를 제공한다.
-
-- match() : 일치하는 문자열을 반환한다.
-- search() : 첫 번째 일치 항목의 위치를 반환한다.
-- replace() : 일치하는 텍스트를 다른 문자열로 대체할 수 있다.
-- split() : 문자열을 배열 요소로 분할할 때 정규식을 허용한다.
-
-## search()와 match()
-
-search()와 match() 메소드를 사용하는 몇 가지 예를 살펴보자.
-
-```js
-var s = new String("HelloJavaScriptWorld");
-```
-
-match()를 사용하면 첫 번째 일치하는 항목만 포함하는 배열을 얻을 수 있다.
-
-```js
-s.match(/a/);
-Array["a"];
-```
-
-전역 설정 g 한정자를 사용하면 전역검색을 수행하므로, 결과 배열에 두 요소가 포함된다.
-
-```js
-s.match(/a/g);
-Array[("a", "a")];
-```
-
-대소문자를 구분하지 않는 경우
-
-```js
-s.match(/j.*a/i);
-Array["Java"];
-```
-
-search() 메소드는 일치하는 문자열의 위치를 알려준다.
-
-```js
-s.search(/j.*a/i);
-5;
-```
-
-## replace()
-
-replace() 메소드를 사용하면 일치하는 텍스트를 다른 문자열로 바꿀 수 있다.
-
-다음 예제에서는 대문자를 모두 제거한다.
-
-```js
-var s = new String("HelloJavaScriptWorld");
-
-s.replace(/[A-Z]/g, "");
-("elloavacriptorld");
-```
-
-g 한정자를 생략하면 첫번째 일치 항목만 바꾼다.
-
-```js
-var s = new String("HelloJavaScriptWorld");
-
-s.replace(/[A-Z]/, "");
-("elloJavaScriptWorld");
-```
-
-매칭을 발견했을 때, 일치하는 텍스트를 대체 문자열에 포함시키려면 $&를 사용해 접근할 수 있다. 매칭을 진행하면서 밑줄을 추가하는 방법은 다음과 같다.
-
-```js
-var s = new String("HelloJavaScriptWorld");
-
-s.replace(/[A-Z]/g, "_$&");
-("_Hello_Java_Script_World");
-// 대문자 A-Z를 만난경우 밑줄(_)을 추가하는 방법이다.
-```
-
-정규 표현식에 그룹(괄호로 표시)이 있으면, 각 그룹의 일치 항목은 첫 번째 그룹을 $1, 두 번째 그룹을 $2로 사용할 수 있다.
-
-```js
-var s = new String("HelloJavaScriptWorld");
-
-s.replace(/([A-Z])/g, "_$1");
-("_Hello_Java_Script_World");
-```
-
-만약 웹 페이지에 이메일 주소, 사용자 이름, 비밀번호를 묻는 등록 양식이 있다고 가정해 보자. 사용자가 이메일 아이디를 입력하면 자바스크립트가 실행되고 이메일 주소에서 가져온 사용자 이름을 제안한다.
-
-```js
-var email = "ek3434@naver.com";
-var username = email.replace(/(.*)@.*/, "$1");
-
-username;
-("ek3434");
-```
-
-## 콜백 대체
-
-대체를 지정할 때, 문자열을 반환하는 함수를 전달할 수도 있다. 이렇게 하면 대체를 지정하기 전에 필요한 로직을 구현할 수 있다.
-
-```js
-var s = new String("HelloJavaScriptWorld");
-
-function replaceCallback(match) {
-  return "_" + match.toLowerCase();
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+
+for (const v of m.values()) {
+  console.log(v);
 }
-
-s.replace(/[A-Z]/g, replaceCallback);
-("_hello_java_script_world");
+one;
+two;
+three;
 ```
 
-콜백 함수는 여러 매개변수를 받는다.(위의 예제는 첫 번쨰 매개변수를 제외하고 나머지는 모두 무시한다.)
-
-- 첫 번째 매개변수는 match다.
-- 마지막은 검색할 문자열이다.
-- 마지막 바로 전 매개변수는 match의 위치다.
-- 나머지 매개변수는 정규식 패턴의 모든 그룹과 일치하는 문자열을 포함한다.
-
-잘 이해가 안가지만 예제를 통해 알아보자.
-
-먼저 콜백 함수에 전달된 전체 인수 배열을 저장하는 변수를 생성한다.
+entries() 메소드는 다음 코드에서 볼 수 있듯, [키, 값] 쌍의 형식으로 Map의 항목을 반환한다.
 
 ```js
-var glob;
-```
+const m = new Map ([
+  [ 1 , 'one' ],
+  [ 2, 'two' ],
+  [ 3 , 'three' ],
+]);
 
-그런 다음, 세 개의 그룹을 가지며, 이메일 주소를 아무개@아무개.아무개 형식과 매칭시키는 정규 표현식을 정의한다.
-
-```js
-var re = /(.*)@(.*)\.(.*)/;
-```
-
-마지막으로 인수를 glob에 저장하고 대체 문자열을 반환하는 콜백 함수를 정의한다.
-
-```js
-var callback = function () {
-  glob = arguments;
-  return arguments[1] + " at " + arguments[2] + " dot " + arguments[3];
-};
-
-"ek3434@naver.com".replace(re, callback);
-("ek3434 at naver dot com");
-```
-
-콜백 함수가 받은 인수는 다음과 같다.
-
-```js
-glob;
-Arguments { 0: "ek3434@naver.com", 1: "ek3434", 2: "naver", 3: "com", 4: 0, 5: "ek3434@naver.com", … }
-```
-
-## split()
-
-split() 메소드에 대해선 이미 한차례 배웠다. 입력 문자열과 구분기호 문자열로 배열을 만든다.
-
-```js
-var csv = "one, two, three, four";
-csv.split(",");
-Array(4)[("one", " two", " three", " four")];
-```
-
-입력 문자열에는 쉼표 앞 뒤에 일치하지 않는 공백이 있기 때문에, 배열 결과에도 공백이 있다. 그러나 정규 표현식을 사용하면 \s\*을 사용해 이를 고칠 수 있다.
-
-\s\*는 0개 이상의 공백을 의미한다.
-
-```js
-var csv = "one, two, three, four";
-
-csv.split(/\s*,\s*/);
-Array(4)[("one", "two", "three", "four")];
-```
-
-## RegExp가 필요할 때 문자열 전달
-
-마지막으로 주의할 점은 앞에서 살펴본 네 개의 메소드(split(), match(), search(), replace())는 정규 표현식이 아닌 문자열도 사용할 수 있다는 것이다. 이 경우 문자열 인수는 new RegExp()에 전달된 것처럼 새로운 정규식을 만드는 데 사용된다.
-
-replace에 문자열을 전달하는 예제는 다음과 같다.
-
-```js
-"test".replace("t", "r");
-("rest");
-```
-
-이는 다음 정규 표현 사용 코드와 동일하다.
-
-```js
-"test".replace(new RegExp("t"), "r");
-("rest");
-```
-
-문자열을 전달하면 일반적인 생성자나 정규식 리터럴에서 하던 것처럼 한정자를 설정할 수 없다.
-
-문자열 대체를 위해 정규 표현식 객체 대신 문자열을 사용할 때 일반적으로 발생하는 오류가 있다. 결과는 첫 번째 문자열만 대체된다는 것이다. g 한정자가 디폴트로 false이기 때문이다. 이는 대부분의 언어와 달라 약간 혼란스럽다.
-
-```js
-"pool".replace("o", "*");
-("p*ol");
-
-"pool".replace(/o/g, "*");
-("p**l");
-```
-
-## Error 객체
-
-오류가 발생하면, 오류 조건을 알고 우아한 방법으로 이를 복구할 수 있는 메커니즘을 마련하는 것이 좋다. 자바스크립트는 오류 처리에 도움이 되는 try, catch, finally 문을 제공한다.
-
-오류가 생기면 오류 객체가 던져진다. Error 객체는 EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError의 내장 생성자 중 하나를 사용하여 생성된다. 이들 생성자는 모두 Error에서 상속받는다.
-
-오류를 발생시키고, 어떤일이 발생하는지 보자. 오류를 일으키는 가장 간단한 바법중 하나는 존재하지 않는 함수를 호출하는 것이다.
-
-```js
-iDontExist();
-Uncaught ReferenceError: iDontExist is not defined
-```
-
-오류 표시는 브라우저나 호스트 환경에 따라 다르다.
-
-오류를 처리하는 방법은 catch 문 당므에 try 문만 사용하면 된다.
-
-```js
-try {
-  iDontExist();
-} catch (e) {
-  // 동작 수행
+for (const entry of m.entries()) {
+  console.log(entry[0], entry[1]);
 }
+1 one
+2 two
+3 three
 ```
 
-당므의 코드는 사용자에게 오류를 숨긴다.
-
-여기서
-
-- try 문 다음에 코드 블록이 온다.
-- catch 문 다음에 괄호 안에 변수 이름과 다른 코드 블록이 온다.
-
-오류가 있는지 여부와 상관없이 실행되는 선택 사항인 finally 문 뒤에도 역시 코드 블록이 올 수 있다.
-
-앞의 예제에서, catch 문 다음에 나오는 코드 블록은 아무 일도 하지 않지만 오류를 복구하는데 도움이 되는 코드를 작성하거나, 최소한 사용자에게 특별한 조건이 있음을 알리는데 사용할 수 있다.
-
-catcha문 다음의 괄호 안에 있는 변수 e는 Error 객체를 포함한다. 다른 객체와 마찬가지로 이 객체 역시 속성과 메소드를 가지고 있다. 아쉽게도 브라우저별로 이 속성과 메소드를 다르게 구현하지만, e.name과 e.message는 동일하게 구현됐다.
+위의 예제는 더 간결하게 만들 수 있다.
 
 ```js
-try {
-  iDontExist();
-} catch (e) {
-  alert(e.name + ": " + e.message);
-} finally {
-  alert("Finally!");
+const m = new Map ([
+  [ 1 , 'one' ],
+  [ 2, 'two' ],
+  [ 3 , 'three' ],
+]);
+
+for (const [key, value] of m.entries()) {
+  console.log(key, value);
 }
+1 one
+2 two
+3 three
 ```
 
-이러면 e.name과 e.message를 표시하는 alert()와 그리고 Finally!를 표시하는 alert()가 나타난다.
-
-내가 실험한 Firefox 환경에서는 ReferenceError: iDontExist is not defined가 표시된다. 이것은 두 사실을 말해준다
-
-- e.name 메소드는 오류 객체를 생성하는데 사용된 생성자의 이름을 포함한다.
-- 오류 객체는 호스트 환경(브라우저)에 따라 달라지기 때문에 오류 유형(e.name의 값)에 따라 코드가 달라지게 동작하게 만드는 것이 다소 까다롭다.
-
-또한 new Error()나 다른 오류 생성자를 사용해 오류 객체를 직접 생성한 다음 thorw문을 사용해 잘못된 조건이 있음을 자바스크립트 엔진에 알릴 수도 있다.
-
-예를 들어 maybeExists() 함수를 호출한 후 계산을 하는 시나리오를 생각해 보자.
-maybeExists()가 존재하지 않거나 계산 결과에 문제가 있는지 여부에 관계 없이 모든 오류를 일관된 방식으로 트랩하고자 한다.
+더 더욱 간단하게도 가능하다.
 
 ```js
-try {
-  var total = maybeExists();
-  if (total === 0) {
-    throw new Error("Division by zero!");
-  } else {
-    alert(50 / total);
-  }
-} catch (e) {
-  alert(e.name + ": " + e.message);
-} finally {
-  alert("Finally!");
+const m = new Map ([
+  [ 1 , 'one' ],
+  [ 2, 'two' ],
+  [ 3 , 'three' ],
+]);
+
+for (const [key, value] of m) {
+  console.log(key, value);
 }
+1 one
+2 two
+3 three
 ```
 
-이 코드는 maybeExists()가 정의돼 있는지 여부와 반환되는 값에 따라 다른 메시지를 보여준다.
+## 맵을 배열로 변환
 
-- maybeExists()가 존재하지 않으면, 파이어폭스에서는 ReferenceError: iDontExist is not defined가 표시된다.
-- maybeExists()가 0을 반환하면, Error: Division by zero!가 표시된다.
-- maybeExists()가 2를 반환하면, 25가 표시된다.
-
-모든 경우에 Finally!라는 두 번째 메시지가 표시된다.
-
-일반 오류인 thrownewError('Divisionbyzero!')를 던지는 대신에, 원하는 경우 thrownewRangeError('Divisionbyzero!')와 같이 보다 구체적인 오류 메시지를 지정할 수도 있다. 또한 생성자가 필요하지 않다. 단순히 일반 객체를 던지면 된다.
+스프레드 연산자(...)는 Map을 배열로 변환하려는 경우 편리하다.
 
 ```js
-throw {
-  name: "MyError",
-  message: "OMG! Something terrible has happened",
-};
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+
+const keys = [...m.keys()];
+console.log(keys)[(1, 2, 3)];
 ```
 
-이렇게 하면 오류 이름에 대해 모든 브라우저에서 제어가 가능하다.
+맵은 이터러블이므로, 스프레드 연산자를 사용하여 전체 Map을 배열로변환할 수 있다.
+
+```js
+const m = new Map([
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
+]);
+
+const arr = [...m];
+console.log(arr);
+
+Array(3)[[1, "one"][(2, "two")][(3, "three")]];
+```
+
+## 세트
+
+Set은 값의 모음이다. 세트에서 값을 추가하고 제거할 수 있다. 배열과 비슷해 보이지만, 세트는 같은 값을 두번 허용하지 않는다. set의 값은 어떤 유형도 가능하다.
+
+배열과는 얼마나 다를까? Set은 멤버쉽 테스트를 신속하게 수행할 수 있도록 설계됐다. 이 작업을 수행하는 데 있어서 배열은 상대적으로 느리다. Set 동작은 Map 동작과 비슷하다.
+
+```js
+const s = new Set();
+s.add("first");
+s.has("first"); // true
+s.delete("first"); // ture
+s.has("first"); // false
+```
+
+맵과 마찬가지로 이터레이터를 통해 Set을 생성할 수 있다.
+
+```js
+const colors = new Set(["red", "white", "blue"]);
+```
+
+Set에 값을 추가할 때, 값이 이미 존재하면 아무 일도 일어나지 않는다. 마찬가지로 Set에서 값을 삭제할 때, 값이 존재하지 않으면 아무 일도 일어나지 않는다.
+
+# WeakMap과 WeekSet
+
+Weakmap과 WeakSet은 Map과 Set과 비슷하지만 제한된 API를 가진다. 그리고 각각 비슷하게 동작한다.하지만 몇 가지 차이점이 있다.
+
+- WeakMap은 new와 has(), get(), set(), delete() 메소드만 지원한다.
+- WeakSet은 new와 has(), add(), and delete()만 지원한다.
+- WeakMap의 키는 반드시 객체여야 한다.
+- WeakSet의 값은 반드시 객체여야 한다.
+- WeakMap을 반복할 수는 없다. 값에 접근할 수 있는 유일한 방법은 키를 사용하는 것이다.
+- WeakSet을 반복할 수 없다.
+- WeakMap이나 WeakSet을 지울 수 없다.
+
+WeakMap을 먼저 이해해 보자. Map과 WeakMap의 차이점은 WeakMap 자체가 가비지 컬렉션(garbage collection)을 허용한다는 것이다. WeakMap의 키는 약하게 유지된다. WeakMap 키는 가비지 컬렉터가 참조 카운트를 수행할 때 캉운트되지 않으며, 가능한 경우에 가비지 처리된다.
+
+WeakMap은 맵에 보관중인 객체의 수명주기에 대해 어떤 제어도 하지 못할 때 유용하다.
+WeakMap을 사용할 때, 수명주기가 길더라도 객체가 메모리를 점유하지 않기 때문에 메모리 누출에 대해 걱정할 필요가 없다.
+
+WeakSet에도 동일한 구현 세부사항이 적용된다. 그러나 WeakSet을 반복할 수 없으므로, WeakSet의 유즈 케이스는 많지 않다.
+
+또한 ES6 컬렉션에 새롭게 추가된 Maps와 Sets, WeakMaps, WeakSets들은 모두 추가 이터레이터 메소드인 .entries()와 .values(), .keys()를 가진다.

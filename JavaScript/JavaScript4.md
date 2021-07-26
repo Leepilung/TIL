@@ -1,905 +1,684 @@
-# JavaScript 4
+# JavaScript 5
 
-## 내장 객체
+# Math
 
-앞에서 Object() 생성자 함수를 살펴봤다. 객체 리터럴 표기법을 사용해 객체를 생성하고 해당 constructor 속성에 접근할 때 반환된다. Object()는 내장된 생성자 중 하나다.
+Math는 앞에서 본 다른 내장 전역 객체와는 다소 다르다. 함수가 아니므로 new를 사용해 객체를 생성하는데 사용할 수 없다. Math는 수학 연산의 여러 메소드와 속성을 제공하는 내장 전역 객체이다.
 
-내장 객체는 세 그룹으로 나눌 수 있다.
+Math 객체의 속성들은 상수이므로 그 값을 변경할 수 없다. 이름은 모두 대문자로 돼있어 일반 속성과의 차이를 쉽게 구별할 수없다.(Number() 생성자의 상수 속성과 비슷하다)
 
-- 데이터 랩퍼 객체 : Object, Array, Function, Boolean, Number, String등이 있다. 이들 객체는 자바스크립트에서 각각의 데이터 유형에 해당된다. Undefined와 null을 제외하고는 typeof 값에 대한 데이터 래퍼 객체가 있다.
-
-- 유틸리티객체 : Math, Date, RegExp등이 있으며 편리하게 사용할 수 있다.
-
-- 오류 객체 : 일반적인 Error 객체뿐만 아니라 예기치 않은 상황이 발생할 때 프로그램이 동작 상태를 복구하는데 도움디 되는 여러 특정 객체가 포함된다.
-
-# Object
-
-Object는 모든 자바스크립트 객체들의 부모다. 즉 생성한 모든 객체는 여기서 상속됐음을 의미한다. 새로운 빈 객체를 생성하려면, 리터럴 표기법이나 Object() 생성자 함수를 사용한다.
+> 상수 PI:
 
 ```js
-var o = {};
-var o = new Object();
+Math.PI;
+3.141592653589793;
 ```
 
-위의 두 줄은 동일하다. 위에서 언급했듯이 빈 객체는 이미 여러 상속된 메소드와 속성을 가지고 있기 때문에 바로 사용이 가능하다. 여기서 빈 객체라는 것은 `{ }` 같은 객체로, 자동으로 받은 것 이외의 자체 속성을 가지지 않는 객체를 의미한다.
-
-- o.constructor 속성은 생성자 함수의 참조를 반환한다.
-- o.toString()은 객체를 표현하는 문자열을 반환하는 메소드다.
-- o.valueOf()은 객체의 단일 값 표현을 반환한다. 이것은 종종 객체 자체로 취급된다.
-
-메소드들의 실제 동작을 살펴보자. 우선 객체를 생성한다.
-
-```
-var a = new Object();
-```
-
-그 다음 toString()을 호출하면 객체의 문자열 표현식이 반환된다.
+> 2의 제곱근
 
 ```js
-a.toString();
-("[object Object]");
+Math.SQRT2;
+1.4142135623730951;
 ```
 
-toString() 메소드는 객체가 문자열 컨텍스트에서 사용될 때 자바스크립트에 의해 내부적으로 호출된다. 예를 들어 alert()는 문자열에서만 동작하므로 alert()함수를 호출할 때 객체를 전달하면, toString() 메소드가 자동으로 호출된다.
-
-그렇기 때문에 다음 두 줄의 결과는 동일하다.
+> 오일러 상수
 
 ```js
-alert(a); // [object Object]
-alert(a.toString()); // [object Object]
+Math.E;
+2.718281828459045;
 ```
 
-문자열 컨텍스트의 또 다른 유형은 문자열 연결이다. 객체를 문자열과 연결하려고 하면 객체의 toString() 메소드가 먼저 호출된다.
+> 2와 10의 자연로그
 
 ```js
-"An obejct" + o;
-("An obejct[object Object]");
+Math.LN2;
+0.6931471805599453;
+Math.LN10;
+2.302585092994046;
 ```
 
-valueof() 메소드는 모든 객체가 제공하는 메소드 중 하나다. 생성자가 Object()인 단순 객체인 경우, valueof() 메소드는 객체 자체를 반환한다.
+이 다음은 Math 객체가 제공하는 메소드를 살펴보자.
+
+## 난수 생성
 
 ```js
-o.valueOf() === o;
-true;
+Math.random();
+0.22427714008852984;
+Math.random();
+0.13823068738590527;
+Math.random();
+0.11675484811883297;
 ```
 
-요약하면 다음과 같다.
-
-- var o = {}; 또는 var o = new Object();로 객체를 생성할 수 있다.
-- 아무리 복잡한 객체더라도 Object 객체를 상속하므로 toString() 같은 메소드와 constructor 같은 속성을 제공한다.
-
-## Array
-
-Array()는 배열을 생성할 때 사용할 수 있는 내장 함수다.
+`random()` 함수는 0과 1사이의 숫자를 반환한다. 따라서 만약 0과 100 사이의 숫자가 필요하다면 다음과 같이 코드를 짜면 된다.
 
 ```js
-var a = new Array();
+100 * Math.random();
+83.78142766562566;
+100 * Math.random();
+25.80367596455715;
+100 * Math.random();
+88.3858729536897;
 ```
 
-이것은 배열 리터럴 표기법과 동일하다.
+두 값 사이의 숫자는 공식 ((max-min) \* Math.random())+min을 사용한다.
+
+예를 들어 2와 10사이의 난수는 다음 수식을 사용하면 된다.
 
 ```js
-var a = [];
+8 * Math.random() + 2;
+5.024658437392145;
 ```
 
-배열이 어떻게 생성됐던 평소와 같이 요소를 추가할 수 있다.
+정수만 필요하다면 다음 반올림 메소드 중 하나를 사용 하면 된다.
+
+- floor() : 내림
+- cell() : 올림
+- round() : 반올림
+
+예를 들어 0또는 1을 얻으려면 다음과 같은 코드를 이용하면 된다.
 
 ```js
-var a = [];
-a[0] = 1;
-a[1] = 2;
-a;
-Array[(1, 2)];
-```
-
-Array() 생성자를 사용할 때, 새로운 배열의 요소에 할당될 값을 전달할 수도 있다.
-
-```js
-var a = new Array(1, 2, 3, "four");
-a;
-Array(4)[(1, 2, 3, "four")];
-```
-
-예외의 경우가 있는데 바로 생성자에 하나의 숫자를 전달할 때다. 이 경우, 숫자는 배열의 길이로 간주된다.
-
-```js
-var a2 = new Array(5);
-a2;
-Array(5) [ <5 empty slots> ]
-```
-
-생성자를 사용해 배열을 생성했으므로, 배열은 객체가 되는가? -> 맞다.
-Typeof 연산자를 이용하면 확인할 수 있다.
-
-```js
-typeof [1, 2, 3];
-("object");
-```
-
-배열은 객체이므로 부모 객체의 속성과 메소드를 상속받을 수 있다.
-
-```js
-var a = [1,2,3, 'four'];
-a.toString();
-"1,2,3,four"
-a.valueOf();
-Array(4) [ 1, 2, 3, "four" ]
-a.constructor();
-Array []
-```
-
-배열은 객체이지만, 다음과 같은 이유로 특별한 유형이다.
-
-- 속성의 이름은 0부터 시작하는 숫자를 사용하여 자동 지정된다.
-- 배열의 요소 개수를 담고 있는 length 속성이 있다.
-- 부모 객체에서 상속된 메소드 이외에 더 많은 내장 메소드를 가지고 있다.
-
-빈 배열 a와 빈 객체 o를 생성하는 것으로 시작하여 배열과 객체의 차이점을 살펴보겠다.
-
-```js
-var a = [],
-  o = {};
-
-a.length;
-0;
-typeof o.length;
-("undefined");
-```
-
-배열과 객체 모두 숫자 및 비숫자 속성을 추가할 수 있다.
-
-```js
-a[0] = 1;
-o[0] = 1;
-a.prop = 2;
-o.prop = 2;
-```
-
-length 속성은 숫자 속성의 수를 항상 최신 상태로 유지하지만, 숫자가 아닌 속성은 무시한다.
-
-```js
-a.length;
+Math.round(Math.random());
 1;
 ```
 
-length 속성은 사용자가 설정할 수도 있다. 배열의 현재 항목 수보다 큰 값으로 설정하면 추가 요소를 위한 공간이 마련된다. 또한 이러한 존재하지 않는 공간에 접근하려고 하면 undefined 값이 반환된다.
+숫자 집합 중에서 가장 낮거나 높은 숫자가 필요한 경우 min()과 max() 메소드를 사용할 수 있다. 따라서 페이지에서 날짜의 월을 입력받는 폼이 있을때 다음과 같이 하면 유효한(1~12)를 입력받을 수 있다.
 
 ```js
-a.length =5;
-5
-a;
-[1,undefined x 4]
+Math.min(Math.max(1, input), 12);
 ```
 
-반면 length 속성을 더 작은 값으로 설정하면 뒤에 있는 요소가 제거된다.
+또한 Math 객체는 연산자가 없는 수학 연산을 수행하는 기능도 제공한다.
+
+pow()를 사용해 거듭 제곱을 구하거나, sqrt()로 제곱근을 구하거나, sin(), cos() atan()등의 삼각 연산등을 수행할 수 있다.
+
+예로 2의 8제곱이나 9의 제곱근을 계산하자면 다음과 같이 사용하면 된다.
 
 ```js
-a.length = 2;
-2
-a;
-[1, undefined x 1]
+Math.pow(2, 8);
+256;
+
+Math.sqrt(9);
+3;
 ```
 
-## 몇 가지 배열 메소드
+# Date
 
-배열 객체는 부모 객체에서 상속된 메소드 외에도 sort(), join() , slice() 등과 같이 배열 작업을 위한 특별한 메소드를 가지고 있다.
+Date()는 날짜 객체를 생성하는 생성자 함수이다. 다음을 전달하여 새로운 객체를 생성할 수 있다.
 
-우선 `push()` 메소드는 배열의 끝에 새로운 요소를 추가한다. `pop()` 메소드는 마지막 요소를 제거한다. a.push('new') 메소드는 a[a.length] = 'new'와 같이 동작하고, a.pop()은 a.length--와 같이 동작한다.
-
-`push()`메소드는 변경된 배열의 길이를 반환하고, `pop()`은 제거된 요소를 반환한다.
+- 아무것도 전달하지 않음(디폴트의 경우 오늘 날짜)
+- 날짜 같은 문자열
+- 일, 월, 시간 등이 구별된 값
+- 타임스탬프
 
 ```js
-var a = [3, 5, 1, 7, "test"];
-a.push("new");
-6;
-a;
-Array(6)[(3, 5, 1, 7, "test", "new")];
-a.pop();
-("new");
-a;
-Array(5)[(3, 5, 1, 7, "test")];
+new Date();
+Date Wed Jul 21 2021 15:14:20 GMT+0900 (대한민국 표준시)
 ```
 
-`sort()` 메소드는 배열을 정렬하고 이를 반환한다.
+콘솔에서 Date 객체에서 호출된 toString() 메소드의 결과가 표시된다.
+
+다음은 문자열을 사용해 Date 객체를 초기화하는 몇 가지 예제들이다.
 
 ```js
-var b = a.sort();
-b;
-Array(5)[(1, 3, 5, 7, "test")];
-a === b;
+new Date('2015 11 12');
+Date Thu Nov 12 2015 00:00:00 GMT+0900 (대한민국 표준시)
+
+new Date('2022 1 1');
+Date Sat Jan 01 2022 00:00:00 GMT+0900 (대한민국 표준시)
+
+new Date('1 mar 2016 5:30');
+Date Tue Mar 01 2016 05:30:00 GMT+0900 (대한민국 표준시)
+```
+
+Date 생성자는 다른 문자열에서 날짜를 알아낼 수 있지만, 사용자 입력을 생성자로 전달하는 것과 같이 정확한 입력 날짜를 정의하는 것은 신뢰할 수 있는 방법은 아니다.
+
+더 좋은 방법은 Date() 생성자에 다음의 숫자값을 전달하는 것이다.
+
+- 년
+- 월 -0(1월)~ 11(12월)까지
+- 일 - 1부터 31까지
+- 시간 - 0부터 23까지
+- 분 - 0부터 59까지
+- 초 - 0부터 59까지
+- 밀리초 - 0부터 999까지
+
+몇 가지 예제를 살펴보자.
+
+```js
+new Date(2015, 0, 1, 17, 05, 03, 120);
+Date Thu Jan 01 2015 17:05:03 GMT+0900 (대한민국 표준시)
+```
+
+월이 0부터 시작하기 때문에 1이 2월이라는 부분을 주의하자.
+
+```js
+new Date(2016, 1, 28);
+Date Sun Feb 28 2016 00:00:00 GMT+0900 (대한민국 표준시)
+```
+
+허용된 값 보다 큰 값을 전달하면 날짜가 자동으로 다음날로 넘어간다. 예를 들어 2016년 2월 30일은 없으므로 3월 1일이 된다.(2016년은 윤년에 해당된다.)
+
+```js
+new Date(2016, 1, 29);
+Date Mon Feb 29 2016 00:00:00 GMT+0900 (대한민국 표준시)
+
+new Date(2016, 1, 30);
+Date Tue Mar 01 2016 00:00:00 GMT+0900 (대한민국 표준시)
+```
+
+마찬가지로 12월 32일은 다음해 1월 1일로 자동으로 바뀐다.
+
+```js
+new Date(2020, 12, 31);
+Date Sun Jan 31 2021 00:00:00 GMT+0900 (대한민국 표준시)
+
+new Date(2020, 12, 32);
+Date Mon Feb 01 2021 00:00:00 GMT+0900 (대한민국 표준시)
+```
+
+new를 사용하지 않고 Date()를 호출하면, 매개변수의 전달과 관계없이 현재 날짜를 나타내는 문자열이 표시된다. 다음 예제에서는 현재 시간을 보여준다.
+
+```js
+Date();
+("Wed Jul 21 2021 15:21:36 GMT+0900 (대한민국 표준시)");
+
+Date(1, 2, 3, "it dosen't matter");
+("Wed Jul 21 2021 15:22:16 GMT+0900 (대한민국 표준시)");
+
+typeof Date();
+("string");
+typeof new Date();
+("object");
+```
+
+## date 객체를 사용하기위한 메소드
+
+날짜 객체를 생성하면 해당 객체의 많은 메소드를 호출할 수 있다. 대부분의 메소드는 getMonth(), setMonth(), getHours(), setHours() 등과 같이 set*(), get*() 메소드로 나눌 수 있다.
+
+```js
+var d = new Date(2021, 1, 1);
+d.toString();
+("Mon Feb 01 2021 00:00:00 GMT+0900 (대한민국 표준시)");
+```
+
+월을 구하려면 다음 코드를 작성하면 된다.
+
+```js
+d.getMonth();
+1;
+```
+
+Date 객체의 모든 메소드 외에도 Date() 함수/객체의 속성인 두 개의 메소드가 더 있다. 이들은 Math 객체 메소드처럼 동작한다. 클래스 기반 언어에서 이런 메소드는 인스턴스를 필요로 하지 않기 때문에 정적이라고 부른다.
+
+Date.parse() 메소드는 문자열을 받아 타임스탬프를 반환한다.
+
+```js
+Date.parse("Jan 11, 2018");
+1515596400000;
+```
+
+Date.UTC() 메소드는 년,월,일등의 모든 매개변수를 받아 표준시의 타임스탬프를 생성한다.
+
+```js
+Date.UTC(2018, 0, 11);
+1515628800000;
+```
+
+new Date() 생성자가 타임스탬프를 허용하므로, Date.UTC()의 결과를 전달할 수 있다.
+또한 다음 예제를 사용하면 new Date()가 로컬 시간에서 동작하는 방식과 UTC()가 표준시에서 동작하는 방식을 볼 수 있다.
+
+```js
+new Date(Date.UTC(2018,0,11));
+Date Thu Jan 11 2018 09:00:00 GMT+0900 (대한민국 표준시)
+
+new Date(2018,0,11);
+Date Thu Jan 11 2018 00:00:00 GMT+0900 (대한민국 표준시)
+```
+
+Date 생성자에 ES5의 nodw() 메소드가 추가되었다. 이는 현재 타임스탬프를 반환한다.
+Date 객체의 getTime() 메소드를 사용하는것과 같은 동작을 하는데 보다 편리한 방법이다.
+
+```js
+Date.now();
+1627021903710;
+
+Date.now() === new Date().getTime();
 true;
 ```
 
-`join()` 메소드는 join()에 전달된 문자열 매개변수를 함께 묶어 배열의 모든 요소 값을 포함하는 문자열을 반환한다.
+날짜의 내부 표현을 정수 타임스탬프로 생각할 수 있으며, 다른 모든 메소드들은 이를 덮어 쓰고 있는것이라고 생각할 수 있다.
+
+## 생일 계산
+
+Date 객체로 작업하는 마지막 예제이다.
+
+내 생일이 미래의 특정 년도에 무슨 요일인지 궁금하다.
 
 ```js
-a.join(" is not ");
-("1 is not 3 is not 5 is not 7 is not test");
-```
-
-`slice()`메소드는 소스 배열을 수정하지 않고 배열의 일부분을 반환한다. slice()의 첫번째 매개변수는 시작 인덱스이고, 두 번째 매개변수는 끝 인덱스이다.
-
-시작 인덱스의 요소는 포함되지만, 끝은 포함되지 않는다.
-
-```js
-b = a.slice(1, 3);
-Array[(3, 5)];
-b = a.slice(0, 1);
-Array[1];
-b = a.slice(0, 2);
-Array[(1, 3)];
-```
-
-슬라이스가 끝난 후에도, 소스 배열은 변하지 않는다.
-
-```js
-a;
-Array(5)[(1, 3, 5, 7, "test")];
-```
-
-slice() 메소드는 소스 배열을 수정한다. 슬라이스를 제거하여 반환하고, 선택적으로 간격을 새로운 요소로 채울 수 있다.
-
-처음 두 매개변수는 제거할 슬라이스의 시작 인덱스와 길이를 정의한다. 그 뒤 매개변수들은 채울 새 값을 전달한다.
-
-```js
-b = a.splice(1, 2, 100, 101, 102);
-Array[(3, 5)];
-a;
-Array(7)[(1, 100, 101, 102, 102, 7, "test")];
-```
-
-물론 간격을 채우는 것은 선택사항이므로 다음과 같이 건너 뛸 수 있다.
-
-```js
-a.splice(1, 3);
-Array(3)[(100, 101, 102)];
-a;
-Array(3)[(1, 7, "test")];
-```
-
-## Array.form
-
-Array.form()은 유사 배열 객체(array-like object)나 반복 가능한 객체(iterable object)를 얕게 복사해 새로운Array 객체를 만든다.
-
-```js
-console.log(Array.from("foo"));
-// expected output: Array ["f", "o", "o"]
-
-console.log(Array.from([1, 2, 3], (x) => x + x));
-// expected output: Array [2, 4, 6]
-```
-
-## Array.of
-
-Array() 생성자를 사용해 배열을 생성하면 문제가 발생한다. 생성자는 인수의 수와 유형에 따라 다르게 동작한다.
-
-Array()생성자에 단일 숫자 값을 전달하면, 인수 값이 length 값으로 할당된 배열의 요소가 정의되지 않은 배열이 생성된다.
-
-```js
-let arr = new Array(2);
-console.log(arr); // [undefined, undefined]
-console.log(arr.length); // 2
-```
-
-또한 숫자가 아닌 값을 하나만 전달하면 배열의 유일한 항목이 된다.
-
-```js
-let arr = new Array("2");
-console.log(arr); // ['2']
-console.log(arr.length); // 1
-```
-
-따라서 배열을 생성할때 혼란을 피하기 위한 더 좋은 방법이 Array.of이다.
-
-Array.of()와 Array 생성자의 차이는 정수형 인자의 처리 방법에 있다.
-
-```js
-Array.of(7); // [7]
-Array.of(1, 2, 3); // [1, 2, 3]
-
-Array(7); // [ , , , , , , ]
-Array(1, 2, 3); // [1, 2, 3]
-```
-
-Array.of는 숫자와 유형에 상관없이 인수로 배열을 생성한다는 것을 기억하자.
-
-## Array.prototype 메소드
-
-배열 반복과 배열의 요소 검색에 도움이 되는 메소드들이 있다.
-
-- Array.prototype.entires()
-- Array.prototype.values()
-- Array.prototype.keys()
-
-위 3개의 메소드는 모두 이터레이터를 반환한다. 이 이터레이터는 Array.form()을 사용해 배열을 생성하는데 사용할 수 있으며 반복을 위한 for 루프에서 사용할 수 있다.
-
-```js
-let arr = ["a", "b", "c"];
-for (const index of arr.keys()) {
-  console.log(index); // 0, 1, 2 출력
-}
-
-for (const value of arr.values()) {
-  console.log(value); // a, b, c 출력
-}
-
-for (const [index, value] of arr.entries()) {
-  console.log(index, value); // 0 a, 1 b, 2 c 출력
-}
-```
-
-그리고 배열안을 검색하는 새로운 메소드도 있다.
-
-- Array.prototype.find
-- Array.prototype.findindex
-
-이 메소드는 모두 두 개의 인수를 허용한다. 첫 번째는 callback 함수이고 두 번째는 선택사항인 this 키워드다.
-callback은 배열요소, 해당 요소의 인덱스 및 배열의 세 개의 인수를 받는다. 요소가 조건과 일치하면 callback은 true를 반환한다.
-
-```js
-let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-console.log(numbers.find((n) => n > 5)); // 6
-console.log(numbers.findIndex((n) => n > 5)); // 5
-```
-
-# Function
-
-함수는 객체이다. Function()이라는 내장 생성자 함수가 있으며 이는 함수를 생성하는 대체 방법으로 사용될 수 있다.
-다음은 함수를 정의하는 예제들이다.
-
-```js
-function sum(a, b) {
-  // 함수 선언
-  return a + b;
-}
-sum(1, 2);
+var d = new Date(2022, 6, 20);
+d.getDay();
 3;
-var sum = function (a, b) {
-  // 함수 표현식
-  return a + b;
-};
-sum(1, 3);
-4;
+```
 
-var sum = new Function("a", "b", "return a + b;");
-sum(1, 4);
+요일은 0부터 카운트가 시작되니 3은 목요일이 될 것이다.
+
+생일을 축하하기에 목요일은 애매한 날짜이다. 그렇다면 2022년부터 3022년까지 7월 20일이금요일인 횟수와 모든 요일의 분포를 알아보자.
+
+먼저 일주일의 각각의 요일을 위해 7개의 요소를 가진 배열을 초기화해 보자. 이 요소는 카운터로 사용된다. 그다음 루프를 3022까지 증가시키며 카운트를 센다고 가정하자.
+
+```js
+var stats = [0, 0, 0, 0, 0, 0, 0];
+
+for ( var i = 2022; i < 3022; i ++) {
+  stats[new Date(i, 6, 20).getDay()]++;
+}…
+Array(7) [ 143, 145, 140, 145, 140, 145, 142 ]
+```
+
+금요일은 모두 140번이고 토요일은 145번이다. 쏘쏘한듯 ..?
+
+# RegExp
+
+정규 표현식은 텍스트를 검색하고 조작하는 강력한 방법을 제공한다. 언어별로 정규 표현식 구문의 구현이 다르다. 자바스크립트는 펄(Perl)5 라는 구문을 사용한다.
+
+정규 표현식을 대신하여 정규식 또는 RegExp로 줄여서 말하기도 한다.
+
+정규 표현식은 다음으로 구성된다.
+
+- 텍스트와 매칭하는데 사용되는 패턴
+- 패턴을 사용하는 방법에 대한 자세한 지침을 제공하는 0개 이상의 한정자(modifier)
+
+패턴은 단순히 문자 그대로 매칭시킬 수도 있지만, 가끔은 indexOf()를 사용하는 것이 더 나을 때도 있다. 또한 대부분의 경우, 패턴은 복잡하고 이해하기 어려운 경우가 많다. 정규 표현식의 패턴을 마스터하는 것은 그 자체로 큰 주제이기 때문에 당장 다루지는 않는다.
+
+대신 정규 표현식 사용 지원을 위해 자바스크립트가 구문 및 객체, 메소드와 관련해 제공하는 것을 알아보자.
+
+자바스크립트는 정규 표현식 객체를 만들 수 있는 `RegExp()` 생성자를 제공한다.
+
+```js
+var re = new RegExp("j.*t");
+```
+
+좀더 편리한 정규식 리터럴 표기법도 사용할 수 있다.
+
+```js
+var re = /j.*t/;
+```
+
+위의 예제에서 j.\*t는 정규 표현식 패턴이다. 이는 "j로 시작하고 t로 끝나며, 그사이에 0개 이상의 문자가 있는 모든 문자열을 찾는다" 라는 내용을 의미한다.
+
+별 표(\*)는 "0개 이상"을 의미하며, 점(.)은 "모든 문자"를 의미한다. RegExp() 생성자에 전달될 때, 패턴은 따옴표로 묶어야 한다.
+
+## RegExp 객체의 속성
+
+정규 표현식 객체의 속성은 다음과 같다.
+
+- global : 이 속성이 false(디폴트 값)이면, 첫 번째 일치 항목이 발견되면 검색이 중지된다. 일치하는 모든 값을 찾고자 할 때는 이 값을 true로 설정한다.
+- ignoreCase : 대소문자를 구분하지 않으려면 이 속성의 디폴트 값을 false로 한다.(디폴트값은 대소문자를 구분한다)
+- multiline : 두 줄 이상에 걸친 검색시 디폴트를 false로 한다.
+- lastIndex : 검색을 시작할 위치, 디폴트는 0이다.
+- source : RegExp 패턴을 포함한다.
+
+LastIndex를 제외하면 이들 속성은 객체가 생성되면 변경이 불가능하다.
+
+앞의 목록에 있는 처음 세 항목은 정규식 한정자를 나타낸다. 생성자를 사용해 정규 식 객체를 만드는 경우, 두 번째 매개변수는 다음 문자 조합을 전달할 수 있다.
+
+- global을 나타내는 g
+- ignoreCase를 나타내는 i
+- multiline을 나타내는 m
+
+이들 문자는 어떤 순서로도 사용할 수 있다. 문자가 전달되면 해당 한정자 속성이 true로 설정된다. 다음 예제에서는 모든 한정자가 true로 설정된다.
+
+```js
+var re = new RegExp("j.*t", "gmi");
+```
+
+확인해 보자.
+
+```js
+re.global;
+true;
+
+re.global = false;
+re.global;
+true;
+```
+
+또한 다음과 같이 한번 설정된 값은 바뀌지 않는다.
+
+정규식 리터럴을 사용해 한정자를 설정하려면 닫는 슬래시 다음에 추가하면 된다.
+
+```js
+var re = /j.*t/gi;
+
+re.global;
+```
+
+## RegExtp 객체의 메소드
+
+정규식 객체는 매칭을 찾는데 사용할 수 있는 두가지 메소드 test().와 exec()을 제공한다. 둘 다 문자열 매개변수를 허용한다. test() 메소드는 부울을 반환하고(일치하면 true, 아니면 false), exec()은 일치하는 문자열의 배열을 반환한다.
+
+exec()가 더 많은 일을 하기 때문에 필요한 경우에만 사용하고 그 외는 test()를 사용하는 것이 좋다.
+
+사람들은 종종 데이터의 유효성 검사하는 데 정규 표현식을 사용한다. 이 경우, test()만으로도 충분하다.
+
+이제 예제를 통해 알아보자. 대문자 J때문에 일치하는 항목이 없는 경우이다.
+
+```js
+/j.*t/.test("Javascript");
+false;
+```
+
+대소문자를 구분하지 않는 테스트의 결과는 true가 나온다.
+
+```js
+/j.*t/i.test("Javascript"); // i가 ignoreCase의 약자이기 때문
+true;
+```
+
+exec()을 사용한 동일한 테스트는 배열을 반환하고 다음과 같이 첫 번째 요소에 접근할 수 있다.
+
+```js
+/j.*t/i.exec("Javascript")[0];
+("Javascript");
+```
+
+## 정규 표현식을 인수로 받아들이는 string 메소드
+
+기존에 string 부분에서 indexOf()와 lastindexOf() 메소드를 사용해 텍스트 안을 검색하는 방법을 배웠다. 이들 메소드를 사용하면 검색할 리터럴 문자열 패턴만 지정할 수 있다. 이보다 더 강력한 방법은 정규표현식을 사용하여 텍스트를 찾는 것이다.
+
+문자열 객체가 이 기능을 제공한다.
+
+문자열 객체는 정규 표현식 객체를 매개변수로 받는 다음 메소드를 제공한다.
+
+- match() : 일치하는 문자열을 반환한다.
+- search() : 첫 번째 일치 항목의 위치를 반환한다.
+- replace() : 일치하는 텍스트를 다른 문자열로 대체할 수 있다.
+- split() : 문자열을 배열 요소로 분할할 때 정규식을 허용한다.
+
+## search()와 match()
+
+search()와 match() 메소드를 사용하는 몇 가지 예를 살펴보자.
+
+```js
+var s = new String("HelloJavaScriptWorld");
+```
+
+match()를 사용하면 첫 번째 일치하는 항목만 포함하는 배열을 얻을 수 있다.
+
+```js
+s.match(/a/);
+Array["a"];
+```
+
+전역 설정 g 한정자를 사용하면 전역검색을 수행하므로, 결과 배열에 두 요소가 포함된다.
+
+```js
+s.match(/a/g);
+Array[("a", "a")];
+```
+
+대소문자를 구분하지 않는 경우
+
+```js
+s.match(/j.*a/i);
+Array["Java"];
+```
+
+search() 메소드는 일치하는 문자열의 위치를 알려준다.
+
+```js
+s.search(/j.*a/i);
 5;
 ```
 
-Function() 생성자를 사용할 때는 먼저 매개변수 이름을 문자열로 전달한 다음 함수 본문의 소스 코드를 문자열로 전달한다. 그러나 이 소스 코드 평가는 eval() 함수와 동일한 단점을 지니고 있어 가능하면 피ㅏ하는 것이 좋다.
+## replace()
 
-## 함수 객체의 속성
+replace() 메소드를 사용하면 일치하는 텍스트를 다른 문자열로 바꿀 수 있다.
 
-함수는 Function() 생성자 함수에 대한 참조를 가진 constructor 속성이 있다.
+다음 예제에서는 대문자를 모두 제거한다.
 
 ```js
-function myfunc(a) {
-  return a;
-}
-myfunc.constructor;
-function Function()
+var s = new String("HelloJavaScriptWorld");
+
+s.replace(/[A-Z]/g, "");
+("elloavacriptorld");
 ```
 
-함수는 또한 length 속성을 가진다. 이 속성은 함수가 원하는 공식 매개변수의 수를 가진다.
+g 한정자를 생략하면 첫번째 일치 항목만 바꾼다.
 
 ```js
-function myfunc(a, b, c) {
-  return true;
-}
+var s = new String("HelloJavaScriptWorld");
 
-myfunc.length;
-3;
+s.replace(/[A-Z]/, "");
+("elloJavaScriptWorld");
 ```
 
-## prototype 속성 사용하기
-
-함수 객체에서 가장 널리 사용되는 속성 중 하나는 prototype 속성이다. 나중에 다시 다룰 내용이기 때문에 가볍게만 알아보자면
-
-- function 객체의 prototype 속성은 다른 객체를 가리킨다.
-- 이 function을 생성자로 사용할 때만 이점이 빛을 발한다.
-- 이 function으로 생성된 모든 객체는 prototype 속성에 대한 참조를 유지하며 해당 속성을 자체 속성으로 사용할 수 있다.
-
-prototype 속성을 보여주는 간단한 예제를 살펴보자. name 속성 이름과 say() 메소드를 가진 간단한 객체를 사용할 것이다.
+매칭을 발견했을 때, 일치하는 텍스트를 대체 문자열에 포함시키려면 $&를 사용해 접근할 수 있다. 매칭을 진행하면서 밑줄을 추가하는 방법은 다음과 같다.
 
 ```js
-var ninja = {
-  name : 'Ninja'
-  say : function () {
-    return 'I am a ' + this.name;
+var s = new String("HelloJavaScriptWorld");
+
+s.replace(/[A-Z]/g, "_$&");
+("_Hello_Java_Script_World");
+// 대문자 A-Z를 만난경우 밑줄(_)을 추가하는 방법이다.
+```
+
+정규 표현식에 그룹(괄호로 표시)이 있으면, 각 그룹의 일치 항목은 첫 번째 그룹을 $1, 두 번째 그룹을 $2로 사용할 수 있다.
+
+```js
+var s = new String("HelloJavaScriptWorld");
+
+s.replace(/([A-Z])/g, "_$1");
+("_Hello_Java_Script_World");
+```
+
+만약 웹 페이지에 이메일 주소, 사용자 이름, 비밀번호를 묻는 등록 양식이 있다고 가정해 보자. 사용자가 이메일 아이디를 입력하면 자바스크립트가 실행되고 이메일 주소에서 가져온 사용자 이름을 제안한다.
+
+```js
+var email = "ek3434@naver.com";
+var username = email.replace(/(.*)@.*/, "$1");
+
+username;
+("ek3434");
+```
+
+## 콜백 대체
+
+대체를 지정할 때, 문자열을 반환하는 함수를 전달할 수도 있다. 이렇게 하면 대체를 지정하기 전에 필요한 로직을 구현할 수 있다.
+
+```js
+var s = new String("HelloJavaScriptWorld");
+
+function replaceCallback(match) {
+  return "_" + match.toLowerCase();
+}
+
+s.replace(/[A-Z]/g, replaceCallback);
+("_hello_java_script_world");
+```
+
+콜백 함수는 여러 매개변수를 받는다.(위의 예제는 첫 번쨰 매개변수를 제외하고 나머지는 모두 무시한다.)
+
+- 첫 번째 매개변수는 match다.
+- 마지막은 검색할 문자열이다.
+- 마지막 바로 전 매개변수는 match의 위치다.
+- 나머지 매개변수는 정규식 패턴의 모든 그룹과 일치하는 문자열을 포함한다.
+
+잘 이해가 안가지만 예제를 통해 알아보자.
+
+먼저 콜백 함수에 전달된 전체 인수 배열을 저장하는 변수를 생성한다.
+
+```js
+var glob;
+```
+
+그런 다음, 세 개의 그룹을 가지며, 이메일 주소를 아무개@아무개.아무개 형식과 매칭시키는 정규 표현식을 정의한다.
+
+```js
+var re = /(.*)@(.*)\.(.*)/;
+```
+
+마지막으로 인수를 glob에 저장하고 대체 문자열을 반환하는 콜백 함수를 정의한다.
+
+```js
+var callback = function () {
+  glob = arguments;
+  return arguments[1] + " at " + arguments[2] + " dot " + arguments[3];
+};
+
+"ek3434@naver.com".replace(re, callback);
+("ek3434 at naver dot com");
+```
+
+콜백 함수가 받은 인수는 다음과 같다.
+
+```js
+glob;
+Arguments { 0: "ek3434@naver.com", 1: "ek3434", 2: "naver", 3: "com", 4: 0, 5: "ek3434@naver.com", … }
+```
+
+## split()
+
+split() 메소드에 대해선 이미 한차례 배웠다. 입력 문자열과 구분기호 문자열로 배열을 만든다.
+
+```js
+var csv = "one, two, three, four";
+csv.split(",");
+Array(4)[("one", " two", " three", " four")];
+```
+
+입력 문자열에는 쉼표 앞 뒤에 일치하지 않는 공백이 있기 때문에, 배열 결과에도 공백이 있다. 그러나 정규 표현식을 사용하면 \s\*을 사용해 이를 고칠 수 있다.
+
+\s\*는 0개 이상의 공백을 의미한다.
+
+```js
+var csv = "one, two, three, four";
+
+csv.split(/\s*,\s*/);
+Array(4)[("one", "two", "three", "four")];
+```
+
+## RegExp가 필요할 때 문자열 전달
+
+마지막으로 주의할 점은 앞에서 살펴본 네 개의 메소드(split(), match(), search(), replace())는 정규 표현식이 아닌 문자열도 사용할 수 있다는 것이다. 이 경우 문자열 인수는 new RegExp()에 전달된 것처럼 새로운 정규식을 만드는 데 사용된다.
+
+replace에 문자열을 전달하는 예제는 다음과 같다.
+
+```js
+"test".replace("t", "r");
+("rest");
+```
+
+이는 다음 정규 표현 사용 코드와 동일하다.
+
+```js
+"test".replace(new RegExp("t"), "r");
+("rest");
+```
+
+문자열을 전달하면 일반적인 생성자나 정규식 리터럴에서 하던 것처럼 한정자를 설정할 수 없다.
+
+문자열 대체를 위해 정규 표현식 객체 대신 문자열을 사용할 때 일반적으로 발생하는 오류가 있다. 결과는 첫 번째 문자열만 대체된다는 것이다. g 한정자가 디폴트로 false이기 때문이다. 이는 대부분의 언어와 달라 약간 혼란스럽다.
+
+```js
+"pool".replace("o", "*");
+("p*ol");
+
+"pool".replace(/o/g, "*");
+("p**l");
+```
+
+## Error 객체
+
+오류가 발생하면, 오류 조건을 알고 우아한 방법으로 이를 복구할 수 있는 메커니즘을 마련하는 것이 좋다. 자바스크립트는 오류 처리에 도움이 되는 try, catch, finally 문을 제공한다.
+
+오류가 생기면 오류 객체가 던져진다. Error 객체는 EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError의 내장 생성자 중 하나를 사용하여 생성된다. 이들 생성자는 모두 Error에서 상속받는다.
+
+오류를 발생시키고, 어떤일이 발생하는지 보자. 오류를 일으키는 가장 간단한 바법중 하나는 존재하지 않는 함수를 호출하는 것이다.
+
+```js
+iDontExist();
+Uncaught ReferenceError: iDontExist is not defined
+```
+
+오류 표시는 브라우저나 호스트 환경에 따라 다르다.
+
+오류를 처리하는 방법은 catch 문 당므에 try 문만 사용하면 된다.
+
+```js
+try {
+  iDontExist();
+} catch (e) {
+  // 동작 수행
+}
+```
+
+당므의 코드는 사용자에게 오류를 숨긴다.
+
+여기서
+
+- try 문 다음에 코드 블록이 온다.
+- catch 문 다음에 괄호 안에 변수 이름과 다른 코드 블록이 온다.
+
+오류가 있는지 여부와 상관없이 실행되는 선택 사항인 finally 문 뒤에도 역시 코드 블록이 올 수 있다.
+
+앞의 예제에서, catch 문 다음에 나오는 코드 블록은 아무 일도 하지 않지만 오류를 복구하는데 도움이 되는 코드를 작성하거나, 최소한 사용자에게 특별한 조건이 있음을 알리는데 사용할 수 있다.
+
+catcha문 다음의 괄호 안에 있는 변수 e는 Error 객체를 포함한다. 다른 객체와 마찬가지로 이 객체 역시 속성과 메소드를 가지고 있다. 아쉽게도 브라우저별로 이 속성과 메소드를 다르게 구현하지만, e.name과 e.message는 동일하게 구현됐다.
+
+```js
+try {
+  iDontExist();
+} catch (e) {
+  alert(e.name + ": " + e.message);
+} finally {
+  alert("Finally!");
+}
+```
+
+이러면 e.name과 e.message를 표시하는 alert()와 그리고 Finally!를 표시하는 alert()가 나타난다.
+
+내가 실험한 Firefox 환경에서는 ReferenceError: iDontExist is not defined가 표시된다. 이것은 두 사실을 말해준다
+
+- e.name 메소드는 오류 객체를 생성하는데 사용된 생성자의 이름을 포함한다.
+- 오류 객체는 호스트 환경(브라우저)에 따라 달라지기 때문에 오류 유형(e.name의 값)에 따라 코드가 달라지게 동작하게 만드는 것이 다소 까다롭다.
+
+또한 new Error()나 다른 오류 생성자를 사용해 오류 객체를 직접 생성한 다음 thorw문을 사용해 잘못된 조건이 있음을 자바스크립트 엔진에 알릴 수도 있다.
+
+예를 들어 maybeExists() 함수를 호출한 후 계산을 하는 시나리오를 생각해 보자.
+maybeExists()가 존재하지 않거나 계산 결과에 문제가 있는지 여부에 관계 없이 모든 오류를 일관된 방식으로 트랩하고자 한다.
+
+```js
+try {
+  var total = maybeExists();
+  if (total === 0) {
+    throw new Error("Division by zero!");
+  } else {
+    alert(50 / total);
   }
+} catch (e) {
+  alert(e.name + ": " + e.message);
+} finally {
+  alert("Finally!");
+}
+```
+
+이 코드는 maybeExists()가 정의돼 있는지 여부와 반환되는 값에 따라 다른 메시지를 보여준다.
+
+- maybeExists()가 존재하지 않으면, 파이어폭스에서는 ReferenceError: iDontExist is not defined가 표시된다.
+- maybeExists()가 0을 반환하면, Error: Division by zero!가 표시된다.
+- maybeExists()가 2를 반환하면, 25가 표시된다.
+
+모든 경우에 Finally!라는 두 번째 메시지가 표시된다.
+
+일반 오류인 thrownewError('Divisionbyzero!')를 던지는 대신에, 원하는 경우 thrownewRangeError('Divisionbyzero!')와 같이 보다 구체적인 오류 메시지를 지정할 수도 있다. 또한 생성자가 필요하지 않다. 단순히 일반 객체를 던지면 된다.
+
+```js
+throw {
+  name: "MyError",
+  message: "OMG! Something terrible has happened",
 };
 ```
 
-함수를 생성하면 (본문이 없는 함수더라도), 새로운 객체를 가리키는 prototype 속성이 자동으로 생김을 확인할 수 있다.
-
-```js
-function F() {}
-
-typeof F.prototype;
-("object");
-```
-
-prototype 속성은 수정이 흥미롭다. 속성을 추가하거나 디폴트 객체를 다른 객체로 변경할 수 있다. prototype에 ninja를 지정해 보자.
-
-```js
-F.prototype = ninja;
-```
-
-이제 F() 함수를 constuctor 함수로 사용하면 F.prototype의 속성을 자신의 속성처럼 접근할 수 있는 새로운 객체 baby_ninja를 생성하여 실행시켜보면 다음과 같은 결과를 가진다.
-
-```js
-var baby_ninja = new F();
-baby_ninja.name;
-("Ninja");
-baby_ninja.say();
-("I am a Ninja");
-```
-
-## 함수 객체의 메소드
-
-최상위 부모 객체의 자손인 Function 객체는 toString()같은 디폴트 메소드를 가져온다. 함수에서 호출될 때 toString() 메소드는 함수의 소스 코드를 반환한다.
-
-```js
-function myfunc(a, b, c) {
-  return a + b + c;
-}
-myfunc.toString();
-"function myfunc(a, b, c) {
-  return a + b + c;
-}"
-```
-
-내장 함수의 소스 코드를 들여다보면 함수 본문 대신 [native code] 문자열이 반환된다.
-
-```js
-parseInt.toString();
-"function parseInt() {
-    [native code]
-}"
-```
-
-보다시피 toString()을 사용하면 개발자가 정의한 메소드와 내가 정의한 메소드를 구별할 수 있다.
-
-## call & apply
-
-함수 객체는 `call()`과 `apply()` 메소드를 가진다. 이런 메소드를 사용하면 함수를 호출할 때 인수를 전달할 수 있다.
-
-또한 이 메소드를 사용하면 다른 객체의 메소드를 빌려서 자신의 메소드인 것처럼 호출할 수 있다. 코드를 재사용하는 쉽고 좋은 방법이다.\
-
-예들 들어 say() 메소드를 포함한 some_obj 객체가 있다고 가정해 보자.
-
-```js
-var some_obj = {
-  name: "Ninja",
-  say: function (who) {
-    return "Haya " + who + ", I am " + this.name;
-  },
-};
-```
-
-say() 메소드를 호출해 자신의 name속성에 접근할 수 있다. 이 메소드는 내부적으로 this.name을 사용하는 것이다.
-
-```js
-some_obj.say("Dude");
-("Haya Dude, I am Ninja");
-```
-
-이제 name속성만 갖는 간단한 객체 my_obj를 생성해 보자.
-
-```js
-var my_obj = { name: "Scripting Guru" };
-```
-
-my_obj는 some_obj 객체의 say() 메소드가 너무 좋아 자신의 메소드처럼 호출하고 싶다고 가정해보자. 이럴땐 say() 함수 객체의 call() 메소드를 사용하면 가능하다.
-
-```js
-some_obj.say.call(my_obj, "Jude");
-("Haya Jude, I am Scripting Guru");
-```
-
-잘 동작하지만 동작 방법을 자세히 살펴볼 필요가 있다. my_obj 객체와 Jude 문자열 두 매개변수를 전달하여 say()함수 객체의 call() 메소드를 호출했다.
-
-결과는 say().가 호출될 때, this값에 대한 참조가 my_obj를 가르킨다는 것이다. 이렇게 하면 this.name이 Ninja가 아닌 my_obj의 Scripting guru를 반환한다.
-
-call() 메소드를 호출할 때, 더 많은 매개변수를 전달하려면 이들을 추가하면 된다.
-
-```js
-some_obj.say.call(my_obj, "a", "b", "c");
-("Haya a, I am Scripting Guru");
-```
-
-call()에 첫 번째 매개변수로 객체를 전달하지 않거나 null을 전달하면, 전역 객체로 가정한다.
-
-apply() 메소드는 call()과 같은 방식으로 동작하지만, 다른 객체의 메소드로 전달할 모든 매개변수가 배열로 전달된다는 차이점이 있다.
-
-```js
-some_obj.someMethod.apply(my_obj, ["a", "b", "c"]);
-some_obj.someMethod.call(my_obj, "a", "b", "c");
-```
-
-위의 두 줄은 서로 동일하다.
-
-## 인수 객체 재검토
-
-앞에서 함수에 전달된 모든 매개변수의 값을 포함하고 있는 arguments에 접근하는 방법을 알아봤다.
-
-```js
-function f() {
-  return arguments;
-}
-f(1,2,3);
-Arguments { 0: 1, 1: 2, 2: 3, … }
-```
-
-arguments는 배열처럼 보이지만, 실제로는 배열과 비슷한 객체이다. 인덱스된 요소와 length 속성을 포함하고 있으므로 배열과 유사하다. 그러나 유사성은 여기까지다. 인수는 sort() 또는 slice() 같은 배열 메소드를 제공하지 않는다.
-
-그러나 arguments를 배열로 변환할 수 있으며, 배열의 모든 이점을 활용할 수 있다.
-
-```js
-function f() {
-  var args = [].slice.call(arguments);
-  return args.reverse();
-}
-
-f(1, 2, 3, 4);
-Array(4)[(4, 3, 2, 1)];
-```
-
-## 객체 유형 추정
-
-arguments 객체가 배열 객체와 매우 흡사하다는 것은 앞의 내용을 통해 알 수 있었다.
-둘 사이의 차이점은 명확하게 무엇일까? tpyeof는 배열에 사용될 떄 객체를 반환한다. 그렇다면 과연 객체와 배열의 차이를 어떻게 알 수 있을까?
-
-이 문제의 해결책은 Object 객체의 toString() 메소드이다. 이 메소드는 주어진 객체를 생성하는데 사용되는 내부 클래스 이름을 제공한다.
-
-```js
-Object.prototype.toString.call({});
-("[object Object]");
-Object.prototype.toString.call([]);
-("[object Array]");
-```
-
-Object 생성자의 프로토타입에 정의된 대로 원래의 toString() 메소드를 호출해야 한다. 그렇지 않으면 Array함수의 toString()을 호출할 때 배열 객체의 특정 용도에 맞게 재정의 되어 다른 결과를 얻게 된다.
-
-```js
-[1, 2, 3].toString();
-("1,2,3");
-// 이 코드는 다음 코드와 동일하다.
-Array.prototype.toString.call([1, 2, 3]);
-("1,2,3");
-```
-
-# Boolean
-
-다음은 아주 간단한 세 개의 객체 Boolean, number, string에 대해 알아보자.
-
-우선 Boolean() 생성자를 알아보자.
-
-```js
-var b = new Boolean();
-```
-
-위 코드는 원시 부울린 값이 아닌 새로운 객체 b를 생성한다는 것을 알아야 한다.
-
-원시값을 구하려면 valueof() 메소드를 호출해야 한다.
-
-```js
-var b = new Boolean();
-
-b;
-Boolean { false }
-
-typeof b;
-"object"
-
-typeof b.valueOf();
-"boolean"
-
-b.valueOf();
-false
-```
-
-전체적으로 Boolean() 생성자로 생성된 객체는 상속받은 메소드나 속성 이외에는 제공하지 않기 때문에 그다지 유용하지 않다.
-
-또한 Boolean() 함수는 new 없이 일반 함수로 호출될 때, 부울이 아닌 값을 부울값으로 변환한다.
-
-```js
-Boolean("test");
-true;
-Boolean("");
-false;
-Boolean({}); // 빈 객체도 입력값이 있는걸로 취급해서 true 출력됨.
-true;
-```
-
-앞에서 배웠듯 자바스크립트에서는 여섯 가지의 false값을 제외하고는 객체를 포함한 모든 값은 true이다. 결국 new Boolean()으로 생성된 모든 Boolean() 객체 또한 true라는 것을 의미한다.
-
-```js
-Boolean(new Boolean(false));
-true;
-```
-
-Boolean 객체는 특별한 메소드를 제공하지 않아 일반적인 부울값을 사용하는 것이 좋다.
-
-# Number
-
-Number() 함수는 다음과 같이 사용할 수 있다.
-
-- 객체를 생성하는 constructor 함수
-- 어떤 값을 숫자로 변환하는 일반 함수, parseInt() or parseFloat()을 사용하는 것과 유사하다.
-
-```js
-var n = Number('12.12');
-n;
-12.12
-typeof n;
-"number"
-
-var n = new Number('12.12');
-n;
-Number { 12.12 }
-typeof n;
-"object"
-```
-
-함수는 객체이기 때문에 속성을 가질 수 있다. Number() 함수에는 수정할 수 없는 내장 속성이 있다.
-
-```js
-Number.MAX_VALUE;
-1.7976931348623157e308;
-Number.MIN_VALUE;
-5e-324;
-Number.POSITIVE_INFINITY;
-Infinity;
-Number.NEGATIVE_INFINITY;
--Infinity;
-```
-
-그리고 Number 객체는 toFixed(), toPrecision(), toExponential()과 같은 세 가지 메소드를 제공한다.
-
-```js
-var n = new Number(123.456);
-n.toFixed(1);
-("123.5");
-```
-
-명시적으로 Number 객체를 먼저 만들지 않고도 이 메소드를 사용할 수 있다. 이 경우 자동으로 Number 객체가 생성되고 파괴된다.
-
-```js
-(12345).toExponential();
-("1.2345e+4");
-```
-
-그리고 다른 모든 객체와 마찬가지로 Number 객체 역시 toString() 메소드를 제공한다.
-
-Number 객체와 함께 사용하는 경우, 이 메소드는 선택적인 `기수(radix)` 매개변수를 사용할 수 있다.
-
-```js
-var n = new Number(255);
-
-n.toString();
-("255");
-n.toString(10);
-("255");
-n.toString(16);
-"ff"(3).toString(2);
-"11"(3).toString(10);
-("3");
-```
-
-# String
-
-String() 생성자 함수를 사용해 문자열 객체를 만들 수 있다.
-
-문자열 객체는 텍스트를 조작하는데 편리한 메소드를 제공한다.
-
-String객체와 primitve 문자열 데이터 유형간의 차이점을 예제를 통해 알아보자.
-
-```js
-var primitive = "Hello";
-typeof primitive;
-("string");
-
-var obj = new String("world");
-typeof obj;
-("object");
-```
-
-String 객체에서 primitive 값을 추출하려면 Object 객체에서 상속된 valueof() 또는 toString() 메소드를 사용할 수 있다.
-
-```js
-var obj = new String("world");
-("world");
-obj.valueOf();
-("world");
-obj.toString();
-("world");
-obj + "";
-("world");
-```
-
-primitive 문자열은 객체가 아니므로 메소드나 속성이 없다. 그러나 자바스크립트는 primitive 문자열을 객체로 처리하는 구문을 제공한다.
-
-다음 예제에서는 primitve 문자열을 객체처럼 취급할 때마다 stirng 객체가 백그라운드에서 생성되고 파괴된다.
-
-```js
-"potato".length;
-6;
-"tomato"[0];
-("t");
-"potatoes"["potatoes".length - 1];
-("s");
-```
-
-다음은 primitive 문자열과 String 객체의 차이점을 보여주는 예제이다. 이 예제에서는 붕울로 변환한다. 빈 문자열은 false값이지만 모든 문자열 객체는 ture이다.(모든 객체는 true이기 때문이다.)
-
-```js
-Boolean("");
-true;
-Boolean(new String(""));
-true;
-```
-
-Number(), Boolean()과 마찬가지로 new 없이 String()함수를 사용하면, 매개변수가 원시 값으로서 반환된다.
-
-```js
-String(1);
-"1"
-typeof String(1);
-"string"
-
-new String(1);
-String { "1" }
-typeof new String(1);
-"object"
-```
-
-string()에 객체를 전달하면, 이 객체의 toString() 메소드가 먼저 호출된다.
-
-```js
-String({ p: 1 });
-("[object Object]");
-String([1, 2, 3]);
-("1,2,3");
-String([1, 2, 3]) === [1, 2, 3].toString();
-true;
-```
-
-## 문자열 객체의 몇 가지 메소드
-
-문자열 객체에서 호출할 수 있는 몇가지 메소드를 실험해 보자.
-
-우선 객체를 생성하는 것부터 시작하자
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.toUpperCase();
-("CHOCOLATE ICECREAM");
-s.toLowerCase();
-("chocolate icecream");
-```
-
-`charAt() `메소드는 지정한 위치에서 발견된 문자를 알려주며 대괄호를 사용하는 것과 동일하다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.charAt(0);
-("C");
-s[0];
-("C");
-```
-
-존재하지 않는 위치를 charAt()에 전달하면 빈 문자열을 받는다. 인덱스로는 undefined가 출력된다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.charAt(103);
-("");
-s[103];
-undefined;
-```
-
-다음은 `indexOf()` 메소드를 사용하면 문자열 내에서 검색할 수 있다. 일치하는 항목이 있으면 메소드는 첫 번째 일치 항목이 있는 위치를 반환한다.
-
-검색을 시작할 위치를 옵션으로 지정할 수도 있다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.indexOf("I");
-10;
-s.indexOf("o", 1); // 검색 위치를 옵션으로 지정한 경우. 위치는 0부터 시작함.
-2;
-s.indexOf("o", 3);
-4;
-```
-
-반대로 문자열의 끝에서 검색을 시작하는 `lastIndexOf()`도 있다. 특이한 점은 문자열의 위치는 결국 앞에서부터 계산하여 반환한다는 점이다.
-
-그리고 일치하는 것이 없으면 -1의 위치를 반환한다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.lastIndexOf("I");
-10;
-s.lastIndexOf("z");
--1;
-```
-
-대소문자를 구분하지 않는 검색의 경우, 먼저 문자열을 소문자로 변환한 다음 검색하면 용이하다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.toLowerCase().indexOf("Chocolate".toLowerCase());
-0;
-```
-
-0값을 받으면, 문자열의 일치하는 부분이 위치 0에서 시작한다는 것을 의미한다.
-
-또한 문자열에 다른 문자열이 들어있는지 확인하는 방법으로는 indexOf()를 활용한 결과를 숫자 -1과 비교하는 것이다.
-
-```js
-if (s.indexOf("Couch") !== -1);
-```
-
-`slice()`와 `substring()`은 시작 및 끝 위치를 지정하면 문자열의 일부를 반환한다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.slice(1, 5);
-("hoco");
-s.substring(1, 5);
-("hoco");
-```
-
-slice()와 substring()의 차이는 부정 인수를 다루는 방법이 다르다는 것이다.
-
-substring()은 이를 0으로 처리하는 반면, slice()는 이름 문자열의 길이에 추가한다.
-
-따라서 매개변수 (1,-1)을 두 메소드에 전달하면 substring(1,0)은 slice(1,s.length-1)과 동일하다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.slice(1, -1);
-("hocolate Icecrea");
-s.substring(1, -1);
-("C");
-```
-
-그 다음으로 split() 메소드는 `분리자(seperator)`로 전달한 다른 문자열을 사용하여 문자열에서 배열을 생성한다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.split(" ");
-Array[("Chocolate", "Icecream")];
-```
-
-split() 메소드는 배열에서 문자열을 생성하는 join() 메소드의 반대라고 볼 수 있다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.split(" ").join(" ");
-("Chocolate Icecream");
-```
-
-`concat()`은 + 연산자가 primitive 문자열에 처리하는 것과 동일한 방식으로 문자열을 합친다.
-
-```js
-var s = new String("Chocolate Icecream");
-
-s.concat("Cake");
-("Chocolate IcecreamCake");
-```
-
-앞에서 알아본 일부 메소드는 새로운 primitive 문자열을 반환하지만, 원본 문자열을 수정하지는 않는다.
-
-앞에서 나열한 모든 메소드를 호출한 이후에도 초기 문자열은 여전히 동일하다는 점을 기억해야 한다.
+이렇게 하면 오류 이름에 대해 모든 브라우저에서 제어가 가능하다.
