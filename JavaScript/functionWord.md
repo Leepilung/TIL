@@ -142,3 +142,93 @@ alert($checkbox.prop("checked"));
 - attr() - HTML attribute 값이 모두 String 으로 넘어온다.
 - prop() - 자바스크립트의 프로퍼티 값이 넘어오기 때문에 boolean, date, function 등도 가져올 수 있다
 - .prop()는 .attr() 보다 약 2.5 배 빠르다
+
+# reduce()
+
+reduce() 메서드는 배열의 각 요소에 대해 주어진 리듀서(reducer) 함수를 실행하고, 하나의 결과값을 반환한다.
+
+```js
+const array1 = [1, 2, 3, 4];
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+// 1 + 2 + 3 + 4
+console.log(array1.reduce(reducer));
+// expected output: 10
+
+// 5 + 1 + 2 + 3 + 4
+console.log(array1.reduce(reducer, 5));
+// expected output: 15
+```
+
+리듀서 함수는 네 개의 인수를 가진다.
+
+1. 누산기 = accumulator (acc)
+2. 현재 값 (cur)
+3. 현재 인덱스 (idx)
+4. 원본 배열 (src)
+   리듀서 함수의 반환 값은 누산기에 할당되고, 누산기는 순회 중 유지되므로 결국 최종 결과는 하나의 값이 된다.
+
+> 구문
+
+```js
+arr.reduce(callback[, initialValue])
+```
+
+## 매개변수
+
+- `callback`
+  배열의 각 요소에 대해 실행할 함수가 들어간다. 다음 네 가지의 인수를 받는다.
+
+  1. accumulator
+     누산기(accmulator)는 콜백의 반환값을 누적한다. 콜백의 이전 반환값 또는, 콜백의 첫 번째 호출이면서 initialValue를 제공한 경우에는 initialValue의 값이된다.
+  2. currentValue
+     처리할 현재 요소.
+  3. currentIndex Optional
+     처리할 현재 요소의 인덱스. initialValue를 제공한 경우 0, 아니면 1부터 시작한다.
+  4. array Optional
+     callback의 최초 호출에서 첫 번째 인수에 제공하는 값. 초기값을 제공하지 않으면 배열의 첫 번째 요소를 사용한다. 빈 배열에서 초기값 없이 reduce()를 호출하면 오류가 발생한다.
+
+## 반환 값
+
+누적된 계산의 결과 값 하나만을 반환한다.
+
+## 설명
+
+reduce()는 빈 요소를 제외하고 배열 내에 존재하는 각 요소에 대해 callback 함수를 한 번씩 실행하는데, 콜백 함수는 다음의 네 인수를 받는다.
+
+- accumulator
+- currentValue
+- currentIndex
+- array
+
+콜백의 최초 호출 때 accumulator와 currentValue는 다음 두 가지 값 중 하나를 가질 수 있다. 만약 reduce() 함수 호출에서 initialValue를 제공한 경우, accumulator는 initialValue와 같고 currentValue는 배열의 첫 번째 값과 같다.
+
+initialValue를 제공하지 않았다면, accumulator는 배열의 첫 번째 값과 같고 currentValue는 두 번째와 같다.
+
+- 참고로 initialValue를 제공하지 않으면, reduce()는 인덱스 1부터 시작해 콜백 함수를 실행하고 첫 번째 인덱스는 건너 뛴다. initialValue를 제공하면 인덱스 0에서 시작한다.
+
+배열이 비어있는데 initialValue도 제공하지 않으면 TypeError가 발생한다. 배열의 요소가 (위치와 관계없이) 하나 뿐이면서 initialValue를 제공되지 않은 경우, 또는 initialValue는 주어졌으나 배열이 빈 경우엔 그 단독 값을 callback 호출 없이 반환한다.
+
+## 작동 예제
+
+```js
+[0, 1, 2, 3, 4].reduce(function (
+  accumulator,
+  currentValue,
+  currentIndex,
+  array,
+) {
+  return accumulator + currentValue;
+});
+```
+
+다음과 같은 예제가 있다고 하면 콜백은 총 4번 호출된다. 각 호출의 인수와 반환값은 다음과 같다.
+
+|  callback  | accumulator | currentValue | currentIndex |      array      | 반환 값 |
+| :--------: | :---------: | :----------: | :----------: | :-------------: | :-----: |
+| 1번째 호출 |      0      |      1       |      1       | [0, 1, 2, 3, 4] |    1    |
+| 2번째 호출 |      1      |      2       |      2       | [0, 1, 2, 3, 4] |    3    |
+| 3번째 호출 |      3      |      3       |      3       | [0, 1, 2, 3, 4] |    6    |
+| 4번째 호출 |      6      |      4       |      4       | [0, 1, 2, 3, 4] |   10    |
+
+reduce()가 반환하는 값으로는 마지막 콜백 호출의 반환값(10)을 사용한다.
