@@ -211,6 +211,8 @@ initialValue를 제공하지 않았다면, accumulator는 배열의 첫 번째 �
 
 ## 작동 예제
 
+> 예제 1
+
 ```js
 [0, 1, 2, 3, 4].reduce(function (
   accumulator,
@@ -232,3 +234,110 @@ initialValue를 제공하지 않았다면, accumulator는 배열의 첫 번째 �
 | 4번째 호출 |      6      |      4       |      4       | [0, 1, 2, 3, 4] |   10    |
 
 reduce()가 반환하는 값으로는 마지막 콜백 호출의 반환값(10)을 사용한다.
+
+완전한 함수 대신에 화살표 함수를 제공할 수도 있다. 아래 코드는 위의 코드와 같은 결과를 반환한다.
+
+```js
+[0, 1, 2, 3, 4].reduce((prev, curr) => prev + curr);
+```
+
+> 예제 2
+
+reduce()의 두 번째 인수로 초기값을 제공하는 경우, 결과는 다음과 같다.
+
+```js
+[0, 1, 2, 3, 4].reduce(function (
+  accumulator,
+  currentValue,
+  currentIndex,
+  array,
+) {
+  return accumulator + currentValue;
+},
+10);
+```
+
+|            | accumulator | currentValue | currentIndex |      array      | 반환 값 |
+| :--------: | :---------: | :----------: | :----------: | :-------------: | :-----: |
+| 1번째 호출 |     10      |      0       |      0       | [0, 1, 2, 3, 4] |   10    |
+| 2번째 호출 |     10      |      1       |      1       | [0, 1, 2, 3, 4] |   11    |
+| 3번째 호출 |     11      |      2       |      2       | [0, 1, 2, 3, 4] |   13    |
+| 4번째 호출 |     13      |      3       |      3       | [0, 1, 2, 3, 4] |   16    |
+| 5번째 호출 |     16      |      4       |      4       | [0, 1, 2, 3, 4] |   20    |
+
+이 때 reduce()가 결과로 반환하는 값은 20이다.
+
+> 예제 3
+
+- 배열의 모든 값 합산
+
+```js
+var sum = [0, 1, 2, 3].reduce(function (accumulator, currentValue) {
+  return accumulator + currentValue;
+}, 0);
+// sum is 6
+```
+
+화살표 함수로도 작성할 수 있다.
+
+```js
+var total = [0, 1, 2, 3].reduce(
+  (accumulator, currentValue) => accumulator + currentValue,
+  0,
+);
+```
+
+> 예제 4
+
+- 객체 배열에서의 값 합산
+  객체로 이루어진 배열에 들어 있는 값을 합산하기 위해서는 반드시 초기값을 주어 각 항목이 여러분의 함수를 거치도록 해야 한다.
+
+```js
+var initialValue = 0;
+var sum = [{ x: 1 }, { x: 2 }, { x: 3 }].reduce(function (
+  accumulator,
+  currentValue,
+) {
+  return accumulator + currentValue.x;
+},
+initialValue);
+
+console.log(sum); // logs 6
+```
+
+화살표 함수(arrow function)로도 작성할 수 있다
+
+```js
+var initialValue = 0;
+var sum = [{ x: 1 }, { x: 2 }, { x: 3 }].reduce(
+  (accumulator, currentValue) => accumulator + currentValue.x,
+  initialValue,
+);
+
+console.log(sum); // logs 6
+```
+
+> 예제 5
+
+- 중첩 배열 펼치기
+
+```js
+var flattened = [
+  [0, 1],
+  [2, 3],
+  [4, 5],
+].reduce(function (accumulator, currentValue) {
+  return accumulator.concat(currentValue);
+}, []);
+// 펼친 결과: [0, 1, 2, 3, 4, 5]
+```
+
+화살표 함수로 작성시 다음과 같다.
+
+```js
+var flattened = [
+  [0, 1],
+  [2, 3],
+  [4, 5],
+].reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+```

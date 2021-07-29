@@ -1,0 +1,88 @@
+<body class ="shoppingcart_background">
+    <div class ="shoppingcart" id="shopping_cart">
+      <h1 class="shoppingcart_title">Shopping Cart</h1>
+      <form id="shop-form" class="input_container">
+        <div class="shoppingcart_inputBox">
+          <label for="name">품명 : </label>
+          <input type="text" name="name" class="shopping_itemInput"/>
+          <label for="price">가격 : </label>
+          <input type="text" name="price" class="shopping_itemInput"/>
+          <label for="quantity">수량 : </label>
+          <input type="text" name="quantity" class="shopping_itemInput"/>
+          <label for="priority">우선순위 : </label>
+          <input type="text" name="priority" class="shopping_itemInput"/>           
+        <button class="shopping_addButton" type="submit">등록</button>
+      </div>
+      </form>
+    <div class ="shopping_container">
+      <h2 class="shopping_container_title"> 쇼핑 품목</h2>
+      <p id="my-list">
+      </p>
+    </div>
+    <script type='text/javascript'>
+      const $form = document.getElementById("shop-form");
+      const list = [];
+      $form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const nodeList = Array.from($form.querySelectorAll('.shopping_itemInput'));
+        const product = nodeList.reduce((acc, $elem) => {
+          const name = $elem.getAttribute('name')
+          const value = $elem.value;
+          return {
+            ...acc,
+            [name]: value
+          }
+        }, {});
+
+        if (nodeList.some($elem => product[$elem.getAttribute('name')].length === 0)) {
+          alert('모든 항목을 입력해주세요')
+          return
+        }
+
+        list.push(product);
+
+        nodeList.forEach($elem => {$elem.value = ''});
+
+        const $list = document.querySelector("#my-list");
+        $list.innerHTML = list.map(({ name, price, quantity, priority}) => `<div>${name} - ${price} - ${quantity} - ${priority}</div>`).join("");
+      });
+    </script>
+</body>
+</html> 
+
+
+
+-------------------------------------
+
+
+<script type='text/javascript'>
+    const $form = document.getElementById("shop-form");
+    const list = [];
+    $form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const $name = $form.querySelector('.shopping_itemInput[name="name"]');
+      const $price = $form.querySelector('.shopping_itemInput[name="price"]');
+      const $quantity = $form.querySelector('.shopping_itemInput[name="quantity"]');
+      const $priority = $form.querySelector('.shopping_itemInput[name="priority"]');
+
+      const {value: nameValue} = $name;
+      const {value: priceValue} = $price;
+      const {value: quantityValue} = $quantity;
+      const {value: priorityValue} = $priority;
+
+      if(!nameValue.length || !priceValue.length || !quantityValue.length || !priorityValue.length) {
+        alert("항목을 입력해주세요")
+        return;
+      }
+
+      list.push({ name: nameValue, price: priceValue, quantity: quantityValue, priority: priorityValue });
+
+      $name.value = "";
+      $price.value = "";
+      $quantity.value = "";
+      $priority.value = "";
+
+      const $list = document.querySelector("#my-list");
+      $list.innerHTML = list.map(({ name, price, quantity, priority}) => `<div>${name} - ${price} - ${quantity} - ${priority}</div>`).join("");
+    });
+  </script>
