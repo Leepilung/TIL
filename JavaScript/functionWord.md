@@ -341,3 +341,48 @@ var flattened = [
   [4, 5],
 ].reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
 ```
+
+# some()
+
+some() 메서드는 배열 안의 어떤 요소라도 주어진 판별 함수를 통과하는지 테스트한다. 그러나 빈 배열에서 호출하면 무조건 false를 반환한다.
+
+```js
+const array = [1, 2, 3, 4, 5];
+
+// checks whether an element is even
+const even = (element) => element % 2 === 0;
+
+console.log(array.some(even));
+// expected output: true
+```
+
+## 구문
+
+```js
+arr.some(callback[, thisArg])
+```
+
+## 매개변수
+
+- callback
+  각 요소를 시험할 함수. 다음 세 가지 인수를 받습니다.
+- currentValue
+  처리할 현재 요소.
+- index Optional
+  처리할 현재 요소의 인덱스.
+- array Optional
+  some을 호출한 배열.
+- thisArg Optional
+  callback을 실행할 때 this로 사용하는 값.
+
+## 반환 값
+
+callback이 어떤 배열 요소라도 대해 참인(truthy) 값을 반환하는 경우 true, 그 외엔 false.
+
+## some()이란?
+
+some은 callback이 참(불린으로 변환했을 때 true가 되는 값)을 반환하는 요소를 찾을 때까지 배열에 있는 각 요소에 대해 한 번씩 callback 함수를 실행한다. 해당하는 요소를 발견한 경우 some은 즉시 true를 반환한다. 그렇지 않으면, 즉 모든 값에서 거짓을 반환하면 false를 반환한다. 그렇지 않으면, 즉 모든 값에서 거짓을 반환하면 false를 반환한다. 삭제했거나 값을 할당한 적이 없는 인덱스에서는 호출하지 않는다.
+
+thisArg 매개변수를 some에 제공한 경우 callback의 this로 사용된다. 또한 some은 호출한 배열을 변형하지 않는다.
+
+some이 처리하는 요소의 범위는 callback의 첫 호출 전에 설정된다. some 호출 이후로 배열에 추가하는 요소는 callback이 방문하지 않는다. 배열에 원래 있었지만 아직 방문하지 않은 요소가 callback에 의해 변경된 경우, 그 인덱스를 방문하는 시점의 값을 사용한다.
