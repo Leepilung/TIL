@@ -386,3 +386,42 @@ some은 callback이 참(불린으로 변환했을 때 true가 되는 값)을 반
 thisArg 매개변수를 some에 제공한 경우 callback의 this로 사용된다. 또한 some은 호출한 배열을 변형하지 않는다.
 
 some이 처리하는 요소의 범위는 callback의 첫 호출 전에 설정된다. some 호출 이후로 배열에 추가하는 요소는 callback이 방문하지 않는다. 배열에 원래 있었지만 아직 방문하지 않은 요소가 callback에 의해 변경된 경우, 그 인덱스를 방문하는 시점의 값을 사용한다.
+
+# Document.querySelector()
+
+Document.querySelector()는 제공한 선택자 또는 선택자 뭉치와 일치하는 문서 내 첫 번째 Element를 반환한다. 일치하는 요소가 없으면 null을 반환한다.
+
+탐색은 깊이우선(depth-first) 전위(pre-order)순회로, 문서의 첫 번째 요소부터 시작해 자식 노드의 수를 기준으로 순회한다.
+
+## 구문
+
+```js
+document.querySelector(selectors);
+```
+
+## 매개변수
+
+하나 이상의 선택자를 포함한 DOMString. 유효한 CSS 선택자여야만 하며 아닐 경우 SYNTAX_ERR 예외가 발생한다.
+
+## 반환값
+
+제공한 CSS 선택자를 만족하는 첫 번째 Element 객체. 결과가 없다면 null.
+
+선택자를 만족하는 모든 요소의 목록이 필요하다면 querySelectorAll()을 대신 사용해야 한다.(뒤에 따로 정리할 메소드)
+
+## 예제
+
+> 예제 1 // 클래스를 만족하는 첫 번째 요소 검색
+> 아래 예제는 문서에서 "myclass"라는 클래스를 사용하는 첫 번째 요소를 반환한다.
+
+```js
+var el = document.querySelector(".myclass");
+```
+
+> 예제 2 // 좀 더 복잡한 선택자
+
+아래 예제처럼 정말 강력한 선택자도 사용할 수 . 예제의 결과는 클래스가 "user-panel main"인 `<div>(<div class="user-panel main">)` 안의, 이름이 "login"인 `<input>` 중 첫 번째 요소입니다.
+
+```js
+var el = document.querySelector("div.user-panel.main input[name=login]");
+```
