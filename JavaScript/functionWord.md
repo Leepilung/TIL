@@ -2,7 +2,7 @@
 
 자바스크립트를 공부하면서 실제 사용되는 Event나 메소드등을 정리해두려고 만든 문서입니다.
 
-## addEventListener
+# addEventListener
 
 특정 이벤트가 발생했을 시, 특정 함수를 실행할 수 있게 해주는 기능.
 
@@ -425,3 +425,79 @@ var el = document.querySelector(".myclass");
 ```js
 var el = document.querySelector("div.user-panel.main input[name=login]");
 ```
+
+# Sort(), localeCompare()
+
+[Sort() MDN 링크](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/sort "Sort")
+
+sort() 메서드는 배열의 요소를 적절한 위치에 정렬한 후 그 배열을 반환한다.
+
+기본 정렬 순서는 문자열의 유니코드 포인트를 따른다.
+
+## 구문
+
+```js
+arr.sort([compareFunction]);
+```
+
+## 설명
+
+compareFunction이 제공되지 않으면 요소를 문자열로 변환하고 유니코드 포인트 순서로 문자열을 비교하여 정렬한다.
+
+compareFunction이 제공되면 배열 요소는 compare 함수의 반환 값에 따라 정렬된다.
+
+- compareFunction이 (a, b) < 0 인 경우 a , b 순으로 정렬
+
+- ompareFunction이 (a, b) > 0 인 경우 b , a 순으로 정렬
+
+- compareFunction이 0을 반환하면 a, b를 변경x.
+
+## 예시
+
+```js
+function compare(a, b) {
+  if (a < b) return -1; // a b 순 정렬
+  if (a > b) return 1; // b a 순 정렬
+  if (a == b) return 0; // 그대로 ...
+}
+```
+
+> 오름차순 정렬
+
+```js
+function compareNumbers(a, b) {
+  return a - b;
+}
+```
+
+> 내림차순 정렬
+
+```js
+function compareNumbers(a, b) {
+  return b - a;
+}
+```
+
+# localeCompare()
+
+[localeCompare MDN 링크](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare "localeCompare MDN 링크")
+
+localeCompare 메서드는 참조 문자열이 정렬 순서에서 앞 또는 뒤에 오는지 또는 주어진 문자열과 같은지를 숫자로 반환한다.
+
+## 구문
+
+```js
+referenceStr.localeCompare(compareString[, locales[, options]])
+```
+
+## 설명
+
+referenceStr이 compareString보다 앞에 있으면 -1, 뒤에 있으면 1, 같으면 0 반환
+
+```js
+"a".localeCompare("b"); // -1 ,
+"b".localeCompare("a"); // 1
+"c".localeCompare("c"); // 0
+```
+
+위에서 언급한 sort()와 묶어서 판단의 기준으로 사용한다고 생각하자.(다른 느낌일 경우 수정 필요)
