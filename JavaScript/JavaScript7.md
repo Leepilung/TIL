@@ -147,3 +147,98 @@ var s = new Shape();
 s.constructor === Shape;
 true;
 ```
+
+## 공유 속성을 프로토타입으로 이동
+
+생성자 함수를 사용해 객체를 생성하면, 자체 속성은 this를 사용해 추가한다. 그러나 이것은 인스턴스간에 속성이 변경되지 않는 경우 비효율적일 수 있다.
+앞의 예제에서 Shape()는 다음과 같이 정의됐다.
+
+```js
+function Shape() {
+  this.name = "Shape";
+}
+```
+
+new Shape()를 이용해 새 객체를 생성할 때마다, 새 name 속성이 만들어져 메모리 어딘가에 저장된다. 다른 선택사항은 name속성을 프로토타입에 추가해 모든 인스턴스에서 공유하는 것이다.
+
+```js
+function Shape() {}
+Shape.prototype.name = "Shape";
+```
+
+이제 new Shape()을 사용해 객체를 생성할 때마다 이 객체는 자체 name 속성을 가지지 못하지만, 프로토타입에 추가된 속성을 사용할 수 있다. 좀 더 효율적인 방법이지만, 인스턴스간 변경되지 않는 속성에 대해서만 사용해야 한다.
+
+다음으로 prototype에 모든 메소드와 적절한 속성을 추가해보자.
+
+```js
+// 생성자
+function Shape() {}
+
+// 보강된 프로토타입
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  return this.name;
+};
+
+// 다른 생성자
+function TwoDShape() {}
+
+// 상속 처리
+TwoDShape.prototype = new Shape();
+TwoDShape.prototype.constructor = TwoDShape;
+
+// 보강된 프로토타입
+TwoDShape.prototype.name = "2D Shape";
+```
+
+위의 예제에서 알 수 있듯이 프로토타입을 보강하기 전에 상속을 먼저 처리해야 한다. 그렇지 않으면 상속할 때 TwoDShape.prototype에 추가한 항목이 모두 지워진다.
+
+다음 예제로 사용할 Triangle 생성자는 생성하는 모든 객체가 서로 다른 크기를 가질 수 있는 새로운 삼각형 이기 때문에 약간 다르다. 따라서 side와 height는 자체 속성으로 유지하고 그외 나머지는 공유하는 것이 좋다. 예를 들어 getArea() 메소드는 각 삼각형의 실제 크기에 관계없이 동일하다.
+
+거듭 반복하지만 상속을 수행한다음 프로토타입을 보강해야 하는 것을 잊지 말아야한다.
+
+```js
+function Triangle(side, height) {
+  this.side = side;
+  this.height = height;
+}
+// 상속 처리
+Triangle.prototype = new TwoDShape();
+Triangle.prototype.constructor = Triangle;
+
+// 보강된 프로토타입
+Triangle.prototype.name = "Triangle";
+Triangle.prototype.getArea = function () {
+  return (this.side * this.height) / 2;
+};
+```
+
+이제 위의 코드들을 사용한 예제를 살펴보자.
+
+```js
+var my = new Triangle(5, 10);
+my.getArea();
+25;
+my.toString();
+("Triangle");
+```
+
+my.toString()을 호출할 때 백그라운드에서 약간의 차이가 있다. 차이점은 앞의 예제의 new Shape()인스턴스와 달리, Shape.prototype에서 메소드를 찾기 전에 수행할 조회가 한번 더 있다는 것이다.
+
+또한 hasOwnProperty()를 사용해 자신의 속성인지 프로토타입 체인에서 온 속성인지 비교할 수 있다.
+
+```js
+my.hasOwnProperty("side");
+true;
+my.hasOwnProperty("name");
+false;
+```
+
+앞의 예제의 isPrototypeOf()와 instanceof 연산자에 대한 호출은 정확히 동일한 방식으로 동작한다.
+
+```js
+TwoDShape.prototype.isPrototypeOf(my);
+true;
+my instanceof Shape;
+true;
+```
