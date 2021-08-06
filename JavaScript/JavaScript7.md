@@ -312,3 +312,79 @@ var s = new Shape();
 s.name;
 ("Triangle");
 ```
+
+## 임시 생성자 - new F()
+
+앞에서 설명한 모든 프로토타입이 동일한 객체를 가리키고 부모가 자식의 속성을 가져오는 문제에 대한 해결책은 중재자(intermediary)를 사용해 체인을 끊는 것이다.
+
+중재자는 임시 생성자 함수의 형태를 가지고 있다. 빈 함수 F()를 생성하고 이 함수의 prototype을 부모 생성자의 프로토타입으로 설정하면, new F()를 호출할 때 자체 속성을 가지지 않지만 부모의 prototype의 모든 것을 상속받는 객체를 생성할 수 있다.
+
+수정된 코드를 통해 살펴보자.
+
+```js
+function Shape() {}
+// 보강된 프로토타입
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  return this.name;
+};
+
+function TwoDShape() {}
+// 상속 처리
+var F = function () {};
+F.prototype = Shape.prototype;
+TwoDShape.prototype = new F();
+TwoDShape.prototype.constructor = TwoDShape;
+// 보강된 프로토타입
+TwoDShape.prototype.name = "2D shape";
+
+function Triangle(side, height) {
+  this.side = side;
+  this.height = height;
+}
+// 상속 처리
+var F = function () {};
+F.prototype = TwoDShape.prototype;
+Triangle.prototype = new F();
+Triangle.prototype.constructor = Triangle;
+// 보강된 프로토타입
+Triangle.prototype.name = "Triangle";
+Triangle.prototype.getArea = function () {
+  return (this.side * this.height) / 2;
+};
+```
+
+이제 my 라는 변수를 Triangle 생성자를 통해 생성하고 테스트해보자.
+
+```js
+var my = new Triangle(5, 10);
+my.getArea();
+25;
+my.toString();
+("Triangle");
+```
+
+이 접근 방식을 사용하면, 프로토타입 체인이 그대로 유지된다.
+
+```js
+my.__proto__ === Triangle.prototype;
+true;
+my.__proto__.constructor === Triangle;
+true;
+my.__proto__.__proto__ === TwoDShape.prototype;
+true;
+my.__proto__.__proto__.__proto__.constructor === Shape;
+true;
+```
+
+또한 부모의 속성을 자녀가 덮어 쓰지도 않는다.
+
+```js
+var s = new Shape();
+s.name;
+
+"I am a " + new TwoDShape(); // calling toString()
+("I am a 2D shape");
+```
+
+동시에 이 접근방식은 자체 속성이 아닌 프로토타입에 추가된 속성과 메소드만 상속받아야 한다는 개념을 지원한다. 자체 속성은 재사용하기엔 너무 구체적이기 때문이다.
