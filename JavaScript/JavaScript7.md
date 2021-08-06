@@ -242,3 +242,73 @@ true;
 my instanceof Shape;
 true;
 ```
+
+## 프로토타입만 상속
+
+효율성을 위해 재사용 가능한 속성과 메소드를 프로토타입에 추가해야 한다. 이렇게 하면, 모든 재사용 가능한 코드가 프로토타입에 있기 때문에 프로토타입만 상속하는 것이 좋다.
+
+즉, 앞에서 사용한 Shape.prototype 객체를 상속하는 것이 new Shape()로 생성한 객체를 상속하는 것보다 낫다. 결국 new Shape()는 재사용할 수 없는 자체 shape 속성만 제공한다. 또한 다음과 같은 방법으로 효율성을 좀더 높일 수 있다.
+
+- 상속만으로 새 객체를 생성하지 않는다.
+- 런타임 중 조회를 적게 수행한다(toString()을 검색할 때).
+
+예제를 통해 알아보자.
+
+```js
+function Shape() {}
+// 보강된 프로토타입
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  return this.name;
+};
+
+function TwoDShape() {}
+// 상속 처리
+TwoDShape.prototype = Shape.prototype;
+TwoDShape.prototype.constructor = TwoDShape;
+// 보강된 프로토타입
+TwoDShape.prototype.name = "2D shape";
+
+function Triangle(side, height) {
+  this.side = side;
+  this.height = height;
+}
+// 상속 처리
+Triangle.prototype = TwoDShape.prototype;
+Triangle.prototype.constructor = Triangle;
+// 보강된 프로토타입
+Triangle.prototype.name = "Triangle";
+Triangle.prototype.getArea = function () {
+  return (this.side * this.height) / 2;
+};
+```
+
+테스트 코드는 동일한 결과를 보인다.
+
+```js
+var my = new Triangle(5, 10);
+my.getArea();
+25;
+my.toString();
+("Triangle");
+```
+
+my.toString()을 호출할 때 조회에 어떤 차이가 있을것 같은가? 먼저 자바스크립트 엔진은 평소처럼 my 객체 자체의 toString() 메소드를 찾는다. 엔진은 이 메소드를 찾지 못하기 때문에 프로토타입을 검사하게 된다. 프로토타입은 TwoDShape의 프로토타입이 가리키는 객체와 Shape.prototype이 가리키는 객체와 동일한 객체를 가리킨다. 객체는 값으로 복사되지 않고 참조에 의해서만 복사된다는 점을 기억하자. 따라서 조회는 두 단계의 프로세스를 거치게 된다.
+
+간단히 프로토타입만 복제하는 것이 더 효율적일 순 있지만 이것은 자식과 부모의 프로토타입이 모두 동일한 객체를 가르키기 때문에 부작용이 크다.
+
+또한 자식이 프로토타입을 수정하면 부모는 변경사항을 가져오고 형제또한 변경사항을 가지고 온다.
+
+다음 코드를 보자.
+
+```js
+Triangle.prototype.name = "Triangle";
+```
+
+riangle의 name속성을 변경하면 Shape.prototype.name도 효과적으로 변경된다. new Shape()를 사용해 인스턴스를 생성하는 경우에도 name 속성은 'Triangle'이 된다.
+
+```js
+var s = new Shape();
+s.name;
+("Triangle");
+```
