@@ -388,3 +388,62 @@ s.name;
 ```
 
 동시에 이 접근방식은 자체 속성이 아닌 프로토타입에 추가된 속성과 메소드만 상속받아야 한다는 개념을 지원한다. 자체 속성은 재사용하기엔 너무 구체적이기 때문이다.
+
+## Uber - 자식 객체에서 부모에 접근하기
+
+고전 OO언어는 대개 슈퍼클래스라고 하는 부모 클래스에 접근할 수 있는 특수 구문을 제공한다. 이것은 자식이 부모 메소드에 추가 기능을 추가하는 경우에 편리하다. 이런 경우, 자식은 부모의 메소드를 동일한 이름으로 호출하여 결과를 가지고 작업한다.
+
+자바스크립트에 이런 특별한 구문은 없지만, 동일한 기능을 구현하는 것은 어려운 일이 아니다. 상속을 처리할 때 부모의 prototype 객체를 가리키는 uber 속성을 만들어 보자.
+
+```js
+function Shape() {}
+// 보강된 프로토타입
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  const c = this.constructor;
+  return c.uber ? c.uber.toString() + ", " + this.name : this.name;
+};
+
+function TwoDShape() {}
+// 상속 처리
+var F = function () {};
+F.prototype = Shape.prototype;
+TwoDShape.prototype = new F();
+TwoDShape.prototype.constructor = TwoDShape;
+TwoDShape.uber = Shape.prototype;
+// 보강된 프로토타입
+TwoDShape.prototype.name = "2D shape";
+
+function Triangle(side, height) {
+  this.side = side;
+  this.height = height;
+}
+// 상속 처리
+var F = function () {};
+F.prototype = TwoDShape.prototype;
+Triangle.prototype = new F();
+Triangle.prototype.constructor = Triangle;
+Triangle.uber = TwoDShape.prototype;
+// 보강된 프로토타입
+Triangle.prototype.name = "Triangle";
+Triangle.prototype.getArea = function () {
+  return (this.side * this.height) / 2;
+};
+```
+
+여기서 새로운 것은 다음과 같다.
+
+- 부모의 prototype을 가리키는 새로운 uber 속성
+- 업데이트된 toString() 메소드
+
+앞에서 toString()은 this.name만을 반환했다. 이제 이외에도 this.constructor.uber가 있는지 확인하고, 있는 경우 toString()을 먼저 호출한다. this.constructor는 함수 자체이며, this.constructor.uber는 부모의 prototype을 가리킨다.
+
+결과로 Triangle 인스턴스의 toString()을 호출하면 프로토타입 체인 위의 모든 toString() 메소드가 호출된다.
+
+```js
+var my = new Triangle(5, 10);
+my.toString();
+("Shape, 2D shape, Triangle");
+```
+
+uber 속성의 이름을 superclass로 할 수도 있지만, 자바스크립트는 클래스가 없기 때문에 적합하지 않다.
