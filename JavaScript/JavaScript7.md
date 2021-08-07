@@ -447,3 +447,75 @@ my.toString();
 ```
 
 uber 속성의 이름을 superclass로 할 수도 있지만, 자바스크립트는 클래스가 없기 때문에 적합하지 않다.
+
+## 상속 부분을 함수로 분리하기
+
+Uber 부분에서 상속의 모든 세부사항을 처리하는 코드를 extend()라 명명한 재사용 가능한 함수로 옮겨보자.
+
+```js
+function extend(Child, Parent) {
+  var F = function () {};
+  F.prototype = Parent.prototype;
+  Child.prototype = new F();
+  Child.prototype.constructor = Child;
+  Child.uber = Parent.prototype;
+}
+```
+
+이 함수를 사용하면, 반복 상속 관련 작업의 코드를 깨긋하게 유지할 수 있다. 이렇게 하면 다음 두 줄의 코드를 사용해 간단하게 상속받을 수 있다.
+
+```js
+extend(TwoDShape, Shape);
+extend(Triangle, TwoDShape);
+```
+
+전체적인 예제 코드는 다음과 같다.
+
+```js
+// 상속 헬퍼(helper)
+function extend(Child, Parent) {
+  var F = function () {};
+  F.prototype = Parent.prototype;
+  Child.prototype = new F();
+  Child.prototype.constructor = Child;
+  Child.uber = Parent.prototype;
+}
+
+// 정의 -> 보강
+function Shape() {}
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  return this.constructor.uber
+    ? this.constructor.uber.toString() + " , " + this.name
+    : this.name;
+};
+
+// 정의 -> 상속 -> 보강
+function TwoDShape() {}
+extend(TwoDShape, Shape);
+TwoDShape.prototype.name = "2D Shape";
+
+// 정의
+function Triangle(side, height) {
+  this.side = side;
+  this.height = height;
+}
+
+// 상속
+extend(Triangle, TwoDShape);
+
+// 보강
+Triangle.prototype.name = "Triangle";
+Triangle.prototype.getArea = function () {
+  return (this.side * this.height) / 2;
+};
+```
+
+다음 코드를 테스트 해보면 값이 다르게 나옴을 알 수 있다.
+
+```js
+new Triangle().toString();
+("Shape , 2D Shape , Triangle");
+```
+
+---
