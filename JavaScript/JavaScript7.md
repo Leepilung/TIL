@@ -603,3 +603,73 @@ TwoDShape.prototype.name = "2D Shape";
 td.toString();
 ("Shape,2D Shape");
 ```
+
+## 참조로 복사할 때의 문제점
+
+객체(함수와 배열 포함)가 참조로 복사된다는 사실은 때때로 예상치 못한 결과를 가져오기도 한다.
+
+예로 두 개의 생성자 함수를 생성하고 첫 번째 프로토타입에 속성을 추가해 보자.
+
+```js
+function Papa() {}
+function Wee() {}
+Papa.prototype.name = "Bear";
+Papa.prototype.owns = ["porridge", "chair", "bed"];
+```
+
+다음으로 Wee가 Papa로부터 상속받도록 해보자.(extend() 혹은 extend2() 사용)
+
+```js
+function extend2(Child, Parent) {
+  var p = Parent.prototype;
+  var c = Child.prototype;
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p;
+}
+
+extend2(Wee, Papa);
+```
+
+extend2()를 사용하면 Wee 함수의 프로토타입이 Papa.prototype의 속성을 자체 속성으로 상속 받는다.
+
+```js
+Wee.prototype.hasOwnProperty("name");
+true;
+Wee.prototype.hasOwnProperty("owns");
+true;
+```
+
+name 속성은 원시(primitive)값이므로 새 복사본이 만들어진다. owns 속성은 배열 객체이므로 참조로 복사된다.
+
+```js
+Wee.prototype.owns;
+Array(3)[("porridge", "chair", "bed")];
+Wee.prototype.owns === Papa.prototype.owns;
+true;
+```
+
+또한 Wee 함수의 name 복사본을 변경해도 Papa에는 영향을 미치지 않는다.
+
+```js
+Wee.prototype.name += ",Litte Bear";
+("Bear,Litte Bear");
+Papa.prototype.name;
+("Bear");
+```
+
+그러나 Wee 함수의 owns 복사본을 기존 객체를 수정하는 것과는 반대로 아예 다른 객체로 완전히 덮어 쓰면 이야기가 달라진다.
+
+이 경우, Wee.owns는 새 객체를 가리키는 반면 Papa.owns는 이전 객체를 가리키게 된다.
+
+```js
+Wee.prototype.owns = ["empty bowl", "broken chair"];
+Papa.prototype.owns.push("bed");
+Papa.prototype.owns;
+Array(6)[("porridge", "chair", "bed")];
+```
+
+객체가 메모리의 물리적 위치에 생성되고 저장되는 것으로 생각해 보자.
+
+변수와 속성은 이 위치를 가리키기만 하므로 새로운 객체를 Wee.prototype.owns에 할당하면 본질적으로 이전 객체는 잊어버리고 포인터를 이 새로운 객체로 옮기는 것이다.
