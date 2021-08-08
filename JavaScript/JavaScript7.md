@@ -519,3 +519,87 @@ new Triangle().toString();
 ```
 
 ---
+
+## 속성 복사
+
+상속은 모두 코드 재사용에 관한 것이므로 하나의 객체에서 원하는 속성을 다른 객체로 간단히 복사하거나 부모 객체에서 자식객체로 복사하는것은 어떨지 생각해보자.
+
+앞에서 extend() 함수와 동일한 인터페이스를 유지하면서 두 개의 생성자 함수를 사용하고 부모의 prototype에서 모든 속성을 자식의 prototype으로 복사하는 extend2() 함수를 만들 수 있다. 메소드는 함수인 속성일 뿐이므로 이것은 메소드에도 동일하다.
+
+```js
+function extend2(Child, Parent) {
+  var p = Parent.prototype;
+  var c = Child.prototype;
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p;
+}
+```
+
+보다시피 속성을 반복하는 간단한 루프만 있으면 된다. 앞의 예제와 마찬가지로, 자식에서 부모의 메소드에 편리하게 접근하려면 uber 속성을 설정하면 된다.
+
+그러나 앞의 예제와 달리 여기서는 자식의 prototype이 완전히 덮어 쓰이지 않고 보강되어 Child.prototype.constructor를 재설정할 필요는 없다. 따라서 constructor 속성은 초기 값을 가리킨다.
+
+이 메소드는 자식 prototype의 속성이 실행 중에 프로토타입 체인을 통해 단순히 조회되는 것이 아니라 복제되는 방식이어서 앞의 메소드에 비해 비효율 적인 방법이다. 이것은 원시 유형을 가지는 속성에 대해서만 유효하다. 모든 객체는 참조로만 전달되므로 복제되지 않는다.
+
+Shape()와 TwoDShape()의 두 생성자 함수를 사용하는 예제를 살펴보자. Shape() 함수의 prototype 객체는 원시(primitive) 속성인 name과 비원시 메소드인 toStirng()을 가진다.
+
+```js
+var Shape = function () {};
+var TwoDShape = function () {};
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  return this.uber ? this.uber.toString() + "," + this.name : this.name;
+};
+```
+
+extend()로 상속한 경우, TwoDShape()로 생성한 객체나 이 객체의 프로토타입은 자체 name 속성을 갖ㅈ ㅣ않지만, 상속한 속성에 접근할 수 있다.
+
+```js
+extend(TwoDShape, Shape);
+var td = new TwoDShape();
+td.name;
+("Shape");
+TwoDShape.prototype.name;
+("Shape");
+td.__proto__.name;
+("Shape");
+td.hasOwnProperty("name");
+false;
+td.__proto__.hasOwnProperty("name");
+false;
+```
+
+그러나 extend2()로 상속하는 경우, TwoDShape()의 프로토타입은 name 속성의 자체 복사본을 가져 온다. toString()의 자체 복사본도 가져오지만, 참조뿐이기 때문에 두 번째에는 함수가 다시 생성되지 않는다.
+
+```js
+extend2(TwoDShape, Shape);
+var td = new TwoDShape();
+td.__proto__.hasOwnProperty("name");
+true;
+td.__proto__.hasOwnProperty("toString");
+true;
+td.__proto__.toString === Shape.prototype.toString;
+true;
+```
+
+보다시피 두 개의 toString() 메소드는 동일한 함수 객체다. 이는 불필요한 메소드 중복이 발생하지 않기 때문에 유용하다.
+
+따라서 extend2()는 프로토타입의 속성을 다시 생성하기 때문에 extend() 보다 효율적이지 않다. 그러나 원시 데이터 유형만 복제되기 때문에 그리 나쁜 것만은 아니다. 또한 속성을 찾기전에 따라가야 하는 체인 연결이 적기 때문에 프로토타입 체인 조회 시 유용하다.
+
+uber 속성을 살펴보자. 이번에는 변경을 위해 Parent 생성자가 아닌 Parent 객체의 프로토타입 p에 설정한다. 이것이 toString()이 this.constructor.uber가 아닌 this.uber를 사용하는 이유이다. 우리가 원하는 대로 상속 패턴을 형성할 수 있음을 보여주는 것이다.
+
+```js
+td.toString();
+("Shape,Shape");
+```
+
+TwoDShape는 name속성을 재정의하지 않으므로 반복된다. 이것은 언제든지 가능하며, 프로토타입 체인이 살아있으므로 모든 인스턴스가 업데이트를 확인할 수 있다.
+
+```js
+TwoDShape.prototype.name = "2D Shape";
+("2D Shape");
+td.toString();
+("Shape,2D Shape");
+```
