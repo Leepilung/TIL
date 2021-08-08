@@ -673,3 +673,86 @@ Array(6)[("porridge", "chair", "bed")];
 객체가 메모리의 물리적 위치에 생성되고 저장되는 것으로 생각해 보자.
 
 변수와 속성은 이 위치를 가리키기만 하므로 새로운 객체를 Wee.prototype.owns에 할당하면 본질적으로 이전 객체는 잊어버리고 포인터를 이 새로운 객체로 옮기는 것이다.
+
+## 객체에서 상속받은 객체
+
+앞에선 생성자 함수를 사용해 객체를 생성하고 상속받는 경우들을 살펴봤다. 그러나 생성자 함수를 사용자히 않고 객체 리터럴만을 사용해 객체를 생성할 수도 있다. 이 경우가 실제로 타이핑도 적다. 그렇다면 상속은 어떨까?
+
+다른 언어에선 클래스를 이용해 상속하지만 자바스크립트에는 클래스가 없으므로 클래스 배경에 익숙한 프로그래머는 생성자 함수에 의존한다.
+
+`모든것은 결국 객체로 통한다.` 라는 말을 기억한 채로 예제를 살펴보자.
+
+```js
+Child.prototpye = new Parent();
+```
+
+프로토타입 파트의 앞부분 에서 사용한 예제이다. 여기서 Child 생성자(or 클래스)는 Parent에서 상속됐다. 그러나 이것은 new Parent()를 사용해 객체를 생성하고 이를 상속받는 방식으로 수행된다.
+
+클래스가 포함되어 있지는 않지만 클래스 상속과 유사하기 때문에 이를 `의사 클래스 상속 패턴(pseudo-classical inheritance)`이라고 부른다.
+
+그렇다면 왜 중개자(생성자/클래스)를 없애고 객체를 바로 객체에서 상속받지 않을까? extend2()에서 부모 prototype 객체의 속성이 자식 prototype 객체의 속성으로 복사됐다.
+
+두 프로토타입은 본질적으로 객체다. 프로토타입과 생성자 함수에 대해 생각하지 않으면 단순히 객체의 모든 속성을 다른 객체로 복사할 수 있다.
+
+var o = {};를 사용해 자체 속성을 가지지 않는 빈 객체로 시작하고 나중에 속성을 채울 수 있다. 그러나 완전히 새로 작성하는 대신 기존 객체의 모든 속성을 복사하여 시작할 수 있다.
+
+다음 함수는 객체를 받아 이 객체의 새 복사본을 반환하는 예이다.
+
+```js
+function extendCopy(p) {
+  var c = {};
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p;
+  return c;
+}
+```
+
+단순히 모든 속성을 복사하는 것은 쉬운 패턴이며 널리 사용되고 있다. 이 함수의 실제 동작을 살펴보자. 기본 객체를 가지고 시작한다.
+
+```js
+var shape = {
+  name: "Shape",
+  toString: function () {
+    return this.name;
+  },
+};
+```
+
+이전 객체를 기반으로 새 객체를 만드려면 새 객체를 반환하는 extendCopy() 함수를 호출하면 된다. 그런 다음 추가 기능으로 새로운 객체를 보강할 수 있다.
+
+```js
+var twoDee = extendCopy(shape);
+twoDee.name = "2D Shape";
+twoDee.toString = function () {
+  return this.uber.toString() + " ," + this.name;
+};
+```
+
+다음은 2D shape 객체를 상속받은 triangle 객체다.
+
+```js
+var triangle = extendCopy(twoDee);
+triangle.name = "Triangle";
+triangle.getArea = function () {
+  return (this.side * this.height) / 2;
+};
+```
+
+다음으로 triangle을 사용해보자.
+
+```js
+triangle.side = 5;
+triangle.height = 10;
+triangle.getArea();
+25;
+triangle.toString();
+("Shape ,2D Shape ,Triangle");
+```
+
+이 메소드의 단점은 새 triangle 객체를 초기화하는 다소 장황한 방법이다. 생성자에 값으로 전달하는 것이 아니라 side와 hegiht의 값을 수동으로 설정해야 한다.
+
+그러나 이것은 생성자로 동작하고 초기화 매개변수를 받아들이는 init() 함수(or \_\_constructor())를 사용하면 쉽게 해결할 수 있다.
+
+또는 extendCopy()에서 두 개의 매개변수, 즉 상속할 객체와 반환될 사본에 추가할 다른 속성의 객체 리터럴을 허용한다. 즉, 두 객체를 병합하면 된다.
