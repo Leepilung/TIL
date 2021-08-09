@@ -820,3 +820,50 @@ Array(6)[(1, 2, 3, 4, 5, 6)];
 
 - hasOwnProperty()로 자체 속성이 아닌 속성을 필터링하면 다른 사람이 핵심 프로토타입을 추가하지 못하게 할 수 있다.
 - Array.isArray()는 실제 배열을 객체와 구분하는 것이 놀랄 정도로 어렵기 때문에 ES5부터 존재한다.
+
+## Object() 메소드 사용하기
+
+객체가 객체를 상속한다는 개념에 기반하여, 객체를 받아 프로토타입을 부모로 가진 새로운 객체를 반환하는 Object() 함수의 사용을 알아보자.
+
+```js
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
+}
+```
+
+uber 속성에 접근이 필요한 경우, object() 함수를 다음과 같이 수정한다.
+
+```js
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  n = new F();
+  n.uber = o;
+  return n;
+}
+```
+
+this 함수를 사용하는 것은 extendCopy()를 사용하는 것과 동일하다. twoDee와 같은 객체를 받아 새 겍체를 만든 다음, 새 객체를 보강하는 것으로 진행한다.
+
+```js
+var triangle = object(twoDee);
+triangle.name = "Triangle";
+triangle.getArea = function () {
+  return (this.side * this.height) / 2;
+};
+```
+
+새로운 triangle은 여전히 같은 방식으로 동작한다.
+
+```js
+triangle.toString();
+("Shape ,2D Shape ,Triangle");
+```
+
+이 패턴은 부모 객체를 자식 객체의 프로토타입으로 사용하기 때문에 프로토타입 상속(prototype inheritance)라고도 한다. 또한 ES5에서 채택되어 Object.create()로 호출된다. 예제는 다음과 같다.
+
+```js
+var square = Object.create(triangle);
+```
