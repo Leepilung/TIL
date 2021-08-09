@@ -756,3 +756,67 @@ triangle.toString();
 그러나 이것은 생성자로 동작하고 초기화 매개변수를 받아들이는 init() 함수(or \_\_constructor())를 사용하면 쉽게 해결할 수 있다.
 
 또는 extendCopy()에서 두 개의 매개변수, 즉 상속할 객체와 반환될 사본에 추가할 다른 속성의 객체 리터럴을 허용한다. 즉, 두 객체를 병합하면 된다.
+
+## 깊은 복사
+
+위에서 설명한 extendCopy() 함수는 extend2()와 같이 객체의 얕은 복사본을 만든다.
+
+앞에서 `참조로 복사할 때의 문제점` 파트에서 다뤘던 내용처럼 객체를 복사하면 객체가 저장된 메모리의 위치를 가리키는 포인터만 복사 한다. 이것은 얕은 복사에 해당한다. 복사본에서 객체를 수정하면 원본도 수정된다. 깊은 복사는 이 문제를 방지해준다.
+
+깊은 복사는 얕은 복사와 동일한 방법으로 구현된다. 속성을 반복하여 하나씩 복사한다. 그러나 객체를 가리키는 속성을 만나면 다시 deepcopy 함수를 호출한다.
+
+```js
+function deepCopy(p, c) {
+  c = c || {};
+  for (var i in p) {
+    if (p.hasOwnProperty(i)) {
+      if (typeof p[i] === "object") {
+        c[i] = Array.isArray(p[i]) ? [] : {};
+        deepCopy(p[i], c[i]);
+      } else {
+        c[i] = p[i];
+      }
+    }
+  }
+  return c;
+}
+```
+
+배열과 하위객체를 속성으로 가지는 객체를 생성한다.
+
+```js
+var Parent = {
+  number: [1, 2, 3],
+  letters: ["a", "b", "c"],
+  obj: {
+    prop: 1,
+  },
+  bool: true,
+};
+```
+
+깊은 복사와 얕은 복사를 생성해 테스트해 보자. 얕은 복사와 달리, 깊은 복사의 numbers 속성을 업데이트해도 원본은 영향을 받지 않는다.
+
+```js
+var mydeep = deepCopy(parent);
+var myshallow = extendCopy(parent);
+mydeep.numbers.push(4, 5, 6);
+6;
+mydeep.numbers;
+Array(6)[(1, 2, 3, 4, 5, 6)];
+parent.numbers;
+Array(3)[(1, 2, 3)];
+myshallow.numbers.push(10);
+4;
+myshallow.numbers;
+Array(4)[(1, 2, 3, 10)];
+parent.numbers;
+Array(4)[(1, 2, 3, 10)];
+mydeep.numbers;
+Array(6)[(1, 2, 3, 4, 5, 6)];
+```
+
+다음은 deepCopy() 함수에 대한 두 가지 참고 사항이다.
+
+- hasOwnProperty()로 자체 속성이 아닌 속성을 필터링하면 다른 사람이 핵심 프로토타입을 추가하지 못하게 할 수 있다.
+- Array.isArray()는 실제 배열을 객체와 구분하는 것이 놀랄 정도로 어렵기 때문에 ES5부터 존재한다.
