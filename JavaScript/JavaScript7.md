@@ -1011,3 +1011,56 @@ multi()는 입력된 객체를 순서대로 반복하며, 두 객체가 동일�
 > 믹스인
 
 믹스인(mixin)이라는 용어에 대해 알아보자. 믹승인은 유용한 기능을 제공하지만 하위 객체에 상속되고 확장되지는 않는 객체로 생각하면 된다. 앞에서 설명한 다중 속성을 믹스인 아이디어의 구현으로 생각할 수 있다. 새로운 객체를 생성할 때 다른 객체를 선택하여 새로운 객채에 혼합할 수 있다. 모든 객체를 multi()로 전달하면, 상속 트리에 포함시키지 않으면서 모든 객체의 기능을 사용할 수 있다.
+
+## 기생 상속
+
+자바스크립트에서 상속을 구현하는 데 또다른 방법이 있다. 바로 기생 상속(parasitic inheritance)이다. 이것은 다른 객체의 모든 기능을 가져와 새로운 객체를 보강하고, 이를 반환하여 객체를 생성하는 함수이다.
+
+다음은 곧 기생 상속의 희생양이 될 객체 리터럴로 정의된 일반 객체이다.
+
+```js
+var twoD  = {
+  name : '2D shape',
+  dimensions :
+```
+
+triangle 객체를 생성하는 함수는,
+
+- twoD 객체를 that(편의상 this와 유사한) 이라는 객체의 프로토타입으로 사용한다. object()함수를 사용하거나 모든 속성을 복사하는 등 앞에서 봤던 어떤 방법으로도 이 작업을 수행할 수 있다.
+- that을 추가 속성으로 보강한다.
+- that을 반환한다.
+
+```js
+// 프로토타입 파트 위에서 사용한 object 함수가 필요함.
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
+}
+
+function triangle(s, h) {
+  var that = object(twoD);
+  that.name = "Triangle";
+  that.getArea = function () {
+    return (this.side * this.height) / 2;
+  };
+  that.side = s;
+  that.height = h;
+  return that;
+}
+```
+
+tirangle()은 생성자가 아닌 일반 함수이기 때문에, new 연산자가 필요하지 않다. 그러나 객체를 반환하기 때문에 실수로 new 연산자를 사용해서 호출해도 잘 동작한다.
+
+```js
+// triangle 함수 내부에서 object() 함수를 필요로 하는데 이는 위에서 구현해놓은 함수이므로 따로 갖다써야함.
+var t = triangle(5, 10);
+t.dimensions;
+2;
+
+var t2 = new triangle(5, 5);
+t2.getArea();
+12.5;
+```
+
+this와 마찬가지로, that은 단순히 이름일 뿐이며 특별한 의미를 가지지 않는다.
