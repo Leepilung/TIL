@@ -943,3 +943,71 @@ my.toString();
 
 여기서 toString()을 실행할 때 차이점은 Triangle 이름이 두번 반복된다는 것이다.
 구체적인 인스턴스는 triangle을 상속받아 생성됐기 때문에 더 많은 수준의 상속이 있기 떄문이다.
+
+## 다중 상속
+
+다중 상속은 하나 이상의 부모로부터 상속받는 것을 의미한다. 다중 속성은 장단점에 대한 의견 대립이 많다. 그러나 여기서는 자바스크립트로 이를 어떻게 구현하는지에 대해 알아보자.
+
+속성을 복사하고 확장하여 입력 객체의 수를 무제한으로 상속받을 수 있도록 한 상속의 아이디어를 사용하면 간단하게 구현할 수 있다.
+
+여러 개의 입력 객첼를 받는 multi() 함수를 만들어 보자. 함수에 arguments로 전달된 모든 객체를 반복해 다른 루프의 속성을 복사하는 루프를 래핑할 수 있다.
+
+```js
+function multi() {
+  var n = {},
+    stuff,
+    j = 0,
+    len = arguments.length;
+  for (j = 0; j < len; j++) {
+    stuff = arguments[j];
+    for (var i in stuff) {
+      if (stuff.hasOwnProperty(i)) {
+        n[i] = stuff[i];
+      }
+    }
+  }
+  return n;
+}
+```
+
+shape와 twoDee, 그리고 세 번째로 이름없는 세 개의 객체를 만들어 이를 테스트해 보자. 그런 다음 triangle 객체를 생성하는 것은 mulit()를 호출하고 새 객체를 모두 전달하는 것을 의미한다.
+
+```js
+var shape = {
+  name: "Shape",
+  toString: function () {
+    return this.name;
+  },
+};
+
+var twoDee = {
+  name: "2D shape",
+  diemsions: 2,
+};
+
+var triangle = multi(shape, twoDee, {
+  name: "Triangle",
+  getArea: function () {
+    return (this.side * this.height) / 2;
+  },
+  side: 5,
+  height: 10,
+});
+```
+
+잘 동작하는지 살펴보자. getArea() 메소드는 자체 속성이며, dimesions는 twoDee에서, toString()은 shape에서 상속받은 것이여야 한다.
+
+```js
+triangle.getArea();
+25;
+triangle.diemsions;
+2;
+triangle.toString();
+("Triangle");
+```
+
+multi()는 입력된 객체를 순서대로 반복하며, 두 객체가 동일한 속성을 가진 경우 마지막 속성을 우선시 한다.
+
+> 믹스인
+
+믹스인(mixin)이라는 용어에 대해 알아보자. 믹승인은 유용한 기능을 제공하지만 하위 객체에 상속되고 확장되지는 않는 객체로 생각하면 된다. 앞에서 설명한 다중 속성을 믹스인 아이디어의 구현으로 생각할 수 있다. 새로운 객체를 생성할 때 다른 객체를 선택하여 새로운 객채에 혼합할 수 있다. 모든 객체를 multi()로 전달하면, 상속 트리에 포함시키지 않으면서 모든 객체의 기능을 사용할 수 있다.
