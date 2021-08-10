@@ -867,3 +867,79 @@ triangle.toString();
 ```js
 var square = Object.create(triangle);
 ```
+
+## 프로토타입 상속과 속성 복사의 혼합 사용
+
+상속을 사용할 때는 대부분 이미 존재하고 있는 기능에 새로운 기능을 추가해 사용하려는 것이다. 이것은 존재하는 객체로부터 상속받고 새로운 메소드와 속성을 추가해 새로운 객체를 생성하는 것을 의미한다.
+
+방금 두 가지 방법을 조합하여 하나의 함수호출로 이 작업을 수행할 수 있다.
+
+- 프로토타입 상속을 사용하여 기존 객체를 새로운 객체의 프로토타입으로 사용한다.
+- 새로 만든 객체에 다른 객체의 모든 속성을 복사한다.
+
+```js
+function objectPlus(o, stuff) {
+  var n;
+  function F() {}
+  F.prototpye = o;
+  n = new F();
+  n.uber = o;
+  for (var i in stuff) {
+    n[i] = stuff[i];
+  }
+  return n;
+}
+```
+
+이 함수는 stuff 객체로부터 o 객체를 상속받아 추가 메소드와 속성을 추가한ㄷ마. 실제로 작성해보자.
+
+기본 Shape 객체로 시작한다.
+
+```js
+var Shape = {
+  name: "Shape",
+  toStirng: function () {
+    return this.name;
+  },
+};
+```
+
+shape를 상속하고 속성을 추가하여 twoDee라는 객체를 생성해보자. 추가 속성은 객체 리터럴을 사용해 간단히 만들 수 있다.
+
+```js
+var twoDee = objectPlus(Shape, {
+  name: "2D shape",
+  toString: function () {
+    return this.uber.toString() + "," + this.name;
+  },
+});
+```
+
+이제 twoDee에서 상속받고 속성을 추가하여 triangle객체를 생성해 보자.
+
+```js
+var triangle = objectPlus(twoDee, {
+  name: "Triangle",
+  getArea: function () {
+    return (this.side * this.height) / 2;
+  },
+  side: 0,
+  height: 0,
+});
+```
+
+side와 height를 정의해 구체적인 상각형 객체 my를 만들어 어떻게 동작하는지 테스트해보자.
+
+```js
+var my = objectPlus(triangle, {
+  side: 4,
+  height: 4,
+});
+my.getArea();
+8;
+my.toString();
+("Shape, 2D Shape, Triangle, Triangle");
+```
+
+여기서 toString()을 실행할 때 차이점은 Triangle 이름이 두번 반복된다는 것이다.
+구체적인 인스턴스는 triangle을 상속받아 생성됐기 때문에 더 많은 수준의 상속이 있기 떄문이다.
