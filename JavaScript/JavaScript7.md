@@ -1064,3 +1064,98 @@ t2.getArea();
 ```
 
 this와 마찬가지로, that은 단순히 이름일 뿐이며 특별한 의미를 가지지 않는다.
+
+## 생성자 빌리기
+
+상속을 구현하는 또 다른 방법은 직접 객체를 다루지 않고 생성자 함수를 다시 사용하는 것이다. 이 패턴에서 자식의 생성자 call() 또는 apply() 메소드를 사용해 부모의 생성자를 호출한다.
+
+이것은 `생성자 훔치기(stealing a constructor)` 혹은 `생성자 빌리기를 통한 상속(inheritance by borrowing a constructor)`라고 불린다.
+
+call()과 apply() 메소드는 앞의 Javascript3.md에 정리되어있다. 그러나 왔다갔다 하는 번거러움을 방지하기 위해 다시 한번 정리해 보자.
+
+이들 함수는 함수를 호출하고 this 값에 바인딩할 객체를 전달할 수 있다. 따라서 상속 목적으로 자식 생성자는 부모의 생성자를 호출하고 새로 생성된 자식의 this 객체를 부모의 this로 바인딩한다.
+
+부모 생성자 Shape()를 먼저 만들어보자.
+
+```js
+function Shape(id) {
+  this.id = id;
+}
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  return this.name;
+};
+```
+
+이제 apply()를 사용해 Shape() 생성자를 호출하고 this(new Triangle()로 생성한 인스턴스)와 추가 인수를 전달해 Triangle()을 정의해 보자.
+
+```js
+function Triangle() {
+  Shape.apply(this, arguments);
+}
+Triangle.prototype.name = "Triangle";
+```
+
+Triangle()과 Shape() 모두 프로토타입에 몇 가지 추가 속성을 추가했다.
+
+이제 새로운 triangle 객체를 생성하여 테스트해 보자.
+
+```js
+var t = new Triangle(101);
+t.name;
+("Triangle");
+```
+
+새로운 Tirangle 객체는 부모로부터 id 속성을 상속받지만, 부몽의 prototypeㅇ에 추가된 다른 어떤 것도 상속받지 않는다.
+
+```js
+t.id;
+101;
+t.toString();
+("[object Object]");
+```
+
+Triangle은 new Shape() 인스턴스가 생성되지 않기 때문에 Shape 함수의 프로토타입 속성을 가져오지 못한다. 따라서 프로토타입은 결코 사용되지 못한다.
+
+그러나 이 프로토타입 파트의 시작 부분에서 이 작업을 수행하는 방법을 배웠다. Triangle을 다음과 같이 재정의할 수 있다.
+
+```js
+function Triangle() {
+  Shape.apply(this, arguments);
+}
+Triangle.prototype = new Shape();
+Triangle.prototype.name = "Triangle";
+```
+
+이 상속 패턴에서 부모의 자체 속성은 자식의 자체 속성으로 다시 생성된다. 자식이 배열이나 다른 객체를 상속받는 경우, 이는 완전히 새로운 값(참조가 아닌)이며, 부모를 변경해도 영향을 주지 않는다.
+
+단점은 부모의 생성자가 한번은 apply()로 자체 속성을 상속할 때, 그리고 한번은 new로 프로토타입을 상속받을 때, 총 두 번 호출된다는 것이다. 실제로 부모의 자체 속성은 두 번 상속된다.
+
+```js
+function Shape(id) {
+  this.id = id;
+}
+function Triangle() {
+  Shape.apply(this, arguments);
+}
+Triangle.prototype = new Shape(101);
+```
+
+여기에서 새로운 인스턴스를 생성해보자.
+
+```js
+var t = new Triangle(202);
+t.id;
+202;
+```
+
+자체 속성인 id가 있지만, 프로토타입 체인에서 나와 빛을 발할 준비가 된 속성들도 있다.
+
+```js
+t.__proto__.id;
+101;
+delete t.id;
+true;
+t.id;
+101;
+```
