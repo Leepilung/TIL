@@ -1004,3 +1004,31 @@ RESTful한 API를 구현하는 근본적인 목적이 성능 향상에 있는 �
 - route에 resource, id 외의 정보가 들어가는 경우(/students/updateName)
 
 등이 해당된다.
+
+# URI , URL, URN
+
+URI (Uniform Resource Identifier) 란 인터넷 자원을 나타내는 고유 식별자 이다.
+
+URi가 가장 포괄적인 개념이고 , URL과 URN으로 나뉜다.
+
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FAkL2o%2FbtqJptEQJmu%2FomyDDiWIRr99BFKeVIpTt0%2Fimg.png">
+
+## URL (Uniformed Resource Locator)
+
+- 프로토콜을 포함
+- 해당 자원의 위치, Path를 의미
+- 일반적으로 사이트 도메인을 자주 의미함.
+- 웹 상 뿐만 아니라 컴퓨터 네트워크상의 자원은 모두 나타낼 수 있다
+
+## URN (Uniformed Resource Name)
+
+- 프로토콜을 포함 X
+- 해당 자원의 이름을 의미
+- 독립적인 자원 지시자
+- Page 이후 부분까지 포함
+
+## 2줄 요약
+
+1. `URI` 는 네트워크 상 자원을 가리키는 일종의 고유 식별자(ID) 이다.
+
+2. URL, URN 은 `URI` 에 포함되는 개념이며 `URL`은 자원의 위치, `URN` 은 자원의 이름을 의미한다.
