@@ -1159,3 +1159,59 @@ true;
 t.id;
 101;
 ```
+
+## 생성자 빌리기와 프로토타입 복사하기
+
+생성자가 두 번 호출돼서 수행되는 이중 작업 문제는 쉽게 해결할 수 있다. 부모 생성자의 apply()를 호출해 모든 자체 속성을 가져온 다음, 간단한 반복(앞에서 사용한 extend2()등을 사용하여) 프로토타입의 속성을 복사할 수 있다.
+
+```js
+function extend2(Child, Parent) {
+  var p = Parent.prototype;
+  var c = Child.prototype;
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p;
+}
+
+function Shape(id) {
+  this.id = id;
+}
+
+Shape.prototype.name = "Shape";
+Shape.prototype.toString = function () {
+  return this.name;
+};
+
+function Triangle() {
+  Shape.apply(this, arguments);
+}
+extend2(Triangle, Shape);
+Triangle.prototype.name = "Triangle";
+```
+
+다음 코드를 테스트해 보자.
+
+```js
+var t = new Triangle(101);
+t.toString();
+("Triangle");
+t.id;
+101;
+```
+
+이중 상속이 발생하지는 않는다.
+
+```js
+typeof t.__proto__.id;
+("undefined");
+```
+
+extend2() 메소드는 필요한 경우 uber에 대한 접근도 제공한다.
+
+```js
+t.uber.name;
+("Shape");
+```
+
+## 사례 연구 - 도형 그리기
