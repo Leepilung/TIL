@@ -970,3 +970,15 @@ REST 기반으로 서비스 API를 구현한 것이다.
 ## REST API 설계 예시
 
 <img src="https://gmlwjd9405.github.io/images/network/restapi-example.png">
+
+# 응답상태코드
+
+1xx : 전송 프로토콜 수준의 정보 교환
+
+2xx : 클라어인트 요청이 성공적으로 수행됨
+
+3xx : 클라이언트는 요청을 완료하기 위해 추가적인 행동을 취해야 함
+
+4xx : 클라이언트의 잘못된 요청
+
+5xx : 서버쪽 오류로 인한 상태코드
