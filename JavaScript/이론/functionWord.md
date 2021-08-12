@@ -501,3 +501,67 @@ referenceStr이 compareString보다 앞에 있으면 -1, 뒤에 있으면 1, 같
 ```
 
 위에서 언급한 sort()와 묶어서 판단의 기준으로 사용한다고 생각하자.(다른 느낌일 경우 수정 필요)
+
+# FormData()
+
+FormData 인터페이스는 form 필드와 그 값을 나타내는 일련의 key/value 쌍을 쉽게 생성할 수 있는 방법을 제공한다.
+
+## 생성자
+
+```js
+FormData();
+```
+
+새로운 FormData 객체를 생성합니다.
+
+## 구문
+
+```js
+var formData = new FormData(form);
+```
+
+## 매개변수
+
+form -> Optional
+HTML `<form>` 요소 — 지정된 경우 FormData 객체는 form의 현재 key/value인 딕셔너리의 형태로 데이터가 저장된다.
+
+key/value는 submit한 각 요소의 name property와 value값을 사용한다.
+
+## 예제
+
+빈 FormData 객체를 만들어보자.
+
+```js
+var formData = new FormData(); // 현재 비어있음
+```
+
+FormData.append을 사용하여 key/value 쌍을 추가할 수 있다.
+
+```js
+formData.append("username", "Chris");
+```
+
+또는 FormData 객체를 만들 때 선택적으로 form argument를 지정할 수 있는데, 지정된 양식대로 value를 미리 채우는 것이다.
+
+```js
+<form id="myForm" name="myForm">
+  <div>
+    <label for="username">Enter name:</label>
+    <input type="text" id="username" name="username">
+  </div>
+  <div>
+    <label for="useracc">Enter account number:</label>
+    <input type="text" id="useracc" name="useracc">
+  </div>
+  <div>
+    <label for="userfile">Upload file:</label>
+    <input type="file" id="userfile" name="userfile">
+  </div>
+<input type="submit" value="Submit!">
+</form>
+
+<script>
+var myForm = document.getElementById('myForm');
+formData = new FormData(myForm);
+</script>
+```
