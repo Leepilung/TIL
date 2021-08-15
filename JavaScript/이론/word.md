@@ -895,6 +895,9 @@ CRUD Operation
 
 # REST API
 
+Roy Fielding이라는 사람이 만든 HTTP 요청 시스템(GET,POST,PUT,DELETE). 이 사람이 만든 논문에서 REST 원칙을 소개하였는데 이것이 거의 정론처럼 받아들여진 API 구성 규약같은 것.
+
+
 ## REST API의 정의
 
 REST 기반으로 서비스 API를 구현한 것이다.
@@ -908,6 +911,52 @@ REST 기반으로 서비스 API를 구현한 것이다.
 - REST는 HTTP 표준을 기반으로 구현하므로, HTTP를 지원하는 프로그램 언어로 클라이언트, 서버를 구현할 수 있다.
 
 - 즉, REST API를 제작하면 델파이 클라이언트 뿐 아니라, 자바, C#, 웹 등을 이용해 클라이언트를 제작할 수 있다.
+
+## REST API 간단 원칙 6개
+
+1. `Uniform interface` (중요)
+
+   - URL을 작성할 때 간결하고 형식이 일관적이어야 함.(하나의 자료는 하나의 URL로)
+   - URL이 예측가능 해야함(URL 하나를 알면 둘을 알 수 있어야 함)
+   - 요청과 응답은 정보가 충분히 들어있어야 함
+
+2. Client-Server 역할 구분이 명확해야함.
+
+   - 브라우저는 요청만 할 뿐이고
+   - 서버는 응답만 할 뿐임을 명시해야함.
+
+3. Stateless
+
+   - 요청 1과 요청 2는 의존성이 없이 독립적이어야 함.
+
+4. Cacheable
+
+   - 서버에서 보내주는 정보들은 캐싱이 가능해야 함.
+   - 캐싱을 위한 버전관리를 잘해야 함.
+     (크롬같은 브라우저가 잘해주는 부분이라 중요하지 않음)
+
+5. Layered System
+
+6. Code on Demand
+
+## 좋은 REST API 예시
+
+좋은 REST API 예시는
+
+www.example.com/product/33214
+instargram.com/explore/tags/jpop/
+facebook.com/natgeo/photos/
+
+
+좋은 REST API 이름을 지을 때 다음과 같은 원칙을 지키는 것이 좋다.
+
+- URL을 가급적 명사로 작성하기 
+
+- 하위문서를 나타낼 때처럼 `/` 기호 사용으로 세분화하여 구분짓기
+
+- 띄어쓰기는 가급적 대시(-) 사용하기
+
+- 자료 하나당 하나의 URL 사용하기.
 
 ## REST API 설계 기본 규칙
 
