@@ -6,7 +6,23 @@ CSS는 Cascading Style Sheets의 약자로
 
 HTML,XHTML,XML 같은 문서의 스타일을 꾸밀 때 사용하는 스타일 시트 언어이다.
 
-> `<input>` 요소
+## CSS-Element
+
+### padding
+
+컨텐츠 안을 차지하는 스페이스를 의미한다.
+
+margin과는 반대로 작용함. padding을 키우면 컨텐츠 블록의 크기가 padding의 크기만큼 커짐.
+
+### margin
+
+컨텐츠 밖을 띄워주는 스페이스를 의미한다.
+
+보통 컨텐츠(블록)간의 간격을 줄 때 사용한다고 보면 된다. margin을 키우면 컨텐츠(블록)나 아티클간의 간격이 벌어진다.
+
+---
+
+## `<input>` 요소
 
 <input> 의 형태와 같이 입력창이 나타나는 요소.
 html에서 input type으로 입력 타입(type)을 설정할 수 있다.
@@ -38,17 +54,17 @@ html에서 input type으로 입력 타입(type)을 설정할 수 있다.
 
 등이 있다.
 
-## Input Type: text
+### Input Type: text
 
 <input type="text"> 텍스트 입력(text input)위 한 줄의 입력 필드를 정의한다.
 
-## Input Type: password
+### Input Type: password
 
 <input type="password"> 는 password 필드를 정의한다.
 
 password 필드의 문자는 별표나 동그라 미로 표시로 가려진다.
 
-## Input Type: date
+### Input Type: date
 
 <input type="date"> 는 사용자가 날짜를 포함해야 하는 입력 필드에 사용됩니다.
 
@@ -75,6 +91,12 @@ border : 5px solid;
 border : solid red;
 ```
 
+app.use(express.static(\_\_dirname + "/static"));
+
+## border-radius
+
+직역하면 경계면의 각도를 의미한다. 보통 직사각형으로 나뉘는 박스들(대표적으로 button)등의 경계면 각도를 둥글게 만들어준다. 값이 커질수록 원형에 가까워짐.
+
 와 같은 형태로 입력하면 된다.
 
 # button
@@ -94,5 +116,3 @@ submit은 `<input type="submit>`과 동일한 기능을 수행하며, 서버로 
 > reset
 
 button을 감싸고 있는 form 데이터에 입력된 데이터를 초기화하는 타입이다.
-
-ㅈ
