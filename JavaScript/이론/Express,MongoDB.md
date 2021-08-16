@@ -43,3 +43,25 @@ WSL (Ubuntu 20.04)에 MongoDB (버전 5.0)를 설치 하려면 다음을 수행 
 12. `MongoDB 셸을 종료 하려면 바로 가기 키 (Ctrl + C)를 사용 합니다.`
 
 포트사용 오류 발생시 -> 삭제하기.
+
+## Express Style.css 적용 관련 에러
+
+```js
+app.use(express.static(__dirname + "/static"));
+```
+
+해당 구문을 사용하지 않으면 백날 문법적 오류가 없어도 css파일을 분리시켜도 html에서 로드를 못해서 적용되질 않음.
+
+## 서버 구현 부분
+
+테스트용 구문이라 TODOLIST2에선 삭제하고 별도로 정리한 내용.
+
+```js
+app.post("/add", (req, res) => {
+    console.log(req.body.todo);
+    // -> input창 (name=todo) 에 기록한 정보가 터미널에 출력됨.
+    console.log(req.body.date);
+    // -> input창 (name = date)에 기록한 정보가 터미널에 출력됨.
+    console.log(req.body);
+    // input창이 포함되있는 form의 정보가 객체 형태로  터미널에 출력됨.
+```
