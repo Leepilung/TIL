@@ -44,14 +44,6 @@ WSL (Ubuntu 20.04)에 MongoDB (버전 5.0)를 설치 하려면 다음을 수행 
 
 포트사용 오류 발생시 -> 삭제하기.
 
-## Express Style.css 적용 관련 에러
-
-```js
-app.use(express.static(__dirname + "/static"));
-```
-
-해당 구문을 사용하지 않으면 백날 문법적 오류가 없어도 css파일을 분리시켜도 html에서 로드를 못해서 적용되질 않음.
-
 ## 서버 구현 부분
 
 테스트용 구문이라 TODOLIST2에선 삭제하고 별도로 정리한 내용.
@@ -65,3 +57,35 @@ app.post("/add", (req, res) => {
     console.log(req.body);
     // input창이 포함되있는 form의 정보가 객체 형태로  터미널에 출력됨.
 ```
+
+## MongoDB Update 메소드
+
+DB 데이터 수정을 원한다면 updateOne()을 사용한다.
+
+> 구문
+
+```js
+db.collection('db컬렉션이름').updateOne( {바꾸고싶은 자료 명} , {operator($set or $inc등)} , function(에러, 결과){
+    console.log('쏼라쏼라')
+})
+```
+
+updateOne 함수는 세개의 파라미터를 요구한다.
+
+맨 처음엔 `{name:"numberofPost"}`와 같이 자료를 찾을 수 있는 이름이나 쿼리문등을 적어준다.
+
+그 다음부분은 여러 종류가 있는데 totalPost라는 값을
+
+{ $set : { totalPost : 100 } } 이렇게 넣어서 값을 아예 100으로 변경할 수도 있고
+
+{ $inc : { totalPost : 5 } } 이렇게 넣어서 기존 값에 5만큼 더해줄 수도 있다.
+
+# 에러부분
+
+## Express Style.css 적용 관련 에러
+
+```js
+app.use(express.static(__dirname + "/static"));
+```
+
+해당 구문을 사용하지 않으면 백날 문법적 오류가 없어도 css파일을 분리시켜도 html에서 로드를 못해서 적용되질 않음.
