@@ -116,3 +116,49 @@ submit은 `<input type="submit>`과 동일한 기능을 수행하며, 서버로 
 > reset
 
 button을 감싸고 있는 form 데이터에 입력된 데이터를 초기화하는 타입이다.
+
+# CSS 카운터
+
+CSS counters를 사용하면 문서에서의 위치에 따라 콘텐츠의 모양을 조정할 수 있다. 예를 들어, counters를 사용해 웹페이지의 제목에 자동으로 번호를 매길 수 있다.
+
+Counters는 요소가 몇 번이나 사용되었는지 추적하여 CSS 규칙에 따라 증가하며, 본질적으로 변수이다.
+
+CSS counter를 사용하려면 먼저 `counter-reset` 속성(초깃값 0)을 사용하여 초기화 해야한다.
+
+초기화 된 counter의 값은 `counter-increment`에 따라 증가하거나 감소한다.
+
+counter의 이름으로 "none", "inherit", "initial"은 사용이 불가능하다. 이런 이름을 사용하면 선언은 무시된다.
+
+## 카운터 표시하기
+
+Counter의 값은 content 속성에서 `counter()`나 `counters()` 함수를 사용하여 표시할 수 있다.
+
+`counter()` 함수는 `'counter(name)'`와 `'counter(name, style)'` 두 가지 형태로 사용할 수 있다. 생성된 텍스트는 가상 요소가 속한 범위에 있는 이름(name)의 가장 안쪽 counter의 값이다. 텍스트는 지정된 서식(기본값은 십진수decimal)으로 뿌려진다.
+
+`counters()` 함수도 `'counters(name, string)'`나 `'counters(name, string, style)'` 두 가지 형태로 사용할 수 있다.
+
+## 예제
+
+> CSS
+
+```css
+body {
+  counter-reset: section; /* counter 이름을 'section'으로 지정합니다.
+                                                   초깃값은 0입니다. */
+}
+
+h3::before {
+  counter-increment: section; /* section의 카운터 값을 1씩 증가시킵니다. */
+  content: "Section " counter(section) ": "; /* section의 카운터 값을 표시합니다. */
+}
+```
+
+> HTML
+
+```html
+<h3>Introduction</h3>
+<h3>Body</h3>
+<h3>Conclusion</h3>
+```
+
+MD문서로는 잘 표현이 안되니까 이건 [MDN 링크](https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters#a_more_sophisticated_example "MDN카운터") 참고하기.
