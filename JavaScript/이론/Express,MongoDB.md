@@ -62,6 +62,43 @@ console.log(__dirname);
 // /home/ek3434/Project/express-test/src
 ```
 
+## Express 정적 파일 적용
+
+이미지, CSS 파일 및 JavaScript 파일과 같은 정적 파일을 제공하려면 Express의 기본 제공 미들웨어 함수인 express.static을 사용해야 한다.
+
+정적 자료들이 포함된 디렉토리의 이름을 express.static 미들웨어 함수에 전달하면 파일의 직접적인 제공이 가능하다. 예를 들면, 다음과 같은 코드를 이용하여 public이라는 이름의 디렉토리에 포함된 이미지, CSS 파일 및 JavaScript 파일을 제공할 수 있다.
+
+```js
+app.use(express.static("public"));
+```
+
+또한 여러 개의 정적 자산 디렉토리를 이용하려면 다음과 같이 express.static 미들웨어 함수를 여러 번 호출해야 한다.
+
+```js
+app.use(express.static("public"));
+app.use(express.static("files"));
+```
+
+그리고 Express는 express.static 미들웨어 함수를 이용해 정적 디렉토리를 설정한 순서대로 파일을 검색한다.
+
+또한 express.static 함수를 통해 제공되는 파일에 대한 가상 경로 URL(파일 시스템 내에 해당 경로가 실제로 존재하지 않는 경우)을작성하려면 다음과 같이 작성하면 된다.
+
+```js
+app.use("/static", express.static("public"));
+```
+
+이러면 이제 다음과 같은 경로를 통해 public 디렉토리에 포함된 파일을 로드시킬 수 있다.
+
+```
+http://localhost:3000/static/css/style.css
+```
+
+그러나 express.static 함수에 제공되는 경로는 node 프로세스가 실행되는 디렉토리에 대해 상대적이기 때문에 Express 앱을 다른 디렉토리에서 실행하는 경우에는 다음과 같이 제공하기 원하는 디렉토리의 절대 경로를 사용하는 것이 더 안전하다.
+
+```js
+app.use("/static", express.static(__dirname + "/public"));
+```
+
 ## 서버 구현 부분
 
 ## DB와 연결하는 부분.
