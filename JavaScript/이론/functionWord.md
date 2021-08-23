@@ -706,3 +706,96 @@ console.log(exam1.a);
 ```
 
 exam1에서 exports에 들어간 (key,value) 값들이 require()함수의 아웃풋으로 나오게 되는 것이다.
+
+# exports() , module.exports
+
+위에서 exports는 exam1.js함수의 특정값을 exam2.js로 넘겨주고싶을 때 등장했다.
+
+우선 위에서도 언급했듯, require함수의 구조는 다음과 같다.
+
+```js
+var require = function(src){                 //line 1
+    var fileAsStr = readFile(src)            //line 2
+    var module.exports = {}                  //line 3
+    eval(fileAsStr)                          //line 4
+    return module.exports                    //line 5
+}
+```
+
+그리고 line4의 eval 단계가 일종의 코드 복사 붙여넣기의 단계와 같다고 보면 된다.
+
+```js
+var require = function(src){                 //line 1
+    var fileAsStr = readFile(src)            //line 2
+    var module.exports = {}                  //line 3
+    `const a = 3333
+    exports.a = a;`
+    return module.exports                    //line 5
+}
+```
+
+여기서 중요한 부분은 `exports`와 `module.exports`는 `같은 대상을 지칭하는 서로 다른 두 명칭`이라는 부분이다.
+
+위의 require의 과정을 살펴보면
+
+1. line 3에서 module.exports의 변수명으로 빈 해시를 만들었고
+
+2. line 4.2에서 exports에 <key: value>로서 <a : 10>을 넣은 것이며 이는 곧,
+
+3. module.exports에 <key: value>로서 <a : 10>을 넣은 것과 같다.
+
+그렇다면 `exports`와 `module.exports`는 무슨 차이인가? 궁금해진다.
+
+허나 `exports`와 `module.exports`의 차이는
+
+단순히 `exports`는 `module.exports`를 참조할 뿐이라고 한다. 짧은 alias(별명)에 불과하다는 것이다.
+
+공식문서에서 `module.exports`와 `exports`는 같은 객체를 바라보고 있으며, `exports`는 `module.exports`의 shortcut이라고 한다.
+
+그렇다면 `exports`는 `module.exports` 개념적 차이는 없지만 용도는 나뉘기 때문에 어떻게 사용할지가 중요한 부분이다.
+
+용도는 크게 2가지로 나뉜다고 볼 수 있따.
+
+> 1. exported value/function를 담는 컨테이너로 쓰기
+
+우선 첫번째로 아주 일반적인 케이스로, exam1.js에서 exam2.js의 함수와 값들을 읽어오고 싶어하는 경우이다.
+
+이는 express-test에서 사용한 바와 같이
+
+```js
+// express-test 개인프로젝트
+// connection.js파일
+module.exports = new DBConnection();
+```
+
+별도로 connection.js라는 문서에서 DBConnection이라는 클래스와 내부 함수를 구성해놓고 module.exports로 다른 파일(index.js)에서 불러와서 사용한다.
+
+```js
+// express-test 개인프로젝트
+// index.js
+const connection = require("./db/connection"); // 모듈로 불러오는 부분
+
+// 불러온 파일의 함수를 현재 파일에서 사용하여 서버에 연걸하는 부분
+connection.connect().then(() => {
+  app.listen(8080, () => {
+    console.log("listenning on http://localhost:" + 8080);
+  });
+});
+```
+
+> 2.  constructor function으로 사용하는 방법
+
+express를 활용한 localDB 프로젝트에서 가장 먼저 사용한 구문을 예로 살펴보자.
+
+```js
+// express-test 개인프로젝트
+// index.js
+const express = require("express");
+const app = express();
+```
+
+단순히 값을 가져오는 것이 아니라, exporess의 객체를 생성하는 식이다.
+
+앞의 목적 1에서는 속성(Property)가 담긴 객체가 require()의 아웃풋이 되도록 exports 한 것이다.
+
+목적 2에서는 객체가 아웃풋으로 나오도록 exports하는 방법이라는 차이가 있다.
