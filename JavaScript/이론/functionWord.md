@@ -565,3 +565,144 @@ var myForm = document.getElementById('myForm');
 formData = new FormData(myForm);
 </script>
 ```
+
+# Require()
+
+Node.js에서 require()는 어떻게 작동하는지 알아보자.
+
+localDB 사용프로젝트에서 굉장히 많이 사용되는 메소드인데 node.js에서는 모듈을 불러오기 위해 require()함수를 사용한다.
+
+간단한 예를 통해 기능을 자세히 알아보자.
+
+exam1.js와 exam2.js 두 파일이 있다고 가정해 보자.
+
+```js
+//exam1.js
+const a = 3333;
+```
+
+그리고
+
+```js
+//exam2.js
+console.log(a);
+```
+
+이 상황에서 exam2.js를 실행시키면 exam2.js의 스코프에 변수 a는 정의되있지 않은 undefined이기 때문에 에러가 발생한다.
+
+```js
+node exam2.js
+ReferenceError: a is not defined
+```
+
+이러한 문제를 해결하기위한 방안이 require함수를 사용하는 것이다. exam1.js
+를 exam2.js로 가지고 오면 된다.
+
+```js
+//exam2.js
+
+const exam = require("./exam1.js"); // exam1과 exam2는 같은디렉토리에 있다고 가정한다.
+console.log(exam.a);
+```
+
+그러나 여기서도 다음과 같은 undefined문제가 발생한다.
+
+```js
+node exam2.js
+ReferenceError: a is not defined
+```
+
+이는 export가 없기 때문에 발생하는 문제이다.
+
+```js
+// exam1.js
+const a = 3333;
+exports.a = a;
+```
+
+이 이후 싱핼해보면 문제없이 원하는 값이 나온다.
+
+```js
+node exam2.js
+3333
+```
+
+> Require()함수는 module.exports를 리턴한다.
+
+Require()함수의 소스코드는 복잡하다.
+
+그러나 공식문서를 요약하면 다음과 같은 모양새로 구성되어있다고 한다.
+
+```js
+var require = function(src){                 //line 1
+    var fileAsStr = readFile(src)            //line 2
+    var module.exports = {}                  //line 3
+    eval(fileAsStr)                          //line 4
+    return module.exports                    //line 5
+}
+```
+
+- line 1에서는 src의 인자를 받아온다.
+
+예를 들어 다음과 같이 사용하면
+
+```js
+const exam1 = require("exam1");
+```
+
+'exam1'을 인자로 받아온다는 것이다.
+
+- line 2에서는 소스 파일을 읽어서 fileAsStr에 저장한다.
+
+- line 3에서는 module.exports라는 빈 해시를 만들어 둔다.
+
+- line 4에서는 fileAsStr을 eval한다. 이 과정은 사실상 src를 복붙한다고 생각하면 좋다.
+
+line4부분이 굉장히 중요하다고 생각하기 때문에 좀 더 자세히 설명해보자.
+
+예시로
+
+```js
+const exam1 = require("/exam1.js");
+```
+
+과 같이 사용하면 이는 곧 require()의 src 인자로 './exam1.js'를 넣는 다는 의미이고 위의 require()의 line 4는
+
+```js
+eval(fileAsStr); //line 4
+```
+
+에서 다음과 같이 강조한 부분처럼 바뀌는 것이다.
+
+```js
+var require = function(src){                 //line 1
+    var fileAsStr = readFile(src)            //line 2
+    var module.exports = {}                  //line 3
+    `const a = 3333
+    exports.a = a;`
+    return module.exports                    //line 5
+}
+```
+
+결국 exports 해시의 a라는 key에 3333이라는 값이 들어가게 되는 셈이다.
+
+마지막으로 line5에서 require는 해당 exports 해시를 아웃풋으로 내보낸다.
+
+따라서 exam2.js는 원래 다음과 같은 모양의 파일이지만
+
+```js
+// eaxm2.js
+const eaxm1 = require("./eaxm1.js"); //eaxm1.js, eaxm2.js는 같은 디렉토리이다
+console.log(eaxm1.a);
+```
+
+런타임에서는 사실 다음과 같은 모습이 되는 것이다.
+
+```js
+// exam2.js
+
+const exam1 = { a: 3333 };
+console.log(exam1.a);
+```
+
+exam1에서 exports에 들어간 (key,value) 값들이 require()함수의 아웃풋으로 나오게 되는 것이다.
