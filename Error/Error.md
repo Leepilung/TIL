@@ -1,4 +1,4 @@
-# Error: listen EADDRINUSE: address already in use :::8080
+# Error: listen EADDRINUSE: address already in use :::8080(포트번호))
 
 포트 사용 문제.
 
@@ -51,3 +51,7 @@ app.use(express.static(__dirname + "/static"));
 > 복기해야할 부분
 
 에러나 오류사항을 해결하고자 구글링할 때에는 하나의 키워드에 매몰되서 시간낭비하지말고 시간을 나눠서 키워드를 검색하는 방향으로 사고하자.
+
+# Node.js Cannot find module 에러
+
+단순히 경로지정이 잘못됐을 경우 나타나는 에러. package.json 파일에서 main 경로가 제대로 기입되있는지, script부분 경로가 제대로 되있는지 확인하면 된다.
