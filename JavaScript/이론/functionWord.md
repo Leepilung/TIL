@@ -830,3 +830,159 @@ javaScript는 html 내의 요소들을 움직일수 있는 dom 객체를 조작�
 express-test에서 사용하는것 처럼 다른 파일을 require로 불러오면 html문서보다 먼저 출력되는 경우가 생기기 때문에
 
 window.onload라는 메서드를 오버라이딩(재정의) 해주면 되는데, 해당 함수 내의 코드 스크립트는 웹브라우저 내의 모든 요소가 준비가 되어야 실행이 되도록 할수 있다.
+
+# JSON.stringfy()
+
+JSON.stringify() 메서드는 JavaScript 값이나 객체를 JSON 문자열로 변환한다.
+
+선택적으로, replacer를 함수로 전달할 경우 변환 전 값을 변형할 수 있고, 배열로 전달할 경우 지정한 속성만 결과에 포함한다.
+
+## 구문
+
+```js
+JSON.stringify(value[, replacer[, space]])
+```
+
+## 매개변수
+
+- value
+  json 문자열로 변환할 값
+
+- replacer -> Optional
+  문자열화 동작 방식을 변경하는 함수, 혹은 json 문자열에 포함될 값 객체의 속성등을 선택하기 위한
+
+- space -> Optional
+
+가독성을 위해 json 문자열 출력에 공백을 삽입하는데 사용되는 string 또는 Number 객체.
+
+만약 이 매개변수가 Number라면, 공백으로 사용되는 스페이스(space)의 수를 나타낸다. 그러나 수가 10보다 크면 10으로 제한된다. 1보다 작은 값일 경우에는 사용되지 않는 것으로 간주한다.
+
+## 반환값
+
+주어진 값과 대응하는 JSON 문자열을 반환한다.
+
+## 설명
+
+위에서도 말했듯 JSON.stringify()는 값을 JSON 표기법으로 변환한다.
+
+- 배열이 아닌 객체의 속성들은 어떤 특정한 순서에 따라 문자열화 될 것이라고 보장되지 않는다. 같은 객체의 문자열화에 있어서 속성의 순서에 의존하지 않는다.
+
+- Boolean, Number, String 객체들은 문자열화 될 때 전통적인 변환 의미에 따라 연관된 기본형(primitive) 값으로 변환된다.
+
+- undefined, 함수, 심볼(symbol)은 변환될 때 생략되거나(객체 안에 있을 경우) null 로 변환된다(배열 안에 있을 경우).
+
+- 심볼을 키로 가지는 속성들은 replacer 함수를 사용하더라도 완전히 무시된다.
+
+- 열거 불가능한 속성들은 무시된다.
+
+### 반환값 예시
+
+```js
+JSON.stringify({}); // '{}'
+JSON.stringify(true); // 'true'
+JSON.stringify("foo"); // '"foo"'
+JSON.stringify([1, "false", false]); // '[1,"false",false]'
+JSON.stringify({ x: 5 }); // '{"x":5}'
+
+JSON.stringify(new Date(2006, 0, 2, 15, 4, 5));
+// '"2006-01-02T15:04:05.000Z"'
+
+JSON.stringify({ x: 5, y: 6 });
+// '{"x":5,"y":6}' or '{"y":6,"x":5}'
+JSON.stringify([new Number(1), new String("false"), new Boolean(false)]);
+// '[1,"false",false]'
+
+// Symbols:
+JSON.stringify({ x: undefined, y: Object, z: Symbol("") });
+// '{}'
+JSON.stringify({ [Symbol("foo")]: "foo" });
+// '{}'
+JSON.stringify({ [Symbol.for("foo")]: "foo" }, [Symbol.for("foo")]);
+// '{}'
+JSON.stringify({ [Symbol.for("foo")]: "foo" }, function (k, v) {
+  if (typeof k === "symbol") {
+    return "a symbol";
+  }
+});
+// '{}'
+
+// Non-enumerable properties:
+JSON.stringify(
+  Object.create(null, {
+    x: { value: "x", enumerable: false },
+    y: { value: "y", enumerable: true },
+  }),
+);
+// '{"y":"y"}'
+```
+
+## 예제
+
+```js
+console.log(JSON.stringify({ x: 5, y: 6 }));
+// expected output: "{"x":5,"y":6}"
+
+console.log(
+  JSON.stringify([new Number(3), new String("false"), new Boolean(false)]),
+);
+// expected output: "[3,"false",false]"
+
+console.log(JSON.stringify({ x: [10, undefined, function () {}, Symbol("")] }));
+// expected output: "{"x":[10,null,null,null]}"
+
+console.log(JSON.stringify(new Date(2006, 0, 2, 15, 4, 5)));
+// expected output: ""2006-01-02T15:04:05.000Z""
+```
+
+> 함수를 사용한 경우의 예제
+
+```js
+function replacer(key, value) {
+  if (typeof value === "string") {
+    return undefined;
+  }
+  return value;
+}
+
+var foo = {
+  foundation: "Mozilla",
+  model: "box",
+  week: 45,
+  transport: "car",
+  month: 7,
+};
+var jsonString = JSON.stringify(foo, replacer);
+```
+
+이 경우 JSON 문자열 결과는 {"week":45,"month":7} 이다.
+
+> 배열을 사용한 경우에 대한 예제
+
+replacer 가 배열인 경우, 그 배열의 값은 JSON 문자열의 결과에 포함되는 속성의 이름을 나타낸다
+
+```js
+JSON.stringify(foo, ["week", "month"]);
+// '{"week":45,"month":7}', 단지 "week" 와 "month" 속성을 포함한다
+```
+
+> space 매개 변수
+
+space 매개변수는 최종 문자열의 간격을 제어한다. 숫자일 경우 최대 10자 만큼의 공백 문자 크기로 들여쓰기되며, 문자열인 경우 해당 문자열 또는 처음 10자 만큼 들여쓰기 된다.
+
+```js
+JSON.stringify({ a: 2 }, null, " ");
+// '{
+//  "a": 2
+// }'
+```
+
+'\t'를 사용하면 일반적으로 들여쓰기 된 코드스타일과 유사하다.
+
+```js
+JSON.stringify({ uno: 1, dos: 2 }, null, "\t");
+// returns the string:
+// '{
+//     "uno": 1,
+//     "dos": 2
+// }'
+```
