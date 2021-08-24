@@ -217,3 +217,43 @@ Node.js와 express를 사용하면 가장 기본적이고 많이 사용되는 �
 - `res.json` : JSON 응답을 전송한다.
 
 - `res.end` : 응답 프로세스를 종료한다.
+
+## res.send / res.json / res.end 비교
+
+### res.send
+
+`res.send([body])`의 body에는 Buffer, String, Object, Array가 올 수 있다.
+
+그리고 response Header에는 Body의 Content-Type이 자동으로 정의된다고 한다.
+
+```js
+res.send({ name: "SSibal" });
+```
+
+key에는 name, value에는 'SSibal'이라는 object를 body에 넣어서 response 응답을 전달하면 response Header 내 Content-Type은 자동으로 json(JavaScript Object Notation)으로 정의된다고 한다.
+
+참고로 이 response Header는 response 객체 내 set메소드로 제어가 가능하다고 한다. 간단한 예로 res.set('Content-Type', 'text/html'); 같은 형태를 들 수 있다.
+
+### res.json
+
+res.json은 JSON을 응답으로 보낸다.
+
+그러나 res.send도 Object를 응답으로 보낼 수 있으니까 res.json이 굳이 필요할까 라는 의문이 들 수 있는데, res.json은 JSON 정보를 전달하는데 더 특화된 기능을 가지고 있다.
+
+더 자세히 이해하기 위해선 Object와 JSON은 비슷하게 생기긴 했지만 확연한 차이점을 가지고 있다는걸 짚고 넘어가야 한다.
+
+JSON은 String, Number, Object, Array, Boolean, Null을 지원하지만, Function, Date, Undefined 등과 같은 타입은 지원하지 않는다.
+
+그렇기 때문에 우리가 { x: [10, undefined, function(){}, Symbol('')] } 같은 파라미터를 입력하면 undefined, function(){}, Symbol(") 는 JSON이 지원하지 않는 타입이기에 JSON이 지원하는 타입으로 바꾸는 작업이 요구된다.
+
+이를 해결하기 위한 방법이 JSON.stringfy() 메소드이다.
+
+res.json을 사용하면 JSON.stringfy() 메소드를 호출하여 파라미터를 JSON string 형태로 먼저 변환 한 뒤, res.send()를 호출하여 응답을 내보낸다.
+
+JSON.stringfy() 메소드는 replacer와 spaces라는 두 가지 파라미터를 가질 수 있는데 이를 Express에서는 아래와 같은 옵션을 통해 제어 가능하다.
+
+### res.end
+
+res.end는 위에서 언급한 것 처럼 응답 프로세스를 종료하는 데 사용된다.
+
+하지만 응답 데이터를 res.json이나 res.send 같은 형태로 전송하는 경우에는 이들이 일부 데이터를 보낸 뒤에 자동으로 응답 종료처리를 하기 때문에 굳이 res.end()를 호출 할 필요가 없다.
