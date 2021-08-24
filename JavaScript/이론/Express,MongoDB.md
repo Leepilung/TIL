@@ -187,3 +187,33 @@ console.log(
 
 // resolve 경로 :  /d
 ```
+
+# Node.js + Express 개념
+
+Node.js와 express를 사용하면 가장 기본적이고 많이 사용되는 객체중 하나이다.
+
+## req 객체
+
+- `req.body` : POST 정보를 가진다. 파싱을 위해서 body-parser와 같은 패키지가 필요하다. 요청 정보가 url에 들어있는 것이 아니라 Request(req)의 본문에 들어있기 때문이다.
+
+- `req.query` : GET 정보를 가집니다. 즉, url로 전송된 쿼리 스트링 파라미터를 담고 있다.
+
+- `req.params` : 내가 이름 붙인 라우트 파라미터 정보를 가진다.
+
+- `req.headers` : HTTP의 Header 정보를 가진다.
+
+이 외에도 req.route, req.cookies, req.acceptedLanguages, req.url, req.protocol, req.host, req.ip 등이 존재한다.
+
+## res 객체
+
+- `res.send` : 다양한 유형의 응답을 전송한다.
+
+- `res.redirect` : 브라우저를 리다이렉트 한다.
+
+  - `리다이렉트` : 한 페이지에 접속시 자동으로 다른 페이지로 넘어가는 것
+
+- `res.render` : 설정된 템플릿 엔진을 사용해서 views 폴더를 렌더링한다.
+
+- `res.json` : JSON 응답을 전송한다.
+
+- `res.end` : 응답 프로세스를 종료한다.
