@@ -799,3 +799,34 @@ const app = express();
 앞의 목적 1에서는 속성(Property)가 담긴 객체가 require()의 아웃풋이 되도록 exports 한 것이다.
 
 목적 2에서는 객체가 아웃풋으로 나오도록 exports하는 방법이라는 차이가 있다.
+
+# windows.onload()
+
+javaScript는 html 내의 요소들을 움직일수 있는 dom 객체를 조작하는 방식으로 주로 사용한다.
+
+위로부터 차례차례 읽어들이는 프로그래밍 본연의 작동 방식과, 실행 이전에 에러 체크를 하지 않고 실행을 하는 인터프리터 언어적 특성으로 인해,
+
+자바스크립트는 작성 위치에 따라 오작동을 일으키기도 한다.
+
+하나의 예로써
+
+```html
+<script>
+  var a = document.getElementById("hel");
+  a.style.color = "blue";
+</script>
+
+<p id="hel">hello</p>
+```
+
+과 같이 사용하면 원칙상으로 자바스크립트의 var a = document.getElementById( 'hel' ); 이 html 내부의 id가 hel이란 태그가 생성되기도 전에 실행되므로 문제가 발생한다.
+
+물론 script 태그 부분을 뒤로 빼서 사용하면 문제가 해결되기는 하지만 html 문서가 길어지면 가독성도 떨어지는 문제아닌 문제점이 생기게 된다.
+
+그렇기에 자바스크립트가 문서가 준비된 상황 이후에 발동하도록만 한다면 문서 앞에 선언해도 상관 없어지게 된다.
+
+바로 이런 것을 해주는 것이 window.onload 메소드이다.
+
+express-test에서 사용하는것 처럼 다른 파일을 require로 불러오면 html문서보다 먼저 출력되는 경우가 생기기 때문에
+
+window.onload라는 메서드를 오버라이딩(재정의) 해주면 되는데, 해당 함수 내의 코드 스크립트는 웹브라우저 내의 모든 요소가 준비가 되어야 실행이 되도록 할수 있다.
