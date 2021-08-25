@@ -986,3 +986,229 @@ JSON.stringify({ uno: 1, dos: 2 }, null, "\t");
 //     "dos": 2
 // }'
 ```
+
+# Promise
+
+프로미스는 자바스크립트 비동기 처리에 사용되는 객체이다.
+
+자바스크립트의 비동기 처리란 '특정 코드의 실행이 완료될 때까지 기다리지 않고 다음 코드를 먼저 수행하는 자바크스립트의 특성'을 의미한다.
+
+Promise는 주로 서버에섣 받아온 데이터를 화면에 표시할 때 사용한다. 웹 애플리케이션을 구현할 때 서버에서 데이터를 요청하고 받아오기 위하여 다음과 같은 API를 사용한다.
+
+```JS
+$.get('url 주소/products/1', function(response) {
+  // ...
+});
+```
+
+위의 API가 실행되면 서버에 '데이터를 하나 보내시오' 라는 요청을 보낸다. 그러나 여기서 데이터를 받아오기도 전에 마치 데이터를 다 받아온 것 마냥 화면에 데이터를 표시하려고 하면 오류가 발생하거나 빈 화면이 뜨게된다.
+
+간단한 예를 통해 알아보자.
+
+다음 예제는 J쿼리를 이용한 ajax 통신코드이다.
+
+```js
+function getData(callbackFunc) {
+  $.get("url 주소/products/1", function (response) {
+    callbackFunc(response); // 서버에서 받은 데이터 response를 callbackFunc() 함수에 넘겨줌
+  });
+}
+
+getData(function (tableData) {
+  console.log(tableData); // $.get()의 response 값이 tableData에 전달됨
+});
+```
+
+위 코드는 J쿼리의 ajax 통신 API를 이용하여 지정 url에서 1번 products 데이터를 받아오는 코드이다. 비동기 처리를 위해 콜백 함수를 사용한 모습이다.
+
+위 코드에 프로미스를 적용하면 다음과 같은 모습이 된다.
+
+```js
+function getData(callback) {
+  // new Promise() 추가
+  return new Promise(function (resolve, reject) {
+    $.get("url 주소/products/1", function (response) {
+      // 데이터를 받으면 resolve() 호출
+      resolve(response);
+    });
+  });
+}
+
+// getData()의 실행이 끝나면 호출되는 then()
+getData().then(function (tableData) {
+  // resolve()의 결과 값이 여기로 전달됨
+  console.log(tableData); // $.get()의 reponse 값이 tableData에 전달됨
+});
+```
+
+콜백 함수로 처리하던 구조에서 new Promise(), resolve(), then()등의 프로미스 API를 사용한 구조로 바뀌었다.
+
+new Promise()야 Promise라는 함수의 생성자이므로 그러려니 하고 넘어갈 수 있지만 resolve와 then은 맹 생소한 개념이므로 둘의 역할에 대해 알아보자.
+
+## 프로미스의 3가지 상태(state)
+
+프로미스를 사용할 때 알아야 하는 가장 기본적인 개념이 바로 프로미스의 상태(state)이다. 여기서 말하는 상태란 프로미스의 처리과정을 의미한다.
+
+프로미스는 new Promise()로 프로미스를 생성하고 종료될 때 까지 총 3가지의 상태를 갖는다.
+
+- Pending(대기) : 비동기 처리 로직이 아직 완료되지 않은 상태
+
+- Fulfilled(이행) : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
+
+- Rejected(실패) : 비동기 처리가 실패하거나 오류가 발생한 상태
+
+### Pending(대기)
+
+먼저 다음과 같이 new Promise() 메소드를 호출하면 대기(Pending)상태가 된다.
+
+```js
+new Promise();
+```
+
+new Promise() 메소드를 호출할 때 콜백함수를 선언할 수 있고, 콜백 함수의 인자는 resolve와 reject 2개이다.
+
+```js
+new Promise(function (resolve, reject) {
+  // 콜백함수 사용한 기본 포맷
+});
+```
+
+### Fulfilled(이행)
+
+여기서 콜백 함수의 인자 resolve를 다음과 같이 실행하면 이행(Fulfilled) 상태가 된다.
+
+```js
+new Promise(function (resolve, reject) {
+  resolve();
+});
+```
+
+그리고 이행 상태가 되면 then()을 이용하여 처리 결과 값을 받을 수 있다.
+
+```js
+function getData() {
+  return new Promise(function (resolve, reject) {
+    var data = 100;
+    resolve(data);
+  });
+}
+
+// resolve()의 결과 값 data를 then의 콜백함수 매개변수가 받음.
+// 이 예제에선 resolveData가 그 값을 받음.
+getData().then(function (resolvedData) {
+  console.log(resolvedData); // 100
+});
+```
+
+### Rejected(실패)
+
+new Promise()로 프로미스 객체를 생성하면 콜백 함수 인자로 resolve와 reject를 사용할 수 있다고 위에서 말했었다. 여기서 reject를 아래와 같이 호출하면 실패(Rejected) 상태가 된다.
+
+```js
+new Promise(function (resolve, reject) {
+  reject();
+});
+```
+
+그리고 실패 상태가 되면 실패한 이유(실패 처리의 결과 값)을 catch()로 받을 수 있다.
+
+```js
+function getData() {
+  return new Promise(function (resolve, reject) {
+    reject(new Error("Request is failed"));
+  });
+}
+
+// reject()의 결과 값 Error를 err에 받음
+getData()
+  .then()
+  .catch(function (err) {
+    console.log(err); // Error: Request is failed
+  });
+```
+
+<img src=https://mdn.mozillademos.org/files/8633/promises.png>
+프로미스의 처리 흐름 - 출저 : MDN
+
+## 프로미스 간단 예제
+
+```js
+function getData() {
+  return new Promise(function (resolve, reject) {
+    $.get("url 주소/products/1", function (response) {
+      if (response) {
+        resolve(response);
+      }
+      reject(new Error("Request is failed"));
+    });
+  });
+}
+
+// 위 $.get() 호출 결과에 따라 'response' 또는 'Error' 출력
+getData()
+  .then(function (data) {
+    console.log(data); // response 값 출력
+  })
+  .catch(function (err) {
+    console.error(err); // Error 출력
+  });
+```
+
+위 코드는 서버에서 제대로 응답을 받아오면 resolve() 메소드를 호출하고, 응답이 없으면 reject() 메소드를 호출하는 예제이다. 호출된 메소드에 따라 then()이나 catch()로 분기하여 응답 결과 또는 오류를 출력한다.
+
+## 여러 개의 프로미스 연결하기 (Promise Chaining)
+
+프로미스의 또 다른 특징은 여러 개의 프로미스를 연결하여 사용할 수 있다는 점이다.
+
+앞 예제에서 then() 메서드를 호출하고 나면 새로운 프로미스 객체가 반환된다. 따라서, 아래와 같이 코딩이 가능하다.
+
+```js
+function getData() {
+  return new Promise({
+    // ...
+  });
+}
+
+// then() 으로 여러 개의 프로미스를 연결한 형식
+getData()
+  .then(function (data) {
+    // ...
+  })
+  .then(function () {
+    // ...
+  })
+  .then(function () {
+    // ...
+  });
+```
+
+그러면 이제 위의 형식을 참고하여 실제로 위의 형식을 사용하는 예제를 통해 살펴보자. 비동기 처리에서 가장흔하게 사용되는 setTimeout() API를 사용해보자.
+
+```js
+new Promise(function (resolve, reject) {
+  setTimeout(function () {
+    resolve(1);
+  }, 2000);
+})
+  .then(function (result) {
+    console.log(result); // 1
+    return result + 10;
+  })
+  .then(function (result) {
+    console.log(result); // 11
+    return result + 20;
+  })
+  .then(function (result) {
+    console.log(result); // 31
+  });
+```
+
+위 예제 코드는 프로미스 객체를 하나 생성하고 setTimeout() 메소드를 활용해 2초 후에 resolve()를 호출하는 예제이다.
+
+resolve()가 호출되면 프로미스가 대기 상태에서 이행 상태로 넘어가기 때문에 첫 번째 .then() 로직으로 넘어간다.
+
+첫 번째 .then()에서는 이행된 결과 값 1을 받아서 10을 더한 후 그 다음 .then()으로 넘긴다.
+
+두 번째 .then()에서도 마찬가지로 바로 이전 프로미스의 결과 값 11을 받아서 20을 더하고 다음 .then으로 넘겨준다.
+
+그러면 마지막 .then()에서 최종 결과값 31을 출력한다.
