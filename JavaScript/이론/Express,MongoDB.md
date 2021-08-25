@@ -257,3 +257,13 @@ JSON.stringfy() 메소드는 replacer와 spaces라는 두 가지 파라미터를
 res.end는 위에서 언급한 것 처럼 응답 프로세스를 종료하는 데 사용된다.
 
 하지만 응답 데이터를 res.json이나 res.send 같은 형태로 전송하는 경우에는 이들이 일부 데이터를 보낸 뒤에 자동으로 응답 종료처리를 하기 때문에 굳이 res.end()를 호출 할 필요가 없다.
+
+# Express () 함수
+
+- express.json() : 들어오는 request를 JSON 데이터로 파싱하며, body-parser를 기반으로 한다.
+
+- express.static() : 정적 파일을 제공하며, serve-static를 기반으로 한다.
+
+- express.Router() : 새 router 객체를 생성한ㄷ다.
+
+- express.urlencoded() : 들어오는 request를 urlencoded 데이터로 파싱하며, body-parser를 기반으로 한다.
