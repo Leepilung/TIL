@@ -109,6 +109,10 @@ app.use("/static", express.static(__dirname + "/public"));
 
 ## MongoDB Create 파트
 
+## MongoDB Read 파트
+
+MongoDB에서 Read부분에 해당하는 파트이다. 대표적인 조회 메소드로 find가 있다.
+
 ## MongoDB Update 파트
 
 ## MongoDB Delete Method
@@ -257,6 +261,31 @@ JSON.stringfy() 메소드는 replacer와 spaces라는 두 가지 파라미터를
 res.end는 위에서 언급한 것 처럼 응답 프로세스를 종료하는 데 사용된다.
 
 하지만 응답 데이터를 res.json이나 res.send 같은 형태로 전송하는 경우에는 이들이 일부 데이터를 보낸 뒤에 자동으로 응답 종료처리를 하기 때문에 굳이 res.end()를 호출 할 필요가 없다.
+
+## Request Properties
+
+### req.params
+
+예로 /user/:name등의 경로가 있으면 "name"속성을 req.params.name으로 사용할 수 있다.
+
+https://params/user/12341234 일 경우 12341234를 받는다.
+
+### req.body
+
+JSON 등의 데이터를 담을때 사용한다. (주로 POST로 유저의 정보 또는 파일 업로드를 보냈을 때가 해당됨 )
+
+요청 본문에 제출 된 키-값 데이터 쌍을 포함한다. 기본적으로 이는 정의되어 있지 않으며 express.json(), express.urlencoded()와 같은 미들웨어를 사용해야한다.
+
+쉽게 말하자면 req.body는 body-parser를 사용하기 전에는 default 값으로 Undefined 설정되기 때문에 body-parser를 사용하여 해결해야 오류를 뿜지 않는다.
+
+Express 4.16.0버전 부터 body-parser의 일부 기능이 익스프레스에 내장되어 있어서
+
+```js
+app.use(express.json());
+app.use(express.urlencoded({ extends: true }));
+```
+
+다음과 같은 구문을 사용하면 된다.
 
 # Express () 함수
 
