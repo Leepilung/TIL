@@ -115,6 +115,29 @@ MongoDB에서 Read부분에 해당하는 파트이다. 대표적인 조회 메�
 
 ## MongoDB Update 파트
 
+CURD에서 U를 담당하는 Update 메소드들 중에서 가장 유명한 메소드는 Update가 있다.
+
+### Update
+단적인 예로 monster라는 db에 Slime이라는 자료형의 hp 값을 바꿔보려고 한다.
+
+```js
+db.monsters.update({ name: 'Slime' }, { $set: { hp: 30 } });
+```
+그럼 다음과 같이 $set을 써줘야만 원하는 필드값만을 변경한다. 만약 $set을 넣지 않고 그냥 { hp : 30 } 이라는 값만 넣으면 'Slime'이라는 name의 다큐먼트가 다 지워지고 { hp : 30 } 이라는 객체만 남게 된다.
+
+그 다음엔 hp라는 필드 값을 내려보고자 한다. 그럴땐 다음과 같은 구문을 사용하면 된다.
+
+```js
+db.monsters.update({ name: 'Slime' }, { $inc: { hp: -5 } });
+```
+
+$inc를 사용하면 그 필드값의 숫자를 올리거나 내릴 수 있다. 음수를 넣으면 내리고 양수를 넣으면 올린다. 
+
+### UpdateOne
+
+몽고DB의 일정 버전부터 update를 대체하는 메소드이다. 위에 서술한 양식과 기능은 전부 동일하나 차이점이라면 updateOne은 매칭되는 다큐먼트 중 첫 번째 다큐먼트만을 수정하고, UpdateMany는 매칭되는 모든 다큐먼트를 수정한다.
+
+
 ## MongoDB Delete Method
 
 ---
