@@ -1221,9 +1221,21 @@ resolve()가 호출되면 프로미스가 대기 상태에서 이행 상태로 �
 
 DOM요소에 값을 저장, JS 코드로 값을 읽어들일 수 있다.
 
+dataset 자체는 읽기 전용 속성이라 dataset 자체로는 별도로 재설정 불가.
+
+해당 내용을 변경하려면, dataset 소속의 keyname에 접근해 변경해야 함.
+
 ## html 사용법
 
-data-를 시작으로 data-이름을-지정하면-된다와 같이 tag element에 속성으로 사용하면 된다.
+data 속성 이름 짓는 법은 data-를 시작으로 `data-이름을-지정하면-된다`의 형태로 이름을 지으면 된다.
+
+크게 두가지 유형이 있다.
+
+- dash-style 형태 : HTML 요소의 속성으로 사용 시 형태.
+  ex) data-abc-def
+- camelCase 형태 : JS dataset 속성의 key로 사용 시 형태.
+  ex) abcDef
+
 ex1)
 
 ```html
@@ -1234,10 +1246,18 @@ ex1)
 ex2)
 
 ```js
-// 예시 2
+// 실제소 사용한 예시 2
 <button data-role="edit" data-id="${_id}">수정</button>
 <button data-role="delete" data-id="${_id}">삭제</button>
 ```
+
+## dash-style → camelCase 변환 규칙
+
+1. data- 접두어 제거.
+
+2. ASCII 소문자 (a ~ z)앞 모든 대시(U+002D)는 삭제되고, 해당 소문자는 대문자로 변환되어 camelCase 형태로 바뀜.
+
+- 다른 대시들 포함해 다른 기호는 안 바뀜.
 
 ## js 사용법
 
@@ -1248,3 +1268,21 @@ data- 뒤에 가능 : 소문자 영문, 점(.), 하이픈(-), 로우데시(_), �
 data- 뒤에 사용 불가능 : 대문자 영문
 html에서 data-abc-def 라는 이름의 속성은 JS에서 `abcDef` key에 응답
 ```
+
+## dataset 실사용 구문
+
+```js
+var_name = element.dataset.keyname;
+element.dataset.keyname = string;
+
+var_name = element.dataset["keyname"];
+element.dataset["keyname"] = string;
+```
+
+> 구문 설명
+
+- element : HTML 태그 요소
+
+- dataset : 해당 THML 태그의 data-\* 속성의 키/값 모음
+
+- keyname : 특정 data 키. ※ camelCasedName (낙타 대문자) 형태여야 함.
