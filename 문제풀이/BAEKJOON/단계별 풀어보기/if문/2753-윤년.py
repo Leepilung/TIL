@@ -22,3 +22,27 @@ if oddYear % 4 == 0:
         print(0)
 else:
     print(0)
+# --------------------------------------------------------
+# 다른 풀이
+## 복기 사항
+## 기존에 풀었던 풀이가 훨씬 깔끔함.. 조건문의 or문 사용 기억하기.
+## 구문 단축 가능함 + 변수명 통일화 같은 단순한 실수 줄이기.
+import sys
+while True:
+    oddYear = int(sys.stdin.readline())
+    
+    if 0 < oddYear < 4001:
+        break
+    else:
+        continue
+
+if oddYear % 4 == 0:
+    if oddYear % 100 != 0:
+        print(1)
+    else:
+        if oddYear % 400 == 0:
+            print(1)
+        else:
+            print(0)
+else:
+    print(0)

@@ -16,3 +16,21 @@ print(A*int(B1[2]))
 print(A*int(B1[1]))
 print(A*int(B1[0]))
 print(A*B)
+
+# ---------------------------------------
+# 다른 풀이
+
+# 복기해야할 부분
+## 문자형 전환(str)만 사용하면 되는 간단한 문제.
+## 기존보다 나은 풀이라고 생각됨(list로 만들필요가 없음) 그러나 한번에 풀지 못했음.
+
+import sys
+num1 = int(sys.stdin.readline())
+num2 = int(sys.stdin.readline())
+
+num2 = str(num2)
+
+print(num1*int(num2[2]))
+print(num1*int(num2[1]))
+print(num1*int(num2[0]))
+print(num1*int(num2))
