@@ -506,6 +506,8 @@ referenceStr이 compareString보다 앞에 있으면 -1, 뒤에 있으면 1, 같
 
 FormData 인터페이스는 form 필드와 그 값을 나타내는 일련의 key/value 쌍을 쉽게 생성할 수 있는 방법을 제공한다.
 
+또한 FromData란 ajax로 폼 전송을 가능하게 해주는 FormData 객체라고도 할 수 있다.
+
 ## 생성자
 
 ```js
@@ -1286,3 +1288,74 @@ element.dataset["keyname"] = string;
 - dataset : 해당 THML 태그의 data-\* 속성의 키/값 모음
 
 - keyname : 특정 data 키. ※ camelCasedName (낙타 대문자) 형태여야 함.
+
+# Fetch
+
+자바스크립트를 사용하면 필요할 때 서버에 네트워크 요청을 보내고 새로운 정보를 받아오는 일을 할 수 있다.
+
+네트워크 요청은 다음과 같은 경우에 이뤄진다.
+
+- 주문 전송
+- 사용자 정보 읽기
+- 서버에서 최신 변경분 가져오기
+- 등등
+
+이 모든 것들은 페이지 새로 고침 없이 가능하다.
+
+AJAX(Asynchronous JavaScript And XML, 비동기적 JavaScript와 XML)는 서버에서 추가 정보를 비동기적으로 가져올 수 있게 해주는 포괄적인 기술을 나타내는 용어인데 이 AJAX를 통해서도 해결이 가능하지만
+
+지금 정리하는 fetch() 메소드를 활용해서도 가능하다.
+
+> 기본 문법
+
+fetch()의 기본 문법은 다음과 같은 형태를 가진다.
+
+```js
+let promise = fetch(url, [options]
+```
+
+여기서
+
+- url - 접근하고자 하는 URL 주소
+- options - 선택 매개변수, method나 header 등을 지정할 수 있다.
+
+options에 아무것도 넘기지 않으면 요청은 GET 메서드로 진행되어 url로부터 콘텐츠가 다운로드 된다.
+
+fetch()를 호출하면 브라우저는 네트워크 요청을 보내고 프라미스가 반환된다. 반환되는 프라미스는 fetch()를 호출하는 코드에서 사용된다.
+
+응답은 대개 두 단계를 거쳐 진행된다.
+
+우선 서버에서 응답 헤더를 받자마자 fetch 호출 시 반환받은 promise가 내장 클래스 Resoponse의 인스턴스와 함께 이행 상태가 된다.
+
+이 단계는 아직 본문(body)이 도착하기 전이지만, 개발자는 응답 헤더를 보고 요청이 성공적으로 처리되었는지 아닌지를 확인할 수 있다.
+
+네트워크 문제나 존재하지 않는 사이트에 접속하려는 경우같이 HTTP 요청을 보낼 수 없는 상태에선 프라미스는 거부상태가 된다.
+
+HTTP 상태는 응답 Property를 사용해 확인할 수 있다.
+
+- status - HTTP 상태 코드( ex : 200 )
+- ok - 부울린 값. HTTP 상태 코드가 200~299 사이일 경우 true
+
+> 예시
+
+```js
+let response = await fetch(url);
+
+if (response.ok) {
+  // HTTP 상태 코드가 200~299일 경우
+  // 응답 몬문을 받습니다(관련 메서드는 아래에서 설명).
+  let json = await response.json();
+} else {
+  alert("HTTP-Error: " + response.status);
+}
+```
+
+두 번째 단계에선 추가 메소드를 호출해 응답 본문을 받는다.
+
+response 에는 프로미스를 기반으로 하는 다양한 메소드가 있다. 이 메서드들을 사용하면 다양한 형태의 응답 본문을 처리할 수 있다.
+
+- response.text() – 응답을 읽고 텍스트를 반환한다.
+- response.json() – 응답을 JSON 형태로 파싱한다.
+- response.formData() – 응답을 FormData 객체 형태로 반환한다.
+- response.blob() – 응답을 Blob(타입이 있는 바이너리 데이터) 형태로 반환합니다.
+- response.arrayBuffer() – 응답을 ArrayBuffer(바이너리 데이터를 로우 레벨 형식으로 표현한 것) 형태로 반환합니다.
