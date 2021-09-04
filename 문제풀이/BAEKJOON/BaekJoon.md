@@ -12,9 +12,9 @@
 
 입출력과 사칙연산 // 2557(2) 10718(2) 10171(2) 10172(2) 1000(2) 1001(2) 10998(2) 1008(2) 10869(2) 10430(2) 2588(2)
 
-if문 // 1330(2) 9498(2) 2753(2) 14681(2) 2884
+if문 // 1330(2) 9498(2) 2753(2) 14681(2) 2884(2)
 
-for문 // 2739 10950 8393 15552 2741 2742 11021 11022 2438 2439 10871
+for문 // 2739(2) 10950(2) 8393(2) 15552(2) 2741(2) 2742(2) 11021(2) 11022(2) 2438 2439 10871
 
 while문 // 10952 10951 1110
 
@@ -28,26 +28,42 @@ while문 // 10952 10951 1110
 
 ## 복습해야할 문제
 
-입출력과 사칙연산 // [1000](https://www.acmicpc.net/problem/1330 "A+B알고리즘")
+> 입출력과 사칙연산
+
+[1000](https://www.acmicpc.net/problem/1330 "A+B알고리즘")
 [10171](https://www.acmicpc.net/problem/10171 "고양이 알고리즘")
 [2588](https://www.acmicpc.net/problem/1330 "곱셈 알고리즘")(2)
 
-if문 // [2753](https://www.acmicpc.net/problem/2753 "윤년 알고리즘")(2)
-[2884](https://www.acmicpc.net/problem/2884 "알람 시계 알고리즘")
+> if문
 
-for문 // [8393](https://www.acmicpc.net/problem/8393 "합 알고리즘")
-[15552](https://www.acmicpc.net/problem/15552 "빠른 A+B 알고리즘")
+[2753](https://www.acmicpc.net/problem/2753 "윤년 알고리즘")(2)
+[2884](https://www.acmicpc.net/problem/2884 "알람 시계 알고리즘")(2)
 
-while문 // [10952](https://www.acmicpc.net/problem/10952 "A+B -5 알고리즘")
-[10951](https://www.acmicpc.net/problem/10951 "A+B -4 알고리즘(EOFError)")
+> for문
+
+[2739](https://www.acmicpc.net/problem/2739 "구구단")
+[8393](https://www.acmicpc.net/problem/8393 "합 알고리즘")
+[15552](https://www.acmicpc.net/problem/15552 "빠른 A+B 알고리즘")(2)
+
+> while문
+
+[10952](https://www.acmicpc.net/problem/10952 "A+B -5 알고리즘")[10951](https://www.acmicpc.net/problem/10951 "A+B -4 알고리즘(EOFError)")
 [1110](https://www.acmicpc.net/problem/1110 "더하기 사이클 알고리즘")
 
-1차원 배열 // [4344](https://www.acmicpc.net/problem/4344 "평균은 넘겠지")
+> 1차원 배열
 
-함수 // [4673](https://www.acmicpc.net/problem/4673 "셀프 넘버")
+[4344](https://www.acmicpc.net/problem/4344 "평균은 넘겠지")
+
+> 함수
+
+[4673](https://www.acmicpc.net/problem/4673 "셀프 넘버")
 [1065](https://www.acmicpc.net/problem/1065 "한수")
 
-문자열 // [2675](https://www.acmicpc.net/problem/2675 "문자열 반복")
+> 문자열
+
+[2675](https://www.acmicpc.net/problem/2675 "문자열 반복")
 [2941](https://www.acmicpc.net/problem/2941 "크로아티아 알파벳")
 
-기초수학 // [1193](https://ooyoung.tistory.com/84 "분수찾기")
+> 기초수학
+
+[1193](https://ooyoung.tistory.com/84 "분수찾기")

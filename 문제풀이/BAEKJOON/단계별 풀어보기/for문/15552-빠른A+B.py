@@ -14,3 +14,22 @@ T = int(sys.stdin.readline())
 for i in range(T):
     A, B = map(int, sys.stdin.readline().split(" "))
     print(A+B)
+
+
+# 새로운 풀이
+# 복기사항 -------------------------------------
+# 좀 더 문제의 요구사항을 최대한 수용하여서 풀었음.
+# 변수 T의 범위를 잘못설정했을떄 ValueError발생했음.
+
+import sys
+while True:
+    T = int(sys.stdin.readline())
+    if 0 < T < 1000001:
+        break
+    else: continue
+
+for i in range(T):
+    A, B = map(int, sys.stdin.readline().split(" "))
+    if 1 <= A <= 1000 and 1 <= B <= 1000:
+        print(A+B)
+

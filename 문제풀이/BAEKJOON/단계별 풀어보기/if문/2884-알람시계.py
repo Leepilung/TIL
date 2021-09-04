@@ -30,3 +30,28 @@ if M - 45 < 0:
 elif M - 45 >= 0:
     M = M - 45
     print(str(H)+' '+str(M))
+
+# ---------------------------------
+# 또 다른 풀이
+## 복기할 점
+## 멍청하고 단순한 실수 금지. 조건문 잘살펴보기.
+import sys
+H, M = map(int, sys.stdin.readline().split(" "))
+while True:
+    if 0 <= H <= 23:
+        if 0<= M <= 59:
+            break
+        else: continue
+    else: continue
+
+if M - 45 < 0:
+    if H == 0:
+        H = 23
+        M = 15 + M
+    else:
+        H = H - 1
+        M = 15 + M
+else:
+    M = M - 45
+
+print(str(H)+" "+str(M))
