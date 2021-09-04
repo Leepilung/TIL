@@ -1291,7 +1291,9 @@ element.dataset["keyname"] = string;
 
 # Fetch
 
-자바스크립트를 사용하면 필요할 때 서버에 네트워크 요청을 보내고 새로운 정보를 받아오는 일을 할 수 있다.
+자바스크립트를 사용하면 필요할 때 서버에 네트워크 요청을 보내고 새로운 정보를 받아오는 일을 할 수 있는 메소드이다.
+
+XMLHttpRequest와 비슷하지만 fetch는 Promise를 기반으로 구성되어 있어서 더 간편하게 사용할 수 있다는 차이점이 있다.
 
 네트워크 요청은 다음과 같은 경우에 이뤄진다.
 
@@ -1311,46 +1313,92 @@ AJAX(Asynchronous JavaScript And XML, 비동기적 JavaScript와 XML)는 서버�
 fetch()의 기본 문법은 다음과 같은 형태를 가진다.
 
 ```js
-let promise = fetch(url, [options]
+fetch(url)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 ```
 
-여기서
+기본적인 구조와 동작은 Promise 객체와 동일하다.
 
-- url - 접근하고자 하는 URL 주소
-- options - 선택 매개변수, method나 header 등을 지정할 수 있다.
+첫번째 파라미터로 요청을 보낼 url을 입력해 주고 응답을 받아서 추가적인 작업 또한 해줄 수 있다.
 
-options에 아무것도 넘기지 않으면 요청은 GET 메서드로 진행되어 url로부터 콘텐츠가 다운로드 된다.
+then에서 응답 객체 res를 받고, catch에서 에러 요청이 발생했을 때, 에러를 받는다.
 
-fetch()를 호출하면 브라우저는 네트워크 요청을 보내고 프라미스가 반환된다. 반환되는 프라미스는 fetch()를 호출하는 코드에서 사용된다.
+> 매개변수
 
-응답은 대개 두 단계를 거쳐 진행된다.
-
-우선 서버에서 응답 헤더를 받자마자 fetch 호출 시 반환받은 promise가 내장 클래스 Resoponse의 인스턴스와 함께 이행 상태가 된다.
-
-이 단계는 아직 본문(body)이 도착하기 전이지만, 개발자는 응답 헤더를 보고 요청이 성공적으로 처리되었는지 아닌지를 확인할 수 있다.
-
-네트워크 문제나 존재하지 않는 사이트에 접속하려는 경우같이 HTTP 요청을 보낼 수 없는 상태에선 프라미스는 거부상태가 된다.
-
-HTTP 상태는 응답 Property를 사용해 확인할 수 있다.
-
-- status - HTTP 상태 코드( ex : 200 )
-- ok - 부울린 값. HTTP 상태 코드가 200~299 사이일 경우 true
-
-> 예시
+Fetch의 두 번째 파라미터로 요청에 대한 추가적인 데이터를 입력할 수 있다.
 
 ```js
-let response = await fetch(url);
-
-if (response.ok) {
-  // HTTP 상태 코드가 200~299일 경우
-  // 응답 몬문을 받습니다(관련 메서드는 아래에서 설명).
-  let json = await response.json();
-} else {
-  alert("HTTP-Error: " + response.status);
-}
+fetch(url, {
+  method: "post",
+  headers: {
+    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+  },
+  body: "foo=bar&lorem=ipsum",
+}) // url 다음에 오는 파라미터가 option 부분에 해당함.
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((error) => console.log(error));
 ```
 
-두 번째 단계에선 추가 메소드를 호출해 응답 본문을 받는다.
+- method : HTTP method와 동일하며 요청 방식을 나타낸다. (GET, POST, PUT, DELETE 등)
+
+- headers : 요청 헤더에 대한 정보를 나타낸다.
+
+- body : 요청을 보내는 데이터를 나타낸다. 여러 가지 자료형을 대입할 수 있다.
+
+fetch 파라미터로 직접 입력하기도 하지만 주로 객체 변수에 저장해서 대입하는 방식으로도 사용한다.
+
+```js
+let obj = {
+    method: 'post',
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+    },
+    body: 'foo=bar&lorem=ipsum'
+}
+fetch(url, obj) // 객체 변수 obj를 옵션부분에 넣은 형태.
+.then(...)
+```
+
+## 응용 예제
+
+> POST 요청 보내고 응답받기
+
+```js
+fetch(url, {
+  method: 'POST',
+  body: JSON.stringify({ name: "hello!" })
+})
+.then(res => {
+  if (res.status === 200) {
+    res.text().then(text => console.log(text)
+  }
+  else {
+    console.log(res.statusText)
+  }
+})
+.catch(err => console.log(err))
+```
+
+POST로 body안에 데이터를 넣고, 요청을 보내주면 응답 객체 res를 받게 되는데 res 안에는 응답에 관한 정보가 존재한다.
+
+`status`는 요청이 성공인지 실패인지를 판별할 수 있게 해주는 요소이다.
+
+또 응답에 대한 내용은 `res.text()`를 통해 확인할 수 있다.
+
+text() 외에도 arrayBuffer, blob, json, formData 등의 메서드를 사용하여 값을 볼 수도 있다.
+
+GET, PUT, DELETE 요청도 같은 방식으로 보낼 수 있다.
+
+단, GET, DELETE 요청은 url 파라미터 하나만 입력하여 사용한다.
+
+---
 
 response 에는 프로미스를 기반으로 하는 다양한 메소드가 있다. 이 메서드들을 사용하면 다양한 형태의 응답 본문을 처리할 수 있다.
 
