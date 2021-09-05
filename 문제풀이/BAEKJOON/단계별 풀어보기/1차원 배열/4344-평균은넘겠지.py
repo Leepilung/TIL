@@ -22,3 +22,26 @@ while n < C+1:
     highscore = highscore / nums[0] * 100 
     n += 1
     print("{:.3F}%".format(highscore))
+
+
+# 다른 풀이 ---------------
+# 자잘구레한 컴파일 에러만 아녔으면 바로통과했을 문제.
+# 천천히 봐야하지만 풀어야할 양이 많다보니 그렇게 안되는것같음. 최대한 신중히 풀면 한방에 패스될듯.
+
+import sys
+
+C = int(sys.stdin.readline())
+n = 1
+while n <= C: 
+    N = list(map(int, sys.stdin.readline().split()))
+    number = N.pop(0)
+    equal = sum(N) / number
+    topTier = 0
+
+    for i in N:
+        if i > equal:
+            topTier += 1
+            
+    ratio = topTier/number*100
+    print('%.3f'%ratio+'%')
+    n +=1

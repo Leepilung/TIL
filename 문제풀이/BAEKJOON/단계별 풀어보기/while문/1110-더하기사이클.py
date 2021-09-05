@@ -21,3 +21,31 @@ while True:
     if new_N == check:
         break
 print(cycle)
+
+#-----
+# 새로 푼 풀이
+# 기존풀이를 보니 새로운 풀이가 굉장히 더럽다. 굳이 str-> int형 형변환 메소드를 안써도 될듯.
+# 단순히 10자리와 1의자리를 몫과 나머지를 구하는기호로 간략화 가능함 
+# 시도 횟수 자체는 줄었으나 코드 간략화가 가능하다는 점에서 반성할 필요가 많은듯.
+
+import sys
+N = int(sys.stdin.readline())
+cycle = 0
+Ori_N = N
+while True:
+    if 0 <= N <= 99:
+        if N < 10:      # N = 5 
+            N = '0' + str(N)     # 05
+            A = int(N[-2])+int(N[-1]) # A = 5
+            N = int(N[-1] + str(A)[-1])  # N = 55
+            cycle += 1
+        else:
+            N = str(N) # 50
+            A = int(N[-2])+int(N[-1]) #  5+0 = 5
+            N = int(N[-1] + str(A)[-1])  # 5
+            cycle += 1
+
+    if N == Ori_N:
+        print(cycle)
+        break
+

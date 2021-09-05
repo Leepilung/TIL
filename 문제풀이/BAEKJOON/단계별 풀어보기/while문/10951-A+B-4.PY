@@ -7,10 +7,25 @@
 # 이를 처리하기 위해선 try ~ except문을 사용해줘야 한다.
 # try문은 뭐가됐던 실행되는 구문이고 try실행중에 오류가 발생시 except 구문이 실행되는 구조이다.
 
+# 복습했을 떄 똑같이 실수했던 문제.
+# try ~ except 구문 복습필요.
 
 while True:
     try:
         A,B = map(int,input().split())
+    except:
+        break
+    if 0 < A and B < 10:
+        print(A+B)
+
+
+## ---------------------
+# 별 다를거 없이 input 만 개선한 문제
+
+import sys
+while True:
+    try:
+        A, B = map(int,sys.stdin.readline().split(" "))
     except:
         break
     if 0 < A and B < 10:
