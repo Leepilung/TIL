@@ -24,3 +24,22 @@ for i in range(1, 10001):
 selfNumber = sorted(Nums - newNums) # selfnumber는 기존 숫자배열 - 생성자로 생성된 숫자로 구한다.
 for i in selfNumber:
     print(i)
+
+
+# 다른 풀이
+# 풀이에 걸리는 시간이 압도적으로 길다.(in, not in 사용해서 배열 순회하면서 검색해서 그런듯)
+# 풀이 시간만 따져도 압도적으로 위의 풀이가 낫다.ㅠㅠ 그래도 직접푸는데 성공.
+
+
+def selfNumber ():
+    e = []
+    for i in range(1,10001):
+        N = i
+        for j in str(i):
+            N += int(j)
+        if N not in e:
+            e.append(N)
+        if i not in e:
+            print(i)
+
+selfNumber()

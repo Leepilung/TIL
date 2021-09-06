@@ -22,3 +22,28 @@ else:
             hansoo +=1
         else: continue
 print(hansoo)
+
+
+# 다른 풀이
+# 위의 풀이는 함수문제인데 함수형태를 아예안사용하고 푼걸보니 어떻게 풀었는지 끔찍하다.
+# 문제에서 주어진 한수의 정의가 해깔려서 별도로 검색하고 풀었음..
+# 한방에 패스하긴 했으나 기존 풀이가 너무 맘에안들어서 별도로 풀이 기입.
+
+import sys
+N = int(sys.stdin.readline())
+
+def Hansoo (N):
+    num = 0
+    if N >= 100:
+        num += 99
+        for i in range(100,N+1):
+            N = list(str(i))
+            a = int(N[0])-int(N[1])
+            b = int(N[1])-int(N[2])
+            if a == b:
+                num +=1
+    else: # N < 100
+        num = N
+    print(num)
+
+Hansoo(N)
