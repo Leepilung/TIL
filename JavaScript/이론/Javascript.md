@@ -219,3 +219,189 @@ ex)
 따라서 위의 예제에서 세 번째 라인은 주석으로 정상 인식되지 않으며, Uncaught SyntaxError가 발생하여 실행중이던 스크립트는 중지될 것이다.
 
 그러므로 자바스크립트에서 여러 줄 주석은 절대로 중첩해서 사용해서는 안 된다.
+
+# 자바스크립트 출력
+
+자바스크립트는 여러 방법을 통해 결과물을 HTML 페이지에 출력할 수 있다. 그 방법에는 여러가지가 있는데 다음과 같다.
+
+1. window.alert() 메소드
+
+2. HTML DOM 요소를 이용한 innerHTML 프로퍼티
+
+3. document.write() 메소드
+
+4. console.log() 메소드
+
+---
+
+## windows.alert() 메소드
+
+자바스크립트에서 가장 간단하게 데이터를 출력할 수 있는 방법은 window.alert() 메소드를 이용하는 것이다.
+
+window.alert() 메소드는 브라우저와는 별도의 대화 상자를 띄워 사용자에게 데이터를 전달해준다.
+
+ex)
+
+```js
+<script>
+  function alertDialogBox(){" "}
+  {alert("확인을 누를 때까지 다른 작업을 할 수 없다.")}
+</script>
+```
+
+실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_01
+
+- window 객체의 모든 메소드나 프로퍼티를 사용할 때는 window라는 접두사를 생략할 수 있다.
+
+## HTML DOM 요소를 이용한 innerHTML 프로퍼티
+
+실제 자바스크립트 코드에서 출력을 위해 가장 많이 사용되는 방법은 HTML DOM 요소를 이용한 innerHTML 프로퍼티를 이용하는 방법이다.
+
+우선 document 객체의 getElementByID()나 getElementsByTagName() 등의 메소드를 사용하여 HTML 요소를 선택한다.
+
+그리고서 innerHTML 프로퍼티를 이용하면 선택된 HTML 요소의 내용(content)이나 속성(attribute)값 등을 손쉽게 변경할 수 있다.
+
+ex)
+
+```js
+<script>
+  var str = document.getElementById("text"); str.innerHTML = "이 문장으로
+  바뀌었습니다!";
+</script>
+```
+
+실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_02
+
+---
+
+## document.write() 메소드
+
+document.write() 메소드는 웹 페이지가 로딩될 때 실행되면, 웹 페이지에 가장 먼저 데이터를 출력한다.
+
+따라서 document.write() 메소드는 대부분 테스트나 디버깅을 위해 사용된다.
+
+ex)
+
+```js
+<script>document.write(4 * 5);</script>
+```
+
+실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_03
+
+하지만 웹 페이지의 모든 내용이 로딩된 후에 document.write() 메소드가 실행되면, 웹 페이지 내에 먼저 로딩된 모든 데이터를 지우고 자신의 데이터를 출력하게 된다.
+
+따라서 document.write() 메소드를 테스트 이외의 용도로 사용할 때에는 충분히 주의해서 사용해야 한다.
+
+ex)
+
+```js
+<button onclick="document.write(4 * 5)">버튼을 눌러보세요!</button>
+```
+
+실습 링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_04
+
+---
+
+## console.log()메소드
+
+console.log() 메소드는 웹 브라우저의 콘솔을 통해 데이터를 출력하거나 IDE의 터미널에 출력하기도 한다.
+
+대부분의 주요 웹 브라우저에서는 F12를 누른 후, 메뉴에서 콘솔을 클릭하면 콘솔 화면을 사용할 수 있다.
+
+이러한 콘솔 화면을 통한 데이터의 출력은 좀 더 자세한 사항까지 출력되므로, 디버깅하는데 많은 도움을 준다.
+
+ex)
+
+```js
+<p>F12를 눌러서 콘솔 화면을 열면 결과를 확인할 수 있습니다.</p>
+
+<script>
+    console.log(4 * 5);
+</script>
+```
+
+실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_05
+
+# 자바스크립트 적용
+
+HTML 문서에 자바스크립트 코드를 적용하는 방법에는 다음과 같은 방법이 있다.
+
+1. 내부 자바스크립트 코드로 적용
+2. 외부 자바스크립트 파일로 적용
+
+## 내부 자바스크립트 코드
+
+자바스크립트 코드는 `<script>`태그를 사용하여 HTML 문서 안에 삽입할 수 있다.
+
+```html
+<!-- 문법 -->
+<script>
+  document.getElementById("text").innerHTML = "여러분을 환영합니다!";
+</script>
+```
+
+이렇게 삽입된 자바스크립트 코드는 HTML 문서의 `<head>`태그나 `<body>`태그, 또는 양쪽 모두에 위치할 수 있다.
+
+다음 예제는 HTML 문서의 <head>태그에 자바스크립트 코드를 삽입한 예제이다.
+
+```js
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Apply</title>
+    <script>
+        function printDate() {
+            document.getElementById("date").innerHTML = Date();
+        }
+    </script>
+</head>
+```
+
+실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_apply_01
+
+자바스크립트 코드를 <head>태그에 삽입하나 <body>태그에 삽입하나 동작상의 차이는 없다.
+
+```js
+<body>
+    <p>자바스크립트를 이용하면 현재 날짜와 시간 정보에도 손쉽게 접근할 수 있어요!</p>
+    <button onclick="printDate()">현재 날짜와 시간 표시하기!</button>
+    <p id="date"></p>
+    <script>
+        function printDate() {
+            document.getElementById("date").innerHTML = Date();
+        }
+    </script>
+</body>
+```
+
+## 외부 자바스크립트 파일
+
+자바스크립트 코드는 HTML 문서의 내부뿐만 아니라 외부 파일로 생성하여 삽입할 수도 있다.
+
+외부에 작성된 자바스크립트 파일은 .js 확장자를 사용하여 저장한다.
+
+해당 자바스크립트 파일을 적용하고 싶은 모든 웹 페이지에 `<script>`태그를 사용해 외부 자바스크립트 파일을 포함하면 된다.
+
+```js
+// example.js 라는 파일이라고 가정
+function printDate() {
+  document.getElementById("date").innerHTML = Date();
+}
+```
+
+ex)
+
+```html
+<head>
+  <meta charset="UTF-8" />
+  <title>JavaScript Apply</title>
+  <script src="/examples/media/example.js"></script>
+</head>
+```
+
+실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_apply_03
+
+외부 자바스크립트 파일을 사용하면 웹의 내용을 담당하는 HTML 코드로부터 웹의 동작을 구현하는 자바스크립트 코드를 분리할 수 있다.
+
+이렇게 하면 HTML 코드와 자바스크립트 코드를 각각 읽기도 편해지고, 유지 보수도 쉬워진다.
+
+또한, 외부 자바스크립트 파일은 웹 브라우저가 미리 읽어 올 수 있어 웹 페이지의 로딩 속도 또한 빨라지는 장점이 있다.
