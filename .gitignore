@@ -2,3 +2,5 @@ __pycache__
 .vscode
 test/
 JavaScript/node_modules
+문제풀이/BAEKJOON/단계별 풀어보기/test.py
+Python/test.py
