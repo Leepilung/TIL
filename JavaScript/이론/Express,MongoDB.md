@@ -1,6 +1,6 @@
 # Express와 MongoDB 활용한 DB구축 관련 내용 정리 MD 문서
 
-## MongoDB
+# MongoDB
 
 라이브러리 설치 명령어로 우선 설치 필요함.
 
@@ -18,7 +18,7 @@ mongod;
 
 입력해서 켜주는것 잊지말기.
 
-## MongoDB 연결
+# MongoDB 연결
 
 > MongoDB 설치
 
@@ -34,7 +34,7 @@ WSL (Ubuntu 20.04)에 MongoDB (버전 5.0)를 설치 하려면 다음을 수행 
 8. 홈 디렉터리로 이동 합니다. cd / && cd home
 9. 데이터를 저장할 디렉터리를 만듭니다. mkdir -p data/db
 
-<가장 중요한 부분>
+> 가장 중요한 부분
 
 10. `Mongo 인스턴스를 실행 합니다. sudo mongod --dbpath ~/data/db`
 
@@ -62,7 +62,7 @@ console.log(__dirname);
 // /home/ek3434/Project/express-test/src
 ```
 
-## Express 정적 파일 적용
+# Express 정적 파일 적용
 
 이미지, CSS 파일 및 JavaScript 파일과 같은 정적 파일을 제공하려면 Express의 기본 제공 미들웨어 함수인 express.static을 사용해야 한다.
 
@@ -99,11 +99,25 @@ http://localhost:3000/static/css/style.css
 app.use("/static", express.static(__dirname + "/public"));
 ```
 
-## 서버 구현 부분
+# 라우팅
+
+라우팅은 URI(또는 경로) 및 특정한 HTTP 요청 메소드(GET, POST 등)인 특정 엔드포인트에 대한 클라이언트 요청에 애플리케이션이 응답하는 방법을 결정하는 것을 말한다.
+
+> 엔드포인트란?
+
+메소드는 같은 URL들에 대해서도 다른 요청을 하게끔 구별하게 해주는 항목이 바로 `'Endpoint'`다.
+
+간단한 예로
+
+HTTP 메소드가 GET,PUT,DELETE 여도 URI(자원)는 전부 같은 경우가 있다.
+
+그러나 GET, PUT, DELETE 메소드에 따라 다른 요청을 하는 것이기 때문에 URI가 같아도 다르게 처리되는 것이다.
+
+결국 `Endpoint`란 API가 서버에서 자원(resource)에 접근할 수 있도록 하는 URL이라고 볼 수 있다.
+
+# 서버 구현 부분
 
 ## DB와 연결하는 부분.
-
-기본적으로 express를 활용하여 서버를 띄우는 기본문법은 다음과 같다.
 
 # MongoDB CRUD 파트
 
@@ -118,25 +132,26 @@ MongoDB에서 Read부분에 해당하는 파트이다. 대표적인 조회 메�
 CURD에서 U를 담당하는 Update 메소드들 중에서 가장 유명한 메소드는 Update가 있다.
 
 ### Update
+
 단적인 예로 monster라는 db에 Slime이라는 자료형의 hp 값을 바꿔보려고 한다.
 
 ```js
-db.monsters.update({ name: 'Slime' }, { $set: { hp: 30 } });
+db.monsters.update({ name: "Slime" }, { $set: { hp: 30 } });
 ```
+
 그럼 다음과 같이 $set을 써줘야만 원하는 필드값만을 변경한다. 만약 $set을 넣지 않고 그냥 { hp : 30 } 이라는 값만 넣으면 'Slime'이라는 name의 다큐먼트가 다 지워지고 { hp : 30 } 이라는 객체만 남게 된다.
 
 그 다음엔 hp라는 필드 값을 내려보고자 한다. 그럴땐 다음과 같은 구문을 사용하면 된다.
 
 ```js
-db.monsters.update({ name: 'Slime' }, { $inc: { hp: -5 } });
+db.monsters.update({ name: "Slime" }, { $inc: { hp: -5 } });
 ```
 
-$inc를 사용하면 그 필드값의 숫자를 올리거나 내릴 수 있다. 음수를 넣으면 내리고 양수를 넣으면 올린다. 
+$inc를 사용하면 그 필드값의 숫자를 올리거나 내릴 수 있다. 음수를 넣으면 내리고 양수를 넣으면 올린다.
 
 ### UpdateOne
 
 몽고DB의 일정 버전부터 update를 대체하는 메소드이다. 위에 서술한 양식과 기능은 전부 동일하나 차이점이라면 updateOne은 매칭되는 다큐먼트 중 첫 번째 다큐먼트만을 수정하고, UpdateMany는 매칭되는 모든 다큐먼트를 수정한다.
-
 
 ## MongoDB Delete Method
 
