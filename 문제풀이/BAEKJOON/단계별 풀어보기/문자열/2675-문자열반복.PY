@@ -9,9 +9,6 @@
 # n이 0, 1일때까지만 반복. 매번 테스트 별도로 해야되므로 기억해두자.
 
 
-
-
-
 N = int(input())
 n = 0
 while n < N:
@@ -24,3 +21,18 @@ while n < N:
     n += 1
     print(result)
 
+## 다른 풀이
+# 바로 통과했음. 기존풀이보다 시간자체는 빨라졋는데 input대신인가 모르겠음.
+
+import sys
+T = int(sys.stdin.readline())
+n = 1
+
+while n <= T: 
+    R,S = sys.stdin.readline().rstrip().split(" ")
+    S = list(S)
+    sum = ''
+    for i in range(len(S)):
+        sum += S[i]*int(R)
+    print(sum)
+    n +=1
