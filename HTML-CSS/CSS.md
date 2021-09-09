@@ -1,10 +1,4 @@
-# HTML , CSS 요소 정리
-
-# CSS란?
-
-CSS는 Cascading Style Sheets의 약자로
-
-HTML,XHTML,XML 같은 문서의 스타일을 꾸밀 때 사용하는 스타일 시트 언어이다.
+# CSS 요소 정리
 
 ## CSS-Element
 
