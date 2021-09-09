@@ -549,3 +549,236 @@ ex) <h4 style="color:#0000FF">16진수 색상값으로 표현된 파란색</h4>
 > 기억해야할 포인트
 
 - HTML에서 색상 이름은 대소문자를 구분하지 않는다.
+
+# HTML 배경
+
+HTML 문서의 기본 배경(background)은 흰색이다.
+
+또한, HTML 요소들도 각자 자신만의 배경을 가지고 있다.
+
+HTML에서는 이러한 배경을 다음과 같이 변경할 수 있다.
+
+1. 배경을 다른 색으로 변경
+
+2. 배경을 다른 이미지로 변경
+
+> 배경을 다른 색으로 변경
+
+HTML5 이전까지는 bgcolor 속성을 이용하여 HTML 요소의 배경색을 다른 색으로 변경할 수 있었다.
+
+하지만 HTML5부터는 bgcolor 속성을 더 이상 지원하지 않으며, CSS를 이용하여 배경색을 변경하도록 하고 있다.
+
+ex)
+
+```html
+<style>
+  body {
+    background-color: lightblue;
+  }
+
+  h1 {
+    background-color: rgb(255, 128, 0);
+  }
+
+  p {
+    background-color: #ffffcc;
+  }</style
+>123
+```
+
+이걸 실제로 적용시키면 제법 끔찍한 모양으로 MD문서 전체의 배경색이 바뀌게 된다..
+
+> 배경을 다른 이미지로 변경
+
+background 속성을 이용하면 HTML 요소의 배경을 이미지(image)로 설정할 수 있다.
+
+문법
+
+```html
+<태그이름 background="이미지주소">
+```
+
+ex)
+
+```html
+<body background="../img/관계형데이터베이스1.jpg"></body>
+```
+
+위의 예제에서 사용한 코드도 실제로 적용하면 img 폴더에 넣어둔 관계형데이터베이스1.jpg가 배경화면으로 도배된다.. (테스트해봤으니 하지말자)
+
+그리고 배경으로 이미지를 사용하면 웹 페이지의 로딩시간이 증가하게 된다.
+
+따라서 보통은 작은 사이즈의 이미지를 패턴(pattern)으로 만들어 배경 이미지로 반복 설정하여 사용한다.
+
+# HTML 링크
+
+HTML 링크(Link)
+
+오늘날 웹 페이지에는 다른 페이지나 다른 사이트로 연결되는 수많은 하이퍼 링크(hyperlink)가 존재한다.
+
+이러한 하이퍼 링크를 간단히 링크(link)라고도 부르며, HTML에선 `<a>`태그로 표현한다.
+
+문법
+
+```html
+<a href="링크주소">HTML 링크</a>
+```
+
+`<a>`태그의 href 속성은 링크를 클릭하면 연결할 페이지나 사이트의 URL 주소를 명시한다.
+
+`<a>`태그는 텍스트나 단락, 이미지 등 다양한 HTML 요소에 사용할 수 있다.
+
+ex)
+
+```html
+<a href="/html/intro">
+  <h2>이 링크를 클릭해 보세요!</h2>
+</a>
+```
+
+예제) 실 사용 시
+<a href="/html/intro">
+
+<h2>이 링크를 클릭해 보세요!</h2>
+</a>
+
+# target 속성
+
+`<a>`태그의 target 속성은 링크로 연결된 문서를 어디에서 열지를 명시한다.
+
+| target 속성값 |                               설명                               |
+| :-----------: | :--------------------------------------------------------------: |
+|    \_blank    |          링크로 연결된 문서를 새 창이나 새 탭에서 오픈.          |
+|    \_self     |   링크로 연결된 문서를 현재 프레임(frame)에서 오픈. (기본설정)   |
+|   \_parent    |        링크로 연결된 문서를 부모 프레임(frame)에서 오픈.         |
+|     \_top     | 링크로 연결된 문서를 현재 창의 가장 상위 프레임(frame)에서 오픈. |
+| 프레임(frame) |     이름 링크로 연결된 문서를 지정된 프레임(frame)에서 오픈.     |
+
+ex)
+
+```html
+<h2><a href="/html/intro" target="_blank">blank</a></h2>
+
+<h2><a href="/html/intro" target="_self">self</a></h2>
+
+<h2><a href="/html/intro" target="_parent">parent</a></h2>
+
+<h2><a href="/html/intro" target="_top">top</a></h2>
+
+<h2><a href="/html/intro" target="myframe">myframe</a></h2>
+
+<iframe name="myframe" style="width:50%; height: 330px"></iframe>
+```
+
+실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_basic_links_02
+
+복습시 이 링크파트 실습은 꼭 링크를 타고 들어가서 직접 확인해볼 것.
+
+# 링크의 상태(state)
+
+| 링크의 상태 |                     설명                      |
+| :---------: | :-------------------------------------------: |
+|    link     | 아직 한 번도 방문한 적이 없는 상태 (기본설정) |
+|   visited   |       한 번이라도 방문한 적이 있는 상태       |
+|    hover    |       링크 위에 마우스를 올려놓은 상태        |
+|   active    |       링크를 마우스로 누르고 있는 상태        |
+
+웹 브라우저에서 링크가 연결되어 있는 텍스트의 색상은 다음과 같다.
+
+- 기본적으로 링크가 걸린 텍스트는 밑줄에, 텍스트 색상이 파란색으로 변경된다.
+
+- visited 상태의 링크는 밑줄에, 텍스트 색상이 보라색으로 변경된다.
+
+- active 상태의 링크는 밑줄에, 텍스트 색상이 빨간색으로 변경된다.
+
+실습 링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_basic_links_03
+
+- 이 파트도 복습할때 싱습 링크를 이용하자
+
+# 페이지 책갈피
+
+`<a>`태그의 name 속성을 이용하면 간단한 책갈피를 만들 수 있다.
+
+우선 책갈피를 통해 가고 싶은 위치에 `<a>`태그를 만들고 name 속성을 작성한다.
+
+그다음에 작성한 name 속성값을 이용하여 다른 `<a>`태그에서 링크를 걸면된다.
+
+ex)
+
+```html
+<a href="#bookmark"><p>제목 3으로 가는 링크</p></a>
+...
+<h2><a name="bookmark"></a>제목 3</h2>
+```
+
+# HTML 이미지
+
+이미지(image)란 2차원 평면 위에 그려진 시각적 요소를 의미한다.
+
+오늘날 웹 페이지에는 이러한 이미지가 매우 중요한 요소의 하나로 자리 잡고 있다.
+
+웹 페이지에서 주로 사용되는 이미지의 종류는 다음과 같다.
+
+|                                  JPEG 이미지                                   |                                        GIF 이미지                                         |                                   PNG 이미지                                   |
+| :----------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------: |
+| <img src="http://tcpschool.com/lectures/jpg_ex_img.jpg" alt="대충 jpg 이미지"> | <img src="http://tcpschool.com/lectures/gif_ex_img.gif" alt="대충 gif (움직이는) 이미지"> | <img src="http://tcpschool.com/lectures/png_ex_img.png" alt="대충 png 이미지"> |
+
+# 이미지의 삽입
+
+HTML 문서에 이미지를 삽입할 때는 `<img>`태그를 사용한다.
+
+`<img>`태그는 종료 태그가 없는 빈 태그(empty tag)이며, 다음과 같은 문법으로 사용된다.
+
+> 문법
+
+```html
+<img src="이미지주소" alt="대체문자열" />
+```
+
+src 속성은 이미지가 저장된 주소의 URL 주소를 명시한다.
+
+alt 속성으로 이미지가 로딩될 수 없는 상황에서 이미지 대신 나타날 문자열을 설정할 수 있다.
+
+ex)
+
+<img src="/img_html5_logo.png" alt="이미지가 없음...ㅠ">
+
+```html
+예제 코드 <img src="/img_html5_logo.png" alt="이미지가 없나봐요.." />
+```
+
+# 이미지의 크기(width, height) 설정
+
+HTML에서는 style 속성을 사용하여 이미지의 크기를 설정할 수 있다.
+
+또한, width 속성과 height 속성을 이용하면, 이미지의 너비와 높이를 각각 픽셀(pixel) 단위로 설정할 수도 있다.
+
+CSS를 이용한 내부 스타일 시트나 외부 스타일 시트와 상관없이 이미지의 원래 크기를 유지하려면 style 속성을 사용하는 것이 좋다.
+
+EX )
+
+<style>
+    img {
+        width:100%;
+        border: 1px solid black;
+    }
+</style>
+
+<img src="http://tcpschool.com/examples/images/img_flag.png" alt="html size" width="320" height="214">
+
+<img src="http://tcpschool.com/examples/images/img_flag.png" alt="style size" style="width:320px; height:214px">
+
+# 이미지의 테두리(border) 설정
+
+border 속성을 사용하여 이미지의 테두리 사용 여부와 굵기를 설정할 수 있다.
+
+<img src="http://tcpschool.com/examples/images/img_flag.png" alt="이미지 테두리" style="width:320px; height:214px; border: 15px solid black">
+
+# 이미지에 링크(link) 설정
+
+이미지에 `<a>`태그를 이용하여 링크를 설정할 수 있다.
+
+누르면 네이버로 연결된다.
+<a href="http://www.naver.com" target="_blank">
+<img src="http://tcpschool.com/examples/images/img_flag.png" alt="flag" style="width:320px; height:214px">
+</a>
