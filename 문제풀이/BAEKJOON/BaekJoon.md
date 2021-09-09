@@ -22,7 +22,7 @@ while문 // 10952(2) 10951(2) 1110(2)
 
 함수 // 15596(2) 4673(2) 1065(2)
 
-문자열 // 11654(2) 11720(2) 10809(2) 2675(2) 1157(2) 1152(2) 2908 5622 2941 1316
+문자열 // 11654(2) 11720(2) 10809(2) 2675(2) 1157(2) 1152(2) 2908(2) 5622(2) 2941(2) 1316(2)
 
 기초수학 // 1712 2292 1193
 
@@ -48,7 +48,8 @@ while문 // 10952(2) 10951(2) 1110(2)
 
 > while문
 
-[10952](https://www.acmicpc.net/problem/10952 "A+B -5 알고리즘")[10951](https://www.acmicpc.net/problem/10951 "A+B -4 알고리즘(EOFError)")
+[10952](https://www.acmicpc.net/problem/10952 "A+B -5 알고리즘")
+[10951](https://www.acmicpc.net/problem/10951 "A+B -4 알고리즘(EOFError)")
 [1110](https://www.acmicpc.net/problem/1110 "더하기 사이클 알고리즘")(2)
 
 > 1차원 배열
@@ -62,9 +63,12 @@ while문 // 10952(2) 10951(2) 1110(2)
 
 > 문자열
 
+[1152](https://www.acmicpc.net/problem/1152 "단어의 개수")
+[1157](https://www.acmicpc.net/problem/1157 "단어공부")
 [11654](https://www.acmicpc.net/problem/11654 "아스키 코드")
 [2675](https://www.acmicpc.net/problem/2675 "문자열 반복")
-[2941](https://www.acmicpc.net/problem/2941 "크로아티아 알파벳")
+[2941](https://www.acmicpc.net/problem/2941 "크로아티아 알파벳")(2)
+[1316](https://www.acmicpc.net/problem/2941 "그룹 단어 체커")
 
 > 기초수학
 
