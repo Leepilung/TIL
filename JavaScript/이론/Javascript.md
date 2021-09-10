@@ -249,7 +249,7 @@ ex)
 </script>
 ```
 
-실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_01
+[실습링크]("http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_01")
 
 - window 객체의 모든 메소드나 프로퍼티를 사용할 때는 window라는 접두사를 생략할 수 있다.
 
@@ -270,7 +270,7 @@ ex)
 </script>
 ```
 
-실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_02
+[실습링크]("http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_02")
 
 ---
 
@@ -298,7 +298,7 @@ ex)
 <button onclick="document.write(4 * 5)">버튼을 눌러보세요!</button>
 ```
 
-실습 링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_04
+[실습 링크]("http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_output_04")
 
 ---
 
@@ -356,7 +356,7 @@ HTML 문서에 자바스크립트 코드를 적용하는 방법에는 다음과 
 </head>
 ```
 
-실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_apply_01
+[실습링크]("http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_apply_01")
 
 자바스크립트 코드를 <head>태그에 삽입하나 <body>태그에 삽입하나 동작상의 차이는 없다.
 
@@ -398,10 +398,174 @@ ex)
 </head>
 ```
 
-실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_apply_03
+[실습링크]("http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_intro_apply_03")
 
 외부 자바스크립트 파일을 사용하면 웹의 내용을 담당하는 HTML 코드로부터 웹의 동작을 구현하는 자바스크립트 코드를 분리할 수 있다.
 
 이렇게 하면 HTML 코드와 자바스크립트 코드를 각각 읽기도 편해지고, 유지 보수도 쉬워진다.
 
 또한, 외부 자바스크립트 파일은 웹 브라우저가 미리 읽어 올 수 있어 웹 페이지의 로딩 속도 또한 빨라지는 장점이 있다.
+
+# 자바스크립트의 기본 타입
+
+타입(data type)이란 프로그램에서 다룰 수 있는 값의 종류를 의미한다.
+
+자바스크립트에서는 여러 가지 형태의 타입을 미리 정의하여 제공하고 있으며, 이것을 기본 타입이라고 정의한다.
+
+자바스크립트의 기본 타입은 크게 `원시 타입`과 `객체 타입`으로 구분할 수 있다.
+
+> 원시 타입
+
+1. 숫자(number)
+2. 문자열(string)
+3. 불리언(boolean)
+4. 심볼(symbol) : ECMAScript 6부터 제공됨
+5. undefined
+
+> 객체 타입
+
+6. 객체(object)
+
+EX )
+
+```js
+var num = 10; // 숫자
+var myName = "홍길동"; // 문자열
+var str; // undefined
+```
+
+# 숫자(number)
+
+자바스크립트는 다른 언어와는 달리 정수와 실수를 따로 구분하지 않고, 모든 수를 실수 하나로만 표현한다.
+
+또한, 매우 큰 수나 매우 작은 수를 표현할 경우에는 e 표기법을 사용할 수 있다.
+
+EX )
+
+```js
+var firstNum = 10; // 소수점을 사용하지 않은 표현
+var secondNum = 10.0; // 소수점을 사용한 표현
+var thirdNum = 10e6; // 10000000
+var fourthNum = 10e-6; // 0.00001
+```
+
+# 문자열(string)
+
+자바스크립트에서 문자열은 큰따옴표("")나 작은따옴표('')로 둘러싸인 문자의 집합을 의미한다.
+
+큰따옴표는 작은따옴표로 둘러싸인 문자열에만 포함될 수 있으며, 작은따옴표는 큰따옴표로 둘러싸인 문자열에만 포함될 수 있다.
+
+EX )
+
+```js
+var firstStr = "이것도 문자열."; // 큰따옴표를 사용한 문자열
+var secondStr = "이것도 문자열."; // 작은따옴표를 사용한 문자열
+var thirdStr = "나의 이름은 '김아무개'다."; // 작은따옴표는 큰따옴표로 둘러싸인 문자열에만 포함될 수 있음.
+var fourthStr = '나의 이름은 "김가무개"다.'; // 큰따옴표는 작은따옴표로 둘러싸인 문자열에만 포함될 수 있음.
+```
+
+자바스크립트에서는 숫자와 문자열을 더할 수도 있다.
+
+이럴 경우에 자바스크립트는 숫자를 문자열로 자동 변환하여, 두 문자열을 연결하는 연산을 수행한다.
+
+EX )
+
+```JS
+var num = 10;
+var str = "JavaScript";
+document.getElementById("result").innerHTML = (num + str); // 10JavaScript
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_datatype_basic_03)
+
+# 불리언(Boolean)
+
+불리언 값은 참(true)과 거짓(false)을 표현한다.
+
+자바스크립트에서 불리언 값은 예약어인 true와 false를 사용하여 나타낼 수 있다.
+
+EX)
+
+```JS
+var firstNum = 10;
+var secondNum = 11;
+document.getElementById("result").innerHTML = (firstNum == secondNum); // false
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_datatype_basic_04)
+
+# 심볼(symbol)
+
+심볼 타입은 ECMAScript 6부터 새롭게 추가된 타입이다.
+
+심볼은 유일하고 변경할 수 없는 타입으로, 객체의 프로퍼티를 위한 식별자로 사용할 수 있다.
+
+EX )
+
+```JS
+var sym = Symbol("javascript");  // symbol 타입
+var symObj = Object(sym);        // object 타입
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_datatype_basic_05)
+
+- 심볼은 여전히 잘 이해가 안가는 파트. + 심볼 타입은 익스플로러에선 지원하지 않는다.
+
+# typeof 연산자
+
+typeof 연산자는 피연산자의 타입을 반환하는 피연산자가 단 하나뿐인 연산자이다.
+
+EX)
+
+```JS
+typeof 10;        // number 타입
+typeof "문자열";  // string 타입
+typeof true;      // boolean 타입
+typeof undefined; // undefined 타입
+typeof null;      // object 타입
+```
+
+# null과 undefined
+
+자바스크립트에서 null이란 object 타입이며, 아직 '값'이 정해지지 않은 것을 의미한다.
+
+또한, undefined란 null과는 달리 '타입'이 정해지지 않은 것을 의미한다.
+
+따라서 자바스크립트에서 undefined는 초기화되지 않은 변수나 존재하지 않는 값에 접근할 때 반환된다.
+
+EX )
+
+```js
+var num; // 초기화하지 않았으므로 undefined 값을 반환함.
+var str = null; // object 타입의 null 값
+typeof secondNum; // 정의되지 않은 변수에 접근하면 undefined 값을 반환함.
+```
+
+null과 undefined는 동등 연산자(==)와 일치 연산자(===)로 비교할 때 그 결괏값이 다르므로 주의해야 한다.
+
+null과 undefined는 타입을 제외하면 같은 의미지만, 타입이 다르므로 일치하지는 않는다.
+
+EX )
+
+```js
+null == undefined; // true
+null === undefined; // false
+```
+
+# 객체(object)
+
+자바스크립트의 기본 타입은 객체(object)이다.
+
+객체(object)란 실생활에서 우리가 인식할 수 있는 사물로 이해할 수 있다.
+
+객체는 여러 프로퍼티(property)나 메소드(method)를 같은 이름으로 묶어놓은 일종의 집합체라고 보면 편하다.
+
+EX )
+
+```js
+var dog = { name: "해피", age: 3 }; // 객체의 생성
+
+// 객체의 프로퍼티 참조
+document.getElementById("result").innerHTML =
+  "강아지의 이름은 " + dog.name + "이고, 나이는 " + dog.age + "살 입니다.";
+```
