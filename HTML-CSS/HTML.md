@@ -782,3 +782,52 @@ border 속성을 사용하여 이미지의 테두리 사용 여부와 굵기를 
 <a href="http://www.naver.com" target="_blank">
 <img src="http://tcpschool.com/examples/images/img_flag.png" alt="flag" style="width:320px; height:214px">
 </a>
+
+# 이미지 맵 만들기
+
+이미지 맵(image map)이란 이미지의 일부를 클릭할 수 있도록 만들어서 버튼처럼 사용하는 기능을 의미한다.
+
+HTML에서는 `<map>`태그를 이용하여 이미지 맵(image map)을 제작할 수 있다.
+
+`<img>`태그의 usemap 속성을 `<map>`태그의 name 속성과 연결하면 이미지와 맵사이의 관계가 설정된다.
+
+`<map>`태그는 하나 이상의 `<area>`태그를 가지며, 이 `<area>`태그가 바로 버튼과 같은 역할을 한다.
+
+EX )
+
+<img src="http://tcpschool.com/examples/images/img_imagemap.jpg" alt="진실혹은거짓" usemap="#vending" style="width:320px; height:240px" />
+
+<map name="vending">
+
+<area shape="rect" coords="90,60,180,130" alt="거짓" href="https://ko.wikipedia.org/wiki/%EA%B1%B0%EC%A7%93%EB%A7%90">
+
+<area shape="rect" coords="210,200,70,130" alt="진실" href="https://ko.wikipedia.org/wiki/%EC%A7%84%EC%8B%A4">
+
+</map>
+
+```html
+<!-- 예제 코드 -->
+<img
+  src="http://tcpschool.com/examples/images/img_imagemap.jpg"
+  alt="진실혹은거짓"
+  usemap="#vending"
+  style="width:320px; height:240px"
+/>
+<!-- usemap 으로 map name인 #vending과 연결 -->
+
+<map name="vending">
+  <area
+    shape="rect"
+    coords="90,60,180,130"
+    alt="거짓"
+    href="https://ko.wikipedia.org/wiki/%EA%B1%B0%EC%A7%93%EB%A7%90"
+  />
+
+  <area
+    shape="rect"
+    coords="210,200,70,130"
+    alt="진실"
+    href="https://ko.wikipedia.org/wiki/%EC%A7%84%EC%8B%A4"
+  />
+</map>
+```
