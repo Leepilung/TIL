@@ -1,5 +1,112 @@
 # CSS 요소 정리
 
+# CSS란?
+
+CSS는 Cascading Style Sheets의 약자로
+
+HTML,XHTML,XML 같은 문서의 스타일을 꾸밀 때 사용하는 스타일 시트 언어이다.
+
+HTML4 부터는 이러한 모든 서식 설정을 HTML 문서로부터 따로 분리하는 것이 가능하다.
+
+# CSS를 사용하는 이유
+
+HTML만으로 웹 페이지를 제작할 경우 HTML 요소의 세부 스타일을 일일이 따로 지정해 주어야만 한다.
+
+이 작업은 매우 많은 시간이 걸리며, 완성한 후에도 스타일의 변경 및 유지 보수가 매우 힘들어진다.
+
+이러한 문제점을 해소하기 위해 W3C(World Wide Web Consortium)에서 만든 스타일 시트 언어가 바로 CSS이다.
+
+CSS는 웹 페이지의 스타일을 별도의 파일로 저장할 수 있게 해주므로 사이트의 전체 스타일을 손쉽게 제어할 수 있다.
+
+웹 사이트의 스타일을 일관성 있게 유지할 수 있게 해주며, 그에 따른 유지 보수 또한 쉬워진다.
+
+이러한 외부 스타일 시트는 보통 확장자를 .css 파일로 저장한다.
+
+# CSS 문법
+
+<img src="http://tcpschool.com/lectures/img_css_syntax.png" alt="css 이미지 설명 파일">
+
+CSS의 문법은 선택자(selector)와 선언부(declaratives)로 구성된다.
+
+선택자는 CSS를 적용하고자 하는 HTML 요소(element)를 가리킨다.
+
+선언부는 하나 이상의 선언들을 세미콜론(;)으로 구분하여 포함할 수 있으며, 중괄호({ })를 사용하여 전체를 둘러싼다.
+
+각 선언은 CSS 속성명(property)과 속성값(value)을 가지며, 그 둘은 콜론(:)으로 연결된다.
+
+이러한 CSS 선언(declaration)은 언제나 마지막에 세미콜론(;)으로 끝마친다.
+
+# CSS 선택자
+
+스타일을 적용할 HTML 요소를 가리키는 데 사용하는 선택자는
+다음과 같다.
+
+- HTML 요소 선택자
+- 아이디(id) 선택자
+- 클래스(class) 선택자
+- 그룹(group) 선택자
+
+> HTML 요소 선택자
+
+CSS를 적용할 대상으로 HTML 요소의 이름을 직접 사용하여 선택할 수 있다.
+
+```html
+<style>
+  h2 {
+    color: teal;
+    text-decoration: underline;
+  }
+</style>
+
+<h1>HTML 요소 선택자를 이용한 선택</h1>
+<h2>이 부분에 스타일을 적용합니다.</h2>
+<p>
+  요소 선택자를 이용하여 스타일을 적용할 HTML 요소를 직접 선택할 수 있습니다.
+</p>
+```
+
+[실습 링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=css_intro_syntax_01)
+
+> 아이디(id) 선택자
+
+아이디 선택자는 CSS를 적용할 대상으로 특정 요소를 선택할 때 사용한다.
+
+이 선택자는 웹 페이지에 포함된 여러 요소 중에서 특정 아이디 이름을 가지는 요소만을 선택해준다.
+
+EX)
+
+<style>
+    #heading { color: teal; text-decoration: line-through; }
+</style>
+
+<h2 id="heading">이 부분에 스타일을 적용합니다.</h2>
+
+HTML과 CSS에서는 하나의 웹 페이지에 속하는 여러 요소에 같은 아이디 이름을 사용해도 별 문제없이 동작한다.
+
+하지만 이렇게 중복된 아이디를 가지고 자바스크립트 작업을 하게 되면 오류가 발생한다.
+
+따라서 되도록이면 하나의 웹 페이지에 속하는 요소에는 다른 아이디 이름을 사용하거나 클래스를 사용하는 것이 좋다.
+
+> 클래스(Class) 선택자
+
+클래스 선택자는 특정 집단의 여러 요소를 한 번에 선택할 때 사용한다.
+
+이러한 특정 집단을 클래스(class)라고 하며, 같은 클래스 이름을 가지는 요소들을 모두 선택해 준다.
+
+EX )
+
+<style>
+    .headings { color: lime; text-decoration: overline; }
+</style>
+
+...
+
+<h2 class="headings">이 부분에 스타일을 적용합니다.</h2>
+<p>class 선택자를 이용하여 스타일을 적용할 HTML 요소들을 한 번에 선택할 수 있습니다.</p>
+<h3 class="headings">이 부분에도 같은 스타일을 적용합니다.</h3>
+
+예제 코딩)
+
 ## CSS-Element
 
 ### padding
