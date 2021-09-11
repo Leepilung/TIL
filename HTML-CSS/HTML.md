@@ -76,11 +76,14 @@ HTML5 표준에서 속성 이름에 대소문자를 구분하지는 않는다. �
 HTML5 표준에서 속성값에 따옴표 사용을 강제하지 않는다.
 그러나 속성값을 따옴표로 감싸지 않으면 예상치 못한 오류등이 발생한다.
 
-EX)
+## EX )
 
-<img src="quotes.jpg" alt="이미지가 없어요">
+> 예제
+> <img src="quotes.jpg" alt="이미지가 없어요">
 
 <img src="quotes.jpg" alt=이미지가 없어요>
+
+---
 
 이와 같이 속성값에 띄어쓰기가 들어가는 경우 따옴표를 사용해야 정확한 값을 저장할 수 있다.
 
@@ -92,12 +95,18 @@ EX)
 
 HTML은 제목을 표현할 수 있는 다양한 크기의 <h> 태그를 제공한다.
 
+## EX )
+
+> 예제
+
 <h1>제목1의 크기입니다!</h1>
 <h2>제목2의 크기입니다!</h2>
 <h3>제목3의 크기입니다!</h3>
 <h4>제목4의 크기입니다!</h4>
 <h5>제목5의 크기입니다!</h5>
 <h6>제목6의 크기입니다!</h6>
+
+---
 
 `<h>` 태그의 위 아래로 약간의 여백이 자동으로 삽입된다.
 
@@ -107,6 +116,10 @@ HTML은 제목을 표현할 수 있는 다양한 크기의 <h> 태그를 제공�
 
 단락이란 내용상 끊어서 구분할 수 있는 하나하나의 부분을 의미하며, 문단이라고 부른다.
 
+## EX )
+
+> 예제
+
 <h1>제목1의 크기입니다!</h1>
 <h2>제목2의 크기입니다!</h2>
 <h3>제목3의 크기입니다!</h3>
@@ -114,13 +127,17 @@ HTML은 제목을 표현할 수 있는 다양한 크기의 <h> 태그를 제공�
 
 `<p>` 태그의 위아래로는 약간의 여백(margin)이 자동으로 삽입된다.
 
+---
+
 ### \* 띄어쓰기와 줄 나누기
 
 HTML 코드에서 띄어쓰기나 줄 나누기를 여러 번 하더라도 오직 하나의 띄어쓰기나 줄로만 인식한다.
 
 ---
 
-EX)
+## EX )
+
+> 예제
 
 <p>
 줄을 나누고 싶어서
@@ -138,7 +155,9 @@ EX)
 
 ---
 
-ex)
+## EX )
+
+> 예제
 
 <p>
 줄을 나누고 싶어서<br>
@@ -157,8 +176,11 @@ HTML 코드에서 작성한 텍스트 서식을 그대로 표현하려면 `<pre>
 
 ---
 
+## EX )
+
+> 예제
+
 <pre>
-ex)
 줄을 나누고 싶어서
 이렇게 줄을 나눠봤습니다.
 
@@ -175,7 +197,9 @@ ex)
 
 ---
 
-ex)
+## EX )
+
+> 예제
 
 <p>저는 하나의 단락입니다.</p>
 <hr>
@@ -191,7 +215,9 @@ HTML 문서에서 텍스틀 굵게 표현하고 싶을 때에는 `<b>`태그(bol
 
 ---
 
-ex)
+## EX )
+
+> 예제
 
 `<p><b>"이 부분"</b>은 단순히 글씨가 굵은 부분이에요!</p>`
 
@@ -211,7 +237,9 @@ HTML 문서에서 이탤릭체를 표현하고 싶을 때에는 `<i>`태그(ital
 
 ---
 
-ex)
+## EX )
+
+> 예제
 
 `<p><i>"이 부분"</i>은 단순히 글씨가 이탤릭체인 부분이에요!</p>`
 
@@ -229,9 +257,11 @@ ex)
 
 ---
 
-ex)
+## EX )
 
-`<p><mark>"이 부분"</mark>만 하이라이팅하고 싶어요.</p>`
+> 예제
+>
+> `<p><mark>"이 부분"</mark>만 하이라이팅하고 싶어요.</p>`
 
 <p><mark>"이 부분"</mark>만 하이라이팅하고 싶어요.</p>
 
@@ -243,7 +273,9 @@ ex)
 
 ---
 
-ex)
+## EX )
+
+> 예제
 
 `<p><del>"이 부분"</del>을 지운 것처럼 하고 싶어요.</p>`
 
@@ -296,7 +328,9 @@ HTML에서 인용구를 표현하는 방법은 다음과 같이 두 가지로 �
 
 ---
 
-EX)
+## EX)
+
+> 예제
 
 <p>HTML의 정의는
 
@@ -306,13 +340,15 @@ EX)
 
 ---
 
-## \* 블록 인용구
+## `\*` 블록 인용구
 
 길이가 긴 인용문은 `<blockqoute>` 태그를 사용하여 표현할 수 있다.
 
 ---
 
-EX)
+## EX )
+
+> 예제
 
 <p>HTML의 정의</p>
 
@@ -336,7 +372,9 @@ HTML에서 용어의 축약형을 표현하기 위해서는 `<abbr>`태그(abbre
 
 ---
 
-EX)
+## EX)
+
+> 예제
 
 `<p><strong><abbr title="HyperText Markup Language 5">HTML5</abbr></strong> 란 웹 문서를 제작하는 데 쓰이는 프로그래밍 언어인 HTML의 최신규격입니다.</p> `
 
@@ -355,7 +393,9 @@ HTML5위에 마우스를 갖다대보면 title로 입력한 설명이 축약되�
 
 ---
 
-EX)
+## EX)
+
+> 예제
 
 <address>
     서울특별시<br>
@@ -378,7 +418,9 @@ EX)
 
 ---
 
-EX)
+## EX )
+
+> 예제
 
 <!-- 작성자 : 홍길동 -->
 
@@ -568,7 +610,9 @@ HTML5 이전까지는 bgcolor 속성을 이용하여 HTML 요소의 배경색을
 
 하지만 HTML5부터는 bgcolor 속성을 더 이상 지원하지 않으며, CSS를 이용하여 배경색을 변경하도록 하고 있다.
 
-ex)
+## EX )
+
+> 예제
 
 ```html
 <style>
@@ -592,13 +636,15 @@ ex)
 
 background 속성을 이용하면 HTML 요소의 배경을 이미지(image)로 설정할 수 있다.
 
-문법
+> 문법
 
 ```html
 <태그이름 background="이미지주소">
 ```
 
-ex)
+## EX )
+
+> 예제
 
 ```html
 <body background="../img/관계형데이터베이스1.jpg"></body>
@@ -618,7 +664,7 @@ HTML 링크(Link)
 
 이러한 하이퍼 링크를 간단히 링크(link)라고도 부르며, HTML에선 `<a>`태그로 표현한다.
 
-문법
+> 문법
 
 ```html
 <a href="링크주소">HTML 링크</a>
@@ -628,7 +674,9 @@ HTML 링크(Link)
 
 `<a>`태그는 텍스트나 단락, 이미지 등 다양한 HTML 요소에 사용할 수 있다.
 
-ex)
+## EX )
+
+> 예제
 
 ```html
 <a href="/html/intro">
@@ -642,6 +690,8 @@ ex)
 <h2>이 링크를 클릭해 보세요!</h2>
 </a>
 
+---
+
 # target 속성
 
 `<a>`태그의 target 속성은 링크로 연결된 문서를 어디에서 열지를 명시한다.
@@ -654,7 +704,9 @@ ex)
 |     \_top     | 링크로 연결된 문서를 현재 창의 가장 상위 프레임(frame)에서 오픈. |
 | 프레임(frame) |     이름 링크로 연결된 문서를 지정된 프레임(frame)에서 오픈.     |
 
-ex)
+## EX )
+
+> 예제
 
 ```html
 <h2><a href="/html/intro" target="_blank">blank</a></h2>
@@ -670,7 +722,7 @@ ex)
 <iframe name="myframe" style="width:50%; height: 330px"></iframe>
 ```
 
-실습링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_basic_links_02
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_basic_links_02)
 
 복습시 이 링크파트 실습은 꼭 링크를 타고 들어가서 직접 확인해볼 것.
 
@@ -691,7 +743,7 @@ ex)
 
 - active 상태의 링크는 밑줄에, 텍스트 색상이 빨간색으로 변경된다.
 
-실습 링크 : http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_basic_links_03
+[실습 링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_basic_links_03)
 
 - 이 파트도 복습할때 싱습 링크를 이용하자
 
@@ -703,7 +755,9 @@ ex)
 
 그다음에 작성한 name 속성값을 이용하여 다른 `<a>`태그에서 링크를 걸면된다.
 
-ex)
+## EX )
+
+> a태그 예제
 
 ```html
 <a href="#bookmark"><p>제목 3으로 가는 링크</p></a>
@@ -739,7 +793,9 @@ src 속성은 이미지가 저장된 주소의 URL 주소를 명시한다.
 
 alt 속성으로 이미지가 로딩될 수 없는 상황에서 이미지 대신 나타날 문자열을 설정할 수 있다.
 
-ex)
+## EX )
+
+> alt 속성 예제
 
 <img src="/img_html5_logo.png" alt="이미지가 없음...ㅠ">
 
@@ -755,7 +811,9 @@ HTML에서는 style 속성을 사용하여 이미지의 크기를 설정할 수 
 
 CSS를 이용한 내부 스타일 시트나 외부 스타일 시트와 상관없이 이미지의 원래 크기를 유지하려면 style 속성을 사용하는 것이 좋다.
 
-EX )
+## EX )
+
+> 이미지 설정 예제
 
 <style>
     img {
@@ -772,6 +830,8 @@ EX )
 
 border 속성을 사용하여 이미지의 테두리 사용 여부와 굵기를 설정할 수 있다.
 
+> 이미지 테두리 예제
+
 <img src="http://tcpschool.com/examples/images/img_flag.png" alt="이미지 테두리" style="width:320px; height:214px; border: 15px solid black">
 
 # 이미지에 링크(link) 설정
@@ -779,6 +839,9 @@ border 속성을 사용하여 이미지의 테두리 사용 여부와 굵기를 
 이미지에 `<a>`태그를 이용하여 링크를 설정할 수 있다.
 
 누르면 네이버로 연결된다.
+
+> 이미지 링크 예제
+
 <a href="http://www.naver.com" target="_blank">
 <img src="http://tcpschool.com/examples/images/img_flag.png" alt="flag" style="width:320px; height:214px">
 </a>
@@ -794,6 +857,8 @@ HTML에서는 `<map>`태그를 이용하여 이미지 맵(image map)을 제작�
 `<map>`태그는 하나 이상의 `<area>`태그를 가지며, 이 `<area>`태그가 바로 버튼과 같은 역할을 한다.
 
 EX )
+
+> 이미지맵 예제
 
 <img src="http://tcpschool.com/examples/images/img_imagemap.jpg" alt="진실혹은거짓" usemap="#vending" style="width:320px; height:240px" />
 
@@ -831,3 +896,128 @@ EX )
   />
 </map>
 ```
+
+# HTML 리스트
+
+리스트(list)란 여러 요소들을 일렬로 나열한 목록이나 명단을 의미한다.
+
+HTML에서는 이러한 리스트를 표현하기 위해 다음과 같은 리스트를 제공한다.
+
+1. 순서가 없는 리스트(unordered list)
+2. 순서가 있는 리스트(ordered list)
+3. 정의 리스트(definition list)
+
+# 순서가 없는 리스트
+
+순서가 없는 리스트는 `<ul>`태그로 시작하며, 여기에 포함되는 각각의 리스트 요소는 `<li>`태그로 시작한다.
+
+각각의 리스트 요소 앞에는 기본 마커(marker)로 검정색의 작은 원(bullet)이 위치한다.
+
+## EX )
+
+> 예제
+
+<ul>
+    <li>사과</li>
+    <li>멜론</li>
+    <li>바나나</li>
+</ul>
+
+CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하는 마커(marker)를 다른 모양으로 변경할 수 있다.
+
+- disc : 검정색 작은 원 모양 (기본설정)
+- circle : 흰색 작은 원 모양
+- square : 사각형 모양
+
+## EX )
+
+> Circle 예제
+
+<ul style="list-style-type: circle">
+    <li>수박</li>
+    <li>참외</li>
+    <li>옥수수</li>
+</ul>
+
+> square 예제
+
+<ul style="list-style-type: square">
+    <li>수박</li>
+    <li>참외</li>
+    <li>옥수수</li>
+</ul>
+
+# 순서가 있는 리스트
+
+순서가 있는 리스트는 `<ol>`태그로 시작하며, 여기에 포함되는 각각의 리스트 요소는 `<li>`태그로 시작한다.
+
+각각의 리스트 요소 앞에는 기본 마커로 아라비아 숫자가 위치한다.
+
+## EX )
+
+> 예제
+
+<ol>
+    <li>사과</li>
+    <li>멜론</li>
+    <li>바나나</li>
+</ol>
+
+순서가 없는 리스트와 마찬가지로 CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하는 마커(marker)를 다른 모양으로 변경할 수 있다.
+
+- decimal : 숫자 (기본설정)
+- upper-alpha : 영문 대문자
+- lower-alpha : 영문 소문자
+- upper-roman : 로마 숫자 대문자
+- lower-roman : 로마 숫자 소문자
+
+EX )
+
+> 영문 대문자
+
+<ol style="list-style-type: upper-alpha">
+    <li>수박</li>
+    <li>참외</li>
+    <li>옥수수</li>
+</ol>
+
+> 영문 소문자
+
+<ol style="list-style-type: lower-alpha">
+    <li>수박</li>
+    <li>참외</li>
+    <li>옥수수</li>
+</ol>
+
+> 로마 대문자
+
+<ol style="list-style-type: upper-roman">
+    <li>수박</li>
+    <li>참외</li>
+    <li>옥수수</li>
+</ol>
+
+> 로마 소문자
+
+<ol style="list-style-type: lower-roman">
+    <li>수박</li>
+    <li>참외</li>
+    <li>옥수수</li>
+</ol>
+
+# 정릐 리스트(description list)
+
+정의 리스트(description list)는 용어와 그에 대한 정의를 모아놓은 리스트로 `<dl>`태그로 시작한다.
+
+`<dt>`태그에는 용어의 이름이 들어가고, `<dd>`태그에는 해당 용어에 대한 정의가 들어간다.
+
+EX )
+
+> 예제
+
+<dl>
+    <dt>호박</dt>
+    <dd>- 박과의 한해살이 덩굴성 채소</dd>
+    <dt>상추</dt>
+    <dd>- 국화과의 한해살이 또는 두해살이풀</dd>
+</dl>
