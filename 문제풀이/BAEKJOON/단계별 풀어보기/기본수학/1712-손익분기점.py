@@ -17,3 +17,17 @@ else:
     BP = (A // (C-B)) + 1 
     
 print(BP)
+
+# 다른 풀이
+# 오히려 과거가 더 간단하게 풀었음. 너무 급하게 풀었던 문제.
+# 접근도 이상했다. while문 사용하는 방법으로 복잡하게 생각했음.
+import sys
+
+A, B, C = map(int,sys.stdin.readline().rstrip().split(" "))
+BP = 0
+if B > C or B-C == 0:
+    print(-1)
+else:
+    BP = A//(C - B)
+    n = BP + 1
+    print(n)
