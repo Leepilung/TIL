@@ -50,6 +50,8 @@ CSS의 문법은 선택자(selector)와 선언부(declaratives)로 구성된다.
 
 CSS를 적용할 대상으로 HTML 요소의 이름을 직접 사용하여 선택할 수 있다.
 
+태그를 직접 입력함으로써 사용한다.
+
 ```html
 <style>
   h2 {
@@ -73,6 +75,8 @@ CSS를 적용할 대상으로 HTML 요소의 이름을 직접 사용하여 선�
 
 이 선택자는 웹 페이지에 포함된 여러 요소 중에서 특정 아이디 이름을 가지는 요소만을 선택해준다.
 
+주로 `#아이디명`으로 사용한다.
+
 EX)
 
 <style>
@@ -93,7 +97,9 @@ HTML과 CSS에서는 하나의 웹 페이지에 속하는 여러 요소에 같�
 
 이러한 특정 집단을 클래스(class)라고 하며, 같은 클래스 이름을 가지는 요소들을 모두 선택해 준다.
 
-EX )
+주로 `.클래스명`으로 사용한다.
+
+## EX )
 
 <style>
     .headings { color: lime; text-decoration: overline; }
@@ -106,6 +112,82 @@ EX )
 <h3 class="headings">이 부분에도 같은 스타일을 적용합니다.</h3>
 
 예제 코딩)
+
+```html
+<style>
+  .headings {
+    color: lime;
+    text-decoration: overline;
+  }
+</style>
+
+<h2 class="headings">이 부분에 스타일을 적용합니다.</h2>
+<p>
+  class 선택자를 이용하여 스타일을 적용할 HTML 요소들을 한 번에 선택할 수
+  있습니다.
+</p>
+<h3 class="headings">이 부분에도 같은 스타일을 적용합니다.</h3>
+```
+
+> 그룹(group) 선택자
+
+그룹 선택자는 위에서 언급한 여러 선택자를 같이 사용하고자 할 때 사용한다.
+
+그룹 선택자는 여러 선택자를 쉼표(,)로 구분하여 연결한다.
+
+그룹 선택자는 코드를 중복해서 작성하지 않도록 하여 코드를 간결하게 만들어 준다.
+
+## EX )
+
+```html
+<style>
+  h1 {
+    color: navy;
+  }
+  h1,
+  h2 {
+    text-align: center;
+  }
+  h1,
+  h2,
+  p {
+    background-color: lightgray;
+  }
+</style>
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=css_intro_syntax_04)
+
+> CSS 주석(comments)
+
+주석(comment)이란 개발자가 작성한 해당 코드에 대한 이해를 돕는 설명이나 디버깅을 위해 작성한 구문을 의미한다.
+
+이러한 주석은 다른 CSS 코드와는 달리 웹 브라우저에 의해 해석되지 않는다.
+
+> 문법
+
+```
+/* 주석내용 */
+```
+
+## EX )
+
+```html
+<style>
+  p {
+    color: teal; /*이것은 한 줄짜리 주석입니다.*/
+    font-size: 30px;
+  }
+  /* 
+이것은 두 줄짜리 주석입니다.
+몇 줄이라도 가능합니다. 
+*/
+</style>
+```
+
+- 다른 주석문들과 마찬가지로 CSS에서 주석을 작성할 때는 절대로 주석 내부에 또 다른 주석을 넣어서는 안 된다.
+
+---
 
 ## CSS-Element
 
