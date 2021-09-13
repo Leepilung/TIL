@@ -1645,3 +1645,123 @@ do {
   document.write("j : " + j++ + "<br>");
 } while (j > 3);
 ```
+
+# for 문
+
+for 문은 while 문과는 달리 자체적으로 초기식, 표현식, 증감식을 모두 포함하고 있는 반복문이다.
+
+따라서 while 문보다는 좀 더 간결하게 반복문을 표현할 수 있다.
+
+for 문을 순서도로 표현하면 다음 그림과 같다.
+
+<img src = http://tcpschool.com/lectures/img_js_for.png>
+
+for 문을 구성하는 초기식, 표현식, 증감식은 각각 생략될 수 있다. 또한, 쉼표 연산자(,)를 사용하면 여러 개의 초기식이나 증감식을 동시에 사용할 수도 있다.
+
+그리고 for 문을 사용하면 앞선 예제의 while 문을 더욱 더 간결하게 표현할 수 있다.
+
+## EX )
+
+```js
+for (var i = 1; i < 10; i++) {
+  console.log(i);
+}
+```
+
+- for 문에서 실행될 실행문이 한 줄 뿐이라면 중괄호({})를 생략할 수 있다.
+
+# for / in 문
+
+for / in 문은 일반적인 for 문과는 전혀 다른 형태의 반복문이다.
+
+for / in 문은 해당 객체의 모든 열거할 수 있는 프로퍼티(enumerable properties)를 순회할 수 있도록 해준다.
+
+- 열거할 수 있는 프로퍼티란 내부적으로 enumerable 플래그가 true로 설정된 프로퍼티를 의미한다.
+
+> 프로퍼티 플래그
+
+```
+객체 프로퍼티는 값과 함께 플래그라는 특별한 속성 3가지(writable, enumerable, configurable)를 갖는다. enumberable 속성이 true여야 반복문을 사용해 나열이 가능하다. 자세한 내용은 추후 다루고 지금은 가볍게 다루고 넘어가자.
+```
+
+이 반복문은 루프마다 객체의 열거할 수 있는 프로퍼티의 이름을 지정된 변수에 대입한다.
+
+이렇게 대입받은 변수를 이용하면 루프 안에서 객체의 열거할 수 있는 프로퍼티에 순차적으로 접근할 수 있다.
+
+> 문법
+
+```js
+for (변수 in 객체) {
+    객체의 모든 열거할 수 있는 프로퍼티의 개수만큼 반복적으로 실행하고자 하는 실행문;
+}
+```
+
+## EX )
+
+```js
+var arr = [3, 4, 5];
+
+for (var i = 0; i < arr.length; i++) {
+  // 배열 arr의 모든 요소의 인덱스(index)를 출력함.
+  console.log(i);
+}
+for (var i in arr) {
+  // 위와 같은 동작을 하는 for / in 문
+  console.log(i);
+}
+```
+
+다음 예제는 for / in 문을 사용하여 객체의 프로퍼티에 접근하는 예제이다.
+
+```js
+var obj = { name: "이순신", age: 20 };
+
+for (var i in obj) {
+  console.log(i);
+}
+```
+
+- for / in 문은 해당 객체가 가진 모든 프로퍼티를 반환하는 것이 아닌, 오직 열거할 수 있는 프로퍼티만을 반환한다.
+
+# for / of 문
+
+for / of 문은 반복할 수 있는 객체(iterable objects)를 순회할 수 있도록 해주는 반복문이다.
+
+자바스크립트에서 반복할 수 있는 객체에는 Array, Map, Set, arguments 객체 등이 있다.
+
+이 반복문은 루프마다 객체의 열거할 수 있는 프로퍼티의 값을 지정된 변수에 대입한다.
+
+> 문법
+
+```js
+for (변수 of 객체) {
+    객체의 모든 열거할 수 있는 프로퍼티의 개수만큼 반복적으로 실행하고자 하는 실행문;
+}
+```
+
+## EX )
+
+```js
+var arr = [3, 4, 5];
+
+for (var i = 0; i < arr.length; i++) {
+  // 배열 arr의 모든 요소의 인덱스(index)를 출력함.
+  console.log(arr[i]);
+}
+for (var value of arr) {
+  // 위와 같은 동작을 하는 for / of 문
+  console.log(value);
+}
+```
+
+- for / of 문은 익스플로러에서 지원하지 않는다.
+
+다음 예제는 for / of 문을 사용하여 Set 객체의 프로퍼티에 접근하는 예제이다.
+
+```js
+var arr = new Set([1, 1, 2, 2, 3, 3]);
+
+for (var value of arr) {
+  console.log(value);
+}
+```
