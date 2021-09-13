@@ -1447,3 +1447,106 @@ if (x == y) {
 ```js
 표현식 ? 반환값1 : 반환값2;
 ```
+
+# switch 문
+
+switch 문은 if / else 문과 마찬가지로 주어진 조건 값에 따라 프로그램이 다른 명령을 수행하도록 하는 조건문이다.
+
+switch 문은 if / else 문보다 가독성 측면에서 더 좋다.
+
+> 문법
+
+```js
+switch (조건 값) {
+    case 값1:
+        조건 값이 값1일 때 실행하고자 하는 실행문;
+        break;
+    case 값2:
+        조건 값이 값2일 때 실행하고자 하는 실행문;
+        break;
+    ...
+    default:
+        조건 값이 어떠한 case 구문에도 해당하지 않을 때 실행하고자 하는 실행문;
+        break;
+}
+```
+
+default 절은 조건 값이 위에 나열된 어떠한 case 절에도 해당하지 않을 때 실행된다.
+
+이 구문은 반드시 존재해야 하는 것은 아니며, 필요할 때만 선언할 수 있다.
+
+각 case 절 및 default 절은 반드시 break 키워드를 포함하고 있어야 한다.
+
+break 키워드는 조건 값에 해당하는 case 절이나 default 절이 실행된 뒤에 전체 switch 문을 빠져나가게 해준다.
+
+- default 절의 위치가 반드시 switch 문의 맨 마지막일 필요는 없다.
+
+## EX )
+
+```js
+var x = 10;
+
+switch (typeof x) {
+  case "number":
+    document.write("변수 x의 타입은 숫자다.");
+    break;
+  case "string":
+    document.write("변수 x의 타입은 문자열이다.");
+    break;
+  case "object":
+    document.write("변수 x의 타입은 객체이다.");
+    break;
+  default:
+    document.write("변수 x의 타입을 모르겠다.");
+    break;
+}
+```
+
+다음 예제는 case 절과 default 절에 break 키워드가 없을 때 어떤 현상이 벌어지는가를 보여주는 예제이다.
+
+```js
+var x = "문자열";
+
+switch (typeof x) {
+  case "number":
+    document.write("변수 x의 타입은 숫자입니다.<br>");
+  case "string":
+    document.write("변수 x의 타입은 문자열입니다.<br>");
+  case "object":
+    document.write("변수 x의 타입은 객체입니다.<br>");
+  default:
+    document.write("변수 x의 타입을 잘 모르겠네요...<br>");
+}
+```
+
+위의 예제에서 변수 x는 string 타입이므로, 두 번째 case 절의 document.write() 메소드가 맨 먼저 실행된다.
+
+하지만 break 키워드가 없으므로, 두 번째 case 절 이후에 나오는 모든 실행문이 모두 실행될 것이다.
+
+따라서 case 절과 default 절은 반드시 break 키워드를 포함하고 있어야 정확하게 동작할 수 있다.
+
+또한 다음 예제와 같이 여러 개의 case 절을 사용하여 여러 개의 조건을 한 번에 표현할 수도 있다.
+
+```js
+var day = new Date().getDay(); // 오늘의 요일을 반환함. (일요일: 0 ~ 토요일: 6)
+
+switch (day) {
+  case 1: // 월요일인 경우
+  case 2: // 화요일인 경우
+  case 3: // 수요일인 경우
+  case 4: // 목요일인 경우
+  default:
+    // 0부터 6까지의 값이 아닌 경우
+    document.write("주말은 아니다.");
+    break;
+  case 5: // 금요일인 경우
+    document.write("금요일 입니다.");
+    break;
+  case 6: // 토요일인 경우
+  case 0: // 일요일인 경우
+    document.write("일요일...");
+    break;
+}
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_control_condition_06)
