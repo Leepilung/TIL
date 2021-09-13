@@ -1005,7 +1005,7 @@ EX )
     <li>옥수수</li>
 </ol>
 
-# 정릐 리스트(description list)
+# 정의 리스트(description list)
 
 정의 리스트(description list)는 용어와 그에 대한 정의를 모아놓은 리스트로 `<dl>`태그로 시작한다.
 
@@ -1021,3 +1021,166 @@ EX )
     <dt>상추</dt>
     <dd>- 국화과의 한해살이 또는 두해살이풀</dd>
 </dl>
+
+# HTML 테이블
+
+테이블(Table)이란 여러 종류의 데이터(data)를 보기 좋게 정리하여 보여주는 표를 의미한다.
+
+HTML에서는 `<table>`태그를 사용하여 이러한 테이블을 작성할 수 있다.
+
+`<table>`태그는 다음과 같은 태그들로 구성된다.
+
+1. `<tr>`태그는 테이블에서 열을 구분해 준다.
+2. `<th>`태그는각 열의 제목을 나타내며, 모든 내용은 자동으로 굵은 글씨에 가운데 정렬이 된다.
+3. `<td>`태그는 테이블의 열을 각각의 셀(cell)로 나누어 준다.
+
+## EX )
+
+<table style="width:100%">
+    <tr style="background-color:black">
+        <th>참치</th>
+        <th>고래</th>      
+    </tr>
+    <tr>
+        <td>상어</td>
+        <td>문어</td>
+    </tr>
+    <tr>
+        <td>오징어</td>
+        <td>고등어</td>
+    </tr>
+</table>
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_01)
+
+CSS의 border 속성을 이용하여 테이블에 테두리를 표현할 수 있다.
+
+border 속성값을 따로 명시하지 않으면, 해당 테이블은 언제나 빈 테두리를 가지게 된다.
+
+```html
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid black;
+  }
+</style>
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_03)
+
+실습링크에서 확인하면 테두리가 두 줄로 표현되는데 이를 한줄로 설정하려면 border-collapse 속성을 사용해야 한다.
+
+border-collapse 속성값을 collapse로 설정하면, 테이블의 테두리를 한 줄로 표현할 수 있다.
+
+```html
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+</style>
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_04)
+
+# 테이블의 열 합치기
+
+colspan 속성을 사용하면 테이블의 열(column)을 합칠 수 있다.
+
+## EX )
+
+```html
+<table style="width:100%">
+    <tr>
+        <td>참치</td
+        <td colspan="2">고래</td>
+    </tr>
+    <tr>
+        <td>상어</td>
+        <td>문어</td>
+        <td>꽁치</td>
+    </tr>
+</table>
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_05)
+
+# 테이블의 행 합치기
+
+rowspan 속성을 사용하면 테이블의 행(row)을 합칠 수 있다.
+
+## EX )
+
+<table style="width:100%">
+    <tr>
+        <td rowspan="2">상어</td>
+        <td>문어</td>        
+        <td>꽁치</td>
+    </tr>
+    <tr>
+        <td>고등어</td>        
+        <td>돌고래</td>
+    </tr>
+</table>
+
+```html
+<!-- 코드 -->
+<table style="width:100%">
+  <tr>
+    <td rowspan="2">상어</td>
+    <td>문어</td>
+    <td>꽁치</td>
+  </tr>
+  <tr>
+    <td>고등어</td>
+    <td>돌고래</td>
+  </tr>
+</table>
+```
+
+# 테이블의 열과 행 합치기
+
+colspan 속성과 rowspan 속성을 함께 사용하면, 더욱 복잡한 테이블도 표현할 수 있다.
+
+## EX )
+
+<table style="width:100%">
+    <tr>
+        <td colspan="6">1</td>
+    </tr>
+    <tr>
+        <td colspan="6">2</td>
+    </tr>
+    <tr>
+        <td rowspan="3">3</td>
+        <td rowspan="3">4</td>
+        <td colspan="2">5</td>
+        <td>6</td>
+        <td>7</td>
+    </tr>
+    <tr>
+        <td colspan="3">8</td>
+        <td>9</td>
+    </tr>
+    <tr>
+        <td colspan="4">10</td>
+    </tr>
+</table>
+
+# 테이블의 캡션(caption) 설정
+
+`<caption>`태그를 사용하면 테이블 상단에 제목이나 짧은 설명을 붙일 수 있다.
+
+## EX )
+
+<table style="width:100%">
+    <caption>해양 생물</caption>
+    <tr>
+        <td>참치</td>
+        <td>고래</td>
+        <td>날치</td>    
+    </tr>
+</table>
