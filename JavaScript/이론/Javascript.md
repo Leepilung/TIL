@@ -1843,3 +1843,51 @@ gugudan: for (var i = 2; i <= 9; i++) {
 위에선 어차피 continue만 사용해도 continue dan;으로 한것과 차이가 없지만
 
 continue gugudan;으로하면 이중 for문의 구조에서 안의 for문은 생략하고 처음의 for문만 반복작동한다.
+
+# break 문
+
+`break 문`은 루프 내에서 사용하여 해당 반복문을 완전히 종료시키고, 반복문 바로 다음에 위치한 실행문으로 프로그램의 흐름을 이동시킨다.
+
+즉, 루프 내에서 표현식의 판단 결과에 상관없이 반복문을 완전히 빠져나가고 싶을 때 사용한다.
+
+자바스크립트에서 `break 문`은 label문과 마찬가지로 다음과 같이 두 가지 형태로 사용할 수 있다.
+
+> 문법
+
+```js
+1. break;
+2. break 라벨이름;
+```
+
+## EX )
+
+다음 예제는 배열에서 특정값을 가지고 있는 인덱스를 출력하는 예제이다.
+
+```js
+var lectures = ["html", "css", "자바스크립트", "php"];
+var topic = "자바스크립트";
+
+for (var i = 0; i < lectures.length; i++) {
+  if (lectures[i] == topic) {
+    document.write(topic + " 과목은 " + (i + 1) + "번째 과목입니다.");
+    break; // 원하는 값을 찾은 후에는 더 이상 for 문을 반복하지 않고 빠져나감.
+  }
+}
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_control_etc_03)
+
+다음 예제는 라벨을 이용하여 구구단을 3단까지만 출력하는 예제이다.
+
+```js
+gugudan: for (var i = 2; i <= 9; i++) {
+  dan: for (var j = 1; j <= 9; j++) {
+    if (i > 3) break gugudan;
+    document.write(i + " * " + j + " = " + i * j + "<br>");
+  }
+}
+```
+
+continue와 다른점은 continue는 라벨을 어디에 지정하느냐에 따라 루프를 스킵하느냐 진행하느냐를 결정할 수 있었으나
+
+break는 어떤 라벨이름을 갖다 붙이던 조건문을 충족시키면 반복문이 종료되는것은 변하지 않는다.
