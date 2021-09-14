@@ -1891,3 +1891,172 @@ gugudan: for (var i = 2; i <= 9; i++) {
 continue와 다른점은 continue는 라벨을 어디에 지정하느냐에 따라 루프를 스킵하느냐 진행하느냐를 결정할 수 있었으나
 
 break는 어떤 라벨이름을 갖다 붙이던 조건문을 충족시키면 반복문이 종료되는것은 변하지 않는다.
+
+# 배열
+
+## 배열(array)이란?
+
+자바스크립트에서 배열(array)은 이름과 인덱스로 참조되는 정렬된 값의 집합으로 정의된다.(파이썬과 동일)
+
+배열을 구성하는 각각의 값을 배열 요소(element)라고 하며, 배열에서의 위치를 가리키는 숫자를 인덱스(index)라고 한다.(파이썬과 동일)
+
+자바스크립트에서 배열의 특징은 다음과 같다.
+
+1. 배열 요소의 타입이 고정되어 있지 않으므로, 같은 배열에 있는 배열 요소끼리의 타입이 서로 다를 수도 있다.
+2. 배열 요소의 인덱스가 연속적이지 않아도 되며, 따라서 특정 배열 요소가 비어 있을 수도 있다.
+3. 자바스크립트에서 배열은 Array 객체로 다뤄진다.
+
+# 배열의 생성
+
+자바스크립트에서 배열을 만드는 방법은 다음과 같다.
+
+> 문법
+
+```js
+1. var arr = [배열요소1, 배열요소2,...];          // 배열 리터럴을 이용하는 방법
+2. var arr = Array(배열요소1, 배열요소2,...);     // Array 객체의 생성자를 이용하는 방법
+3. var arr = new Array(배열요소1, 배열요소2,...); // new 연산자를 이용한 Array 객체 생성 방법
+```
+
+위의 세 가지 방법은 모두 같은 결과의 배열을 만들어 준다.
+
+배열 리터럴은 대괄호([]) 안에 배열 요소를 쉼표로 구분하여 나열하는 방법으로 생성한다.
+
+## EX )
+
+```js
+var arrLit = [1, true, "JavaScript"]; // 배열 리터럴을 이용하는 방법
+var arrObj = Array(1, true, "JavaScript"); // Array 객체의 생성자를 이용하는 방법
+var arrNewObj = new Array(1, true, "JavaScript"); // new 연산자를 이용한 Array 객체 생성 방법
+
+console.log(arrLit); // 1,true,JavaScript
+console.log(arrObj); // 1,true,JavaScript
+console.log(arrNewObj); // 1,true,JavaScript
+```
+
+# 배열의 참조
+
+자바스크립트에서 배열의 각 요소를 참조하고 싶을 때는 [] 연산자를 사용한다.
+
+> 문법
+
+```js
+배열이름[인덱스];
+```
+
+자바스크립트에서는 배열 요소의 개수를 배열의 길이라고 한다.
+
+이러한 배열의 길이는 length 프로퍼티에 자동으로 갱신된다.
+
+자바스크립트에서 인덱스는 언제나 0부터 시작한다.
+
+또한, 인덱스에는 음이 아닌 정수를 반환하는 임의의 표현식도 사용할 수 있다.
+
+이러한 인덱스에는 2<sup>32</sup>보다 작은 양수만을 사용할 수 있다.
+
+## EX )
+
+다음 예제는 배열을 생성하고, 생성된 배열에 요소를 추가하고 삭제하는 예제이다.
+
+```js
+var arr = ["JavaScript"]; // 요소가 하나뿐인 배열을 생성함.
+var element = arr[0]; // 배열의 첫 번째 요소를 읽어서 대입함.
+
+arr[1] = 10; // 배열의 두 번째 요소에 숫자 10을 대입함. 배열의 길이는 1에서 2로 늘어남.
+arr[2] = element; // 배열의 세 번째 요소에 변수 element의 값을 대입함. 배열의 길이는 2에서 3으로 늘어남.
+
+document.write("배열 arr의 요소에는 [" + arr + "]가 있습니다.<br>"); // 배열의 요소를 모두 출력함.
+document.write("배열 arr의 길이는 " + arr.length + "입니다.<br>"); // 배열의 길이를 출력함.
+
+delete arr[2]; // 배열의 세 번째 요소를 삭제함. 하지만 배열의 길이는 변하지 않음.
+
+document.write("배열 arr의 요소에는 [" + arr + "]가 있습니다.<br>"); // 배열의 요소를 모두 출력함.
+document.write("배열 arr의 길이는 " + arr.length + "입니다."); // 배열의 길이를 출력함.
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_array_basic_02)
+
+위의 예제에서 세 번째 실행문은 배열의 현재 길이보다 더 큰 인덱스에 요소를 저장하려고 한다.
+
+자바스크립트에서는 배열의 길이가 넘는 인덱스에 요소를 저장하는것을 허용한다.
+
+이때 배열의 길이는 자동으로 해당 인덱스까지 늘게된다.
+
+# 배열 요소의 추가
+
+자바스크립트에서 배열에 새로운 배열 요소를 추가하는 방법은 다음과 같다.
+
+> 문법
+
+```js
+1. arr.push(추가할 요소);         // push() 메소드를 이용하는 방법
+2. arr[arr.length] = 추가할 요소; // length 프로퍼티를 이용하는 방법
+3. arr[특정인덱스] = 추가할 요소; // 특정 인덱스를 지정하여 추가하는 방법
+```
+
+push() 메소드와 length 프로퍼티를 이용한 방법은 모두 배열의 제일 끝에 새로운 요소를 추가한다.
+
+## EX )
+
+```js
+var arr = [1, true, "Java"];
+
+arr.push("Script"); // push() 메소드를 이용하는 방법
+document.write(arr + "<br>"); // 1,true,Java,Script
+
+arr[arr.length] = 100; // length 프로퍼티를 이용하는 방법
+document.write(arr + "<br>"); // 1,true,Java,Script,100
+
+arr[10] = "자바스크립트"; // 특정 인덱스를 지정하여 추가하는 방법
+document.write(arr + "<br>"); // 1,true,Java,Script,100,,,,,,자바스크립트
+document.write(arr[7]); // undefined
+```
+
+위의 예제에서 주목할만한 부분은 특정 인덱스에 추가할 경우
+
+그 앞의 인덱스들의 값은 전부 undefined로 나온다는 부분이다.
+
+이렇게 인덱스에 대응하는 배열 요소가 없는 부분을 배열의 `홀(hole)`이라고 부른다.
+
+자바스크립트에서는 이러한 배열의 홀(hole)을 undefined 값을 가지는 요소처럼 취급한다.
+
+따라서 위의 예제에서처럼 배열의 홀을 참조하게 되면 undefined 값을 반환하게 된다.
+
+# 배열의 순회(iteration)
+
+배열의 모든 요소에 차례대로 접근하고 싶을 때는 for 문과 같은 반복문을 사용하여 접근할 수 있다.
+
+## EX )
+
+```js
+var arr = [1, true, "JavaScript"];
+var result = "<table><tr>";
+
+for (var idx in arr) {
+  result += "<td>" + arr[idx] + "</td>";
+}
+result += "</tr></table>";
+
+document.write(result);
+```
+
+[HTML을 활용한 실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_array_basic_04)
+
+색다른 활용방법인듯.
+
+# Array 객체
+
+자바스크립트에서 배열(array)은 정렬된 값들의 집합으로 정의되며, Array 객체로 다뤄진다.
+
+또한, 자바스크립트는 사용자가 배열과 관련된 작업을 손쉽게 할 수 있도록 다양한 메소드도 제공하고 있다.
+
+## EX )
+
+```js
+var arr = new Array(10, "문자열", false);
+
+console.log(typeof arr);   // object
+console.log(typeof arr[0]; // number
+console.log(typeof arr[1]; // string
+console.log(typeof arr[2]; // boolean
+```
