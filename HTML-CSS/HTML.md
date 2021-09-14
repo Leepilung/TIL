@@ -1184,3 +1184,58 @@ colspan 속성과 rowspan 속성을 함께 사용하면, 더욱 복잡한 테이
         <td>날치</td>    
     </tr>
 </table>
+
+# HTML 요소의 타입
+
+HTML의 모든 요소는 해당 요소가 웹 브라우저에 어떻게 보이는가를 결정짓는 display 속성을 가진다.
+
+대부분의 HTML 요소는 이러한 display 속성값으로 다음 두 가지 값 중 하나를 가지게 된다.
+
+1. 블록(block)
+2. 인라인(inline)
+
+# 블록(block) 타입의 요소
+
+display 속성값이 블록(block)인 요소는 언제나 새로운 라인(line)에서 시작하며, 해당 라인의 모든 너비를 차지한다.
+
+## EX )
+
+<p style="border: 3px solid red">
+    p요소는 display 속성값이 블록인 요소입니다.
+</p>
+
+> 포인트
+
+`<p>`, `<div>`, `<h>`, `<ul>`, `<ol>`, `<form>`요소는 display 속성값이 블록(block)인 대표적인 요소이다.
+
+# `<div>`요소
+
+`<div>`요소는 다른 HTML 요소들을 하나로 묶는 데 자주 사용되는 대표적인 블록(block) 요소이다.
+
+`<div>`요소는 주로 여러 요소들의 스타일을 한 번에 적용하기 위해 사용된다.
+
+## EX )
+
+<div style="background-color:lightgrey; color:green; text-align:center">
+    <h1>div요소를 이용한 스타일 적용</h1>
+    <p>이렇게 div요소로 여러 요소들을 묶은 다음에 style 속성과 클래스 등을 이용하여
+    한 번에 스타일을 적용할 수 있다.</p>
+</div>
+
+# 인라인(inline) 타입의 요소
+
+display 속성값이 인라인(inline)인 요소는 새로운 라인(line)에서 시작하지 않는다.
+
+또한, 요소의 너비도 해당 라인 전체가 아닌 해당 HTML 요소의 내용(content)만큼만 차지한다.
+
+`<span>`, `<a>`, `<img>`요소는 display 속성값이 인라인(inline)인 대표적인 요소들이다.
+
+## `<span>`요소
+
+`<span>`요소는 텍스트(text)의 특정 부분을 묶는 데 자주 사용되는 인라인(inline) 요소이다.
+
+## EX )
+
+<p>
+    <span style="background-color:grey; color:orange">span태그</span>는 display 속성값이 인라인인 요소입니다.
+</p>
