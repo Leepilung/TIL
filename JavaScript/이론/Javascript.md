@@ -1765,3 +1765,81 @@ for (var value of arr) {
   console.log(value);
 }
 ```
+
+# 루프의 제어
+
+일반적으로 표현식의 검사를 통해 루프로 진입하면, 다음 표현식을 검사하기 전까지 루프 안에 있는 모든 실행문을 실행한다.
+
+하지만 `continue 문`과 `break 문`은 이러한 일반적인 루프의 흐름을 사용자가 직접 제어할 수 있게 해준다.
+
+또한 `label 문`을 사용하면 continue 문과 break 문의 동작이 프로그램의 흐름을 특정 영역으로 이동시킬 수 있다.
+
+# label 문
+
+label 문은 프로그램 내의 특정 영역을 식별할 수 있도록 해주는 식별자이다.
+
+label 문을 사용하면 continue 문과 break 문의 동작이 프로그램의 흐름을 특정 영역으로 이동시킬 수 있다.
+
+> 문법
+
+```js
+label:
+식별하고자 하는 특정 영역
+```
+
+## EX )
+
+다음 예제에서 라벨인 arrIndex는 그 이후에 나오는 for 문 전체를 가리키는 식별자로 사용되고 있다.
+
+```js
+arrIndex: for (var i in arr) {
+  document.write(i);
+}
+```
+
+# continue 문
+
+continue 문은 루프 내에서 사용하여 해당 루프의 나머지 부분을 건너뛰고, 바로 다음 표현식의 판단으로 넘어가게 한다.
+
+보통 반복문 내에서 특정 조건에 대한 처리를 제외하고자 할 때 자주 사용된다.
+
+자바스크립트에서 continue 문은 다음과 같이 두 가지 형태로 사용할 수 있다.
+
+```js
+1. continue;
+2. continue 라벨이름;
+```
+
+## EX )
+
+다음 예제는 1부터 100까지의 정수 중에서 3의 배수를 제외하고 출력하는 예제이다.
+
+```js
+var exceptNum = 3;
+
+for (var i = 0; i <= 100; i++) {
+  if (i % exceptNum == 0)
+    // exceptNum의 배수는 출력하지 않음.
+    continue;
+  document.write(i + " ");
+}
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_control_etc_01)
+
+다음 예제는 라벨을 이용하여 구구단의 값이 홀수인 경우에만 출력하는 예제이다.
+
+```js
+gugudan: for (var i = 2; i <= 9; i++) {
+  dan: for (var j = 1; j <= 9; j++) {
+    if ((i * j) % 2 == 0) continue dan;
+    document.write(i + " * " + j + " = " + i * j + "<br>");
+  }
+}
+```
+
+위 예제는 continue 라벨; 을 함으로써 continue를 만났을때 특정 라벨부터 반복하게끔 한다.
+
+위에선 어차피 continue만 사용해도 continue dan;으로 한것과 차이가 없지만
+
+continue gugudan;으로하면 이중 for문의 구조에서 안의 for문은 생략하고 처음의 for문만 반복작동한다.
