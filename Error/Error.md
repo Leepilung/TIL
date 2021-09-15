@@ -62,10 +62,6 @@ app.use(express.static(__dirname + "/static"));
 
 package.json 파일에서 main 경로가 제대로 기입되있는지, script부분 경로가 제대로 되있는지 확인하면 된다.
 
-# internal/modules/cjs/loader.js:905 throw err; 에러
+# Cannot find module
 
-발생원인이 무엇인지 특정되진 않았음. 해결방법도 특정되지는 않았으나
-
-상당히 자주 뜨는 에러인데 해결방법이 경로의 재설정으로 해결되는 경우가 많았음.
-
-차후 또 발생시 내용 수정으로 갱신할 필요가 있음.
+아주 간단한 에러. 모듈 경로가 잘못 지정되면 출력됨. 어차피 ./ ../와 같이 입력하면 자동으로 현재 파일 위치를 기준으로 알아서 선택가능함

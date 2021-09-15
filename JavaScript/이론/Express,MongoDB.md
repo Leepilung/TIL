@@ -99,13 +99,103 @@ http://localhost:3000/static/css/style.css
 app.use("/static", express.static(__dirname + "/public"));
 ```
 
+# Express 연결부분
+
+그냥 Express 패키지만 설치하고
+
+```js
+const express = require("express");
+const app = express();
+```
+
+다음과 같은 기본 문법만 사용하면 연결된다.
+
+## 기본 라우팅과 연결되는 부분
+
+express.Router 클래스를 이용한 모듈식 마운팅 핸들러 작성을 사용하려면 router 폴더 내의 기본 라우팅 파일에서 다음과 같은 구문을 파일 상단에 먼저 사용해야함
+
+```js
+const express = require("express");
+const router = express.Router();
+```
+
+그리고 해당 파일에서 특정 라우트들을 정의한다음 맨아래 추가한다.
+
+```js
+module.exports = router;
+```
+
+# MongoDB와 연결부분
+
+사실상 class문을 이용한 템플릿 수준(by 범준)
+
+별도로 src / db / connection.js 와 같은 형태로 파일을 만들어주고
+
+파일에 다음과 같이 입력해주면 된다.
+
+```js
+// src/db/connection.js 파일
+// 몽고DB와 연결하는 문법
+const { MongoClient } = require("mongodb");
+// 몽고 DB의 기본 url주소
+const URL = "mongodb://localhost:27017";
+// DB 이름. 별도로 안만들면 아래 이름으로 생성됨.
+const DB_NAME = "~~~~~";
+
+// DB와 연결하는 부분 connetc(), db()를 클래스화시켜서 나눔.
+class DBConnection {
+  constructor() {
+    this.client = new MongoClient(URL);
+  }
+
+  // DB와 연결 하는 부분. 연결 성공시 console.log 출력
+  connect() {
+    return this.client.connect().then(() => {
+      console.log("Connected to MongoDB");
+    });
+  }
+
+  // 특정 DB_NAME을 가진 컬렉션과 연결시키는 부분.
+  db() {
+    return this.client.db(DB_NAME);
+  }
+}
+
+// 다른 폴더에서 db/connection 파일을 require하면 실행되도록
+// 모듈로 DBConnection 클래스를 실행시키도록 엮었음.
+module.exports = new DBConnection();
+```
+
+이렇게 별도의 파일형태로 만들어서 다른 파일에서 모듈형태로 불러와 사용할 경우
+
+보통 라우터 폴더에서 짜는 기본 라우팅에 다음과 같은 구문을 추가해줘야 한다.
+
+```js
+const connection = require("../db/connection"); // 대략적인 경로. 폴더의 상대적 위치에 맞게 입력을 다시할 필요가 있음.
+```
+
+그 다음 기본 라우팅등에서 db와 연결하는 문법을 사용하면 된다.
+
+간단한 예로
+
+```js
+router.get("/memos", (req, res) => {
+  // db 연결 명령어(db/connection 파일)
+  const db = connection.db();
+  // memos 컬렉션 연결
+  const memoCollection = db.collection("memos");
+```
+
+와 같이 사용해주면 된다. 위에서 router.get의 형태로 사용한건 위에 express 부분에서 정리했으니 참고하자.
+
 # 라우팅
 
-라우팅은 URI(또는 경로) 및 특정한 HTTP 요청 메소드(GET, POST 등)인 특정 엔드포인트에 대한 클라이언트 요청에 애플리케이션이 응답하는 방법을 결정하는 것을 말한다.
+라우팅은 URI(또는 경로) 및 특정한 HTTP 요청 메소드(GET, POST 등)인 특정 `엔드포인트`에 대한 클라이언트 요청에 애플리케이션이 응답하는 방법을 결정하는 것을 말한다.
 
 > 엔드포인트란?
 
-메소드는 같은 URL들에 대해서도 다른 요청을 하게끔 구별하게 해주는 항목이 바로 `'Endpoint'`다.
+```mm
+메소드는 같은 URL들에 대해서도 다른 요청을 하게끔 구별하게 해주는 항목이 바로 'Endpoint'다.
 
 간단한 예로
 
@@ -113,7 +203,40 @@ HTTP 메소드가 GET,PUT,DELETE 여도 URI(자원)는 전부 같은 경우가 �
 
 그러나 GET, PUT, DELETE 메소드에 따라 다른 요청을 하는 것이기 때문에 URI가 같아도 다르게 처리되는 것이다.
 
-결국 `Endpoint`란 API가 서버에서 자원(resource)에 접근할 수 있도록 하는 URL이라고 볼 수 있다.
+결국 'Endpoint'란 API가 서버에서 자원(resource)에 접근할 수 있도록 하는 URL이라고 볼 수 있다.
+```
+
+---
+
+각 라우트는 하나 이상의 핸들러 함수를 가질 수 있으며, 이러한 함수는 라우트가 일치할 때 실행된다.
+
+라우트 정의에는 다음과 같은 구조가 필요하다.
+
+```js
+app.METHOD(PATH, HANDLER);
+```
+
+- `app`은 `express의 인스턴스`이다.
+- `METHOD`는 `HTTP 요청 메소드`다.
+- `PATH`는 `서버에서의 경로`에 해당한다.
+- `HANDLER`는 `라우트가 일치할 때 실행되는 함수`부분이다.
+
+다음 코드는 매우 기본적인 라우트의 예이다.
+
+```js
+var express = require("express");
+var app = express();
+
+// 홈페이지에 GET 요청이 있을 때 "hello world"로 응답한다.
+// URL이 '/'인 것은 홈페이지를 의미한다.
+app.get("/", function (req, res) {
+  res.send("hello world");
+});
+```
+
+# 라우트 메소드
+
+---
 
 # 서버 구현 부분
 
