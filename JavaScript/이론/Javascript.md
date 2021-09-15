@@ -2266,3 +2266,295 @@ document.write(isArray(arr)); // 4. true
 `indexOf() 메소드`는 인수로 전달받은 문자열을 해당 문자열에서 찾지 못하면, 언제나 -1을 반환한다.
 
 따라서 만약 변수 arr가 배열이라면 "Array"라는 부분 문자열을 언제나 포함하고 있을 것이므로, 네 번째(4.)의 결과는 언제나 true를 반환하게 된다.
+
+# 함수
+
+자바스크립트에서 객체와 더불어 가장 중요한 파트가 아닌가 생각된다. 여러번 복습하자
+
+## 함수(function)란?
+
+함수(function)란 하나의 특별한 목적의 작업을 수행하도록 설계된 독립적인 블록을 의미한다.
+
+이러한 함수는 필요할 때마다 호출하여 해당 작업을 반복해서 수행할 수 있다.
+
+## EX )
+
+```js
+function addNum(x, y) {
+  return x + y;
+}
+console.log(addNum(2, 3));
+```
+
+> 블록이란?
+
+자바스크립트에서 `블록`이란 함수나 실행문의 중괄호({})로 묶여진 부분을 가리킨다.
+
+# 자바스크립트 함수
+
+자바스크립트에서는 함수도 하나의 타입(datatype)에 불과하다.
+
+따라서 함수를 변수에 대입하거나, 함수에 프로퍼티를 지정하는 것도 가능하다.
+
+또한, 자바스크립트 함수는 다른 함수 내에 중첩되어 정의될 수도 있다.
+
+# 함수의 정의
+
+자바스크립트에서 함수의 정의는 function 키워드로 시작되며, 다음과 같은 구성요소를 가진다.
+
+1. 함수의 이름
+2. 괄호 안에 쉼표(,)로 구분되는 함수의 매개변수(parameter)
+3. 중괄호({})로 둘러싸인 자바스크립트 실행문
+
+> 문법
+
+```js
+function 함수이름(매개변수1, 매개변수2,...) {
+    함수가 호출되었을 때 실행하고자 하는 실행문;
+}
+```
+
+`함수 이름(function name)`은 함수를 구분하는 식별자(identifier)이다.
+
+`매개변수(parameter)`란 함수를 호출할 때 인수(argument)로 전달된 값을 함수 내부에서 사용할 수 있게 해주는 변수이다.
+
+## EX )
+
+```js
+// addNum라는 이름의 함수를 정의하는 예제
+
+function addNum(x, y) {
+  // x, y는 이 함수의 매개변수임.
+  console.log(x + y);
+}
+addNum(2, 3); // addNum() 함수에 인수로 2와 3을 전달하여 호출함.
+```
+
+인수와 매개변수는 개수뿐만 아니라 순서 또한 매우 중요하게 적용된다.
+
+> 인수란?
+
+함수의 `인수(argument)`란 함수가 호출될 때 함수로 값을 전달해주는 변수나 상수를 의미한다.
+
+# 반환(return)문
+
+반환문을 통해 호출자는 함수에서 실행된 결과를 전달받을 수 있다.
+
+반환문은 함수의 실행을 중단하고, return 키워드 다음에 명시된 표현식의 값을 호출자에게 반환한다.
+
+반환문은 배열이나 객체를 포함한 모든 타입의 값을 반환할 수 있다.
+
+## EX )
+
+```js
+function multiNum(x, y) {
+  return x * y; // x와 y를 곱한 결과를 반환함.
+}
+var num = multiNum(3, 4); // multiNum() 함수가 호출된 후, 그 반환값이 변수 num에 저장됨.
+document.write(num);
+```
+
+# 함수의 호출
+
+정의된 함수는 프로그램 내에서 호출되어야 비로소 실행된다.
+
+일반적인 함수의 호출은 함수의 정의문과 같은 형태로 호출할 수 있다.
+
+> 정의
+
+```js
+function addNum(x, y) {
+  return x + y;
+}
+```
+
+> 호출
+
+```js
+var sum = addNum(3, 5); // 함수 addNum()을 호출하면서, 인수로 3과 5를 전달합니다.
+
+// 함수의 호출이 끝난 뒤에는 그 반환값을 변수 sum에 대입합니다.
+```
+
+위의 예제에서 인수(argument)로 전달된 숫자 3과 5는 함수에서 정의된 매개변수(parameter) x와 y에 각각 대입된다.
+
+# 값으로서의 함수
+
+자바스크립트에서 함수는 문법적 구문일뿐만 아니라 값(value)이기도 하다.
+
+함수가 변수에 대입될 수도 있으며, 다른 함수의 인수로 전달될 수도 있다.
+
+## EX )
+
+```js
+function sqr(x) {
+  // 제곱의 값을 구하는 함수 sqr를 정의함.
+  return x * x;
+}
+var sqrNum = sqr; // 변수 sqrNum에 함수 sqr을 대입함.
+
+document.write(sqr(4) + "<br>"); // 함수 sqr을 호출함.
+document.write(sqrNum(4)); // 변수 sqrNum를 함수처럼 호출함.
+```
+
+# 변수의 유효범위
+
+자바스크립트에서 객체나 함수는 모두 변수(variable)이다.
+
+변수의 유효 범위(scope)란 해당 변수가 접근할 수 있는 변수, 객체 그리고 함수의 집합을 의미한다.
+
+자바스크립트에서 변수는 유효 범위에 따라 다음과 같이 구분한다.
+
+1. 지역 변수(local variable)
+2. 전역 변수(global variable)
+
+# 지역 변수
+
+지역 변수(local variable)란 함수 내에서 선언된 변수를 가리킨다.
+
+이러한 지역 변수는 변수가 선언된 함수 내에서만 유효하며, 함수가 종료되면 메모리에서 사라진다.
+
+함수의 매개변수 또한 함수 내에서 정의되는 지역 변수처럼 동작한다.
+
+```js
+function localNum() {
+  var num = 10; // 지역 변수 num에 숫자 10을 대입함.
+
+  document.write(
+    "함수 내부에서 변수 num의 타입은 " + typeof num + "입니다.<br>",
+  ); // number
+}
+localNum(); // 함수 localNum()을 호출함.
+document.write(
+  "함수의 호출이 끝난 뒤 변수 num의 타입은 " + typeof num + "입니다.",
+); // undefined
+```
+
+자바스크립트에서는 선언되지 않은 변수를 사용하려고 하거나 접근하려고 하면 오류를 발생한다.
+
+하지만 선언되지 않은 변수에 대한 typeof 연산자의 결괏값은 undefined 값을 반환한다.
+
+# 전역 변수
+
+전역 변수(global variable)란 함수의 외부에서 선언된 변수를 가리킨다.
+
+전역 변수(global variable)란 함수의 외부에서 선언된 변수를 가리킵니다.
+
+이러한 전역 변수는 프로그램의 어느 영역에서나 접근할 수 있으며, 웹 페이지가 닫혀야만 메모리에서 사라진다.
+
+## EX )
+
+```js
+var num = 10; // 전역 변수 num을 선언함.
+
+function globalNum() {
+  document.write("함수 내부에서 변수 num의 값은 " + num + "입니다.<br>"); // 10
+
+  num = 20; // 전역 변수 num의 값을 함수 내부에서 변경함.
+}
+globalNum(); // 함수 globalNum()을 호출함.
+document.write("함수의 호출이 끝난 뒤 변수 num의 값은 " + num + "입니다."); //
+
+20;
+```
+
+또한, 전역 변수와 같은 이름의 지역 변수를 선언하면, 해당 블록에서는 해당 이름으로 지역 변수만을 호출할 수 있다.
+
+```js
+var num = 10; // 전역 변수 num을 선언함.
+
+function globalNum() {
+  var num = 20; // 같은 이름의 지역 변수 num을 선언함.
+
+  document.write("함수 내부에서 변수 num의 값은 " + num + "입니다.<br>"); // 20
+}
+globalNum(); // 함수 globalNum()을 호출함.
+document.write("함수의 호출이 끝난 뒤 변수 num의 값은 " + num + "입니다."); // 10
+```
+
+# 함수의 유효 범위(function scope)
+
+대부분의 프로그래밍 언어에서는 블록 내에서 정의된 변수를 블록 외부에서는 접근할 수 없다.
+
+이러한 블록을 기준으로 하는 유효 범위를 블록 단위의 유효 범위라고 한다.
+
+하지만 자바스크립트는 다른 언어와는 달리 함수를 블록 대신 사용한다.
+
+자바스크립트에서 함수는 자신이 정의된 범위 안에서 정의된 모든 변수 및 함수에 접근할 수 있다.
+
+`'전역 함수'`는 모든 전역 변수와 전역 함수에 접근할 수 있다.
+
+반면, 다른 함수 내에 정의된 `'내부 함수'`는 그 함수의 부모 함수(parent function)에서 정의된 모든 변수 및 부모 함수가 접근할 수 있는 모든 다른 변수까지도 접근할 수 있다.
+
+## EX )
+
+```js
+// x, y, name을 전역 변수로 선언함.
+var x = 10,
+  y = 20;
+// sub()를 전역 함수로 선언함.
+function sub() {
+  return x - y; // 전역 변수인 x, y에 접근함.
+}
+document.write(sub() + "<br>");
+// parentFunc()을 전역 함수로 선언함.
+function parentFunc() {
+  var x = 1,
+    y = 2; // 전역 변수와 같은 이름으로 선언하여 전역 변수의 범위를 제한함.
+  function add() {
+    // add() 함수는 내부 함수로 선언됨.
+    return x + y; // 전역 변수가 아닌 지역 변수 x, y에 접근함.
+  }
+  return add();
+}
+document.write(parentFunc());
+```
+
+[실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_function_functionScope_01)
+
+# 함수 호이스팅(hoisting)
+
+자바스크립트에서 함수의 유효 범위라는 것은 함수 안에서 선언된 모든 변수는 함수 전체에 걸쳐 유효하다는 의미이다.
+
+그런데 이 유효 범위의 적용이 변수가 선언되기 전에도 똑같이 적용된다. 이러한 자바스크립트의 특징을 `함수 호이스팅(hoisting)`이라고 한다.
+
+즉, 자바스크립트 함수 안에 있는 모든 변수의 선언은 함수의 맨 처음으로 이동된 것처럼 동작한다.
+
+## EX )
+
+```JS
+var globalNum = 10;     // globalNum을 전역 변수로 선언함.
+
+function printNum() {
+    document.write("지역 변수 globalNum 선언 전의 globalNum의 값은 " + globalNum + "입니다.<br>"); // ①
+    var globalNum = 20; // globalNum을 지역 변수로 선언함. // ②
+    document.write("지역 변수 globalNum 선언 후의 globalNum의 값은 " + globalNum + "입니다.<br>");
+}
+printNum();
+```
+
+예제 ①의 시점에서는 변수 globalNum가 전역 변수를 가리킨다고 생각하기 쉽다.
+
+하지만 자바스크립트 내부에서는 함수 호이스팅에 의해 다음과 같이 코드가 변경되어 처리된다.
+
+호이스팅 후의 예제
+
+```JS
+ar globalNum = 10;
+
+function printNum() {
+    var globalNum; // 함수 호이스팅에 의해 변수의 선언 부분이 함수의 맨 처음 부분으로 이동됨.
+    document.write("지역 변수 globalNum 선언 전의 globalNum의 값은 " + globalNum + "입니다.<br>");
+    globalNum = 20;
+    document.write("지역 변수 globalNum 선언 후의 globalNum의 값은 " + globalNum + "입니다.<br>");
+}
+printNum();
+```
+
+예제 ①의 시점에서는 globalNum라는 지역 변수가 선언만 되어 있고, 아직 초기화만 안 된 상태이다.
+
+따라서 이때 globalNum 변수에 접근하면 아직 초기화되지 않은 변수에 접근했으므로, undefined 값을 반환하게 된다.
+
+실제로 변수가 초기화되는 시점은 원래 코드에서 변수가 선언된 ②의 시점이다.
+
+자바스크립트에서는 함수 호이스팅이 자동으로 수행되지만, 항상 함수 블록의 첫 부분에 변수를 선언하는 것이 좋다.
