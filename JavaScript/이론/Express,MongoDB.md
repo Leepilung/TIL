@@ -234,7 +234,54 @@ app.get("/", function (req, res) {
 });
 ```
 
-# 라우트 메소드
+# 라우트분리
+
+라우트를 분리시키면 분리시키는 파일을 다음과 같이 구성한다고 할 경우
+
+```js
+router / test.js;
+```
+
+test.js파일을 다음과 같이 짠다고 가정해보자.
+
+```js
+// express.Router 클래스를 이용한 모듈식 마운팅 핸들러 작성을 위해 사용
+const router = require("express").Router();
+
+// 홈페이지 라우팅
+router.get("/test", (req, res) => {
+  res.send("어이가 없네요");
+});
+
+router.get("/write", (req, res) => {
+  res.send("write test");
+});
+```
+
+이럴 경우 분리시킨 라우팅들을 모듈화시켜 다른파일에서 불러올수있게 해야하기 때문에 무조건 파일 하단에 다음과 같이 기재해 줘야 한다.
+
+```js
+// 라우터 모듈 마운트
+module.exports = router;
+```
+
+그리고 가장 애먹었던 부분은 여기부터다.
+
+이제 다른 파일 ex) index.js와 같은 파일에서 해당 라우터 모듈(test.js)을 사용하려면 다음과 같이 해당 모듈을 로드시키는 명령어또한 사용해야한다.
+
+```js
+const router = require("./src/router/test");
+app.use("/test", router); // 이부분이 가장 중요. /test 링크를 무조건 껴넣어야 해당 라우트로 연결된다.
+// ex ) test.js의 write 라우트로 이동시 localhost:5000/write로 하면 절대안나오고 localhost:5000/test/write로 이동해야함.
+```
+
+근대 문제는 app.use('/test', rotuer) 이부분이다.
+
+여기서 주의할점은 로컬서버로 연결(localhost:5000)해서 출력되는 홈페이지에서 저 라우트로 접근하려면 저기 app.use에 기재해놓은 url을 통해야 한다는 것
+
+계속 삽질했던 부분이 저 url을 거치지않고 출력하려고 했기 때문에 파일 로드고 뭐고 아무것도 안됐던것.
+
+삽질한 시간이 길지만 라우팅에 대해 더 이해한 부분이 많으니 복습시 참고하자.
 
 ---
 
