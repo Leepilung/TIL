@@ -338,6 +338,10 @@ data: { param: 'value', param2: 'value2' },
    sudo apt install python3-venv 를 입력하면 끝이다.
 3. 가상환경 세팅 ---> 여기부턴 기존 SW 정글 사이트의 안내를 따라하면 된다.
 
+## 종료 방법
+
+deactivate -> 치면 바로 꺼짐.
+
 # 웹스크래핑
 
 웹스크래핑이란 웹 페이지에서 우리가 원하는 부분의 데이터를 수집해오는 것을 뜻한다.
@@ -389,3 +393,269 @@ Ubuntu에 이미 MongoDB를 설치해놓고 SW jungle의 자료를 연습하면�
 ## 해결법
 
 윈도우의 MongoDB를 지우면 되는 아주 간단한 문제였음.
+
+우선 mongodb 인스턴스 활성화부터 시켜야함
+
+```
+sudo mongod --dbpath ~/data/db
+```
+
+그 후 pymongo 모듈을 파일에서 import 시켰을 경우 파일 실행시 알아서 가상환경 실행됨.(아니면 수정)
+
+# 기본 연결
+
+파일에 아래와 같이 명시하면서 시작함.
+
+```py
+from pymongo import MongoClient           # pymongo를 임포트 하기(패키지 인스톨 먼저 해야함)
+client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트를 기본포트로 잡음
+db = client.dbsparta                      # 'dbsparta'라는 이름의 db를 만든다.(없어도 만듦)
+```
+
+# CURD
+
+## Create
+
+> 기본 문법
+
+```py
+db.컬렉션이름.insert_one({ '입력할 값의 이름' : '데이터' })
+```
+
+딕셔너리의 형태로 자료를 저장함.
+
+> 예제
+
+```py
+# MongoDB에 insert 하기
+
+# 'users'라는 collection에 {'name':'bobby','age':21}를 넣는다.
+db.users.insert_one({'name':'bobby','age':21})
+db.users.insert_one({'name':'kay','age':27})
+db.users.insert_one({'name':'john','age':30})
+```
+
+# Read
+
+> 기본 문법
+
+```py
+# MongoDB에서 데이터 모두 보기
+all_users = list(db.users.find({}))
+
+# 참고) MongoDB에서 특정 조건의 데이터 모두 보기
+same_ages = list(db.users.find({'age':21}))
+```
+
+> 예제
+
+```py
+print(all_users[0])         # 0번째 결과값을 보기
+print(all_users[0]['name']) # 0번째 결과값의 'name'을 보기
+
+for user in all_users:      # 반복문을 돌며 모든 결과값을 보기
+    print(user)
+
+# 특정 결과 값만 뽑아서 보기
+user = db.users.find_one({'name':'bobby'})
+print(user)
+
+# 그 중 특정 키 값을 빼고 보기
+user = db.users.find_one({'name':'bobby'},{'_id':False})
+print(user)
+```
+
+# Update
+
+> 기본 문법
+
+```py
+db.people.update_many(찾을조건,{ '$set': 어떻게바꿀지 })
+```
+
+> 예제
+
+```py
+db.users.update_one({'name':'bobby'},{'$set':{'age':19}})
+
+user = db.users.find_one({'name':'bobby'})
+print(user)
+```
+
+# Delete
+
+> 기본 문법
+
+```py
+db.컬렉션명.delete_one({'지울 자료(딕셔너리)':'지울 자료'})
+```
+
+> 예제
+
+```py
+db.users.delete_one({'name':'bobby'})
+
+user = db.users.find_one({'name':'bobby'})
+print(user)
+```
+
+# pymongo CRUD 요약
+
+```py
+# 저장 - 예시
+doc = {'name':'bobby','age':21}
+db.users.insert_one(doc)
+
+# 한 개 찾기 - 예시
+user = db.users.find_one({'name':'bobby'})
+
+# 여러개 찾기 - 예시 ( _id 값은 제외하고 출력)
+same_ages = list(db.users.find({'age':21},{'_id':False}))
+
+# 바꾸기 - 예시
+db.users.update_one({'name':'bobby'},{'$set':{'age':19}})
+
+# 지우기 - 예시
+db.users.delete_one({'name':'bobby'})
+```
+
+# Flask
+
+flask란?
+
+파이썬으로 쓰인 웹 프레임워크로, 서버를 구동하는 데 필요한 여러 기능들을 제공한다.
+111111111111111111111
+
+## 설치
+
+python3 -m venv .venv로 가상 환경을 만들고 .venv/scripts/activate로 가상 환경을 활성화시킨다.
+
+source /home/ek3434/TIL/.venv/bin/activate 등의 명령어로 가상환경 실행 후 인터프리터에서 flask 패키지 설치해주기.
+
+# Flask 기본 폴더 구조
+
+Flask 서버를 만들 때에는 항상 프로젝트 폴더 안에 static, templates 폴더와 app.py 파일을 만들고 시작해야한다.
+
+static -> 주로 CSS-파일이나 image 파일들을 담는 역할을 한다.
+
+templates -> 주로 html파일을 담을 때 사용.
+
+# flask 시작 코드
+
+```py
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+   return 'This is Home!'
+
+if __name__ == '__main__':
+   app.run('0.0.0.0',port=5000,debug=True)
+```
+
+기본 홈페이지 라우트. 자바스크립트와 Express 활용했을때랑 기본 구조는 비슷. 문법만 다른것같다.
+
+# Flask
+
+# Flask HTML, 이미지 파일 불러오기
+
+html 파일은 app.py에서 풀러온다. html 파일은 templates 폴더안에 넣어두고 불러와야하며
+
+다음과 같은 구문을 추가해줘야 한다.
+
+```py
+# flask 시작 코드
+
+from flask import Flask, render_template # html 파일 불러올 시 사용해줘야함.
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+   return render_template('index.html')
+
+if __name__ == '__main__':
+   app.run('0.0.0.0', port=5000, debug=True)
+```
+
+`render_template`는 flask 프레임워크에 구현되어있는 내장함수이다.
+
+홈페이지 라우팅에 있어서 render_template로 index.html파일을 전송한다고 해석하면 될 것 같다.
+
+다음은 html 파일 내 이미지 파일 불러오기
+
+static 폴더는 html 파일 외에 이미지, css 파일과 같은 파일을 담아두는 역할을 한다.
+
+근대 혼자 실습해본 결과 일반적인 경로도 되긴 하는것 같다.
+
+```html
+<!-- 일반적인 경로를 이용하는 경우-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>서버를 만들었다!</h1>
+    <img src="../static/rome.jpg" />
+    <!-- 이 부분이 일반적으로 이미지 파일을 html 파일안에 추가할 때의 경로-->
+  </body>
+</html>
+```
+
+허나 flask에서 띄울 때는 flask에서 미리 정의된 방법으로 경로를 입력해주어야 한다.(일반도 잘되는것 같은데 그렇다고 하니 가급적 이 방법을 쓰자)
+
+static 폴더 안의 rome.jpg파일의 경로는 다음과 같이 잡아줘야 한다.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>서버를 만들었다!</h1>
+    <img src="{{ url_for('static', filename='rome.jpg') }}" />
+    <!-- 이 부분이 falsk 내에서 이미지 파일 링크하는 방법-->
+  </body>
+</html>
+```
+
+위와 같이 적으면 flask가 html 정보를 보내줄 때 {{ }} 안의 내용을 상황에 맞게 바꿔 보내준다고 한다. 따옴표와 중괄호의 위치에 주의하자.
+
+app.py를 실행하고 flask로 연동시킨 로컬서버(http://localhost:5000/)에 들어가보면 개발자 도구 -> Elements에 가서 보면 아래처럼 들어가 있다고 한다.
+
+```html
+<img src="/static/rome.jpg" />
+```
+
+# 나홀로 링크 메모장 만들어보기
+
+- 완성작을 보면서 어떤 기능이 필요한지 생각해봅시다! [링크](http://spartacodingclub.shop/)
+
+1. 페이지가 로딩되고 나면 DB에 저장되어 있는 기사 정보를 받아와 카드로 만들어 붙여준다.
+   - 페이지 로딩 후 함수가 실행되게 한다.
+   - 서버로 추가 정보 없이 GET 요청을 보낸다.
+   - 서버는 DB에서 모든 기사의 제목, 설명, URL, 이미지URL, 코멘트 받아와 넘겨준다.
+   - 받아온 정보로 각 기사에 대하여 카드를 만들어 붙인다.
+2. 포스팅 버튼을 누르면 입력한 url과 코멘트를 받아 DB에 제목, 설명, 이미지 URL까지 다 저장하고 페이지 새로고침한다. → 페이지 새로 로딩되면서 추가된 카드까지 나온다.
+   - 포스팅 버튼을 눌러 함수가 실행되게 한다.
+   - url과 코멘트를 잘 입력했는지 확인한다.
+   - 입력 받은 url과 코멘트를 서버로 POST 요청을 보내준다.
+   - 서버에서 url과 코멘트를 받아 제목, 설명 이미지 URL을 크롤링한다.
+   - 5개 정보를 DB에 도큐먼트로 저장한다.
+   - 성공 메시지를 반환하면 페이지를 새로고침한다.
