@@ -306,8 +306,8 @@ $.ajax({
 > GET 요청은, `url뒤에 아래와 같이 붙여서` 데이터를 가져간다.
 > http://naver.com?param=value&param2=value2
 
-POST 요청은, `data : {} 에 넣어서` 데이터를 가져간다.
-data: { param: 'value', param2: 'value2' },
+POST 요청은, `data서` 데이터를 가져간다.
+data: { param: 'value', param2: : {} 에 넣어'value2' },
 
 - success : 성공하면 response 값에 서버의 결과 값을 담아서 함수를 실행한다.
 
@@ -641,6 +641,84 @@ app.py를 실행하고 flask로 연동시킨 로컬서버(http://localhost:5000/
 
 ```html
 <img src="/static/rome.jpg" />
+```
+
+이미지 뿐만 아니라 헤드에 넣는 CSS 파일 등의 링크도 형식에 맞게 바꿔 넣어야한다.
+
+# API 만들어보기
+
+> 리마인드
+
+은행의 창구가 API와 유사하다는 점을 기억하자. 같은 예금 창구에서도 개인 고객이냐 기업 고객이냐에 따라 처리하는 것이 다른 것처럼, 클라이언트가 요청 할 때에도 "방식"이 존재한다.
+
+HTTP라는 통신 규약을 통해서 클라이언트는 요청할 때 HTTP request method(요청 메소드)를 통해 어떤 요청 종류인지 응답하는 서버 쪽에 정보를 알려준다.
+
+> GET, POST 방식
+
+여러 방식이 존재하지만 SW정글 배포자료에서는 가장 많이 쓰이는 GET과 POST 방식만을 알려준다.
+
+## GET
+
+우선 GET -> 통상적으로 데이터 조회(Read)를 요청할 때에 해당한다. ex) 영화 목록 조회(웹스크래핑 파트)
+
+데이터 전달의 형태는 URL 뒤에 물음표를 붙여서 key=value의 형태로 전달한다.
+
+ex) google.com?q=북극곰
+
+## POST
+
+POST -> 통상적으로 데이터의 생성(Create), 변경(Update), 삭제(Delete) 요청할 때에 해당한다. ex) 회원가입, 탈퇴, 비밀번호 수정등등
+
+데이터 전달의 형태는 바로 보이지 않는 HTML body에 key:value 형태로 전달한다.
+
+# GET, POST 요청에서 클라이언트의 데이터를 받는 방법
+
+예로 클라이언트 서버에 title_give란 키 값으로 데이터를 들고왔다고 생각해보자.(ex 주민등록번호 라는 키값으로 930720-...을 가져온 것과 같은 의미로 생각)
+
+## GET 요청 API 코드
+
+```py
+@app.route('/test', methods=['GET']) # 메소드 표현방식이 Expree와 비교하면 꽤나 특이하다.
+def test_get():
+   title_receive = request.args.get('title_give')
+   print(title_receive)
+   return jsonify({'result':'success', 'msg': '이 요청은 GET!'})
+```
+
+## GET 요청 확인 Ajax코드
+
+```js
+$.ajax({
+  type: "GET",
+  url: "/test?title_give=봄날은간다",
+  data: {},
+  success: function (response) {
+    console.log(response);
+  },
+});
+```
+
+## POST 요청 API 코드
+
+```py
+@app.route('/test', methods=['POST'])
+def test_post():
+   title_receive = request.form['title_give']
+   print(title_receive)
+   return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+```
+
+## POST 요청 확인 Ajax 코드
+
+```js
+$.ajax({
+  type: "POST",
+  url: "/test",
+  data: { title_give: "봄날은간다" },
+  success: function (response) {
+    console.log(response);
+  },
+});
 ```
 
 # 나홀로 링크 메모장 만들어보기
