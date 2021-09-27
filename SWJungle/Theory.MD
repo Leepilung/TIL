@@ -784,6 +784,8 @@ $.ajax({
 
 # 서버
 
+추후 활용할 수도 있기 때문에 자료형태를 다시봤을때 최대한 보고 따라 가능하게 정리.
+
 ## 서버 구매
 
 웹 서비스를 런칭하기 위해선 클라이언트의 요청에 항상 응답해줄 수 있는 서버에 프로젝트를 실행시켜줘야 한다.
@@ -814,6 +816,161 @@ AWS 라는 클라우드 서비스에서 편하게 서버를 관리하기 위해�
 
 하나의 IP에 여러 포트가 있다. 하나의 포트에 하나의 프로그램을 실행시킬 수 있다.
 
----
+# - AWS EC2 접속
 
--> 현재 AWS 가입이 승인이 안되어 진행이 불가능한 상황.(1시간단위로 확인중)
+Ubuntu를 사용함을 잊지 말자. Jungle 배포 자료는 windows나 Mac OS를 이용한 기반이기 때문에 해당사항이 없음.
+
+EC2 원격 접속 명령어는
+
+```
+ssh -i 받은키페어를끌어다놓기 ubuntu@AWS에적힌내아이피
+```
+
+와 같이 입력하면 되는데 vim을 이용하여 단축키로 만들었으므로 단순히 Ubuntu에 다음과 같이 입력하면 연결된다.
+
+```
+connectec2
+```
+
+> 리눅스 명령어
+
+대부분 썼던것들이 대부분. sudo에 대한 정확한 정의를 알았다 정도?
+
+```
+ls: 내 위치의 모든 파일을 보여준다.
+
+pwd: 내 위치(폴더의 경로)를 알려준다.
+
+mkdir: 내 위치 아래에 폴더를 하나 만든다.
+
+cd [갈 곳]: 나를 [갈 곳] 폴더로 이동시킨다.
+
+cd .. : 나를 상위 폴더로 이동시킨다.
+
+cp -r [복사할 것] [붙여넣기 할 것]: 복사 붙여넣기
+
+rm -rf [지울 것]: 지우기
+
+sudo [실행 할 명령어]: 명령어를 관리자 권한으로 실행한다.
+sudo su: 관리가 권한으로 들어간다. (나올때는 exit으로 나옴)
+```
+
+# EC2 파일 업로드
+
+filzila 프로그램 사용하기.
+
+Protocol과 Host를 별도로 잡아주고
+
+<img src="../img/filzila연결.png">
+
+위 사진처럼 세팅하면됨.(실제로 사용한 세팅값들)
+
+파일 업로드하는법은 매우간단함.
+
+<img src="../img/filzila업로드.png">
+
+> 파이썬 파일의 실행
+
+```py
+# python 이라는 명령어로 3 버전 이상을 실행하도록 하는 명령어
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+
+# home 디렉토리로 이동
+cd ~
+
+# 실행. 콘솔창에 내가 입력한 문구가가 뜨는 것을 확인 할 수 있다.
+python hello.py
+```
+
+# flask 서버 실행시키기.
+
+실행과 설치는 다음의 과정을 따른다.
+
+```py
+# pip3 설치
+sudo apt-get update
+sudo apt-get install -y python3-pip
+
+# 버전 확인
+pip3 --version
+
+# pip3 대신 pip 라고 입력하기 위한 명령어
+# 아래 명령어를 입력하면 pip 라고 쳐도 pip3를 작동시킬 수 있다.(실습할땐 안됐음..ㅠ)
+sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+```
+
+# AWS에서 5000 포트 열어주기
+
+위의 단계에서 단순히 flask를 실행시켰을때 나오는 로컬 ip주소로 들어가면 연결이 안된다.
+
+EC2에서 5000포트로 요청 받을 수 있게 설정해야함.
+
+EC2 인스턴스 -> 보안 그룹 -> Edit inbounnd rules로 들어가서
+
+세 가지 포트를 추가한다.
+
+```
+5000포트: flask 기본포트
+
+80포트: HTTP 접속을 위한 기본포트
+
+27017포트: 외부에서 mongoDB 접속을 하기위한 포트
+```
+
+# 서버에 MongoDB 설치하기.
+
+EC2 터미널에서 다음의 차례대로 입력한다.
+
+```py
+wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+
+sudo apt-get update
+
+sudo apt-get install -y mongodb-org
+```
+
+## MongoDB 실행
+
+EC2에 접속한 터미널에 아래와 같이 입력한다.
+
+```
+sudo service mongod start
+```
+
+아무런 반응이 없으면 잘 실행된 것이라고 한다.(리눅스 자체가 보통 이렇다고 함)
+
+# MongoDB 접속 계정 생성하기.
+
+아이디와 비밀번호를 설정하지 않으면 당연히 누구나 DB정보를 볼 수 있기 때문에 아이디와 비밀번호 세팅이 필요함.
+
+우선 mongoDB 쉘에 들어가야함
+
+```py
+mongo
+```
+
+를 입력했을 때 좌측에 '>' 표시가 나오면 성공적으로 접속한 것.
+
+그리고 다음과 같이 test, test 부분에 원하는 아이디 비밀번호를 입력하면 된다.
+
+```py
+# admin으로 계정 바꾸기
+use admin;
+
+# 계정 생성하기
+db.createUser({user: "test", pwd: "test", roles:["root"]});
+```
+
+아래는 mogoDb 쉘에서 나오는 명령어와 재시작 명령어
+
+```py
+# mongoDB 쉘에서 나오기
+exit
+
+# MongoDB 재시작
+sudo service mongod restart
+```
+
+MongoDB는 기본적으로 같은 IP안에서만 접속을 허용한다고 한다. 때문에 이를 외부에서도 접근이 가능하도록 풀어줘야할 필요가 있다.

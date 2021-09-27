@@ -3,8 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+      rel="stylesheet"
+    />
     <title>SW사관학교 정글 | HTML 기초</title>
     <style>
+      * {
+        font-family: "Nanum Gothic", sans-serif;
+      }
+      .box {
+        width: 300px;
+        margin: auto;
+      }
+
       .login_box {
         color: white;
         width: 300px;
@@ -16,12 +28,29 @@
         padding-top: 20px;
         text-align: center;
       }
+      .input_bar {
+        margin-top: 20px;
+        width: 150px;
+      }
+      .log_button {
+        margin-top: 23px;
+        background-color: white;
+        border-radius: 5px;
+        border: solid 1px black;
+      }
     </style>
   </head>
   <body>
-    <div class="login_box">
-      <h1>로그인 페이지</h1>
-      <h5>아이디, 비밀번호를 입력해주세요</h5>
+    <div class="box">
+      <div class="login_box">
+        <h1>로그인 페이지</h1>
+        <h5>아이디, 비밀번호를 입력해주세요</h5>
+      </div>
+      ID : <input class="input_bar" />
+      <br />
+      PW : <input class="input_bar" />
+      <br />
+      <button class="log_button">로그인하기</button>
     </div>
   </body>
 </html>
