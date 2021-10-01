@@ -33,7 +33,7 @@
       rel="stylesheet"
     />
 
-    <title>나홀로 메모장</title>
+    <title>Just Memo Note</title>
 
     <!-- style -->
     <style type="text/css">
@@ -50,11 +50,6 @@
         margin: auto;
       }
 
-      .comment {
-        color: blue;
-        font-weight: bold;
-      }
-      
       .card-btn-container {
         display: flex;
         justify-content: flex-end;
@@ -77,6 +72,18 @@
         padding: 50px;
         border: black solid;
         border-radius: 5px;
+      }
+
+      .box-title {
+          color :green;
+          font-weight: bold;
+          font-size : 18px;
+      }
+
+      .box-body {
+          color : black;
+          font-weight:normal;
+          font-size : 12px;
       }
     </style>
     <script>
@@ -122,7 +129,7 @@
           this.renderMemos();
         }
         
-        // SetMemos에 의해 호출됨. 그려주는 역할.
+        // SetMemos에 의해 호출됨. 테두리만 그려주는 역할.
         renderMemos() {
           const result = this.memos.map(memo => `
             <div class="card" data-id=${memo._id}>
@@ -130,6 +137,18 @@
             </div>`
           ).join('');
           this.$cardsBox.innerHTML = result;
+        }
+
+        renderMemo({ _id, title, body}) {
+          return `
+              <div class="card-body">
+                <p class="box-title">${title}</p>
+                <p class="box-body">${body}</p>
+                <div class="card-btn-container">
+                  <button type="button" class="btn btn-primary card-btn" data-role="edit-item">수정</button>
+                  <button type="button" class="btn btn-danger card-btn" data-role="delete-item">삭제</button>
+                </div>
+              </div>`;
         }
 
         initEvent() {
@@ -157,7 +176,6 @@
           this.$cardsBox.querySelector(`[data-id="${_id}"]`).innerHTML = this.renderMemo(memo);
         }
 
-        //
         handleClickEvents = (event) => {
           const { target } = event;
           console.log(target);
@@ -188,8 +206,8 @@
           const formData = new FormData(target);
 
           customFetch(`/memos`, {method: 'POST', body: {
-            comment: formData.get('comment'),
-            url: formData.get('url'),
+            body: formData.get('body'),
+            title: formData.get('title'),
           }}).then(() => {
             alert('저장되었습니다.');
             this.togglePostBox();
@@ -205,8 +223,8 @@
           const formData = new FormData(target);
 
           customFetch(`/memos/${id}`, {method: 'PUT', body: {
-            comment: formData.get('comment'),
-            url: formData.get('url'),
+            body: formData.get('body'),
+            title: formData.get('title'),
           }}).then(() => {
             alert('수정되었습니다.');
             this.fetchMemo(id);
@@ -242,46 +260,21 @@
         }
 
 
-
-        renderMemo({ _id, url, image, desc, title, comment}) {
-          return `<img
-                class="card-img-top"
-                src="${image}"
-                alt="Card image cap"
-              />
-              <div class="card-body">
-                <a href="${url}" class="card-title">${title}</a>
-                <p class="card-text">
-                  ${desc}
-                </p>
-                <p class="card-text comment">${comment}</p>
-                <div class="card-btn-container">
-                  <button type="button" class="btn btn-primary card-btn" data-role="edit-item">수정</button>
-                  <button type="button" class="btn btn-danger card-btn" data-role="delete-item">삭제</button>
-                </div>
-              </div>`;
-        }
-
-        renderEditMemo({ _id, url, image, desc, title, comment}) {
+        renderEditMemo({ _id, title, body}) {
           return `
           <form class="form-post">
-            <img
-              class="card-img-top"
-              src="${image}"
-              alt="Card image cap"
-            />
             <div class="card-body">
               <div class="form-group">
-                <label for="post-url">아티클 URL</label>
-                <input name="url"  class="form-control" placeholder="" value="${url}"/>
+                <label for="post-title" class="box-title">제목</label>
+                <input name="title"  class="form-control" placeholder="" value="${title}"/>
               </div>
               <div class="form-group">
-                <label for="post-comment">간단 코멘트</label>
+                <label for="post-body" class="box-body">내용</label>
                 <textarea
-                  name="comment"
+                  name="body"
                   class="form-control"
                   rows="2"
-                >${comment}</textarea>
+                >${body}</textarea>
               </div>
               <div class="card-btn-container">
                 <button type="submit" class="btn btn-primary card-btn" >저장</button>
@@ -303,9 +296,9 @@
   <body>
     <div class="wrap">
       <div class="jumbotron">
-        <h1 class="display-4">나홀로 링크 메모장!</h1>
+        <h1 class="display-4">Just Memo Note</h1>
         <p class="lead">
-          중요한 링크를 저장해두고, 나중에 볼 수 있는 공간입니다
+          아무거나 적는 메모장입니다.
         </p>
         <hr class="my-4" />
         <p class="lead">
@@ -317,19 +310,19 @@
       <form id="post-box" class="form-post hide">
         <div>
           <div class="form-group">
-            <label for="post-url">아티클 URL</label>
-            <input name="url" id="post-url" class="form-control" placeholder="" />
+            <label for="post-title">제목</label>
+            <input name="title" id="post-title" class="form-control" placeholder="" />
           </div>
           <div class="form-group">
-            <label for="post-comment">간단 코멘트</label>
+            <label for="post-comment">기재할 내용</label>
             <textarea
-              name="comment"
-              id="post-comment"
+              name="body"
+              id="post-body"
               class="form-control"
               rows="2"
             ></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">기사저장</button>
+          <button type="submit" class="btn btn-primary">내용저장</button>
         </div>
       </form>
       <div id="cards-box" class="card-columns"></div></div>
