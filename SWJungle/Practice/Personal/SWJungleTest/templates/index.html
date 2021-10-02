@@ -1,0 +1,472 @@
+<!-- SW사관학교 정글 - 입학시험 index.html 파일 // 이필웅 개인식별번호 : LDJTBQRDSX -->
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <!-- 메타 태그-->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+    <!-- 폰트 -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Stylish&display=swap"
+      rel="stylesheet"
+    />
+    <title>SW사관학교 정글 | 간단메모</title>
+  </head>
+  <style>
+    * {
+      font-family: "Stylish", sans-serif;
+    }
+    body {
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      text-align: left;
+    }
+
+    .box {
+      width: 1500px;
+      margin: auto;
+    }
+    .box .smallBox {
+      padding: 4rem 2rem;
+      margin-bottom: 2rem;
+      background-color: #e9ecef;
+      border-radius: 0.3rem;
+    }
+    .box .head {
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      margin-top: 0;
+    }
+    .box .version {
+      width: 120px;
+      font-size: 2.2rem;
+      font-weight: bold;
+      padding: 0.2rem;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      background-color: #6a757e;
+      pointer-events: none;
+      margin-left: 1rem;
+    }
+
+    #post-box .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    #post-box .input-title {
+      display: block;
+      width: 35%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 2;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+    }
+
+    #post-box .input-title:focus {
+      outline: 2px solid black;
+    }
+
+    #post-box .input-body {
+      display: block;
+      width: 35%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 2;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+    }
+
+    #post-box .input-body:focus {
+      outline: 2px solid black;
+    }
+
+    #post-box .save-button {
+      width: 80px;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      background-color: #007bff;
+    }
+
+    #post-box .save-button:hover {
+      width: 80px;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      background-color: #065ab4;
+    }
+
+    #post-box .save-button:active {
+      width: 80px;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      background-color: #065ab4;
+      outline: #52a5fd solid 2px;
+    }
+    .cards-box {
+      column-count: 3;
+      column-gap: 1.25rem;
+    }
+
+    .cards-box .card {
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 0.75rem;
+    }
+
+    .card {
+      position: relative;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+    }
+
+    .edit-button {
+      font-size: 1rem;
+      border: none;
+      border-radius: 3px;
+      font-weight: bold;
+      color: white;
+      background-color: gray;
+    }
+    .edit-button:hover {
+      background-color: rgb(83, 83, 83);
+    }
+
+    .delete-button {
+      font-size: 1rem;
+      border: none;
+      border-radius: 3px;
+      font-weight: bold;
+      color: white;
+      background-color: rgb(44, 44, 44);
+    }
+    .delete-button:hover {
+      background-color: rgb(0, 0, 0);
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+
+    .card-body .box-title {
+      color: black;
+      font-size: 30px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .card-body .box-body {
+      color: black;
+      font-size: 23px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .card-body .form-group .edit-input-title {
+      display: block;
+      width: 90%;
+      height: 20px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      padding: 0.75rem;
+      color: black;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .card-body .form-group .edit-input-title:focus {
+      outline: 2px solid black;
+    }
+    .card-body .form-group .edit-input-body {
+      display: block;
+      width: 90%;
+      padding: 0.75rem;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1;
+      color: black;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+    }
+
+    .card-body .form-group .edit-input-body:focus {
+      outline: 2px solid black;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .button-container > .card-button:last-child {
+      margin-right: 0px;
+    }
+
+    .card-button {
+      display: block;
+      margin-right: 7px;
+    }
+
+    .button-container .edit-save-button {
+      font-size: 1rem;
+      border: none;
+      border-radius: 3px;
+      font-weight: bold;
+      color: white;
+      margin-top: 10px;
+      background-color: #007bff;
+    }
+  </style>
+  <script>
+    // Request 부분
+    const fetchRequest = (url, option = {}) => {
+      const useApplicationHeader = ["POST", "PUT"];
+      return fetch(url, {
+        ...option,
+        // ...연산자에서 && 사용해서 부울린값으로 False이면 Undefined 되어서 안하도록. False 아니면 써놓은 값대로 처리.
+        headers: {
+          // header에 Content-type 명시
+          ...(useApplicationHeader.includes(option.method) && {
+            "Content-Type": "application/json",
+          }),
+          ...option.headers,
+        },
+        ...(option.body && {
+          body: JSON.stringify(option.body),
+        }),
+      }).then((res) => res.json());
+    };
+
+    class Memo {
+      memos = [];
+
+      init() {
+        this.$box = document.querySelector(".box");
+        this.$postBox = document.querySelector("#post-box");
+        this.$cardsBox = document.querySelector("#cards-box");
+        this.initEvent();
+        this.fetchMemos();
+      }
+
+      initEvent() {
+        document.addEventListener("click", this.handleClickEvents);
+        this.$postBox.addEventListener("submit", this.handleSubmitEvents);
+        // 수정 버튼 누르고 나서 실행될 함수
+        this.$cardsBox.addEventListener("submit", this.handleEditEvents);
+      }
+
+      handleClickEvents = (e) => {
+        const { target } = e;
+        const { role } = target.dataset;
+        switch (role) {
+          case "delete-item":
+            this.handleClickDelete(target);
+            break;
+          case "edit-item":
+            this.handleClickEdit(target);
+            break;
+          default:
+        }
+      };
+
+      // 인풋값 초기화 함수(저장완료시 실행되도록)
+      inputReset() {
+        const titleInput = document.getElementById("post-title");
+        const bodyInput = document.getElementById("post-body");
+        titleInput.value = "";
+        bodyInput.value = "";
+      }
+
+      handleSubmitEvents = (e) => {
+        e.preventDefault();
+        const { target } = e;
+        const formData = new FormData(target);
+
+        fetchRequest(`/memos`, {
+          method: "POST",
+          body: {
+            title: formData.get("title"),
+            body: formData.get("body"),
+          },
+        }).then(() => {
+          alert("저장 완료!");
+          this.inputReset();
+          this.fetchMemos();
+        });
+      };
+
+      handleEditEvents = (e) => {
+        event.preventDefault();
+        const { target } = e;
+        const $card = target.closest(".card");
+        const id = $card.dataset.id;
+        const formData = new FormData(target);
+
+        fetchRequest(`/memos/${id}`, {
+          method: "PUT",
+          body: {
+            title: formData.get("title"),
+            body: formData.get("body"),
+          },
+        }).then(() => {
+          alert("수정 완료!");
+          this.fetchMemo(id);
+        });
+      };
+
+      fetchMemos() {
+        fetchRequest("/memos").then(({ memos }) => this.setMemos(memos));
+      }
+
+      setMemos(memos) {
+        // memos 객체 this 바인딩
+        this.memos = memos;
+        this.renderMemos();
+      }
+
+      // setMemo로 호출. 테두리 그려주는 함수짜기(내부는 별도)
+      renderMemos() {
+        const result = this.memos
+          .map(
+            (memo) => `
+            <div class="card" data-id=${memo._id}>
+              ${this.renderMemo(memo)}
+            </div>`,
+          )
+          .join("");
+        this.$cardsBox.innerHTML = result;
+      }
+
+      // 카드 내부 그려주는 함수
+      renderMemo({ _id, title, body }) {
+        return `
+              <div class="card-body">
+                <p class="box-title">${title}</p>
+                <p class="box-body">${body}</p>
+                <div class="button-container">
+                  <button type="button" class="edit-button card-button" data-role="edit-item">수정</button>
+                  <button type="button" class="delete-button card-button" data-role="delete-item">삭제</button>
+                </div>
+              </div>`;
+      }
+
+      fetchMemo(id) {
+        fetchRequest(`/memos/${id}`).then(({ memo }) => this.setMemo(memo));
+      }
+
+      setMemo(memo) {
+        this.memos = this.memos.map((m) => (m._id === memo._id ? memo : m));
+        const { _id } = memo;
+        this.$cardsBox.querySelector(`[data-id="${_id}"]`).innerHTML =
+          this.renderMemo(memo);
+      }
+
+      handleClickDelete = (target) => {
+        const $card = target.closest(".card");
+        const id = $card.dataset.id;
+        fetchRequest(`/memos/${id}`, { method: "DELETE" }).then(() => {
+          alert("삭제 완료!");
+          this.fetchMemos();
+        });
+      };
+
+      handleClickEdit = (target) => {
+        const $card = target.closest(".card");
+        const id = $card.dataset.id;
+        const memo = this.memos.find((memo) => memo._id === id);
+        $card.innerHTML = this.renderEditMemo(memo);
+      };
+
+      renderEditMemo({ _id, title, body }) {
+        return `
+          <form class="form-post">
+            <div class="card-body">
+              <div class="form-group">
+                <input name="title"  class="edit-input-title" placeholder="" value="${title}"/>
+              </div>
+              <div class="form-group">
+                <textarea
+                  name="body"
+                  class="edit-input-body"
+                  rows="3"
+                >${body}</textarea>
+              </div>
+              <div class="button-container">
+                <button type="submit" class="edit-save-button card-button" >저장</button>
+              </div>
+            </div>
+          </form>`;
+      }
+    }
+    const memo = new Memo();
+
+    window.onload = () => {
+      memo.init();
+    };
+  </script>
+  <body>
+    <div class="box">
+      <div class="smallBox">
+        <h1 class="head">
+          나홀로메모장<button class="version">ver2.0</button>
+        </h1>
+        <form id="post-box">
+          <div>
+            <div class="form-group">
+              <input
+                id="post-title"
+                class="input-title"
+                name="title"
+                placeholder="메모 제목을 입력하세요"
+              />
+            </div>
+            <div class="form-group">
+              <textarea
+                id="post-body"
+                class="input-body"
+                name="body"
+                rows="3"
+                placeholder="내용을 입력하세요"
+              ></textarea>
+            </div>
+            <button class="save-button" tpye="submit">저장하기</button>
+          </div>
+        </form>
+      </div>
+      <div id="cards-box" class="cards-box"></div>
+    </div>
+  </body>
+</html>

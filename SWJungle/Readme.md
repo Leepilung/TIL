@@ -37,10 +37,19 @@ SW 사관학교 정글에서 배포한 공부자료 중 기억할만한 자료�
   - CURD postman 테스트
   - 메모장으로 수정해보기.(render만 수정하면 해결(?))
 
-0931
+1001
 
 - SW 정글 자료 복습한번 쭉 하기.
+- AloneMemo, JustMemo 복기, 복습
 
-- 페이보릿 스타 복습(라우팅부분 다시짜기)
+- MyFavorite 복습
 
-- AloneMemo, JustMemo 복기
+- MyFavorite 이것저것 고쳐보기
+
+1002
+
+- SW 정글 시험
+
+- TODOLIST ObjectId 파싱 추가해서 마무리하고 git 올리기
+
+- 반학생관리 성적프로그램 시작하기.
