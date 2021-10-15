@@ -1407,3 +1407,157 @@ response 에는 프로미스를 기반으로 하는 다양한 메소드가 있�
 - response.formData() – 응답을 FormData 객체 형태로 반환한다.
 - response.blob() – 응답을 Blob(타입이 있는 바이너리 데이터) 형태로 반환합니다.
 - response.arrayBuffer() – 응답을 ArrayBuffer(바이너리 데이터를 로우 레벨 형식으로 표현한 것) 형태로 반환합니다.
+
+# Map , Reduce
+
+## Map
+
+> 문법
+
+```js
+배열.map((요소, 인덱스, 배열) => {
+  return 요소;
+});
+```
+
+map의 기본 원리는 반복문을 돌며 배열 안의 요소들을 1대1로 짝지어 주는 것이다.
+
+어떻게 짝지어줄 것인가 정의한 함수를 메서드의 인자로 넣어주면 된다.
+
+> 예시
+
+```js
+const oneTwoThree = [1, 2, 3];
+let result = oneTwoTㅈhree.map((v) => {
+  console.log(v);
+  return v;
+});
+
+// 콘솔에는 1, 2, 3이 찍힘
+oneTwoThree; // [1, 2, 3]
+result; // [1, 2, 3]
+oneTwoThree === result; // false
+```
+
+반복문으로 요소를 순회(1, 2, 3 순서로)하면서 각 요소를 어떻게 짝지어줄지 알려준다고 보면 된다.
+
+함수가 그냥 return v를 하기 때문에 같은 값을 그대로 짝짓는다.
+
+여기서 중요한 부분은 map을 실행하는 배열(oneTwoThree)과 결과로 나오는 배열(result)이 다른 객체라는 것이다. 기존 배열을 수정하지 않고 새로운 배열을 만들어낸다.
+
+단, 배열 안에 객체가 들어있는 경우, 객체는 공유된다고 한다.
+
+> 예시 2
+
+```js
+result = oneTwoThree.map((v) => {
+  return v + 1;
+});
+result; // [2, 3, 4]
+```
+
+규칙적인 배열만 반환할 수 있는게 아니라, 함수 안에 적어준대로 반환할 수 있기 때문에 자유도가 높다.
+
+> 예시 3
+
+```js
+result = oneTwoThree.map((v) => {
+  if (v % 2) {
+    return "홀수";
+  }
+  return "짝수";
+});
+result; // ['홀수', '짝수', '홀수']
+```
+
+정리하자면, map은 `배열을 1대1로 짝짓되 기존 객체를 수정하지 않는 메서드`이다.
+
+## reduce
+
+> 문법
+
+```js
+배열.reduce((누적값, 현잿값, 인덱스, 요소) => {
+  return 결과;
+}, 초깃값);
+```
+
+파라미터가 이전값이 아니라 `누적값`이라는 것에 주의해야 한다. 누적값이기 때문에 다양하게 활용할 수 있다.
+
+> 덧셈 예시
+
+```js
+// oneTwoThree = [1,2,3]
+result = oneTwoThree.reduce((acc, cur, i) => {
+  console.log(acc, cur, i);
+  return acc + cur;
+}, 0);
+// 0 1 0  -> 누적값(초기값 : 0)  현재값 1(인덱스 1), 현재값 1의 인덱스는 0
+// 1 2 1  -> 누적값(초기값 0 + 이전 현재값 1더해서 1), 현재값 2 , 현재값 2의 인덱스는 1
+// 3 3 2  -> 누적값(이전 누적값 1에 현재값 2더해서 3), 현재값 3, 현재값 3의 인덱스는 2
+result; // 6
+```
+
+acc(누적값)이 초깃값인 0부터 시작해서 return하는대로 누적되는 것을 볼 수 있다.
+
+초깃값을 적어주지 않으면 자동으로 초깃값이 0번째 인덱스의 값이 된다.
+
+> 덧셈 예시2
+
+```js
+result = oneTwoThree.reduce((acc, cur, i) => {
+  console.log(acc, cur, i);
+  return acc + cur;
+});
+// 1 2 1
+// 3 3 2
+result; // 6
+```
+
+> reduce map 예제
+
+```js
+result = oneTwoThree.reduce((acc, cur) => {
+  acc.push(cur % 2 ? "홀수" : "짝수");
+  return acc;
+}, []);
+result; // ['홀수', '짝수', '홀수']
+```
+
+초깃값을 배열로 만들고, 배열에 값들을 push하면 map과 같아진다.
+
+이를 응용하여 조건부로 push를 하면 filter와 같아진다.
+
+> 홀수 필터링 예제
+
+```js
+result = oneTwoThree.reduce((acc, cur) => {
+  if (cur % 2) acc.push(cur);
+  return acc;
+}, []);
+result; // [1, 3]
+```
+
+sort, every, some, find, findIndex, includes도 다 reduce로 구현 가능하다.
+
+> reduce 비동기 프로그래밍 예시
+
+```js
+const promiseFactory = (time) => {
+  return new Promise((resolve, reject) => {
+    console.log(time);
+    setTimeout(resolve, time);
+  });
+};
+[1000, 2000, 3000, 4000].reduce((acc, cur) => {
+  return acc.then(() => promiseFactory(cur));
+}, Promise.resolve());
+// 바로 1000
+// 1초 후 2000
+// 2초 후 3000
+// 3초 후 4000
+```
+
+초깃값을 Promise.resolve()로 한 후에, return된 프로미스에 then을 붙여 다음 누적값으로 넘기면 프로미스가 순차적으로 실행됨을 보장할 수 있다고 한다.
+
+`반복되는 모든 것에는 reduce를 쓸 수 있다.`
