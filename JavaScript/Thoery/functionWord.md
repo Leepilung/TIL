@@ -1561,3 +1561,425 @@ const promiseFactory = (time) => {
 초깃값을 Promise.resolve()로 한 후에, return된 프로미스에 then을 붙여 다음 누적값으로 넘기면 프로미스가 순차적으로 실행됨을 보장할 수 있다고 한다.
 
 `반복되는 모든 것에는 reduce를 쓸 수 있다.`
+
+## reduce 추가적인 개인 테스트 결과 정리
+
+테스트 환경 -> Firefox 콘솔창
+
+> test 1
+
+```js
+test = [1, 2, 3, 4];
+test.reduce((acc, cur, index) => {
+  console.log(acc, cur, index);
+  if (cur % 2) {
+    return acc + cur;
+  } else {
+    return acc;
+  }
+});
+```
+
+위와 같은 경우 acc 초기값 미설정하면 아예 배열의 첫번째 인자를 acc의 값으로 사용함. -> cur값은 2부터시작함(인덱스가 0이 아닌 1부터 시작 아예 첫번째 인자값을 빼와서 부여하는듯)
+
+> test 2
+
+```js
+test = [1, 2, 3, 4];
+a = test.reduce((acc, cur, index) => {
+  console.log(acc, cur, index);
+  return acc;
+});
+
+console.log("a :", a); // a는 1출력.
+```
+
+위와 같은 경우 reduce 메소드의 최종 반환값은 별도의 식이 없고 acc를 반환하기 때문에 acc값이 최종값.
+
+> test 3
+
+```js
+test = { a: 1, b: 2, c: 3, d: 4 };
+test2 = Object.entries(test); // test2 : Array(4) [ (2) […], (2) […], (2) […], (2) […] ]
+
+a = test2.reduce((acc, [cur1, cur2], index, array) => {
+  console.log(acc, cur1, cur2, index, array); //acc : Object {  } cur1 : a cur2 : 1 index : 0  array : Array(4) [ (2) […], (2) […], (2) […], (2) […] ]
+  if (cur1 == "a") {
+    console.log("으아");
+  }
+  return acc;
+}, {});
+
+console.log("a :", a);
+```
+
+> test 4
+
+```js
+name = "케케케";
+nationalLanguage = 550;
+english = 55;
+math = 55;
+student = { name, nationalLanguage, english, math };
+
+test = Object.entries(student);
+console.log(test); // Array(4) [ (2) […], (2) […], (2) […], (2) […] ]
+
+test.reduce((acc, [cur1, cur2], index) => {
+  console.log(acc, cur1, cur2, index); // Object {  } / name / 케케케 / 0 순으로 출력됨.
+  if (cur1 == "math" || cur1 == "english") {
+    // 조건문 해당되면 acc만 출력
+    return acc; // 누산기(acc)에 입력값이나 별도함수 없어서 초기값 그대로 부여됨(한마디로 생략)
+  }
+}, {});
+
+// 순서대로 출력되는 console.log 값
+// 각각 acc, cur1, cur2, index 값
+// undefined nationalLanguage 550 1
+// undefined english 55 2
+// undefined math 55 3
+```
+
+> test 5
+
+문법 검증.
+
+1. acc.status -> acc 초기값 자체가 빈객체 -> 그 다음엔 if문 조건 바꿔야만 acc값 갱신됨.
+
+```js
+name = "케케케";
+nationalLanguage = 550;
+english = 55;
+math = 55;
+const student = { name, nationalLanguage, english, math };
+console.log("student : ", student); // student :  Object { name: "케케케", nationalLanguage: 550, english: 55, math: 55 } 출력
+
+const VALIDATION_STATUS = {
+  TYPE_ERROR: "TYPE_ERROR",
+  OUT_OF_RANGE: "OUT_OF_RANGE",
+  EMPTY: "EMPTY",
+  VALID: "VALID",
+};
+
+const VALIDATION_MESSAGE = {
+  [VALIDATION_STATUS.OUT_OF_RANGE]: (field) =>
+    `${field}값이 범위를 벗어났습니다. 올바른 값을 입력해주세요. (1~100)`,
+  [VALIDATION_STATUS.TYPE_ERROR]: (field) =>
+    `${field}의 형식이 올바르지 않습니다.`,
+  [VALIDATION_STATUS.EMPTY]: (field) => `${field}값이 없습니다.`,
+};
+
+const checkValidName = (name) => {
+  if (!name) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  return typeof name === "string"
+    ? VALIDATION_STATUS.VALID
+    : VALIDATION_STATUS.TYPE_ERROR;
+};
+
+const checkValidScore = (score) => {
+  if (!score) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  if (typeof score !== "number") {
+    return VALIDATION_STATUS.TYPE_ERROR;
+  }
+  return score < 0 || score > 100
+    ? VALIDATION_STATUS.OUT_OF_RANGE
+    : VALIDATION_STATUS.VALID;
+};
+
+// 여기 위까지 함수동작 이상없음. CheckValidStudent 부분에서 에러 발생함(테스트 환경 Firefox 동일)
+//
+
+const checkValidStudent = ({ name, ...scores }) => {
+  if (checkValidName(name) !== VALIDATION_STATUS.VALID) {
+    return { status: checkValidName(name), field: "name" };
+  }
+
+  console.log("scroes : ", scores); // scroes : Object { nationalLanguage: 550, english: 55, math: 55 } 출력
+  console.log("Obsject.entrise : ", Object.entries(scores)); // Obsject.entrise : Array(3) [ (2) […], (2) […], (2) […] ] 출력
+
+  return Object.entries(scores).reduce((acc, [field, score]) => {
+    // reduce -> 순번대로 진행됨.
+    const status = checkValidScore(score); // score값이 함수 설정 범위 밖이면 해당 에러문구 출력.
+    console.log("status :", status); // 여기부턴 차례대로 (reduce 메소드) 돌아가면서 배열 순회
+    console.log("field : ", field);
+    console.log("score : ", score);
+
+    if (status == VALIDATION_STATUS.VALID) {
+      // acc.status == 유효값일땐 acc.status가 VALID 출력됨.
+      console.log("acc : ", acc, "acc.status", acc.status); // acc.status는 값자체가 없음. acc 초기값이 빈 객체이면 그냥 빈객체만 반환함. acc.status 판별자체도 불가능함. 이 부분을 유효값 예외처리로 바꾸기.
+      return acc;
+    }
+
+    return {
+      // status가 VALID가 아니면 실행
+      status,
+      ...(status !== VALIDATION_STATUS.VALID && { field }), // 이 구문을 아직도 이해못했음. 스프레드연산자가 어떤방식으로 동작하는지.. 요약하면 ...( True && {field} )인셈인데 출력되는 값은 결국 field값(name or nationalLanguage 같은) 출력됨.
+    };
+  }, {});
+};
+
+const { status, field } = checkValidStudent(student);
+console.log("결과값 : ", status, field);
+// name이 "" 빈값이면 ValidName 체크했을때 -> status : EMPTY // field : name 이 출력됨. 이거 참조해서 문법 수정하기.
+```
+
+> test 6
+
+-> 자꾸 하나가안됨.
+
+```js
+name = "케케케";
+nationalLanguage = 100;
+english = 55;
+math = 55;
+const student = { name, nationalLanguage, english, math };
+console.log("student : ", student);
+
+const VALIDATION_STATUS = {
+  TYPE_ERROR: "TYPE_ERROR",
+  OUT_OF_RANGE: "OUT_OF_RANGE",
+  EMPTY: "EMPTY",
+  VALID: "VALID",
+};
+
+const VALIDATION_MESSAGE = {
+  [VALIDATION_STATUS.OUT_OF_RANGE]: (field) =>
+    `${field}값이 범위를 벗어났습니다. 올바른 값을 입력해주세요. (1~100)`,
+  [VALIDATION_STATUS.TYPE_ERROR]: (field) =>
+    `${field}의 형식이 올바르지 않습니다.`,
+  [VALIDATION_STATUS.EMPTY]: (field) => `${field}값이 없습니다.`,
+};
+
+const checkValidName = (name) => {
+  if (!name) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  return typeof name === "string"
+    ? VALIDATION_STATUS.VALID
+    : VALIDATION_STATUS.TYPE_ERROR;
+};
+
+const checkValidScore = (score) => {
+  if (!score) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  if (typeof score !== "number") {
+    return VALIDATION_STATUS.TYPE_ERROR;
+  }
+  return score < 0 || score > 100
+    ? VALIDATION_STATUS.OUT_OF_RANGE
+    : VALIDATION_STATUS.VALID;
+};
+
+const checkValidStudent = ({ name, ...scores }) => {
+  if (checkValidName(name) !== VALIDATION_STATUS.VALID) {
+    return { status: checkValidName(name), field: "name" };
+  }
+
+  console.log("scroes : ", scores);
+  console.log("Obsject.entrise : ", Object.entries(scores));
+
+  return Object.entries(scores).reduce((acc, [field, score]) => {
+    const status = checkValidScore(score);
+    console.log("시작acc :", acc);
+    console.log("status :", status);
+    console.log("field : ", field);
+    console.log("score : ", score);
+
+    if (acc.status !== VALIDATION_STATUS.VALID) {
+      // stauts가 VALID면 acc반환해서 스킵.
+      if (status !== VALIDATION_STATUS.VALID) {
+        return { status, ...(status !== VALIDATION_STATUS.VALID && { field }) };
+      } else {
+        return acc;
+      }
+    }
+  }, {});
+};
+
+const { status, field } = checkValidStudent(student);
+console.log("결과값 : ", status, field);
+// name이 "" 빈값이면 status : EMPTY // field : name 이 출력됨.
+```
+
+> test 7
+
+case문 사용 -> not equal 기호 사용불가. -> 공부해보기 당장은 머리 과부화되서 안돌아감.
+
+```js
+name = "케케케";
+nationalLanguage = 555;
+english = 555;
+math = 55;
+const student = { name, nationalLanguage, english, math };
+console.log("student : ", student);
+
+const VALIDATION_STATUS = {
+  TYPE_ERROR: "TYPE_ERROR",
+  OUT_OF_RANGE: "OUT_OF_RANGE",
+  EMPTY: "EMPTY",
+  VALID: "VALID",
+};
+
+const VALIDATION_MESSAGE = {
+  [VALIDATION_STATUS.OUT_OF_RANGE]: (field) =>
+    `${field}값이 범위를 벗어났습니다. 올바른 값을 입력해주세요. (1~100)`,
+  [VALIDATION_STATUS.TYPE_ERROR]: (field) =>
+    `${field}의 형식이 올바르지 않습니다.`,
+  [VALIDATION_STATUS.EMPTY]: (field) => `${field}값이 없습니다.`,
+};
+
+const checkValidName = (name) => {
+  if (!name) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  return typeof name === "string"
+    ? VALIDATION_STATUS.VALID
+    : VALIDATION_STATUS.TYPE_ERROR;
+};
+
+const checkValidScore = (score) => {
+  if (!score) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  if (typeof score !== "number") {
+    return VALIDATION_STATUS.TYPE_ERROR;
+  }
+  return score < 0 || score > 100
+    ? VALIDATION_STATUS.OUT_OF_RANGE
+    : VALIDATION_STATUS.VALID;
+};
+
+const checkValidStudent = ({ name, ...scores }) => {
+  if (checkValidName(name) !== VALIDATION_STATUS.VALID) {
+    return { status: checkValidName(name), field: "name" };
+  }
+
+  console.log("scroes : ", scores);
+  console.log("Obsject.entrise : ", Object.entries(scores));
+
+  return Object.entries(scores).reduce((acc, [field, score]) => {
+    const status = checkValidScore(score);
+    console.log("시작acc :", acc);
+    console.log("status :", status);
+    console.log("field : ", field);
+    console.log("score : ", score);
+
+    switch (
+      acc // stauts가 VALID면 acc반환해서 스킵.
+    ) {
+      case 0:
+        if (status !== VALIDATION_STATUS.VALID) {
+          return {
+            status,
+            ...(status !== VALIDATION_STATUS.VALID && { field }),
+          };
+        }
+      default:
+        return acc;
+        console.log("acc가 0이 아닙니다.");
+        break;
+    }
+  }, 0);
+};
+
+const { status, field } = checkValidStudent(student);
+console.log("결과값 : ", status, field);
+// name이 "" 빈값이면 status : EMPTY // field : name 이 출력됨.
+```
+
+> test 8
+
+```js
+name = "케케케";
+nationalLanguage = 55;
+english = 55;
+math = 55;
+const student = { name, nationalLanguage, english, math };
+console.log("student : ", student);
+
+const VALIDATION_STATUS = {
+  TYPE_ERROR: "TYPE_ERROR",
+  OUT_OF_RANGE: "OUT_OF_RANGE",
+  EMPTY: "EMPTY",
+  VALID: "VALID",
+};
+
+const VALIDATION_MESSAGE = {
+  [VALIDATION_STATUS.OUT_OF_RANGE]: (field) =>
+    `${field}값이 범위를 벗어났습니다. 올바른 값을 입력해주세요. (1~100)`,
+  [VALIDATION_STATUS.TYPE_ERROR]: (field) =>
+    `${field}의 형식이 올바르지 않습니다.`,
+  [VALIDATION_STATUS.EMPTY]: (field) => `${field}값이 없습니다.`,
+};
+
+const checkValidName = (name) => {
+  if (!name) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  return typeof name === "string"
+    ? VALIDATION_STATUS.VALID
+    : VALIDATION_STATUS.TYPE_ERROR;
+};
+
+const checkValidScore = (score) => {
+  if (!score) {
+    return VALIDATION_STATUS.EMPTY;
+  }
+  if (typeof score !== "number") {
+    return VALIDATION_STATUS.TYPE_ERROR;
+  }
+  return score < 0 || score > 100
+    ? VALIDATION_STATUS.OUT_OF_RANGE
+    : VALIDATION_STATUS.VALID;
+};
+
+const checkValidStudent = ({ name, ...scores }) => {
+  if (checkValidName(name) !== VALIDATION_STATUS.VALID) {
+    return { status: checkValidName(name), field: "name" };
+  }
+
+  console.log("scroes : ", scores);
+  console.log("Obsject.entrise : ", Object.entries(scores));
+
+  return Object.entries(scores).reduce((acc, [field, score]) => {
+    const status = checkValidScore(score);
+    console.log("시작acc :", acc);
+    console.log("status :", status);
+    console.log("field : ", field);
+    console.log("score : ", score);
+
+    if (status == VALIDATION_STATUS.VALID) {
+      if (acc === 0) {
+        return {
+          status,
+          ...(status !== VALIDATION_STATUS.VALID && { field }),
+        };
+      } else {
+        console.log("acc : ", acc, "acc.status", acc.status);
+        return acc;
+      }
+    }
+
+    return {
+      status,
+      ...(status !== VALIDATION_STATUS.VALID && { field }),
+    };
+  }, 0);
+};
+const { status, field } = checkValidStudent(student);
+console.log("결과값 : ", status, field);
+// name이 "" 빈값이면 status : EMPTY // field : name 이 출력됨.
+```
+
+테스트 전부 성공. 기존에 짰던 로직 -> 오류는 잡는데 정상입력을 처리를 못헀음.
+
+너무 오래붙들어서 과부화됐던듯. 이렇게 오래걸릴건 아녔던거같은데 아무튼 해결함.
+
+오류처리도 잘되고 정상입력 처리도 잘됨.
+
+reduce에서 acc 초기값을 설정하되 반환값을 별도로 설정안하면 초기값만 처음 출력하고 다음 배열 순회할땐 acc값 자체가 undefined 된다. 유의해야할 부분
