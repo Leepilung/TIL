@@ -1983,3 +1983,199 @@ console.log("결과값 : ", status, field);
 오류처리도 잘되고 정상입력 처리도 잘됨.
 
 reduce에서 acc 초기값을 설정하되 반환값을 별도로 설정안하면 초기값만 처음 출력하고 다음 배열 순회할땐 acc값 자체가 undefined 된다. 유의해야할 부분
+
+# async / await
+
+async functions 그리고 await 키워드는 ECMAScript2017에 추가되다. 이 기능들은 기본적으로 비동기 코드를 쓰고 Promise를 더 읽기 더 쉽도록 만들어준다.
+
+비동기 함수를 async 함수로 만들기 위하여 function()앞에 async 키워드를 추가한다. async function()은 await 키워드가 비동기 코드를 호출할 수 있게 해주는 함수이다.
+
+> 예제
+
+```js
+function hello() {
+  return "Hello";
+}
+hello();
+("Hello");
+```
+
+위의 함수는 단순히 Hello만을 출력한다. 그러나 여기 앞에 async를 추가한면
+
+> 예제
+
+```js
+async function hello() { return "Hello" };
+hello();
+Promise { <state>: "fulfilled", <value>: "Hello" }
+```
+
+코드가 promise를 반환한다. `async` 키워드를 사용하면 반환받는 값은 Promise가 된다.
+
+다음과 같은 형태로 사용해도 같은 결과 값을 갖는다.
+
+> 예제
+
+```js
+let hello = async function() { return "Hello" };
+hello();
+Promise { <state>: "fulfilled", <value>: "Hello" }
+```
+
+화살표 함수로 사용한다면 다음과 같다.
+
+```js
+let hello = async () => { return "Hello" };
+hello();
+Promise { <state>: "fulfilled", <value>: "Hello" }
+```
+
+async는실제로 fulfil Promise가 반환되기 때문에 반환된 값을 사용하기 위해선 .then() 블럭을 사용해야 한다.
+
+> 예제
+
+```js
+hello().then((value) => console.log(value)); // 콘솔창에 hello 출력
+```
+
+짧게 표현하면 다음과 같이 표현도 가능하다.
+
+```js
+hello().then(console.log);
+```
+
+정리하면, `async` 를 함수와 같이 사용하면 결과를 직접 반환하는게 아니라 Promise를 반환하게 한다.
+
+또한 동기식 함수는 await사용을 위한 지원과 함께 실행되는 잠재적인 `오버헤드`를 피할 수 있다.
+
+## 오버헤드란 ?
+
+`오버헤드`란 프로그램의 실행흐름에서 나타나는 현상중 하나이다.
+
+예를 들어 , 프로그램의 실행흐름 도중에 동떨어진 위치의 코드를 실행시켜야 할 때, 추가적으로 시간,메모리,자원이 사용되는 현상이다.
+
+이러한 현상은 특히 프로그래밍 시에 외부 함수를 사용할 때 나타난다.
+
+실행 흐름이 도중에 끊겨버리고 , 함수를 사용하기 위해 스택메모리를 할당한다.
+
+이 때 매개변수가 있다면 대입연산까지도 일어난다. 이 외에도 함수를 호출하기 위해 많은 과정을 진행하게 된다.
+
+이 때 예상하지 못하는 자원들이 소모되는 현상이 바로 `오버헤드 현상`이다.
+
+## 비동기 키워드
+
+비동기 함수를 `await 키워드`와 함께 쓰면 그 장점이 확실히 보인다.
+
+이것은 어떠한 Promise기반 함수 앞에 놓을 수 있다.
+
+그리고 우리 코드의 Promise가 fulfil될 때 까지 잠시 중단하고, 결과를 반환한다.. 그리고 실행을 기다리는 다른 코드들을 중지시키지 않고 그대로 실행되게 한다.
+
+`await 키워드`는 웹 API를 포함하여 Promise를 반환하는 함수를 호출할 때 사용할 수 있다.
+
+> await 간단 예제
+
+```js
+async function hello() {
+  return (greeting = await Promise.resolve("Hello"));
+}
+
+hello().then(alert); // alert로 Hello 출력
+hello().then(console.log); // console.log로 Hello 출력
+```
+
+> Fetch() 예제
+
+```js
+// 변환전
+fetch("coffee.jpg")
+  .then((response) => response.blob())
+  .then((myBlob) => {
+    let objectURL = URL.createObjectURL(myBlob);
+    let image = document.createElement("img");
+    image.src = objectURL;
+    document.body.appendChild(image);
+  })
+  .catch((e) => {
+    console.log(
+      "There has been a problem with your fetch operation: " + e.message,
+    );
+  });
+```
+
+위 예제를 async/await를 사용해서 바꾸면 다음과 같이 변경된다.
+
+```js
+// async/await 사용하여 변경
+async function myFetch() {
+  let response = await fetch("coffee.jpg");
+  let myBlob = await response.blob();
+
+  let objectURL = URL.createObjectURL(myBlob);
+  let image = document.createElement("img");
+  image.src = objectURL;
+  document.body.appendChild(image);
+}
+
+myFetch().catch((e) => {
+  console.log(
+    "There has been a problem with your fetch operation: " + e.message,
+  );
+});
+```
+
+바꾸고 나니 더 이해하기 쉬워졌다. — 더 이상의 .then() 블럭은 찾아 볼 수 없다.
+
+`async 키워드`가 함수를 Promise로 바꾸었기, 이제 promise 와 `await`의 하이브리드 접근방식을 사용하기 위해 코드를 리팩토링 할 수 있으며, 두 번째 .then()블럭을 함수 내부의 블럭으로 가져와 더 유연하게 만들 수 있다.
+
+```js
+// 리팩토링
+
+async function myFetch() {
+  let response = await fetch("coffee.jpg");
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.blob();
+}
+
+myFetch()
+  .then((blob) => {
+    let objectURL = URL.createObjectURL(blob);
+    let image = document.createElement("img");
+    image.src = objectURL;
+    document.body.appendChild(image);
+  })
+  .catch((e) => console.log(e));
+```
+
+## 어떻게 동작하는가 ?
+
+함수 안에 코드를 작성했고, function 키워드 앞에 async 키워드를 썼다는 것을 알 수 있다. 반드시 이렇게 사용해야 한다.
+
+비동기 코드를 실행할 블럭을 정의하려면 비동기 함수를 생성해야 한다. `await`는 `async function` 안에서만 쓸 수 있다.
+
+예제로 사용한 myFetch() 함수 내에 코드가 이전의 Promise버전과 매우 유사하지만, 다른점이 있다.
+
+.then()블럭을 사용하여 작업을 이어가는 대신 메서드 호출 전에 `await 키워드`를 사용하여 반환된 결과를 변수에 할당한다.
+
+`await 키워드`는 JavaScript 런타임이 이 라인에서 비동기 코드를 일시 중지하여 비동기 함수 호출이 결과를 반환할 때 까지 기다리게 한다.
+
+그러나 외부의 다른 동기 코드는 실행될 수 있도록 한다. 작업이 완료되면 코드는 계속 이어져서 실행된다.
+
+예를들면 아래와 같다.
+
+```js
+let response = await fetch("coffee.jpg");
+```
+
+fulfilled된 fetch() Promise에서 반환된 응답은 해당 응답이 사용할 수 있게 되면 `response 변수`에 할당된다.
+
+그리고 `parser`는 해당 응답이 발생할 때 까지 이 라인에서 일시 중지된다. response가 사용 가능하게 되면, `parser`는 다음 라인으로 이동하게 되고 그 라인에서 `Blob` 을 생성하게 된다.
+
+이 라인도 Promise기반 비동기 메서드를 호출하므로, 여기서도 `await` 을 사용한다. 비동기 작업 결과가 반환되면, myFetch() 함수가 그 결과를 반환한다.
+
+myFetch() 함수를 호출하면, Promise를 반환하므로, 따라서 화면에 Blob을 표시해주는 .then() 코드 블럭 체이닝 할 수 있다.
+
+이렇게하면 .then() 블럭이 줄어들고 대부분이 동기 코드처럼 보이기 때문에 정말 직관적이게 된다.
+
+완벽하게 이해한 부분은 아니지만 이러한 방식으로 처리 된다는 것만을 기억하자.
