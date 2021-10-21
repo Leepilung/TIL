@@ -286,3 +286,154 @@ SUB FLOW는 여러번 진행될 수 있고 SUB FLOW의 루틴을 `서브루틴`�
 공백문자의 특징은 공백이 아무리 많아도 하나의 공백으로 취급함 (IF (조건식) 조건식과 IF 사이의 공백을 의미)
 
 우선순위 연산자 ( `( )` 괄호를 의미)
+
+# FLOW , 흐름 제어
+
+> 번외
+
+```
+if, for와 같은 기본적인 흐름 제어문 만을 사용해서 기본적인 플로우를 잘 제어하는 것만으로도 좋은 프로그래머가 될 수 있다.
+```
+
+자바스크립트에서는
+
+LABEL, BREAK, CONTINUE
+
+와 같은 가장 기본적인 FLOW 제어 수단을 제공한다.
+
+좌에서 우, 상에서 하로 흐르는 일방향적인 흐름을 특정위치로 점프시킬 수 있는 문법이 있다.
+
+그 중 가장 고전적인 방법이 GOTO이다. 특정 위치로 점프시키는 것인데 예전에는 라인넘버로 점프시켰다.
+
+그러나 요새 현대 코드에서는 코드의 길이가 매우 길어지기 때문에 줄 수는 그렇게 중요하지 않기 때문에 생긴 것이 바로 `LABEL`이다.
+
+자바스크립트에서 LABEL은 변수의 식별자 규칙과 매우 유사한(조금은 다른) LABEL 식별자라는 규칙을 갖고있다.
+
+이러한 식별자뒤에 콜론만 붙이면 코드의 어떠한 위치라도 전부 LABEL이 된다.
+
+LABEL IDENTIFIER: <- 이형태처럼 만들면 LABEL이 만들어진다.
+
+BREAK문은 현재 LABEL문에서 탈출하는데 사용된다. BREAK LABEL;과 같이 쓰면된다.
+
+CONTINUE 또한 LABEL에서 탈출하는데 사용된다. CONTINUE LABEL;과 같이 쓰면 된다.
+
+> 예제
+
+```html
+html파일 기본구조
+
+<div id="log"></div>
+```
+
+```js
+index.js 파일 구조
+// javascript
+const con = document.getElementbyId('log');
+const log = (...args) => con.innerHTML += '<br" + agrs.join(' ');
+
+log('a', 1, 'con');
+
+ABC; -> LABEL임.
+
+```
+
+LABEL은 코드 아무대나 삽입할 수 있다. 그렇다면 LABEL은 어떻게 작동할까?
+
+또한 LABEL은 동일한 이름으로 여러개를 만들 수 없다.
+
+```js
+ABC;
+[
+	ABC;
+}
+```
+
+이러한 구문은 에러가 발생한다.
+
+```js
+ABC;
+() => [
+	ABC;
+}
+```
+
+이렇게 하는 경우에는 에러가 발생하지 않는다. 왜냐하면 LABEL은 함수스코프이기 때문이다.
+
+LABEL이 가르킬수 있는것을 LABEL RANGE라고 부른다.
+
+```js
+ABC
+for (const i of [1,2,3,4]) {
+    if (i === 3} break ABC;
+    console.log(i)
+}
+```
+
+이렇게하면 1,2만 출력되고 3일때는 점프시키면서 끝난다.
+위의 구문과 아래구문은 차이가 없다. 여기서 ABC를 지워도 동일하게 동작한다.
+
+```js
+
+for (const i of [1,2,3,4]) {
+    if (i === 3} break;
+    console.log(i)
+}
+```
+
+이건 `ITERATION SET`이라는 작동에 의해 구문안에서 자동으로 LABEL을 생성한 것이다.
+
+`IDENTIFIER`에 `LABEL`이름이 없으면 자동 `LABEL`이 있는 경우애만 작동한다.
+
+자동 LABEL은 언제 작동하느냐 -> `ITERATION SET`이라는 경우에 작동하는 것과 `LABEL SET`이라는 경우에 작동하는 것이 있다.
+
+그리고 `ITERATION SET`에서는 `BREAK`와 `CONTINUE`를 사용해야한다고 배웠기 때문에 FOR문 안에서 LABEL 이름이 없는데 점프하는 것은 익숙하다.
+
+특히 CONTINUE 문은 원래 이터레이션 셋에서밖에 작동하지 않는다.
+
+EX )
+
+```js
+for (const i of [1,2,3,4,]) {
+	if (i === 3) break;
+	log(i);
+}
+
+abc: {
+	log('a');
+	break;
+	loa('b');
+}
+log('c');
+```
+
+이 경우를 실행해보면 에러가뜬다. 왜냐하면 abc 구문에서 abc 자체가 이터레이션 셋이 아니기 때문이다.
+
+그렇기 때문이 이를 해결하려면
+
+```js
+for (const i of [1, 2, 3, 4]) {
+  if (i === 3) break;
+  log(i);
+}
+
+abc: {
+  log("a");
+  break abc; // 이 부분
+  loa("b");
+}
+log("c");
+```
+
+break문에 LABEL명을 기입해주는 것으로 해결되고 정상작동하게 된다.
+
+현재 문법들은 아래로만 점프할 수 있다.(초창기에는 위아래로만 진행했는데 무한루프 위험성이 너무 높음)
+
+우리가 함수를 호출하면 함수 몸통의 가장 위부터 실행된다. 어떠한 호출행위나 서브루틴에 빠지게 되더라도 그 서브루틴의 처음으로 보낸다.
+
+그러나 `break` 즉 `label 점프`만이 아래로 보내는 유일한 예외이다.
+
+요약하면 label 블록에서는 `continue`를 쓸 수 없다. `conitnue`를 사용하고 싶은 경우는 이터레이션 셋에서만 사용해야 한다.
+
+break나 continue에서 break 문에 identifier를 생략하면 auto identifier가 생성되는데 이또한 이터레이션 셋에서만 일어난다.
+
+---
