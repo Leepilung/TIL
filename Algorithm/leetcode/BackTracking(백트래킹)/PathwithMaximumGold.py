@@ -36,3 +36,4 @@ class Solution:
                     count(y,x,0)
 
         return self.totalGold
+``

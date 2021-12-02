@@ -838,18 +838,18 @@ document.write(x % y); // 2
 
 다음 그림은 가장 높은 우선순위를 가지고 있는 괄호(()) 연산자를 사용하여 연산자의 처리 순서를 변경하는 것을 보여준다.
 
-<img src = "http://tcpschool.com/lectures/img_js_precedence.png">
+<img src="../../img/연산자1.png">
 
 연산자의 결합 방향은 수식 내에 우선순위가 같은 연산자가 둘 이상 있을 때, 먼저 어느 연산을 수행할 것인가를 결정한다.
 
-<img src = "http://tcpschool.com/lectures/img_js_associativity.png">
+<img src="../../img/연산자2.png">
 
 # 자바스크립트 연산자의 우선순위표
 
 자바스크립트에서 연산자의 우선순위와 결합 방향은 다음과 같다.
 
 | 우선순위 | 연산자 |                     설명                     |      결합 방향      |
-| :------: | :----: | :------------------------------------------: | :-----------------: | --- |
+| :------: | :----: | :------------------------------------------: | :-----------------: |
 |    1     |   ()   |                  묶음(괄호)                  |          -          |
 |    2     |   .    |                  멤버 접근                   | 왼쪽에서 오른쪽으로 |
 |          |  new   |             인수 있는 객체 생성              |          -          |
@@ -864,7 +864,7 @@ document.write(x % y); // 2
 |          |   ++   |               전위 증가 연산자               | 오른쪽에서 왼쪽으로 |
 |          |   --   |               전위 감소 연산자               | 오른쪽에서 왼쪽으로 |
 |          | typeof |                  타입 반환                   | 오른쪽에서 왼쪽으로 |
-|          |  void  |                undefined 반환                | 오른쪽에서 왼쪽으로 |     |
+|          |  void  |                undefined 반환                | 오른쪽에서 왼쪽으로 |
 |          | delete |               프로퍼티의 제거                | 오른쪽에서 왼쪽으로 |
 |    6     |  \*\*  |               거듭제곱 연산자                | 오른쪽에서 왼쪽으로 |
 |          |   \*   |                 곱셈 연산자                  | 왼쪽에서 오른쪽으로 |
@@ -1067,21 +1067,22 @@ console.log(x === z);            // x와 z은 값과 타입이 모두 같으므�
 
 이처럼 비트 AND 연산자는 대응되는 두 비트가 모두 1일 때만 1을 반환하며, 다른 경우는 모두 0을 반환한다.
 
-<img src = http://tcpschool.com/lectures/img_php_bitwise_and.png>
+<img src ="../../img/비트1.png">
 
 > 비트 OR 연산자 (|)
 
 다음 그림은 비트 OR 연산자(|)의 동작을 나타낸다.
 
 비트 OR 연산자는 대응되는 두 비트 중 하나라도 1이면 1을 반환하며, 두 비트가 모두 0일 때만 0을 반환한다.
-<img src = http://tcpschool.com/lectures/img_php_bitwise_or.png>
+
+<img src = "../../img/비트2.png">
 
 > 비트 XOR 연산자(^)
 
 다음 그림은 비트 XOR 연산자(^)의 동작을 나타낸다.
 비트 XOR 연산자는 대응되는 두 비트가 서로 다르면 1을 반환하고, 서로 같으면 0을 반환한다.
 
-<img src=http://tcpschool.com/lectures/img_php_bitwise_xor.png>
+<img src="../../img/비트3.png">
 
 > 비트 NOT 연산자(~)
 
@@ -1294,7 +1295,7 @@ void 연산자는 피연산자로 어떤 타입의 값이 오던 상관없이 �
 
 if 문은 `표현식의 결과`가` 참(true)`이면 주어진 실행문을 `실행`하며, `거짓(false)`이면 아무것도 실행하지 않는다.
 
-<IMG SRC = http://tcpschool.com/lectures/img_js_if.png>
+<img src="../../img/if문.png">
 
 > 문법
 
@@ -1360,7 +1361,7 @@ if 문과 같이 사용할 수 있는 `else 문`은 if 문의 표현식 `결과�
 
 if / else문을 순서도로 표현하면 다음과 같이 표현할 수 있다.
 
-<img src = http://tcpschool.com/lectures/img_js_else.png>
+<img src="../../img/ifelse문.png">
 
 > 문법
 
@@ -1406,7 +1407,8 @@ else if 문은 if 문처럼 표현식을 설정할 수 있으므로, 중첩된 i
 하지만 else if 문은 여러 번 사용되어 다양한 조건을 설정할 수 있다.
 
 if / else if / else 문을 순서도로 표현하면 다음 그림과 같이 표현할 수 있다.
-<img src=http://tcpschool.com/lectures/img_js_elseif.png>
+
+<img src="../../img/elseif문.png">
 
 > 문법
 
@@ -1575,7 +1577,7 @@ while 문은 특정 조건을 만족할 때까지 계속해서 주어진 실행�
 
 while 문을 순서도로 표현하면 다음 그림과 같다.
 
-<img src = http://tcpschool.com/lectures/img_js_while.png>
+<img src = ../../img/while문.png>
 
 > 문법
 
