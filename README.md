@@ -1,4 +1,4 @@
-# TIL (Today I Learned)
+# TIL - Today I Learned
 
 - 매일 공부한 것을 기록합니다.
 - 하루도 빠짐없이 하나 이상 하는것이 목표
