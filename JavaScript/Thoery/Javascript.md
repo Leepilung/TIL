@@ -2257,10 +2257,10 @@ function isArray(a) {
 
 var arr = [1, true, "JavaScript"]; // 배열 생성
 
-document.write(arr.constructor); // 1. constructor 프로퍼티의 값 출력
-document.write(arr.constructor.toString()); // 2. function Array() {[native code]}
-document.write(arr.constructor.toString().indexOf("Array")); // 3. 10
-document.write(isArray(arr)); // 4. true
+document.write(arr.constructor); // 1. constructor 프로퍼티의 값 출력 ->  function Array() { [native code] }
+document.write(arr.constructor.toString()); // 2. function Array() {[native code]} 출력
+document.write(arr.constructor.toString().indexOf("Array")); // 3. 9 출력
+document.write(isArray(arr)); // 4. true 출력
 ```
 
 [실습링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=js_array_application_08)
