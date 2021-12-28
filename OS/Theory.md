@@ -546,6 +546,7 @@ stack구조로 되어 있는 이유는 코드가 함수의 형태로 되어있�
   - 어떤 프로세스를 다음번에 running 시킬지 결정
   - 프로세스에 CPU를 주는 문제
   - 충분히 빨라야 한다(ms 단위)
+    ₩
 
 - Medium-Term scheduler(중기 스케쥴러 or Swapper)
   - 여유 공간 마련을 위해 프로세스를 통째로 메모리에서 디스크로 쫓아낸다.
@@ -556,3 +557,274 @@ stack구조로 되어 있는 이유는 코드가 함수의 형태로 되어있�
 
 <img src='./img/프로세스상태도2.png'>
 
+---
+
+# Thread(쓰레드)
+
+"A thread ( or lightweight process) is a basic unit of CPU utilization"
+
+- Thread의 구성
+
+  - program counter
+  - register set
+  - stack space
+
+- Thread가 동료 thread와 공유하는 부분(=task)
+
+  - code section
+  - data section
+  - OS resources
+
+- 전통적인 개념의 heavyweight process는 하나의 thread를 가지고 있는 task로 볼 수 있다.
+
+<img src='./img/쓰레드.png'>
+ 
+쓰레드 라는 것은 하나의 주소공간을 두고 프로그램 카운터만 여러개 두는 것을 의미한다. 프로세스 하나에 CPU 수행단위를 여러개 두는 것을 말한다.
+
+공유할 수 있는 것은 최대한 공유한다.(주소공간, 쓰레드의 각종 자원들 또한 공유한다.)
+
+서로 다른 별도인 부분은 각 주소공간의 stack, 쓰레드의 Program Counter, register등이다.
+
+## 쓰레드 이용시의 장점
+
+- 다중 스레드로 구성된 태스크 구조에서는 하나의 서버 스레드가 blocked (waiting) 상태인 동안에도 동일한 태스크 내의 다른 스레드가 실행(Running) 되어 빠른 처리를 할 수 있다.
+
+- 동일한 일을 수행하는 다중 스레드가 협력하여 높은 처리율(throughput)과 성능 향상을 얻을 수 있다 (자원 절약이 가능)
+
+- 스레드를 사용하면 병렬성을 높일 수 있다. (CPU가 여러개 달린 경우에 해당)
+
+1. 응답성 - 사용자 입장에서 매우 빠르다. 하나의 쓰레드가 블록되도 나머지 쓰레드가 지속적으로 요청을 보내고 응답을 받아올 수 있기 때문
+
+2. 자원 공유 - N개의 쓰레드는 하나의 코드, 데이터, 각종 자원들을 공유하기 때문
+
+3. 경제성 - 프로세스를 하나 만드는 것은 오버헤드가 매우 크다. 그러나 스레드간의 CPU switching은 훨씬 오버헤드가 적다.
+
+---
+
+# 프로세스의 생성(Process Creation)
+
+- COW(Copy On Write)
+
+- 부모 프로세스(Parent process)가 자식 프로세스(children process) 생성한다.
+
+- 프로세스의 트리(계층 구조) 형성
+- 프로세스는 자원을 필요로 한다.
+  - 자원은 보통 운영체제로부터 받는다
+  - 자원은 부모와 공유할 수도 있다.
+- 자원의 공유
+  - 부모와 자식이 모든 자원을 공유하는 모델이다
+  - 일부를 공유하는 모델이다
+  - 전혀 공유하지 않는 모델(일반적인 모델)
+- 수행 (Excution)
+  - 부모와 자식은 공존하며 수행되는 모델
+  - 자식이 종료(terminate)될 때까지 부모가 기다리는(wait) 모델
+
+> 어떻게 생성하는가?
+
+- 주소 공간(Address space)
+  - fork로 우선 복제 -> exec으로 덮어쓰는 2단계 과정을 가짐.
+  - 자식은 부모의 공간을 복사한다(binary and OS data)
+  - 자식은 그 공간에 새로운 프로그램을 올린다.
+- 유닉스의 예
+  - fork() 라는 시스템 콜이 새로운 프로세스를 생성한다.
+    - 부모를 그대로 복사한다.(OS data except PID + binary)
+    - 주소 공간 할당
+  - fork 다음에 이어지는 exec() 시스템 콜을 통해 새로운 프로그램을 메모리에 올린다.
+
+복제하고 덮어씌우지 않을 수도 있고, 복제를 안하고 exec()만 할 수 도 있다.
+
+# 프로세스의 종료(Process Termination)
+
+프로세스가 마지막 명령을 수행한 후 운영체제에게 이를 알려준다(exit)
+
+- 자식이 부모에게 어떠한 데이터를 보낸다.(via wait)
+- 프로세스의 각종 자원들이 운영체제에게 반납된다.
+
+비 자발적으로 프로세스가 종료되는 경우도 있다.(abort)
+
+- 자식이 할당 자원의 한계치를 넘어가는 경우
+- 자식에게 할당된 태스크가 더 이상 필요하지 않은 경우
+- 부모가 종료(exit)하는 경우
+  - 운영체제는 부모 프로세스가 종료하는 경우 자식이 더 이상 수행되도록 두지 않는다.
+  - 단계적인 종료
+
+COW -> Write가 일어났을때 Copy까지 진행한다.
+
+## fork() 시스템 콜
+
+프로세스는 fork()라는 시스템 콜에 의해 만들어진다.
+
+- 새로운 주소 공간이 생성된다. 그것은 호출자의 복제품이다.
+
+```c
+int main()
+{ int pid;
+  pid = fork() // fork() 이부분이 시스템 콜에 해당한다.
+  if (pid == 0) /* this is child */
+    printf("\n Hello, i am child!\n");
+  else if (pid >0) /* this is parent */
+    printf("\n Hello, I am parent!\n");
+}
+```
+
+부모 프로세스는 fork가 호출되면 똑같은 구조를 복사해내는데 이 때 자식 프로세스는 복제한 전문을 그대로 따라서 카피하는 것이 아니고(즉 main()의 시작부터 실행하지 않고) 시스템 콜 아랫부분부터 실행한다.
+
+문제는 복제된 자식프로세스가 똑같이 원본임을 주장하게 된다.(같은 코드를 가지고 있기 때문)
+
+이러한 문제를 막기위해 자식과 부모를 구분시켜준다. (위의 예제코드에서 PID값을 통해 구분)
+
+fork를 실행하고나면 부모프로세스는 결과값이 양수가 나오고 자식프로세스는 fork의 결과값으로 0이라는 값을 받게된다.
+
+# exec() 시스템콜
+
+exec() 시스템콜은 프로그램의 이미지를 완전히 새로운 프로그램으로 바꿔준다.
+
+```c
+int main()
+{ int pid;
+  pid = fork()
+  if (pid == 0)       /* this is child */
+  {
+    printf("\n Hello, i am child! Now i'll run date \n")
+    execlp("/bin/date", "/bin/date", (char *) 0); // execlp가 exec함수를 호출하는 역할을 함.
+    printf("\n Hello, I am parent!") // 이 함수는 실행될일이 없음. exec에 의해 다른함수로 내용이 바뀌기 때문
+  }
+  else if (pid >0)    /* this is parent */
+    printf("\n Hello, I am parent!\n");
+}
+```
+
+위의 예제코드에서는 execlp 함수를 만나면 이 함수가 exec() 시스템콜을 호출하는 역할을 한다.
+
+## - execlp()
+
+execlp의 경우 다음과 같은 형태를 가진다.
+
+execlp("프로그램명","프로그램명",optional,optioanl,(cahr \*) 0)
+
+프로그램명을 2번 적어주고, 전달해줄 인자들을 옵셔널로 넣어주고, 마지막으로 캐릭터 포인터 0를 써주면된다.
+
+# wait() 시스템 콜
+
+wait 시스템콜은 프로세스를 블록상태로 바꿔 잠들게 하는것이다.
+
+프로세스 A가 wait() 시스템 콜을 호출하면 다음의 처리 과정을 가지게 된다.
+
+- 커널은 child가 종료될 때까지 프로세스 A를 sleep 시킨다.(block 상태)
+- Child process가 종료되면 커널은 프로세스 A를 깨운다(ready 상태)
+
+wait 시스템콜은 뭘 블락시키면서 기다리는걸까? -> 보통 자식프로세스를 만들고 wait() 시스템콜을 부른다.
+
+보통은 자식프로세스가 종료될때까지 기다린다.
+
+# exit() 시스템 콜
+
+exit() 시스템 콜은 프로세스를 종료시킬 때 호출하는 시스템 콜이다.
+
+프로세스의 종료를 의미하는 시스템콜로써 2가지 케이스로 나뉜다.
+
+- 자발적 종료
+
+  - 마지막 statement 수행 후 exit() 시스템 콜을 통해 프로그램에 명시적으로 적어주지 않아도 main 함수가 리턴되는 위치에 컴파일러가 넣어준다.
+
+- 비자발적 종료
+  - 부모 프로세스가 자식 프로세스를 강제 종료 시키는 경우이다.
+    - 자식프로세스가 한계치를 넘어서는 자원을 요청하는 경우
+    - 자식에게 할당된 태스크가 더 이상 필요하지 않는 경우
+  - 키보드로 kill, break 등을 입력한 경우
+  - 부모가 종료하는 경우
+    - 부모 프로세스가 종료하기 전에 자식들이 먼저 종료된다.
+
+# 프로세스와 관련된 시스템 콜들
+
+- fork() : 자식 프로세스릉 생성하는 시스템콜
+- exec() : 새로운 이미지로 덮어씌우는 시스템콜
+- wait() : 자식 프로세스가 종료될떄까지 block상태로 만들어 강제로 잠재우는 시스템콜
+- exit() : 모든 자원 리소스를 free시키고, 죽는다고 부모 프로세스에게 알리는 시스템콜
+
+# 프로세스 간 협력
+
+프로세스는 서로 굉장히 독립적이다.
+
+- 독립적 프로세스
+
+  - 프로세스는 각자 주소 공간을 가지고 수행되므로, 원칙적으로 하나의 프로세스는 다른 프로세스의 수행에 영향을 미치지 못한다.
+
+- 협력 프로세스
+
+  - 프로세스 협력 메커니즘을 통해 하나의 프로세스가 다른 프로세스의 수행에 영향을 미칠 수 있다.
+
+- 프로세스 간 협력 메커니즘(IPC : Interprocess Communication)
+  - 메세지 전달 방법 : message passing -> 커널을 통해 메시지 전달
+  - 주소 공간을 공유하는 방법
+    - shared memory : 서로 다른 프로세스 간에도 일부 주소공간을 공유하게 하는 shared memory 메커니즘
+    - thread : thread는 사실상 하나의 프로세스이므로 프로세스 간 협력으로 보기는 어렵지만 동일한 process를 구성하는 thread들 간에는 주소 공간을 공유하므로 협력이 가능하다.
+
+## Message Passing
+
+- Message system
+
+  - 프로세스 사이에 공유 변수(shared variable)를 일체 사용하지 않고 통신하는 시스템
+
+- Direct Communication
+
+  - 통신하려는 프로세스의 이름을 명시적으로 표시하는 방법
+
+        Process P -> Process Q 의 과정이 있다고 가정할 때
+        Send(Q,message)   Receive(P,message)
+        의 형태로 받는 프로세스의 이름을 명시적으로 표시한다.
+
+- Indirect Communication
+
+  - mailbox(or Port)를 통해 메시지를 간접 전달하는 방식.
+
+          Process P -> Mailbox M -> Process Q
+
+## Shared Memory
+
+물리적 메모리 공간을 같이 사용하는 방식. 서로 상당히 신뢰하는 상태여야 한다.
+
+---
+
+# CPU Scheduling
+
+어떤 프로그램이 실행되던 프로그램이 실행된다는 것은 CPU 버스트와 I/O 버스트가 반복된다.
+
+CPU가 무언가 연산을 하다 인간이 I/O 디바이스로 작업을하면 CPU는 다시 그 연산을 하고 결과값을 출력해주고의 반복이라는 것.
+
+<img src='./img/CPU타임.png'>
+
+CPU의 사용 시간에 따라 여러가지의 형태로 job(=process)가 나뉘고 이러한 job들이 여러종류가 섞여있기 때문에 CPU 스케쥴링이 필요하다.
+
+Interactive job(I/O bouond job같은 녀석들)에게 적절한 response를 제공해야하고, CPU와 I/O 장치등 시스템 자원을 골고루 효율적으로 사용할 수 있게한다.
+
+프로세스는 그 특성에 따라 두가지로 나뉜다.
+1. I/O-bound process
+  - CPU를 잡고 계산하는 시간보다 I/O에 더 많은 시간이 필요한 job
+  - 매우 짧은 CPU bursts를 가진다.
+2. CPU-bound process
+  - 계산 위주의 job
+  - 매우 긴 CPU bursts를 가진다.
+
+# CPU Scheduler & Dispatcher
+
+CPU Scheduler란?
+ - 운영체제 안에서 해당 기능을 수행하는 코드에 불과함.
+ - Ready 상태의 프로세스 중에서 CPU를 줄 프로세스를 고른다.
+
+Dispatcher란?
+  CPU를 누구에게 줄지 결정했으면 그 대상에게 CPU를 넘겨주는 역할을 하는 녀석.
+  - CPU의 제어권을을 CPU scheduler에 의해 선택된 프로세스에게 넘긴다.
+  - 이 과정을 context switch(문맥 교환)이라고 한다.
+
+CPU 스케쥴링이 필요한 경우
+1. Running -> Blocked (예 : I/O 요청하는 시스템 콜의 경우)
+2. Running -> Ready (예 : 할당시간만료로 timer interrupt가 발생한 경우)
+3. Blocked -> Ready (예 : I/O 완료 후 인터럽트)
+4. Terminate
+
+1,4 번 케이스의 스케쥴링은 강제로 빼앗지않고 자진반납(nonpreemptive) 하는 케이스이고
+
+나머지 모든 스케쥴링들은 강제로 뺴앗는(preemptive) 케이스이다.
+
+₩
