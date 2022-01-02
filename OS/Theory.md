@@ -799,32 +799,119 @@ CPU의 사용 시간에 따라 여러가지의 형태로 job(=process)가 나뉘
 Interactive job(I/O bouond job같은 녀석들)에게 적절한 response를 제공해야하고, CPU와 I/O 장치등 시스템 자원을 골고루 효율적으로 사용할 수 있게한다.
 
 프로세스는 그 특성에 따라 두가지로 나뉜다.
+
 1. I/O-bound process
-  - CPU를 잡고 계산하는 시간보다 I/O에 더 많은 시간이 필요한 job
-  - 매우 짧은 CPU bursts를 가진다.
+
+- CPU를 잡고 계산하는 시간보다 I/O에 더 많은 시간이 필요한 job
+- 매우 짧은 CPU bursts를 가진다.
+
 2. CPU-bound process
-  - 계산 위주의 job
-  - 매우 긴 CPU bursts를 가진다.
+
+- 계산 위주의 job
+- 매우 긴 CPU bursts를 가진다.
 
 # CPU Scheduler & Dispatcher
 
 CPU Scheduler란?
- - 운영체제 안에서 해당 기능을 수행하는 코드에 불과함.
- - Ready 상태의 프로세스 중에서 CPU를 줄 프로세스를 고른다.
+
+- 운영체제 안에서 해당 기능을 수행하는 코드에 불과함.
+- Ready 상태의 프로세스 중에서 CPU를 줄 프로세스를 고른다.
 
 Dispatcher란?
-  CPU를 누구에게 줄지 결정했으면 그 대상에게 CPU를 넘겨주는 역할을 하는 녀석.
-  - CPU의 제어권을을 CPU scheduler에 의해 선택된 프로세스에게 넘긴다.
-  - 이 과정을 context switch(문맥 교환)이라고 한다.
+CPU를 누구에게 줄지 결정했으면 그 대상에게 CPU를 넘겨주는 역할을 하는 녀석.
+
+- CPU의 제어권을을 CPU scheduler에 의해 선택된 프로세스에게 넘긴다.
+- 이 과정을 context switch(문맥 교환)이라고 한다.
 
 CPU 스케쥴링이 필요한 경우
+
 1. Running -> Blocked (예 : I/O 요청하는 시스템 콜의 경우)
 2. Running -> Ready (예 : 할당시간만료로 timer interrupt가 발생한 경우)
 3. Blocked -> Ready (예 : I/O 완료 후 인터럽트)
 4. Terminate
 
-1,4 번 케이스의 스케쥴링은 강제로 빼앗지않고 자진반납(nonpreemptive) 하는 케이스이고
+CPU Scheduling의 방법은 상당히 많은데 그 중 대표적인 방법 2가지를 나뉘어서 분류짓는다면
 
-나머지 모든 스케쥴링들은 강제로 뺴앗는(preemptive) 케이스이다.
+CPU를 강제로 빼앗지않고 비선점형 자진반납(nonpreemptive) 하는 케이스와
 
-₩
+강제로 뺴앗는 선점형 (preemptive) 케이스 2개로 분류할 수 있다.
+
+## 스케쥴링의 성능척도(Scheduling Criteria)
+
+시스템 입장에서의 척도
+
+- CPU 이용률
+  - 전체 시간 중에서 놀지않고 일한 시간의 비율
+- Throughput(처리량)
+  -
+
+프로세스(고객) 입장에서의 척도
+
+- Turnaround time(소요시간, 반환시간)
+  - 특정한 프로세스가 실행되는데 걸린 시간의 총량을 의미
+- Waiting time(대기 시간)
+  -CPU를 얻기까지 순수하게 기다리는 시간을 의미한다.
+- Response time(응답 시간)
+  - ready_list에 들어와서 처음으로 CPU를 얻는대까지 걸리는 시간
+
+### \* 대기시간과 응답시간의 차이
+
+한번의 CPU burst동안 여러번 CPU권한을 얻었다 놓쳤다 할텐데 이 때마다 걸리는 시간의 총합을 wating time(대기 시간)이라고 부른다.1
+
+## Round Robin
+
+각 프로세스는 동일한 크기와 할당 시간(time quantum)을 가진다.(일반적으로 10~100ms 사이)
+
+할당 시간이 지나면 프로세스는 선점(preempted) 당하고 ready queue의 제일 뒤로 보내진다.
+
+n 개의 프로세스가 ready queue애ㅔ 있고, 할당 시간이 q time unit인 경우 각 프로세스는 초대 q time unit 단위로 CPU 시간의 1/n을 얻는다.
+
+응답시간이 빠르다는 장점이 있다.
+
+- 어떠한 프로세스도 (n-1)q time unit 이상 기다리지 않는다.
+
+## Priority Scheduling
+
+높은 우선수위를 가진 프로세스에게 CPU를 할당한다.
+
+Starvation(기아 현상)이 발생한다.
+
+이를 해결하기 위한 방법으로 Aging(노화) 기법이 존재한다.
+
+# Semaphores
+
+- Semaphores `S`
+
+  - 정수형 값을 갖는 변수
+  - 연산은 2가지 연산이 있고 atomic 연산에 의해서만 접근이 가능하다.
+    - P연산(획득하는 연산)
+      - 여기서도 busy - wait문제가 발생함.
+    - V연산(반납하는 연산)
+
+- Semaphores는 왜쓰는가?
+  - 공유자원을 획득하고 반납하는 것을 Semaphores가 작동해서 해결해준다.
+
+## Busy-wait vs Block/Wakeup
+
+일반적으로 Block/Wakup 방식이 더 효율적
+
+지속적으로 자원을 점유하는 것 자체가 비효율적이기 때문
+
+그러나 Critical Section의 길이에 따라 Overhead 크기때문에 경우에따라 달라진다.
+
+- 길이가 긴경우 : Block/Wake-up이 적당함
+- 길이가 매우 짧은 경우 : Block/Wake-up의 오버헤드가 Busy-wait의 오버헤드보다 더 커질 수가 있음.
+
+lock을 걸때 일반적으로 0, 1두개의 값만을 이용하여 semaphore를 이용한다.( = binary semaphores라고 부름)
+
+# Deadlock
+
+둘 이상의 프로세스가 서로 상대방에 의해 충족될 수 있는 evnet를 무한히 기다리는 현상.
+
+예를 들어 S와 Q가 1로 초기화된 두 semaphore가 있다고 할 경우 프로세스 0과 프로세스 1 모두 S,Q를 사용한다고 할때 한쪽 프로세스 P0의 과정이 P(S), P(Q) ~ V(S), V(Q)의 순서라고 해보자.
+
+P1이 P(Q),p(S) ~V(Q),V(S)의 과정을 거친다고 하면 P1은 P(S)연산을 영원히 수행할 수없다.
+
+P(S)를 받으려면 프로세스 P0가 S를 V(S)로 반환해줘야 가능한데 그전에 서로 요구하기 때문이다.
+
+이렇게 서로 영원히 기다려야하는 현상을 Deadlock이라고 한다.
