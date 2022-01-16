@@ -1,31 +1,34 @@
-# PintOS
+# 🖥 PintOS
 
 Kaist PintOS를 기반으로 OS프로젝트 진행 사항 관련하여 이론적인 내용을 정리하기 위한 목적으로 만든 폴더입니다.
 
-**CS:APP 교재 매핑**
+주단위 흐름과 교육 커리큘럼간 느낀점등을 서술할 예정입니다.
+
+# Projet 1 : THREADS
+## **CS:APP 교재 매핑**
 
 - 📝 Project 1
 
   - Chapter 3. Machine-Level Representation of Programs
   - Chapter 12. Concurrent Programming
 
+- ❗️ Caution
+
+  - PROJECT 1 - Advanced Scheduler와 CondVar는 옵션
+
 ## 👨‍👨‍👦 Project 1 Member
 
 1. 김현우
 2. 권혁주
 
-- Caution
 
-  - PROJECT 1 - Advanced Scheduler와 CondVar는 옵션
+## 📜 Week08 WIL(Weekly I Learned)
 
-## 📜 Week08 WIL(Weekly I learned)
-
-- project1 Goal
-
+- ⛳️ project1 Goal
   - Alaram clock
   - Priority Scheduling
 
-- project optional gola
+- project optional goal
   - Advanced Scheduler
 
 ### 💬 느낀점 (12/23~12/29)
@@ -47,3 +50,66 @@ Kaist PintOS를 기반으로 OS프로젝트 진행 사항 관련하여 이론적
 기본적으로 OS의 개념들을 논리적으로 추상화하는 과정이 상당히 어려웠다. 서로 이론적으로 공부한 내용이 충돌하기도 하고, OS기반의 내용과 PintOS에서 다루는 내용중 세부사항들이 다른 부분도 있었다. (대표적으로 프로세스, 스레드 부분)
 
 일단 매주 최선을 다한다라는 선택지 외엔 선택지는 없는 것 같다. 번아웃이 심하게 올때가 있다는게 가장 큰 부분인데 스스로 잘 케어해야할 부분인 것 같다.
+
+---
+# Project 2 : USER PROGRAMS
+## **CS:APP 교재 매핑**
+
+- 📝 Project 2
+
+  - Chapter 8.2 ~ 8.4 Exceptional Control Flow (Process, System Call Error Handling, Process Control)
+
+- ❗️ Caution
+
+  - PROJECT 2 - Extend File Descriptor는 옵션
+
+## 👨‍👨‍👦 Project 2 Member
+
+1. 김현우    
+2. 권혁주
+
+
+## 📜 Week09 WIL(Weekly I Learend )
+
+- ⛳️ project2 Goal
+
+  - Argument Passing
+  - User Memory Access
+  - System Calls
+  - Process Termination Message
+  - Deny Write on Executables
+
+### 💬 느낀점 (12/30~1/11)
+
+Project2로 넘어오면서 스트레스가 굉장히 커졌었다. 
+
+우선 OS에 대한 전반적인 이론을 공부하여도 이 통상적으로 배우는 개념이나 지식등이 PintOS에서 적용이 곧이 곧대로 적용되는 부분도 있었으나, 아닌 부분들이 꽤 많았었다. 
+
+이러한 부분들에 있어서 어떻게 변환시키고 어떻게 적용해나가야 할지등이 굉장히 애매하고 모호했었다.
+
+또한 나는 개념을 어느정도 Abstraction 해놔야 공부가 잘되는 편인지라 바텀탑의 공부방법을 굉장히 선호하는 스타일인데 교육기간이 굉장히 짧아 이러한 공부방법은 내 몸을 혹사시키더라도 불가능했다.  
+
+이론을 깊게팔수록 코드에서 난항이 생기고 코드를 바로 파자니 이론이 부실해서 뭔가 구멍난채로 공부하는 느낌이 들었다.
+
+물론 조원들과 다른 동기들의 도움 및 집단지성으로 잘 극복해 나간 것 같다.
+
+Project2에서 배운 부분을 간단하게 정리해보자면 다음과 같다.
+
+1. 유저 영역과 커널 영역이 왜 나뉘는 지에 대한 이유
+
+    유저 영역과 커널 영역을 나누는 이유는 안정성과 효율성 때문이다. 유저 영역에서도 시스템 영역을 마구 조작할 수 있다고 생각하면 미숙한 사용자들은 컴퓨터를 고장내기 일 수 일 것이다.
+
+    작업 영역이 분리되는 것또한 간단한 작업을 진행하는 영역과 복잡한 영역을 나눠 진행하는 편이 더 효율적이기도 하다.
+2. OS는 1번 과정에서 복잡한 영역을 스스로 하는 이유가 있다.
+
+    위에 서술 했듯이 사용자가 OS를 건드려 치명적 오류나 손상을 입힐 가능성이 존재하기 때문에 이를 운영 체제가 독자적으로 스스로 처리해준다.
+
+3. 유저 영역에서 커널 영역으로 들어가는 방법?
+
+    이 과정에서 사용되는 것이 시스템 콜(system call)이다. 유저 영역에서 어떠한 작업을 수행하다가 해당 작업이 커널 영역에서 제공하는 서비스를 필요로 한다고 가정해 보자.
+    
+    그 서비스를 요청할 경우 커널에 접근하기 위한 인터페이스가 `시스템 콜(system call)`이다.
+
+    C나 C++같은 언어로 작성된 프로그램은 직접 시스템을 호출할 수 없기 때문에 고급 API를 사용해 시스템 호출에 접근하게 하는 방법이라고 볼 수 있다.
+
+4. 시스템콜의 동작 방식까지 고려한다면 
