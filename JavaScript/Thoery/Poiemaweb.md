@@ -318,3 +318,619 @@ V8 자바스크립트 엔진으로 촉발된 자바스크립트의 발전으로 
 클라이언트 사이드 Web API는 ECMAScript와는 별도로 World Wide Web Consortium (W3C)에서 별도의 명세로 관리하고 있다. 클라이언트 사이드 Web API의 자세한 내용은 MDN web [docs: Web API](https://developer.mozilla.org/ko/docs/Web/API)를 참고하기 바란다.
 
 # 5. 자바스크립트의 특징
+
+# 함수 호이스팅
+
+자바스크립트는 ES6의 let, const를 포함하여 모든 선언(var, let, const, function, function\*, class)을 `호이스팅(Hoisting)`한다.
+
+호이스팅이란 여러번 공부했듯이 var 선언문이던 function 선언문이던 모든 선언문이 해당 Scope의 선두로 옮겨진 것처럼 동작하는 특성을 말한다.
+
+즉 자바스크립트는 모든 선언문(var, let, const, function, function\*,class)등이 선언되기 이전에 참조가 가능하다.
+
+함수 선언문으로 정의된 함수는 자바스크립트 엔진이 스크립트가 로딩되는 시점에 바로 초기화되고 이를 VO(variable object)에 저장한다.
+
+즉, 함수 선언, 초기화, 할당이 한번에 이뤄진다. 그렇기 때문에 함수 선언의 위치와 상관없이 소스 내 어느 곳에서든지 호출이 가능해진다.
+
+그러나 주의할 점은 함수 표현식으로 함수를 정의한 경우이다.
+
+> EX )
+
+```js
+var res = square(5); // TypeError: square is not a function
+
+var square = function (number) {
+  return number * number;
+};
+```
+
+함수 선언문의 경우와는 달리 TypeError가 발생하였다. 함수 표현식의 경우 함수 호이스팅이 아니라 변수 호이스팅이 발생하기 떄문이다.
+
+변수 호이스팅은 변수의 생성 및 초기화와 할당이 분리되어 진행된다. 호이스팅된 변수는 할당이 이뤄지지 않았기 떄문에 undefined로 초기화 되고 실제값의 할당은 할당문에서 이뤄진다.
+
+함수 표현식은 함수 선언문과는 달리 스크립트 로딩 시점에 변수 객체(VO)에 함수를 할당하지 않고 runtime에 해석되고 실행되므로 이 두가지를 구분하는 것은 중요하다.
+
+JavaScript: The Good Parts의 저자이며 자바스크립트의 권위자인 더글러스 크락포드(Douglas Crockford)는 이와 같은 문제 때문에 함수 표현식만을 사용할 것을 권고하고 있다. 함수 호이스팅이 함수 호출 전 반드시 함수를 선언하여야 한다는 규칙을 무시하므로 코드의 구조를 엉성하게 만들 수 있다고 지적한다.
+
+또한 함수 선언문으로 함수를 정의하면 사용하기에 쉽지만 대규모 애플리케이션을 개발하는 경우 인터프리터가 너무 많은 코드를 변수 객체(VO)에 저장하므로 애플리케이션의 응답속도는 현저히 떨어질 수 있으므로 주의해야 할 필요가 있다.
+
+# First-class object (일급 객체)
+
+일급 객체(first-class object)란 생성, 대입, 연산, 인자 또는 반환값으로서의 전달 등 프로그래밍 언어의 기본적 조작을 제한없이 사용할 수 있는 대상을 의미한다.
+
+다음 조건을 만족하면 일급 객체로 간주한다.
+
+1. 무명의 리터럴로 표현이 가능하다.
+2. 변수나 자료 구조(객체, 배열 등)에 저장할 수 있다.
+3. 함수의 매개변수에 전달할 수 있다.
+4. 반환값으로 사용할 수 있다.
+
+# 순수 함수(Pure function), 비순수 함수(Impure function)
+
+함수중에서 원시 타입의 인수는 값을 복사하여 매개변수에 전달하기 때문에, 함수 몸체에서 그값을 변경하여도 어떠한 부수 효과(side-effect)도 발생시키지 않는다.
+
+하지만 객체형 인수는 참조값을 매개변수에 전달하기 때문에 함수 몸체에서 그 값을 변경할 경우 원본 객체가 변경되는 부수 효과(side-effect)가 발생한다.
+
+이와 같이 부수효과를 발생시키는 비순수 함수(Impure function)는 복잡성을 증가시킨다. 비순수 함수를 최소환으로 줄이는 것이 부수 효과를 최대한 억제하는 것과 같고 디버깅을 쉽게 만드는 방법이다.
+
+한마디로 어떤 외부 상태도 변경하지 않는 함수를 순수함수(Pure function), 외부 상태도 변경시키는 부수 효과(side-effect)가 발생시키는 함수를 비순수 함수(Impure function)이라고 한다.
+
+# arguments 프로퍼티
+
+arguments 객체는 함수 호출 시 전달된 인수(argument)들의 정보를 담고 있는 순회가능한(iterable) 유사 배열 객체(array-like object)이며 함수 내부에서 지역변수처럼 사용된다. 즉, 함수 외부에서는 사용할 수 없다.
+
+> EX )
+
+```js
+function multiply(x, y) {
+  console.log(arguments);
+  return x * y;
+}
+
+multiply(); // NAN {}
+multiply(1); // NAN { '0': 1 }
+multiply(1, 2); // 2 { '0': 1, '1': 2 }
+multiply(1, 2, 3); // 2 { '0': 1, '1': 2, '2': 3 }
+```
+
+# caller 프로퍼티
+
+caller 프로퍼티는 자신을 호출한 함수를 의미한다.
+
+> EX )
+
+```js
+function foo(func) {
+  var res = func();
+  return res;
+}
+
+function bar() {
+  return "caller : " + bar.caller;
+}
+
+console.log(foo(bar));
+// caller : function foo(func) {
+//     var res = func();
+//     return res;
+// } 출력
+console.log(bar()); // caller : null 출력
+```
+
+# 즉시 실행 함수
+
+함수의 정의와 동시에 실행되는 함수를 `즉시 실행 함수(IIFE, Immediately Invoke Function Expression)`라고 한다. 최초 한번만 호출되며 다시 호출할 수는 없다. 이러한 특징을 이용하여 최초 한번만 실행이 필요한 초기화 처리등에 사용할 수 있다.
+
+> EX )
+
+```js
+// 기명 즉시 실행 함수(named immediately-invoked function expression)
+(function myFunction() {
+  var a = 3;
+  var b = 5;
+  return a * b;
+}());
+
+// 익명 즉시 실행 함수(immediately-invoked function expression)
+(function () {
+  var a = 3;
+  var b = 5;
+  return a * b;
+}());
+
+// SyntaxError: Unexpected token (
+// 함수선언문은 자바스크립트 엔진에 의해 함수 몸체를 닫는 중괄호 뒤에 ;가 자동 추가된다.
+function () {
+  // ...
+}(); // => };();
+
+// 따라서 즉시 실행 함수는 소괄호로 감싸준다.
+(function () {
+  // ...
+}());
+
+(function () {
+  // ...
+})();
+```
+
+자바스크립트에서 가장 큰 문제점 중의 하나는 파일이 분리되어 있다하여도 글로벌 스코프가 하나라는 점, 글로벌 스코프에 선언된 변수나 함수는 코드 내의 어디서든지 접근이 가능하다는 점이다.
+
+따라서 다른 스크립트 파일 내에서 동일한 이름으로 명명된 변수나 함수가 같은 스코프 내에 존재할 경우 원치 않는 결과를 가져올 수 있다.
+
+즉시 실행 함수 내에 처리 로직을 모아 두면 혹시 있을 수도 있는 변수명 또는 함수명의 충돌을 방지할 수 있어 이를 위한 목적으로 즉시실행함수를 사용되기도 한다.
+
+특히 jQuery와 같은 라이브러리의 경우, 코드를 즉시 실행 함수 내에 정의해 두면 라이브러리의 변수들이 독립된 영역 내에 있게 되므로 여러 라이브러리들은 동시에 사용하더라도 변수명 충돌과 같은 문제를 방지할 수 있다.
+
+화살표 함수는 즉시실행 불가.
+
+# 스코프
+
+## 렉시컬 스코프
+
+> EX )
+
+```js
+var x = 1;
+
+function foo() {
+  var x = 10;
+  bar();
+}
+
+function bar() {
+  console.log(x);
+}
+
+foo(); // 1
+bar(); // 1
+```
+
+위의 예제를 처음 봤을땐 10 , 1이 출력될것이라 생각했었따. 그러나 어림없는 소리. 1, 1이 출력되었고 이러한 결과가 나온대에는 이유가 있었다.
+
+스코프 범위를 어디로 하느냐는 두가지 패턴이 존재하는데
+
+1. 함수를 어디서 `호출`하였는지에 따라 상위 스코프를 결정하는 것.
+2. 함수를 어디서 `선언`하였는지에 따라 상위 스코프를 결정하는 것.
+
+1번의 방식이었다면 위 예제에서 10, 1이 출력되었겠지만, 결과물은 1,1 즉 2번의 방식이다.
+
+프로그래밍 언어는 이 두가지 방식 중 하나의 방식으로 함수의 상위 스코프를 결정한다.
+
+1번의 방식을 `동적 스코프(Dynamic scope)`라 하고
+
+2번의 방식을 `렉시컬 스코프(Lexical scope)` 혹은 `정적 스코프(Static scope)`라 한다.
+
+문제는 자바스크립트를 비롯한 대부분의 프로그래밍 언어는 `렉시컬 스코프`를 따른다는 점이다.
+
+`렉시컬 스코프는 함수를 어디서 호출하는지가 아니라 어디에 선언하였는지에 따라 결정된다.` 자바스크립트는 렉시컬 스코프를 따르므로 함수를 선언한 시점에 상위 스코프가 결정된다.
+
+함수를 어디에서 호출했는가는 스코프 결정에 있어 아무런 의미를 주지 않는다.
+
+## 암묵적 젼역
+
+예제를 통해 알아봐야 하는 항목이므로 예제를 우선 보자.
+
+> EX )
+
+```js
+var x = 10; // 전역 변수
+
+function foo() {
+  // 선언하지 않은 식별자
+  y = 20;
+  console.log(x + y);
+}
+
+foo(); // 30
+```
+
+위 예제에서 y는 선언하지 않은 식별자이다. 따라서 y = 20이 실행되면 참조 에러가 발생할 것처럼 보인다.
+
+하지만 선언하지 않은 식별자 y는 마치 선언된 변수처럼 동작한다. 이는 선언하지 않은 식별자에 값을 할당하면 전역 객체의 프로퍼티가 되기 떄문이다.
+
+foo 함수가 호출되면 자바스크립트 엔진은 변수 y에 값을 할당하기 위해 먼저 스코프 체인을 통해 선언된 변수인지 확인한다.
+
+이때 foo함수의 스코프와 전역 스코프 어디에서도 변수 y의 선언을 찾아볼 수 없으므로 참조 에러가 발생해야 하지만 자바스크립트 엔진은 `y = 20`을 `window.y = 20`으로 해석해버려 프로퍼티를 동적으로 생성한다.
+
+결국 y는 전역 객체의 프로퍼티가 되어 마치 전역 변수처럼 동작한다. 이러한 현상을 `암묵적 전역(implicit global)`이라고 한다.
+
+하지만 y는 변수 선언없이 단지 전역 객체의 프로퍼티로 추가되었을 뿐이다.
+
+따라서 y는 변수가 아니다. 따라서 `변수가 아닌 y는 변수 호이스팅이 발생하지 않는다.`
+
+## 최소한의 전역변수 사용
+
+전역변수 사용을 최소화하는 방법 중 하나는 어플리케이션에서 전역변수 사용을 위해 다음과 같이 전역변수 객체 하나를 만들어 사용하는 방법이라고 한다.(무려 더글라스 크락포드의 제안이라고 함)
+
+> EX )
+
+```js
+var MYAPP = {};
+
+MYAPP.student = {
+  name: "Lee",
+  gender: "male",
+};
+
+console.log(MYAPP.student.name);
+```
+
+## 즉시실행함수를 이용한 전역변수 사용 억제 방법
+
+전역변수 사용을 억제하기 위한 또 하나의 방법은 즉시 실행 함수(IIFE, Immediately-Invoked Function Expression)을 사용하는 것이다.
+
+이 방법을 사용하면 전역변수를 만들지 않아 라이브러리 등에서 자주 사용되는 방법이다. 즉시 실행되고 전역에서 바로 사라지기 때문
+
+> EX )
+
+```js
+(function () {
+  var MYAPP = {};
+
+  MYAPP.student = {
+    name: "Lee",
+    gender: "male",
+  };
+
+  console.log(MYAPP.student.name);
+})(); // Lee 출력
+
+console.log(MYAPP.student.name); //Uncaught ReferenceError: MYAPP is not defined 에러 출력
+```
+
+# this
+
+함수 호출 방식과 this 바인딩
+
+자바스크립트의 경우 함수 호출 방식에 의해 this에 바인딩할 어떤 객체가 동적으로 결정된다. 다시 말해, 함수를 선언할 때 this에 바인딩할 객체가 정적으로 결정되는 것이 아니고, `함수를 호출할 때 함수가 어떻게 호출되었는지에 따라` this에 바인딩할 객체가 동적으로 결정된다.
+
+```
+함수의 상위 스코프를 결정하는 방식인 렉시컬 스코프(Lexical scope)는 함수를 선언할 때 결정된다. this 바인딩과 혼동하지 않도록 주의해야한다.
+```
+
+함수의 호출 방식들
+
+1. 함수 호출
+2. 메소드 호출
+3. 생성자 함수 호출
+4. apply / call / bind 호출
+
+> EX )
+
+```js
+var foo = function () {
+  console.dir(this);
+};
+
+// 1. 함수 호출
+foo(); // window
+// window.foo();
+
+// 2. 메소드 호출
+var obj = { foo: foo };
+obj.foo(); // obj
+
+// 3. 생성자 함수 호출
+var instance = new foo(); // instance
+
+// 4. apply/call/bind 호출
+var bar = { name: "bar" };
+foo.call(bar); // bar
+foo.apply(bar); // bar
+foo.bind(bar)(); // bar
+```
+
+## 1. 함수 호출
+
+전역 객체(Global Object)는 모든 객체의 유일한 최상위 객체를 의미하며 일반적으로 Browser-side에서는 window, Server-side(Node.js)에서는 global 객체를 의미한다.
+
+> EX )
+
+```js
+// in browser console
+this === window; // true
+
+// in Terminal
+node;
+this === global; // true
+```
+
+전역객체는 전역 스코프(Global Scope)를 갖는 전역변수(Global variable)를 프로퍼티로 소유한다. 글로벌 영역에 선언한 함수는 전역객체의 프로퍼티로 접근할 수 있는 전역 변수의 메소드이다.
+
+> EX )
+
+```js
+var ga = "Global variable";
+
+console.log(ga);
+console.log(window.ga);
+
+function foo() {
+  console.log("invoked!");
+}
+foo(); // invoked! 출력
+window.foo(); // invoked! 출력
+```
+
+기본적으로 `this`는 전역객체(Global object)에 바인딩된다. 전역함수는 물론이고 심지어 내부함수의 경우에도 `this`는 외부함수가 아닌 전역객체에 바인딩 된다.
+
+> EX )
+
+```js
+function foo() {
+  console.log("foo's this: ", this); // window
+  function bar() {
+    console.log("bar's this: ", this); // window
+  }
+  bar();
+}
+foo(); // window 두번 출력
+```
+
+또한 메소드으 내부함수일지라도 해당 내부함수가 객체의 프로퍼티가 아닌 이상 `this`는 전영객체에 바인딩된다.
+
+```js
+var value = 1;
+
+var obj = {
+  value: 100,
+  foo: function () {
+    console.log("foo's this: ", this); // obj
+    console.log("foo's this.value: ", this.value); // 100
+    function bar() {
+      console.log("bar's this: ", this); // window
+      console.log("bar's this.value: ", this.value); // 1
+    }
+    bar();
+  },
+};
+
+obj.foo();
+// foo's this:  {value: 100, foo: ƒ}
+// foo's this.value :  100
+// bar's this :  Window {0: global, window: Window, self: Window, document: document, name: '', location: Location, …}
+// bar's this.value :  1
+```
+
+콜백함수의 경우에도 `this`는 프로퍼티로써 이용되도 전역객체에 바인딩된다.
+
+> EX )
+
+```js
+var value = 1;
+
+var obj = {
+  value: 100,
+  foo: function () {
+    setTimeout(function () {
+      console.log("callback's this: ", this); // window
+      console.log("callback's this.value: ", this.value); // 1
+    }, 100);
+  },
+};
+
+obj.foo();
+// callback's this :  Window {0: global, window: Window, self: Window, document: document, name: '', location: Location, …}
+// callback's this.value :  1
+```
+
+**내부함수는 일반 함수, 메소드, 콜백함수 어디에서 선언되었든 관게없이 this는 전역객체를 바인딩한다.** 더글라스 크락포드는 “이것은 설계 단계의 결함으로 메소드가 내부함수를 사용하여 자신의 작업을 돕게 할 수 없다는 것을 의미한다” 라고 말한다. 내부함수의 `this`가 전역객체를 참조하는 것을 회피방법은 아래와 같다.
+
+> EX )
+
+```js
+var value = 1;
+
+var obj = {
+  value: 100,
+  foo: function () {
+    var that = this; // Workaround : this === obj
+
+    console.log("foo's this: ", this); // obj
+    console.log("foo's this.value: ", this.value); // 100
+    function bar() {
+      console.log("bar's this: ", this); // window
+      console.log("bar's this.value: ", this.value); // 1
+
+      console.log("bar's that: ", that); // obj
+      console.log("bar's that.value: ", that.value); // 100
+    }
+    bar();
+  },
+};
+
+obj.foo();
+```
+
+이미지로 나타내면 다음과 같다.
+
+<img src="https://poiemaweb.com/img/Function_Invocation_Pattern.png">
+
+위 방법 이외에도 자바스크립트는 this를 명시적으로 바인딩할 수 있는 apply, call, bind등의 메소드를 제공한다.
+
+> EX )
+
+```js
+var value = 1;
+
+var obj = {
+  value: 100,
+  foo: function () {
+    console.log("foo's this: ", this); // foo's this:  {value: 100, foo: ƒ}
+    console.log("foo's this.value: ", this.value); // foo's this.value:  100
+    function bar(a, b) {
+      console.log("bar's this: ", this); // obj
+      console.log("bar's this.value: ", this.value); // 100
+      console.log("bar's arguments: ", arguments);
+    }
+    bar.apply(obj, [1, 2]); // bar's this:  {value: 100, foo: ƒ}
+    // bar's this.value:  100
+    // bar's arguments:  Arguments(2) [1, 2, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+    bar.call(obj, 1, 2); // bar's this:  {value: 100, foo: ƒ}
+    // bar's this.value:  100
+    // bar's arguments:  Arguments(2) [1, 2, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+    bar.bind(obj)(1, 2); // bar's this:  {value: 100, foo: ƒ}
+    // bar's this.value:  100
+    // bar's arguments:  Arguments(2) [1, 2, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+  },
+};
+
+obj.foo();
+```
+
+
+## 3. 생성자 함수 호출
+
+자바스크립트의 생성자 함수는 말 그대로 객체를 생성하는 역할을 한다. 하지만 자바와 같은 객체지향 언어의 생성자 함수와는 다르게 그 형식이 정해져 있는 것이 아니라 기존 함수에 new 연산자를 붙여서 호출하면 해당 함수는 생성자 함수로 동작한다.
+
+이는 반대로 생각하면 생성자 함수가 아닌 일반 함수에 new 연산자를 붙여 호출하면 생성자 함수처럼 동작할 수 있다. 따라서 일반적으로 생성자 함수명은 첫문자를 대문자로 기술하여 혼란을 방지하려는 노력을 한다고 한다.
+
+> EX )
+```js
+// 생성자 함수
+function Person(name) {
+  this.name = name;
+}
+
+var me = new Person('Lee');
+console.log(me); // Person&nbsp;{name: "Lee"}
+
+// new 연산자와 함께 생성자 함수를 호출하지 않으면 생성자 함수로 동작하지 않는다.
+var you = Person('Kim');
+console.log(you); // undefined
+```
+new 연산자와 함께 생성자 함수를 호출하면 this 바인딩이 메소드나 함수 호출 때와는 다르게 동작한다.
+
+-> 생성할때 그냥 해당 메소드들을 복사하는 느낌(?)
+
+
+## 3.2 객체 리터럴 방식과 생성자 함수 방식의 차이
+
+객체 리터럴 방식과 생성자 함수 방식의 차이를 비교해 보자.
+
+```js
+// 객체 리터럴 방식
+var foo = {
+  name: 'foo',
+  gender: 'male'
+}
+
+console.dir(foo); // Object 출력
+
+// 생성자 함수 방식
+function Person(name, gender) {
+  this.name = name;
+  this.gender = gender;
+}
+
+var me  = new Person('Lee', 'male');
+console.dir(me); // Person 출력
+
+var you = new Person('Kim', 'female');
+console.dir(you); // Person 출력
+```
+객체 리터럴 방식과 생성자 함수 방식의 차이는 프로토타입 `객체([[Prototype]])`에 있다.
+
+* `객체 리터럴 방식`의 경우, 생성된 객체의 프로토타입 객체는 Object.prototype이다.
+* `생성자 함수 방식`의 경우, 생성된 객체의 프로토타입 객체는 Person.prototype이다.
+
+## 3.3 생성자 함수에 new 연산자를 붙이지 않고 호출할 경우
+
+**일반함수와 생성자 함수에 특별한 형식적 차이는 없으며 함수에 new 연산자를 붙여서 호출하면 해당 함수는 생성자 함수로 동작한다.**
+
+그러나 객체 생성 목적으로 작성한 생성자 함수를 new 없이 호출하거나 일반함수에 new를 붙여 호출하면 오류가 발생할 수 있다. 
+
+일반함수와 생성자 함수의 호출시 `this 바인딩 방식이 다르기 떄문`.
+
+일반 함수를 호출하면 this는 전역객체에 바인딩되지만 new 연산자와 함께 생성자 함수를 호출하면 this는 생성자 함수가 암묵적으로 생성한 빈 객체에 바인딩 된다.
+
+## 4. apply/call/bind 호출
+
+this에 바인딩될 객체는 함수 호출 패턴에 의해 결정된다. 이는 자바스크립트 엔진이 수행하는 것이다.
+
+이러한 자바스크립트 엔진의 암묵적 this 바인딩 이외에 this를 특정 객체에 명시적으로 바인딩하는 방법도 제공된다. 
+
+이것을 가능하게 하는 것이 `Function.prototype.apply`, `Function.prototype.call` 메소드이다.
+
+이 메소드들은 모든 함수 객체의 프로토타입 객체인 Function.prototype 객체의 메소드이다.
+
+```js
+func.apply(thisArg, [argsArray])
+
+// thisArg: 함수 내부의 this에 바인딩할 객체
+// argsArray: 함수에 전달할 argument의 배열
+```
+
+기억해야 할 것은 apply() 메소드를 호출하는 주체는 함수이며 apply() 메소드는 this를 특정 객체에 바인딩할 뿐 본질적인 기능은 함수 호출이라는 것이다.
+
+> EX )
+```js
+var Person = function (name) {
+  this.name = name;
+};
+
+var foo = {};
+
+// apply 메소드는 생성자함수 Person을 호출한다. 이때 this에 객체 foo를 바인딩한다.
+Person.apply(foo, ['name']);
+
+console.log(foo); // { name: 'name' }
+```
+빈 객체 foo를 apply() 메소드의 첫번째 매개변수에, argument의 배열을 두번째 매개변수에 전달하면서 Person 함수를 호출하였다.
+
+이때 Person 함수의 this는 foo 객체가 된다. Person 함수는 this의 name 프로퍼티에 매개변수 name에 할당된 인수를 할당하는데 this에 바인딩된 foo 객체에는 name 프로퍼티가 없으므로 name 프로퍼티가 동적 추가되고 값이 할당된다.
+
+apply() 메소드의 대표적인 용도는 arguments 객체와 같은 유사 배열 객체에 배열 메소드를 사용하는 경우이다. arguments 객체는 배열이 아니기 때문에 slice() 같은 배열의 메소드를 사용할 수 없으나 apply() 메소드를 이용하면 가능하다.
+
+> EX )
+```js
+function convertArgsToArray() {
+  console.log(arguments);
+
+  // arguments 객체를 배열로 변환
+  // slice: 배열의 특정 부분에 대한 복사본을 생성한다.
+  var arr = Array.prototype.slice.apply(arguments); // arguments.slice
+  // var arr = [].slice.apply(arguments);
+
+  console.log(arr);
+  return arr;
+}
+
+convertArgsToArray(1, 2, 3);
+```
+Array.prototype.slice.apply(arguments)는 “Array.prototype.slice() 메소드를 호출하라. 단 this는 arguments 객체로 바인딩하라”는 의미가 된다. 
+
+결국 Array.prototype.slice() 메소드를 arguments 객체 자신의 메소드인 것처럼 arguments.slice()와 같은 형태로 호출하라는 것이다.
+
+<img src="https://poiemaweb.com/img/apply.png">
+
+call() 메소드의 경우, apply()와 기능은 같지만 apply()의 두번째 인자에서 배열 형태로 넘긴 것을 각각 하나의 인자로 넘긴다.
+
+```js
+Person.apply(foo, [1, 2, 3]);
+
+Person.call(foo, 1, 2, 3);
+```
+
+apply()와 call() 메소드는 콜백 함수의 this를 위해서 사용되기도 한다.
+
+# 실행 컨텍스트 -> 무조건 복습, 너무 어려움
+
+실행 컨텍스트(Execution Context)는 scope, hoisting, this, function, closure 등의 동작원리를 담고 있는 자바스크립트의 핵심원리이다. 실행 컨텍스트를 바로 이해하지 못하면 코드 독해가 어려워지며 디버깅도 매우 곤란해 질 것이다.
+
+ECMAScript 스펙에 따르면 실행 컨텍스트를 **실행 가능한 코드를 형상화하고 구분하는 추상적인 개념**이라고 정의한다. 좀 더 쉽게 말하자면 **실행 컨텍스트는 실행 가능한 코드가 실행되기 위해 필요한 환경** 이라고 말할 수 있겠다. 여기서 말하는 실행 가능한 코드는 아래와 같다.
+
+* 전역 코드 : 전역 영역에 존재하는 코드
+* Eval 코드 : eval 함수로 실행되는 코드
+* 함수 코드 : 함수 내에 존재하는 코드
+
+일반적으로 실행 가능한 코드는 전역 코드와 함수 내 코드이다.
+
+자바스크립트 엔진은 코드를 실행하기 위하여 실행에 필요한 여러가지 정보를 알고 있어야 한다. 실행에 필요한 여러가지 정보란 아래와 같은 것들이 있다.
+
+* 변수 : 전역변수, 지역변수, 매개변수, 객체의 프로퍼티
+* 함수 선언
+* 변수의 유효범위(Scope)
+* this
+
+이와 같이 실행에 필요한 정보를 형상화하고 구분하기 위해 자바스크립트 엔진은 실행 컨텍스트를 물리적 객체의 형태로 관리한다. 
