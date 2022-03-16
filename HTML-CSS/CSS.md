@@ -41,10 +41,10 @@ CSS의 문법은 선택자(selector)와 선언부(declaratives)로 구성된다.
 스타일을 적용할 HTML 요소를 가리키는 데 사용하는 선택자는
 다음과 같다.
 
-- HTML 요소 선택자
-- 아이디(id) 선택자
-- 클래스(class) 선택자
-- 그룹(group) 선택자
+-   HTML 요소 선택자
+-   아이디(id) 선택자
+-   클래스(class) 선택자
+-   그룹(group) 선택자
 
 > HTML 요소 선택자
 
@@ -54,16 +54,16 @@ CSS를 적용할 대상으로 HTML 요소의 이름을 직접 사용하여 선�
 
 ```html
 <style>
-  h2 {
-    color: teal;
-    text-decoration: underline;
-  }
+    h2 {
+        color: teal;
+        text-decoration: underline;
+    }
 </style>
 
 <h1>HTML 요소 선택자를 이용한 선택</h1>
 <h2>이 부분에 스타일을 적용합니다.</h2>
 <p>
-  요소 선택자를 이용하여 스타일을 적용할 HTML 요소를 직접 선택할 수 있습니다.
+    요소 선택자를 이용하여 스타일을 적용할 HTML 요소를 직접 선택할 수 있습니다.
 </p>
 ```
 
@@ -115,16 +115,16 @@ HTML과 CSS에서는 하나의 웹 페이지에 속하는 여러 요소에 같�
 
 ```html
 <style>
-  .headings {
-    color: lime;
-    text-decoration: overline;
-  }
+    .headings {
+        color: lime;
+        text-decoration: overline;
+    }
 </style>
 
 <h2 class="headings">이 부분에 스타일을 적용합니다.</h2>
 <p>
-  class 선택자를 이용하여 스타일을 적용할 HTML 요소들을 한 번에 선택할 수
-  있습니다.
+    class 선택자를 이용하여 스타일을 적용할 HTML 요소들을 한 번에 선택할 수
+    있습니다.
 </p>
 <h3 class="headings">이 부분에도 같은 스타일을 적용합니다.</h3>
 ```
@@ -141,18 +141,18 @@ HTML과 CSS에서는 하나의 웹 페이지에 속하는 여러 요소에 같�
 
 ```html
 <style>
-  h1 {
-    color: navy;
-  }
-  h1,
-  h2 {
-    text-align: center;
-  }
-  h1,
-  h2,
-  p {
-    background-color: lightgray;
-  }
+    h1 {
+        color: navy;
+    }
+    h1,
+    h2 {
+        text-align: center;
+    }
+    h1,
+    h2,
+    p {
+        background-color: lightgray;
+    }
 </style>
 ```
 
@@ -174,18 +174,18 @@ HTML과 CSS에서는 하나의 웹 페이지에 속하는 여러 요소에 같�
 
 ```html
 <style>
-  p {
-    color: teal; /*이것은 한 줄짜리 주석입니다.*/
-    font-size: 30px;
-  }
-  /* 
+    p {
+        color: teal; /*이것은 한 줄짜리 주석입니다.*/
+        font-size: 30px;
+    }
+    /* 
 이것은 두 줄짜리 주석입니다.
 몇 줄이라도 가능합니다. 
 */
 </style>
 ```
 
-- 다른 주석문들과 마찬가지로 CSS에서 주석을 작성할 때는 절대로 주석 내부에 또 다른 주석을 넣어서는 안 된다.
+-   다른 주석문들과 마찬가지로 CSS에서 주석을 작성할 때는 절대로 주석 내부에 또 다른 주석을 넣어서는 안 된다.
 
 ---
 
@@ -212,28 +212,28 @@ html에서 input type으로 입력 타입(type)을 설정할 수 있다.
 
 종류는 수없이 많은데
 
-- `<input type="button"> ` = <input type="button">
-- `<input type="checkbox">` = <input type="checkbox">
-- `<input type="color">` = <input type="color">
-- `<input type="date">` = <input type="date">
-- `<input type="datetime-local">` = <input type="datetime-local">
-- `<input type="email">` = <input type="email">
-- `<input type="file">` = <input type="file">
-- `<input type="hidden">` = <input type="hidden">
-- `<input type="image">` = <input type="image">
-- `<input type="month">` = <input type="month">
-- `<input type="number">` = <input type="number">
-- `<input type="password">` = <input type="password">
-- `<input type="radio">` = <input type="radio">
-- `<input type="range">` = <input type="range">
-- `<input type="reset">` = <input type="reset">
-- `<input type="search">` = <input type="search">
-- `<input type="submit">` = <input type="submit">
-- `<input type="tel">` = <input type="tel">
-- `<input type="text">` = <input type="text">
-- `<input type="time">` = <input type="time">
-- `<input type="url">` = <input type="url">
-- `<input type="week">` = <input type="week">
+-   `<input type="button"> ` = <input type="button">
+-   `<input type="checkbox">` = <input type="checkbox">
+-   `<input type="color">` = <input type="color">
+-   `<input type="date">` = <input type="date">
+-   `<input type="datetime-local">` = <input type="datetime-local">
+-   `<input type="email">` = <input type="email">
+-   `<input type="file">` = <input type="file">
+-   `<input type="hidden">` = <input type="hidden">
+-   `<input type="image">` = <input type="image">
+-   `<input type="month">` = <input type="month">
+-   `<input type="number">` = <input type="number">
+-   `<input type="password">` = <input type="password">
+-   `<input type="radio">` = <input type="radio">
+-   `<input type="range">` = <input type="range">
+-   `<input type="reset">` = <input type="reset">
+-   `<input type="search">` = <input type="search">
+-   `<input type="submit">` = <input type="submit">
+-   `<input type="tel">` = <input type="tel">
+-   `<input type="text">` = <input type="text">
+-   `<input type="time">` = <input type="time">
+-   `<input type="url">` = <input type="url">
+-   `<input type="week">` = <input type="week">
 
 등이 있다.
 
@@ -326,13 +326,13 @@ Counter의 값은 content 속성에서 `counter()`나 `counters()` 함수를 사
 
 ```css
 body {
-  counter-reset: section; /* counter 이름을 'section'으로 지정합니다.
+    counter-reset: section; /* counter 이름을 'section'으로 지정합니다.
                                                    초깃값은 0입니다. */
 }
 
 h3::before {
-  counter-increment: section; /* section의 카운터 값을 1씩 증가시킵니다. */
-  content: "Section " counter(section) ": "; /* section의 카운터 값을 표시합니다. */
+    counter-increment: section; /* section의 카운터 값을 1씩 증가시킵니다. */
+    content: "Section " counter(section) ": "; /* section의 카운터 값을 표시합니다. */
 }
 ```
 
@@ -345,3 +345,53 @@ h3::before {
 ```
 
 MD문서로는 잘 표현이 안되니까 이건 [MDN 링크](https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters#a_more_sophisticated_example "MDN카운터") 참고하기.
+
+# overflow
+
+CSS의 overflow 프로퍼티는 요소내의 컨텐츠가 너무 커서 요소내에 모두 보여주기 힘들때 그것을 어떻게 보여줄지를 지정한다.
+
+overflow 에 사용할 수 있는 값은 네가지가 있다.
+
+-   visible : 기본 값 넘칠 경우 컨텐츠가 상자 밖으로 보여진다.
+
+-   hidden : 넘치는 부분은 잘려서 보여지지 않는다.
+
+-   scroll : 스크롤바가 추가되어 스크롤할 수 있다.(가로, 세로 모두 추가 가능)
+
+-   auto : 컨텐츠 량에 따라 스크롤바를 추가할지 자동으로 결정된다.( 필요에 따라 가로, 세로 별도로 추가될 수도 있다.)
+
+위의 4가지값과 함께 x축이나 y축에 별도로
+
+-   overflow-x : 값
+-   overflow-y : 값
+
+의 형태로 사용도 가능하다.
+
+# :nth-child
+
+:nth-child() 의사 클래스는 형제 사이에서의 순서에 따라 요소를 선택한다.
+
+```css
+/* 목록의 두 번째 <li> 선택 */
+li:nth-child(2) {
+  color: lime;
+}
+
+/* 임의의 그룹에서 네 번째에 위치하는 모든 요소 선택 */
+:nth-child(4n) {
+  color: lime;
+}
+```
+
+nth-child 의사 클래스는 형제의 목록에서, 선택하려는 요소의 인덱스 패턴을 나타내는 하나의 매개변수를 사용해 지정한다.
+
+인덱스는 1부터 시작한다.
+
+키워드 값에는 
+
+* odd
+형제 요소에서 홀수번째(1,3,5, ...)인 요소를 나타낸다.
+* even
+형제 요소에서 짝수번째(2,4,6, ...)인 요소를 나타낸다.
+
+함수형 표기법도 가능하다.
