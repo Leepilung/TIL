@@ -8,15 +8,14 @@
 
 ## List
 
-- 키워드 
+-   키워드
 
-- 개발 상식
+-   개발 상식
 
-- 자료 구조
+-   자료 구조
 
-- 인성 면접(개발 외 질문)
+-   인성 면접(개발 외 질문)
 
-- JavaScript
+-   Front(JavaScript, React, HTML, CSS..)
 
-- React
-
+-   OS
