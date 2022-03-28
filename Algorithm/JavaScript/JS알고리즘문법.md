@@ -28,7 +28,8 @@ const input = require("fs")
     .readFileSync("/dev/stdin")
     .toString()
     .trim()
-    .split(" ").map(Number);
+    .split(" ")
+    .map(Number);
 
 //3. 여러 줄의 값들을 입력받을 때
 const input = require("fs")
@@ -61,11 +62,27 @@ const input = require("fs")
     .split(/\s+/)
     .map(Number); // map함수로 숫자형 변환
 
-const [A, B, ...arr] = input;   // 비구조화 할당으로 선언하는 만큼 첫재쭐의 변수 사용 가능
+const [A, B, ...arr] = input; // 비구조화 할당으로 선언하는 만큼 첫재쭐의 변수 사용 가능
 
+// 7. 첫 번째 줄에 자연수 n을 입력받고, 그 다음줄에 여러개의 값을 입력 받을 때
+
+// 입력 예시
+5
+1 1
+2 3
+3 4
+9 8
+5 2
+
+const input = require("fs")
+    .readFileSync("/dev/stdin")
+    .toString()
+    .trim()
+    .split("\n");
+
+// 출력 예시
+[ '5', '1 1', '2 3', '3 4', '9 8', '5 2' ]
 ```
-
-
 
 ### 출력
 
