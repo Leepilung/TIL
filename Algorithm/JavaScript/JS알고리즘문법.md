@@ -180,6 +180,15 @@ number.includes(3); // ture
 number.includes(1, 3); // ture
 number.includes(6); // false
 ```
-a   5   5   9
-b   5   9   9
-c   1   5   9
+
+# 두 개의 배열 비교하여 중복 제거하는 방법
+
+```js
+a = [1, 2, 3, 4, 5];
+
+b = [1, 3, 5];
+
+c = a.filter((x) => !b.includes(x));
+// [ 2, 4 ] 출력
+console.log(c);
+````
