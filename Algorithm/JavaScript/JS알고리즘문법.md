@@ -191,4 +191,22 @@ b = [1, 3, 5];
 c = a.filter((x) => !b.includes(x));
 // [ 2, 4 ] 출력
 console.log(c);
-````
+```
+
+# 알파벳 소문자, 대문자로 이    뤄진 배열 만드는 방법
+
+```js
+// 대문자의 경우
+const arr = Array.from({ length: 26 }, (v, i) => String.fromCharCode(i + 65));
+console.log(arr);
+
+// 소문자의 경우
+const arr = Array.from({ length: 26 }, (v, i) => String.fromCharCode(i + 97));
+console.log(arr);
+```
+
+# 빈 배열 만들기
+```js
+const tmp = Array.from({length : 원하는 길이(숫자값)})
+```
+위와 같이 원하는 길이를 Number값으로 저장하고 출력하며 원하는 길이의 빈배열 탄생
