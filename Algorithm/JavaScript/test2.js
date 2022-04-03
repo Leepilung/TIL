@@ -19,4 +19,4 @@ function solution(type, id, listener) {
         addChild(node) {},
         removeChild(node) {},
     }
-}
+}w
