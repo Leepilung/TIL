@@ -10,6 +10,7 @@ const input = require("fs")
     .trim()
     .split("\n");
 
+// 이부분 input창에서 소문자로 바꿔서 처리하면 굳이 비교 처리안해도 될듯?
 const arr = Array.from({ length: 26 }, (v, i) => String.fromCharCode(i + 97));
 const bucket = Array.from({ length: 26 }, (v) => 0);
 
@@ -17,9 +18,12 @@ for (let i = 0; i < input[0].length; i++) {
     const temp = input[0][i].toLowerCase();
     bucket[arr.indexOf(temp)] += 1;
 }
+
 const max = Math.max(...bucket);
 const condition1 = bucket.filter((v) => v >= max);
 
 if (condition1.length >= 2) {
     console.log("?");
 } else console.log(String.fromCharCode(bucket.indexOf(max) + 97).toUpperCase());
+
+// ------------------
