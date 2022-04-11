@@ -193,7 +193,7 @@ c = a.filter((x) => !b.includes(x));
 console.log(c);
 ```
 
-# 알파벳 소문자, 대문자로 이    뤄진 배열 만드는 방법
+# 알파벳 소문자, 대문자로 이 뤄진 배열 만드는 방법
 
 ```js
 // 대문자의 경우
@@ -206,7 +206,22 @@ console.log(arr);
 ```
 
 # 빈 배열 만들기
+
 ```js
 const tmp = Array.from({length : 원하는 길이(숫자값)})
 ```
+
 위와 같이 원하는 길이를 Number값으로 저장하고 출력하며 원하는 길이의 빈배열 탄생
+
+# 문자열 반전
+
+내장 함수인 split(), reverse(), join()을 사용하ㅐ면 간단하게 문자열의 반전이 가능하다.
+
+```js
+function reverse_string(s) {
+    return s.split("").reverse().join("");
+}
+
+var example = revers("love");
+console.log(example); // -> "evol" 출력됨
+```
