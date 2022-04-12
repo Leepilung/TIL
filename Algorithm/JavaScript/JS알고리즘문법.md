@@ -225,3 +225,79 @@ function reverse_string(s) {
 var example = revers("love");
 console.log(example); // -> "evol" 출력됨
 ```
+
+# 입력한 단일 문자열 for문으로 바로 순회하는 문법
+
+Python에서 문자열 인덱스 슬라이싱으로 알아서 나눠서 출력하는 문법.
+
+```js
+const text = require("fs").readFileSync("/dev/stdin").toString().trim();
+
+for (let i of text) {
+    console.log(i); // Python에서 문자열을 for문에 넣었을떄와 동일하게 출력
+}
+```
+
+# 딕셔너리
+
+기본적인 구조는 기존에 공부한 것과 동일
+
+선언도 동일.
+
+```js
+// 딕셔너리 기초 문법
+
+// 선언
+var dict = {};
+
+// 삽입(추가))
+dict["banana"] = "바나나";
+dict["orange"] = "오렌지";
+console.log(dict); // Object {banana : '바나나', orange : '오렌지' } 출력됨.
+
+// 제거
+delete dict["orange"]; // 삭제 (제대로 삭제 되면 true, 안되면 false 출력)
+```
+
+## 딕셔너리활용 문법
+
+### 딕셔너리 키, 벨류 출력
+
+딕셔너리의 키값과 벨류값 출력 하는 방법
+
+```js
+for (var key in dictObject) {
+    console.log("key : " + key + ", value : " + dictObject[key]);
+}
+```
+
+기존 파이썬 문법과 동일하다.
+
+### 모든 key값 가져오는 방법
+
+```js
+Object.keys(dict); // ['banana', 'orange']
+```
+
+### 딕셔너리의 길이 구하는 방법
+
+```js
+Object.keys(dict).length; // 2 출력
+```
+
+### key값이 존해자는지 체크하는 방법
+
+기존의 in 문법이 통용되는 것 같다. value로 배열을 갖는 경우에는 전혀 다른 얘기.
+
+```js
+"banana" in dict; // true
+"kiwi" in dict; // false
+```
+
+### key의 마지막 값 가져오는 방법
+
+```js
+// key의 마지막 값 가져오는 방법
+var lastKey = Object.keys(dict)[Object.keys(dict).length - 1];
+console.log("last key = " + lastKey); // 'orange'
+```
