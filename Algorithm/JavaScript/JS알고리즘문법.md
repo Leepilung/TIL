@@ -181,9 +181,8 @@ number.includes(1, 3); // ture
 number.includes(6); // false
 ```
 
-# 두 개의 배열 비교하여 중복 제거하는 방법
-
 ```js
+// filter까지 활용한 사용 예시
 a = [1, 2, 3, 4, 5];
 
 b = [1, 3, 5];
@@ -191,6 +190,149 @@ b = [1, 3, 5];
 c = a.filter((x) => !b.includes(x));
 // [ 2, 4 ] 출력
 console.log(c);
+```
+
+# 📚 배열 검색 메소드들
+
+find, findIndex, indexOf 등의 문법이 있다.
+
+자바스크립트 Array.prototype에 속해있고 배열에서 원하는 값 또는 식별자를 찾아내는 메소드들.
+
+배열을 순차적으로 반복한다.
+
+## 📕 find
+
+find는 인자로 받은 판별 함수를 만족하는 첫 번째 요소를 반환한다.
+
+```js
+// 기본 형태
+arr.find(callback);
+
+callback(element, index, array); // -> 콜백 함수가 받는 인자들
+```
+
+반환 타입은 찾은 요소의 타입을 갖는다. 없다면 undefined 반환
+
+원하는 요소를 찾을 때 까지 반복한다. 찾는다면 메소드를 바로 죵로함.
+
+-   📝 EX
+
+```js
+const arr = [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3];
+
+const find1 = arr.find((element, index, array) => {
+    // 인덱스 2인 요소를 찾을 때 까지 반복
+    console.log('콜백함수를 실행한 배열은? ', array);
+    return index == 2;
+});
+const find2 = arr.find((element, index, arr) => element === 3);
+const find3 = arr.find((e) => e > 8);
+const find4 = arr.find((e) => e > 10);
+
+console.log('find1:', find1);
+console.log('find2:', find2);
+console.log('find3:', find3);
+console.log('find4:', find4);
+
+// 실행 결과
+
+// find1안의 console.log 출력문( index == 2 일때 까지 반복)
+콜백함수를 실행한 배열은?  [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3]
+콜백함수를 실행한 배열은?  [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3]
+콜백함수를 실행한 배열은?  [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3]
+
+find1: 9
+find2: 3
+find3: 9
+find4: undefined
+```
+
+## 📗 findIndex
+
+findIndex는 판별 함수를 만족하는 첫 식별자를 반환한다.
+
+기본적으로 index를 반환하므로 반환 타입은 number이고 값이 없다면 -1을 반환한다.
+
+```js
+// 기본 형태
+arr.findIndex(callback);
+
+callback(element, index, array); // -> 콜백 함수가 받는 인자들(각 인자는 findIndex 메소드를 호출한 배열에서 받아온다)
+```
+
+원하는 요소를 찾자마자 메소드를 종료한다.
+
+-   📝 EX
+
+```js
+const arr = [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3];
+
+const find1 = arr.findIndex((element, index, array) => {
+    return index < 7 && index > 5;
+});
+const find2 = arr.findIndex((element, index, arr) => element === 3);
+const find3 = arr.findIndex((e) => e > 8);
+const find4 = arr.findIndex((e) => e > 10);
+
+console.log("findIndex1:", find1);
+console.log("findIndex2:", find2);
+console.log("findIndex3:", find3);
+console.log("findIndex4:", find4);
+
+// 실행 결과
+findIndex1: 6;
+findIndex2: 5;
+findIndex3: 2;
+findIndex4: -1;
+```
+
+## 📘 indexOf
+
+인자로 받은 값을 찾아 맞는 식별자를 반환한다.
+
+```js
+// 기본 형태
+arr.indexOf(search, fromIndex);
+
+// search 매개변수는 배열에서 찾을 요소를 의미한다.
+```
+
+findIndex와 마찬가지로 index값을 반환받으므로 반환 타입 기본값은 number, 없을 경우 -1
+
+-   📝 EX
+
+```js
+// 일반적인 사용 예
+const arr = [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3];
+const find1 = arr.indexOf(1);
+const find2 = arr.indexOf(2);
+const find3 = arr.indexOf(3);
+const find4 = arr.indexOf(4);
+
+console.log("findIndex1:", find1);
+console.log("findIndex2:", find2);
+console.log("findIndex3:", find3);
+console.log("findIndex4:", find4);
+
+// 실행 결과
+findIndex1: 3;
+findIndex2: 6;
+findIndex3: 5;
+findIndex4: 11;
+
+// 하나의 배열에서 찾으려는 값을 모두 찾으려는 경우
+
+const arr = [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3];
+const search = 9;   // 찾으려는 값
+const searchResult = [];    // 찾은 값을 보관할 배열
+let index = arr.indexOf(search);
+while (index != -1) {
+    searchResult.push(index);
+    index = arr.indexOf(search, index + 1);
+}
+console.log(searchResult);
+// 실행 결과
+[ 2, 10 ]
 ```
 
 # 알파벳 소문자, 대문자로 이 뤄진 배열 만드는 방법
@@ -302,7 +444,6 @@ var lastKey = Object.keys(dict)[Object.keys(dict).length - 1];
 console.log("last key = " + lastKey); // 'orange'
 ```
 
-
 # 문자열로 이뤄진 배열 안에서 특정 문자열 포함되있는지 확인하는 방법
 
 includes 하나만 쓰면 동작을 안하는데 이상하게 findIndex와 묶으니까 동작한다.. 해당 문법들에 대한 이해가 좀 더 필요한듯
@@ -318,4 +459,3 @@ for (let i of text) {
     console.log(comb.findIndex((v) => v.includes(i))); // 슬라이싱 된 문자열 한개가 포함되있는 element의 인덱스 반환
 }
 ```
-
