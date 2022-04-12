@@ -301,3 +301,21 @@ Object.keys(dict).length; // 2 출력
 var lastKey = Object.keys(dict)[Object.keys(dict).length - 1];
 console.log("last key = " + lastKey); // 'orange'
 ```
+
+
+# 문자열로 이뤄진 배열 안에서 특정 문자열 포함되있는지 확인하는 방법
+
+includes 하나만 쓰면 동작을 안하는데 이상하게 findIndex와 묶으니까 동작한다.. 해당 문법들에 대한 이해가 좀 더 필요한듯
+
+```js
+// input
+const text = require("fs").readFileSync("/dev/stdin").toString().trim();
+
+var comb = ["ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ"];
+
+for (let i of text) {
+    console.log(i); // text의 문자열을 인덱스 슬라이싱하여 하나씩 출력
+    console.log(comb.findIndex((v) => v.includes(i))); // 슬라이싱 된 문자열 한개가 포함되있는 element의 인덱스 반환
+}
+```
+
