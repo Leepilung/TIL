@@ -215,7 +215,7 @@ callback(element, index, array); // -> 콜백 함수가 받는 인자들
 
 원하는 요소를 찾을 때 까지 반복한다. 찾는다면 메소드를 바로 죵로함.
 
--   📝 EX
+-   📝 EX )
 
 ```js
 const arr = [5, 6, 9, 1, 6, 3, 2, 1, 2, 7, 9, 4, 3];
@@ -378,6 +378,34 @@ const text = require("fs").readFileSync("/dev/stdin").toString().trim();
 for (let i of text) {
     console.log(i); // Python에서 문자열을 for문에 넣었을떄와 동일하게 출력
 }
+```
+
+## 다른 방법(forEach() 메소드)
+
+forEach() 메소드를 활용하면 주어진 함수를 배열 요소 각각에 대해 실행한다.
+
+다만 여기서 문자열은 함수자체가 동작하지 않는다.
+
+- 🏷 구문
+```js
+
+```
+
+-   📝 EX )
+
+```js
+const array1 = ["a", "b", "c"];
+
+array1.forEach((element) => console.log(element));
+
+// expected output: "a"
+// expected output: "b"
+// expected output: "c"
+
+const string1 = "abc";
+
+string1.forEach((e) => console.log(e));
+// VM198:1 Uncaught TypeError: a.forEach is not a function 에러 발생
 ```
 
 # 딕셔너리
