@@ -64,6 +64,26 @@ CSR의 경우 HTML, CSS, 모든 스크립트를 한번에 불러온다. 반면 S
 5. SEO 를 고려하지 않을 때
 6. 웹 어플리케이션과 사용자와 상호작용이 많을 때
 
+# ES6란?
+
+ES6란 ECMAScript 2015로도 알려져 있는 ECMAScript 6는 ECMAScript 표준의 가장 최신 버전이다.
+
+ES6는 새로운 언어 기능이 포함된 주요 업데이트이며, 2009년도에 표준화된 ES5 이후로 언어 기능에 대한 첫 업데이트이다.
+
+## 주요 문법들
+
+-   const , let
+-   Arrow function(화살표 함수)
+-   Template Literals(템플릿 리터럴)
+-   Default parameters(기본 매개 변수)
+-   Array and object destructing(배열 및 객체 비구조화)
+-   Import and export (가져오기 및 내보내기)
+-   Promise(프로미스)
+-   Rest Parameter and Spread Operator(나머지 매개 변수 및 확산 연산자)
+-   Classses(클래스)
+
+등이 존재한다. 각 함수에 대한 기능은 면접 문서가 아닌 별도의 문서에서 다룰 예정.
+
 # SPA(Single Page Application) 이란?
 
 ## 배경
@@ -120,7 +140,7 @@ Call Stack, Task Queue(=Event Queue), Heap
 
 JavaScript의 런타임 모델은 코드의 실행, 이벤트의 수집과 처리, 큐에 대기중인 하위 작업을 처리하는 이벤트 루프에 기반하고 있다. 이는 C, Java 등의 컴파일 언어 모델과는 매우 다르다.
 
-- 🧐 시각적 표현
+-   🧐 시각적 표현
 
 <img src="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop/the_javascript_runtime_environment_example.svg">
 
@@ -133,17 +153,18 @@ JavaScript의 런타임 모델은 코드의 실행, 이벤트의 수집과 처�
 ```js
 // 예제 코드
 function foo(b) {
-  let a = 10
-  return a + b + 11
+    let a = 10;
+    return a + b + 11;
 }
 
 function bar(x) {
-  let y = 3
-  return foo(x * y)
+    let y = 3;
+    return foo(x * y);
 }
 
-const baz = bar(7) // 42를 baz에 할당
+const baz = bar(7); // 42를 baz에 할당
 ```
+
 위 예제 코드의 실행 순서는 다음과 같다.
 
 1. `bar`를 호출할 때, `bar`의 인수와 지역 변수를 포함하는 첫 번째 프레임이 생성된다.
@@ -170,14 +191,14 @@ Javascript 런타임은 큐(Queue)라는 처리할 메시지의 대기열을 사
 `이벤트 루프(Event Loop)`는 이 기능을 구현할 때 보통 사용하는 방식에서 그 이름을 얻었으며, 대략 다음과 같은 형태이다.
 
 ```js
-while(queue.waitForMessage()){
-  queue.processNextMessage();
+while (queue.waitForMessage()) {
+    queue.processNextMessage();
 }
 ```
 
 queue.waitForMessage() 함수는 현재 처리할 수 있는 메시지가 존재하지 않으면 새로운 메시지가 도착할 때까지 동기적으로 대기한다.
 
-## 기타 특징들 
+## 기타 특징들
 
 ### "Run-to-completion"
 
@@ -192,6 +213,7 @@ queue.waitForMessage() 함수는 현재 처리할 수 있는 메시지가 존재
 ### 메시지 추가하기
 
 웹 브라우저에서는 수신기가 부착된 이벤트가 발생하면 새로운 메시지가 추가된다. 수신기가 없으면 메시지는 유실된다. 클릭 이벤트 처리기가 붙은 요소를 클릭하면 메시지가 새로 추가되는 방식이다.
+
 # 호이스팅(Hoisting)이란?
 
 hoist란 단어의 사전적 정의는 끌어올리기 라는 뜻이다. 그리고 자바스크립트에서 끌어올려지는 것은 변수이다.
