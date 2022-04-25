@@ -386,7 +386,8 @@ forEach() 메소드를 활용하면 주어진 함수를 배열 요소 각각에 
 
 다만 여기서 문자열은 함수자체가 동작하지 않는다.
 
-- 🏷 구문
+-   🏷 구문
+
 ```js
 
 ```
@@ -507,3 +508,30 @@ text.replace("black", "white"); // black -> white로 변경
 // 실행 결과
 ("the white wall is very big and tall");
 ```
+
+# 숫자 올림, 내림 처리할 때 사용하는 Math.floor() vs parseInt() 차이점
+
+<img src="https://velog.velcdn.com/images%2Fmnmm%2Fpost%2Ff506ad75-2f37-4df0-8b67-34db2c3b4b6e%2Fimage.png">
+
+두 메서드는 양수일 경우 내림한 결과가 나온다.
+
+```js
+a = Math.floor("12.34"); // 12
+b = Math.floor("56.78"); // 56
+
+a2 = parseInt("12.34"); // 12
+b2 = parseInt("56.78"); // 56
+```
+
+하지만 음수일 경우 차이가 있다.
+
+```js
+c = Math.floor("-12.34"); // -13
+d = Math.floor("-56.78"); // -57
+
+c2 = parseInt("-12.34"); // -12
+d2 = parseInt("-56.78"); // -56
+```
+
+콘솔창에 보여지는 것과 같이 Math.floor 메서드는 소수 첫째 자리에서 양수일 때처럼 내림하는 반면, parseInt 메서드는 올림한다.
+parseInt 메서드는 소수점을 버리기 때문이다.                                             
