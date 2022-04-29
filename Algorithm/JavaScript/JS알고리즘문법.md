@@ -632,3 +632,21 @@ const round_8 = Math.round(-1.111); // -1
 const round_9 = Math.round(-1.5); // -1
 const round_10 = Math.round(-1.777); // -2
 ```
+
+# 🏷 shift() 메소드
+
+shift() 메소드는 배열에서 첫 번째 요소를 제거하고, 제거된 요소를 반환하는 메소드이다.
+
+이 메소드는 원본 배열의 길이를 변하게 한다.
+
+```js
+const array1 = [1, 2, 3];
+
+const firstElement = array1.shift();
+
+console.log(array1);
+// expected output: Array [2, 3]
+
+console.log(firstElement);
+// expected output: 1
+```
