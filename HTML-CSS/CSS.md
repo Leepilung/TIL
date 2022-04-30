@@ -6,6 +6,8 @@ CSS는 Cascading Style Sheets의 약자로
 
 HTML,XHTML,XML 같은 문서의 스타일을 꾸밀 때 사용하는 스타일 시트 언어이다.
 
+즉, CSS는 HTML의 각 요소(Element)의 style(design, layout etc)을 정의하여 화면(Screen) 등에 어떻게 렌더링하면 되는지 브라우저에게 설명하기 위한 언어이다.
+
 HTML4 부터는 이러한 모든 서식 설정을 HTML 문서로부터 따로 분리하는 것이 가능하다.
 
 # CSS를 사용하는 이유
@@ -36,7 +38,19 @@ CSS의 문법은 선택자(selector)와 선언부(declaratives)로 구성된다.
 
 이러한 CSS 선언(declaration)은 언제나 마지막에 세미콜론(;)으로 끝마친다.
 
-# CSS 선택자
+# 셀렉터(Selector, 선택자)
+
+CSS는 HTML 요소의 style(design, layout etc)을 정의하는데 사용된다. 이를 위해서 선행되어야하는 것은 **스타일을 적용하고자 하는 HTML 요소를 선택**할 수 있어야 한다.
+
+`셀렉터`는 스타일을 적용하고자 하는 HTML 요소를 선택하기 위해 CSS에서 제공하는 수단이다.
+
+<img src="https://poiemaweb.com/img/css-syntax.png">
+
+위와 같은 구문을 Rule Set(또는 Rule)이라 하며 셀렉터에 의해 선택된 특정 HTML 요소를 어떻게 렌더링(Rendering)할 것인지 브라우저에 지시하는 역할을 한다.
+
+위의 CSS Rule set은 HTML 문서에 속해 있는 셀렉터를 통해 모든 h1 요소를 선택한 후 선택된 h1 요소의 스타일을 선언 블록에서 정의하고 있다.
+
+이와 같은 Rule Set의 집합을 스타일시트(Style Sheet)라 한다.
 
 스타일을 적용할 HTML 요소를 가리키는 데 사용하는 선택자는
 다음과 같다.
@@ -374,12 +388,12 @@ overflow 에 사용할 수 있는 값은 네가지가 있다.
 ```css
 /* 목록의 두 번째 <li> 선택 */
 li:nth-child(2) {
-  color: lime;
+    color: lime;
 }
 
 /* 임의의 그룹에서 네 번째에 위치하는 모든 요소 선택 */
 :nth-child(4n) {
-  color: lime;
+    color: lime;
 }
 ```
 
@@ -387,11 +401,11 @@ nth-child 의사 클래스는 형제의 목록에서, 선택하려는 요소의 
 
 인덱스는 1부터 시작한다.
 
-키워드 값에는 
+키워드 값에는
 
-* odd
-형제 요소에서 홀수번째(1,3,5, ...)인 요소를 나타낸다.
-* even
-형제 요소에서 짝수번째(2,4,6, ...)인 요소를 나타낸다.
+-   odd
+    형제 요소에서 홀수번째(1,3,5, ...)인 요소를 나타낸다.
+-   even
+    형제 요소에서 짝수번째(2,4,6, ...)인 요소를 나타낸다.
 
 함수형 표기법도 가능하다.
