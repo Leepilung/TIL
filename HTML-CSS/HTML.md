@@ -1,6 +1,13 @@
 # HTML
 
-HTML은 웹 페이지를 만드는데 사용하는 언어이다.
+<style>
+    .li {
+        background-color : gray;
+        padding : 0.5rem;
+    }
+</style>
+
+HTML은 웹 페이지를 만드는데 사용하는 `마크업 언어`이다.
 
 HyperText Markup Language의 약자이고 웹 페이지는 HTML 문서라고도 불리며, HTMl 태그들로 구성된다.
 
@@ -43,15 +50,15 @@ W3C가 관리하는 대표적 웹표준들은 다음과 같다.
 
 `<head>` : HTML 문서의 메타데이터(metadata)를 정의한다.
 
-- 메타데이터(metadata)란 ? : HTML 문서에 대한 정보(data)로 웹 브라우저에는 직접적으로 표현되지 않는 정보를 의미한다.
+-   메타데이터(metadata)란 ? : HTML 문서에 대한 정보(data)로 웹 브라우저에는 직접적으로 표현되지 않는 정보를 의미한다.
 
-- 이러한 메타데이터는` <title>, <style>, <meta>, <link>, <script>, <base>`태그 등을 이용하여 표현할 수 있다.
+-   이러한 메타데이터는` <title>, <style>, <meta>, <link>, <script>, <base>`태그 등을 이용하여 표현할 수 있다.
 
 `<title>` : HTML 문서의 제목(title)을 정의하며, 다음과 같은 용도로 사용된다.
 
-- 웹 브라우저의 툴바(toolbar)에 표시된다.
-- 웹 브라우저의 즐겨찾기(favorites)에 추가할 때 즐겨찾기의 제목이 된다.
-- 검색 엔진의 결과 페이지에 제목으로 표시된다.
+-   웹 브라우저의 툴바(toolbar)에 표시된다.
+-   웹 브라우저의 즐겨찾기(favorites)에 추가할 때 즐겨찾기의 제목이 된다.
+-   검색 엔진의 결과 페이지에 제목으로 표시된다.
 
 `<body>`: 웹 브라우저를 통해 보이는 내용(content) 부분이다.
 
@@ -450,7 +457,7 @@ HTML5위에 마우스를 갖다대보면 title로 입력한 설명이 축약되�
 
 HTML5에서 UTF-8의 경우 : `<meta charset="UTF-8">`와 같이 표기하고 있다.
 
-- UTF-8 : 자주 정리 했듯이 세상에 있는 거의 모든 문자를 표현할 수 있는 유니코드 문자를 지원하는 HTML5의 기본 문자셋이다.
+-   UTF-8 : 자주 정리 했듯이 세상에 있는 거의 모든 문자를 표현할 수 있는 유니코드 문자를 지원하는 HTML5의 기본 문자셋이다.
 
 # HTML 스타일
 
@@ -558,9 +565,9 @@ style 속성을 이용하여 여러 CSS 스타일을 한 번에 적용할 수 �
 
 > 기억해야할 포인트
 
-- style 속성값에 사용되는 CSS 속성(property)과 속성값들은 세미콜론(;)을 이용하여 구분한다.
+-   style 속성값에 사용되는 CSS 속성(property)과 속성값들은 세미콜론(;)을 이용하여 구분한다.
 
-- CSS 속성을 하나만 사용할 때나, 여러 개의 CSS 속성 중 맨 마지막 CSS 속성은 세미콜론(;)을 생략할 수 있다.
+-   CSS 속성을 하나만 사용할 때나, 여러 개의 CSS 속성 중 맨 마지막 CSS 속성은 세미콜론(;)을 생략할 수 있다.
 
 # HTML 색
 
@@ -590,7 +597,7 @@ ex) <h4 style="color:#0000FF">16진수 색상값으로 표현된 파란색</h4>
 
 > 기억해야할 포인트
 
-- HTML에서 색상 이름은 대소문자를 구분하지 않는다.
+-   HTML에서 색상 이름은 대소문자를 구분하지 않는다.
 
 # HTML 배경
 
@@ -616,17 +623,17 @@ HTML5 이전까지는 bgcolor 속성을 이용하여 HTML 요소의 배경색을
 
 ```html
 <style>
-  body {
-    background-color: lightblue;
-  }
+    body {
+        background-color: lightblue;
+    }
 
-  h1 {
-    background-color: rgb(255, 128, 0);
-  }
+    h1 {
+        background-color: rgb(255, 128, 0);
+    }
 
-  p {
-    background-color: #ffffcc;
-  }</style
+    p {
+        background-color: #ffffcc;
+    }</style
 >123
 ```
 
@@ -660,27 +667,47 @@ background 속성을 이용하면 HTML 요소의 배경을 이미지(image)로 �
 
 HTML 링크(Link)
 
-오늘날 웹 페이지에는 다른 페이지나 다른 사이트로 연결되는 수많은 하이퍼 링크(hyperlink)가 존재한다.
+오늘날 웹 페이지에는 다른 페이지나 다른 사이트로 연결되는 수많은 하이퍼 링크(Hyperlink)가 존재한다.
 
-이러한 하이퍼 링크를 간단히 링크(link)라고도 부르며, HTML에선 `<a>`태그로 표현한다.
+여기서 Hyper란 컴퓨터 용어로서 텍스트 등의 정보가 동일 선상에 있는 것이 아닌 다중으로 연결되어 있는 상태를 의미한다.
 
-> 문법
+한 텍스트에서 다른 텍스트로 건너뛰어 읽을 수 있는 기능을 하이퍼 링크(Hyper link) 혹은 간단히 링크(link)라고도 부르며, HTML에선 `<a>`태그로 표현한다.
 
-```html
-<a href="링크주소">HTML 링크</a>
-```
+### href 어트리뷰트
+
+href 어트리뷰트는 이동하고자 하는 파일의 위치(경로)를 값으로 받는다. 경로(path)란 파일 시스템 상에서 특정 파일의 위치를 의미한다.
 
 `<a>`태그의 href 속성은 링크를 클릭하면 연결할 페이지나 사이트의 URL 주소를 명시한다.
 
 `<a>`태그는 텍스트나 단락, 이미지 등 다양한 HTML 요소에 사용할 수 있다.
 
+href 어트리뷰트에는 다음의 값들을 사용할 수 있다.
+
+-   절대 url ( 웹사이트 URL (href="http://www.naver.com/))
+-   상대 url ( 자신의 위치를 기준으로한 대상의 URL (href="html/default.html"))
+-   fragment identifier ( 페이지 내의 특정 id를 갖는 요소를 링크 (href="#top"))
+-   메일 ( amilto : ~~~ )
+-   script ( href="javascript:alert('Hello')" )
+
+> 문법
+
+```html
+<a href="링크주소">HTML 링크</a>
+<!-- 혹은 위의 어트리튜브 예시들 -->
+<a href="html/my.html">Local file</a><br />
+<a href="file/my.pdf" download>Download file</a><br />
+<a href="#">fragment identifier</a><br />
+<a href="mailto:someone@example.com?Subject=Hello again">Send Mail</a><br />
+<a href="javascript:alert('Hello');">Javascript</a>
+```
+
 ## EX )
 
-> 예제
+> 📝 예제
 
 ```html
 <a href="/html/intro">
-  <h2>이 링크를 클릭해 보세요!</h2>
+    <h2>이 링크를 클릭해 보세요!</h2>
 </a>
 ```
 
@@ -726,6 +753,14 @@ HTML 링크(Link)
 
 복습시 이 링크파트 실습은 꼭 링크를 타고 들어가서 직접 확인해볼 것.
 
+`target="_blank"`를 사용하여 외부 페이지를 오픈하는 경우, 이동한 외부 페이지에서 자바스크립트 코드를 사용해 악의적인 페이지로 리다이렉트 할 수 있는 보안 취약점(Tabnabbing 피싱 공격)이 있다.
+
+이를 방지하기 위해 rel="noopener noreferrer"를 추가하면 이를 방지할 수 있다고 한다.
+
+-   [Tabnabbing 피싱 공격의 동작 원리와 대응책](https://tech.lezhin.com/2017/06/12/tabnabbing)
+-   [Tabnabbing 공격과 rel=noopener 속성](https://blog.coderifleman.com/2017/05/30/tabnabbing_attack_and_noopener/)
+-   [tabnabbing 공격 방어 대책 정리](https://medium.com/@youngminhong/tabnabbing-%EA%B3%B5%EA%B2%A9-%EB%B0%A9%EC%96%B4-%EB%8C%80%EC%B1%85-%EC%A0%95%EB%A6%AC-9276ebf63f94)
+
 # 링크의 상태(state)
 
 | 링크의 상태 |                     설명                      |
@@ -737,15 +772,15 @@ HTML 링크(Link)
 
 웹 브라우저에서 링크가 연결되어 있는 텍스트의 색상은 다음과 같다.
 
-- 기본적으로 링크가 걸린 텍스트는 밑줄에, 텍스트 색상이 파란색으로 변경된다.
+-   기본적으로 링크가 걸린 텍스트는 밑줄에, 텍스트 색상이 파란색으로 변경된다.
 
-- visited 상태의 링크는 밑줄에, 텍스트 색상이 보라색으로 변경된다.
+-   visited 상태의 링크는 밑줄에, 텍스트 색상이 보라색으로 변경된다.
 
-- active 상태의 링크는 밑줄에, 텍스트 색상이 빨간색으로 변경된다.
+-   active 상태의 링크는 밑줄에, 텍스트 색상이 빨간색으로 변경된다.
 
 [실습 링크](http://tcpschool.com/examples/tryit/tryhtml.php?filename=html_basic_links_03)
 
-- 이 파트도 복습할때 싱습 링크를 이용하자
+-   이 파트도 복습할때 싱습 링크를 이용하자
 
 # 페이지 책갈피
 
@@ -873,27 +908,27 @@ EX )
 ```html
 <!-- 예제 코드 -->
 <img
-  src="http://tcpschool.com/examples/images/img_imagemap.jpg"
-  alt="진실혹은거짓"
-  usemap="#vending"
-  style="width:320px; height:240px"
+    src="http://tcpschool.com/examples/images/img_imagemap.jpg"
+    alt="진실혹은거짓"
+    usemap="#vending"
+    style="width:320px; height:240px"
 />
 <!-- usemap 으로 map name인 #vending과 연결 -->
 
 <map name="vending">
-  <area
-    shape="rect"
-    coords="90,60,180,130"
-    alt="거짓"
-    href="https://ko.wikipedia.org/wiki/%EA%B1%B0%EC%A7%93%EB%A7%90"
-  />
+    <area
+        shape="rect"
+        coords="90,60,180,130"
+        alt="거짓"
+        href="https://ko.wikipedia.org/wiki/%EA%B1%B0%EC%A7%93%EB%A7%90"
+    />
 
-  <area
-    shape="rect"
-    coords="210,200,70,130"
-    alt="진실"
-    href="https://ko.wikipedia.org/wiki/%EC%A7%84%EC%8B%A4"
-  />
+    <area
+        shape="rect"
+        coords="210,200,70,130"
+        alt="진실"
+        href="https://ko.wikipedia.org/wiki/%EC%A7%84%EC%8B%A4"
+    />
 </map>
 ```
 
@@ -925,9 +960,9 @@ HTML에서는 이러한 리스트를 표현하기 위해 다음과 같은 리스
 
 CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하는 마커(marker)를 다른 모양으로 변경할 수 있다.
 
-- disc : 검정색 작은 원 모양 (기본설정)
-- circle : 흰색 작은 원 모양
-- square : 사각형 모양
+-   disc : 검정색 작은 원 모양 (기본설정)
+-   circle : 흰색 작은 원 모양
+-   square : 사각형 모양
 
 ## EX )
 
@@ -965,11 +1000,11 @@ CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하�
 
 순서가 없는 리스트와 마찬가지로 CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하는 마커(marker)를 다른 모양으로 변경할 수 있다.
 
-- decimal : 숫자 (기본설정)
-- upper-alpha : 영문 대문자
-- lower-alpha : 영문 소문자
-- upper-roman : 로마 숫자 대문자
-- lower-roman : 로마 숫자 소문자
+-   decimal : 숫자 (기본설정)
+-   upper-alpha : 영문 대문자
+-   lower-alpha : 영문 소문자
+-   upper-roman : 로마 숫자 대문자
+-   lower-roman : 로마 숫자 소문자
 
 EX )
 
@@ -1059,11 +1094,11 @@ border 속성값을 따로 명시하지 않으면, 해당 테이블은 언제나
 
 ```html
 <style>
-  table,
-  th,
-  td {
-    border: 1px solid black;
-  }
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
 </style>
 ```
 
@@ -1075,12 +1110,12 @@ border-collapse 속성값을 collapse로 설정하면, 테이블의 테두리를
 
 ```html
 <style>
-  table,
-  th,
-  td {
-    border: 1px solid black;
-    border-collapse: collapse;
-  }
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
 </style>
 ```
 
@@ -1129,15 +1164,15 @@ rowspan 속성을 사용하면 테이블의 행(row)을 합칠 수 있다.
 ```html
 <!-- 코드 -->
 <table style="width:100%">
-  <tr>
-    <td rowspan="2">상어</td>
-    <td>문어</td>
-    <td>꽁치</td>
-  </tr>
-  <tr>
-    <td>고등어</td>
-    <td>돌고래</td>
-  </tr>
+    <tr>
+        <td rowspan="2">상어</td>
+        <td>문어</td>
+        <td>꽁치</td>
+    </tr>
+    <tr>
+        <td>고등어</td>
+        <td>돌고래</td>
+    </tr>
 </table>
 ```
 
