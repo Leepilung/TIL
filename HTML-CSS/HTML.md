@@ -802,8 +802,6 @@ href 어트리뷰트에는 다음의 값들을 사용할 수 있다.
 
 # HTML 이미지
 
-이미지(image)란 2차원 평면 위에 그려진 시각적 요소를 의미한다.
-
 오늘날 웹 페이지에는 이러한 이미지가 매우 중요한 요소의 하나로 자리 잡고 있다.
 
 웹 페이지에서 주로 사용되는 이미지의 종류는 다음과 같다.
@@ -942,7 +940,7 @@ HTML에서는 이러한 리스트를 표현하기 위해 다음과 같은 리스
 2. 순서가 있는 리스트(ordered list)
 3. 정의 리스트(definition list)
 
-# 순서가 없는 리스트
+# 순서가 없는 리스트(Unordered List)
 
 순서가 없는 리스트는 `<ul>`태그로 시작하며, 여기에 포함되는 각각의 리스트 요소는 `<li>`태그로 시작한다.
 
@@ -982,7 +980,7 @@ CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하�
     <li>옥수수</li>
 </ul>
 
-# 순서가 있는 리스트
+# 순서가 있는 리스트(Ordered List)
 
 순서가 있는 리스트는 `<ol>`태그로 시작하며, 여기에 포함되는 각각의 리스트 요소는 `<li>`태그로 시작한다.
 
@@ -998,15 +996,15 @@ CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하�
     <li>바나나</li>
 </ol>
 
-순서가 없는 리스트와 마찬가지로 CSS의 list-style-type 속성을 사용하면 리스트 요소 앞에 위치하는 마커(marker)를 다른 모양으로 변경할 수 있다.
+순서가 없는 리스트와 마찬가지로 CSS의 `list-style-type` 속성을 사용하면 리스트 요소 앞에 위치하는 `마커(marker)`를 다른 모양으로 변경할 수 있다.
 
--   decimal : 숫자 (기본설정)
--   upper-alpha : 영문 대문자
--   lower-alpha : 영문 소문자
--   upper-roman : 로마 숫자 대문자
--   lower-roman : 로마 숫자 소문자
+-   decimal("1") : 숫자 (기본설정)
+-   upper-alpha("A") : 영문 대문자
+-   lower-alpha("a") : 영문 소문자
+-   upper-roman("I") : 로마 숫자 대문자
+-   lower-roman("i") : 로마 숫자 소문자
 
-EX )
+## 📝 EX )
 
 > 영문 대문자
 
@@ -1038,6 +1036,22 @@ EX )
     <li>수박</li>
     <li>참외</li>
     <li>옥수수</li>
+</ol>
+
+`start` 어트리뷰트로 리스트의 시작값을 지정할 수 도 있다.
+
+<ol start="3">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+reversed 어트리뷰트를 지정하면 리스트의 순서(mark)값을 반대로 표현한다.
+
+<ol reversed>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
 </ol>
 
 # 정의 리스트(description list)
@@ -1274,3 +1288,25 @@ display 속성값이 인라인(inline)인 요소는 새로운 라인(line)에서
 <p>
     <span style="background-color:grey; color:orange">span태그</span>는 display 속성값이 인라인인 요소입니다.
 </p>
+
+# audio
+
+audio 태그는 HTML5에서 새롭게 추가된 태그이며 IE8 이하에서는 사용이 불가능하다.
+
+> atrribute
+
+-   src : 음악 파일 경로
+-   preload : 재생 전에 음악 파일을 모두 불러올 것인지 지정
+-   autoplay : 음악 파일을 자동 재생 개시할 것인지 지정
+-   loop : 음악을 반복할 것인지 지정
+-   controls : 음악 재생 도구를 표시할 것인지 지정. 재생 도구의 외관은 브라우저마다 차이가 존재한다.
+
+## 📝 EX )
+
+<html>
+  <body>
+    <audio controls></audio>
+  </body>
+</html>
+
+재생 형식또한 브라우저마다 차이가 존재한다.
