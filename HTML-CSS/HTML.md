@@ -1289,7 +1289,44 @@ display 속성값이 인라인(inline)인 요소는 새로운 라인(line)에서
     <span style="background-color:grey; color:orange">span태그</span>는 display 속성값이 인라인인 요소입니다.
 </p>
 
-# audio
+# 🏷 form 태그
+
+form 태그는 사용자가 입력한 데이터를 수집하기 위해 사용되며 input, textarea, button, select, checkbox, radio button, submit button 등의 `입력 양식 태그`를 포함할 수 있다.
+
+```html
+<form>
+    ... form elements (input, checkbox, radio button, submit button...) ...
+</form>
+```
+
+> 🔍 atrribute
+
+| attribute |   Value    |               Description                |
+| :-------: | :--------: | :--------------------------------------: |
+|  action   |    URL     | 입력 데이터(from data)가 전송될 URL 지정 |
+|  method   | get / post |  입력 데이터(form data) 전달 방식 지정   |
+
+> GET
+
+-   GET 방식은 전송 URL에 입력 데이터를 쿼리스트링으로 보내는 방식.
+
+    ex ) http://jsonplaceholder.typicode.com/posts?userId=1&id=1
+
+-   전송 URL 바로 뒤에 '?'를 통해 데이터의 시작을 알려주고, key-value 형태의 데이터를 추가한다. 1개 이상의 전송 데이터는 '&'로 구분한다.
+
+-   URL에 전송 데이터가 모두 노출되기 때문에 보안에 문제가 있으며 전송할 수 있는 데이터의 한계가 존재( 최대 255자 )
+
+> POST
+
+-   POST 방식은 Request Body에 담아 보내는 방식
+
+    ex ) http://jsonplaceholder.typicode.com/posts
+
+-   URL에 전송 데이터가 모두 노출되지 않지만 GET요청에 비해 속도가 느림.
+
+# 📚 미디어( audio, video )
+
+# 📕 오디오(audio)
 
 audio 태그는 HTML5에서 새롭게 추가된 태그이며 IE8 이하에서는 사용이 불가능하다.
 
@@ -1310,3 +1347,74 @@ audio 태그는 HTML5에서 새롭게 추가된 태그이며 IE8 이하에서는
 </html>
 
 재생 형식또한 브라우저마다 차이가 존재한다.
+
+|      Browser      |   MP3    | Wav | Ogg |
+| :---------------: | :------: | :-: | :-: |
+| Internet Explorer |   YES    | NO  | NO  |
+|      Chrome       |   YES    | YES | YES |
+|      Firefox      | YES(24~) | YES | YES |
+|      Safari       |   YES    | YES | NO  |
+|       Opera       | YES(25~) | YES | YES |
+
+source 태그를 사용하면 파일 형식의 차이 문제또한 해결이 가능하다. 또한 type 어트리뷰트는 생략이 가능하다.
+
+# 📗 비디오(video)
+
+video 태그또한 HTML5에서 새롭게 추가된 태그이다. IE8 이하에서는 사용할 수 없다.
+
+> 🔍 atrribute
+
+-   src : 동영상 파일 경로
+-   poster : 동영상 준비 중에 표시될 이미지 파일 경로
+-   preload : 오디오와 유사, 재생 전에 동영상 파일을 모두 불러올 것인지 지정
+-   autoplay : 동영상 파일을 자동으로 재생 개시할 것인지 지정
+-   loop : 동영상을 반복할 것인지 지정
+-   control : 오디오와 동일, 동영상 재생 도구를 표시할 것인지 지정. 재생 도구의 외관은 브라우저마다 차이가 있다.
+-   width : 동영상의 너비 지정
+-   height : 동영상의 높이 지정
+
+비디오 태그 또한 오디오 태그처럼 source 태그로 형식 차이 문제를 해결할 수 있다. type 어트리뷰트는 생략 가능하다.
+
+|      Browser      |   MP4    | WebM | Ogv |
+| :---------------: | :------: | :--: | :-: |
+| Internet Explorer |   YES    |  NO  | NO  |
+|      Chrome       |   YES    | YES  | YES |
+|      Firefox      | YES(21~) | YES  | YES |
+|      Safari       |   YES    |  NO  | NO  |
+|       Opera       | YES(25~) | YES  | YES |
+
+# 🏷 fieldset / legend
+
+`filedset 태그`는 관련된 입력 양식들을 그룹화할 때 사용한다. `legend 태그`는 fieldset 태그 내에서 사용되야 하며 그룹화된 fieldset의 제목을 정의한다.
+
+## 📝 예제 )
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <fieldset>
+            <legend>Login</legend>
+            Username <input type="text" name="username" /> Password
+            <input type="text" name="password" />
+        </fieldset>
+    </body>
+</html>
+```
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+      <fieldset>
+        <legend>Login</legend>
+        Username <input type="text" name="username">
+        Password <input type="text" name="password">
+      </fieldset>
+  </body>
+</html>
