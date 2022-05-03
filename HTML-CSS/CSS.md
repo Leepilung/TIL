@@ -201,6 +201,278 @@ HTML과 CSS에서는 하나의 웹 페이지에 속하는 여러 요소에 같�
 
 -   다른 주석문들과 마찬가지로 CSS에서 주석을 작성할 때는 절대로 주석 내부에 또 다른 주석을 넣어서는 안 된다.
 
+# 🏷 전체 셀렉터(Universal Selector)
+
+-   `*` : HTML 문서 내의 모든 요소를 선택한다. html 요소를 포함한 모든 요소가 선택된다. (head 요소도 포함된다)
+
+```html
+<style>
+    /* 모든 요소를 선택 */
+    * {
+        color: red;
+    }
+</style>
+```
+
+# 🏷 태그 셀렉터(Type Selector)
+
+-   `태그명` : 지정된 태그명을 가지는 요소를 선택한다.
+
+```html
+<style>
+    /* 모든 p 태그 요소를 선택 */
+    p {
+        color: red;
+    }
+</style>
+```
+
+# 🏷 ID 셀렉터(ID Selector)
+
+-   `#id 어트리뷰트 값` : id 어트리뷰트 값을 지정하여 일치하는 요소를 선택한다. id 어트리뷰트 값은 중복될 수 없는 유일한 값이다.
+
+## 📝 EX )
+
+```html
+<style>
+    /* id 어트리뷰트 값이 p1인 요소를 선택 */
+    #p1 {
+        color: red;
+    }
+</style>
+```
+
+# 🏷 클래스 셀렉터(Class Selector)
+
+-   `.class 어트리뷰트 값` : class 어트리뷰트 값을 지정하여 일치하는 요소를 선택한다. class 어트리뷰트 값은 중복될 수 있다.
+
+## 📝 EX )
+
+```html
+<style>
+    /* class 어트리뷰트 값이 container인 모든 요소를 선택 */
+    /* color 어트리뷰트는 자식 요소에 상속된다. */
+    .container {
+        color: red;
+    }
+    /* not supported in IE */
+    #p2 {
+        color: initial;
+    }
+</style>
+```
+
+# 🏷 어트리뷰트 셀렉터 (Attribute Selector)
+
+## `셀렉터[어트리뷰트]`
+
+-   지정된 어트리뷰트를 갖는 모든 요소를 선택한다.
+
+## 📝 EX )
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /* a 요소 중에 href 어트리뷰트를 갖는 모든 요소 */
+            a[href] {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="http://www.poiemaweb.com">poiemaweb.com</a><br />
+        <a href="http://www.google.com" target="_blank">google.com</a><br />
+        <a href="http://www.naver.com" target="_top">naver.com</a>
+    </body>
+</html>
+```
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* a 요소 중에 href 어트리뷰트를 갖는 모든 요소 */
+    a[href] { color: red; }
+  </style>
+</head>
+<body>
+  <a href="http://www.poiemaweb.com">poiemaweb.com</a><br>
+  <a href="http://www.google.com" target="_blank">google.com</a><br>
+  <a href="http://www.naver.com" target="_top">naver.com</a>
+</body>
+</html>
+
+---
+
+## `셀렉터[어트리뷰트=”값”]`
+
+-   지정된 어트리뷰트를 가지며 지정된 값과 어트리뷰트의 값이 일치하는 모든 요소를 선택한다.
+
+## 📝 EX )
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /* a 요소 중에 target 어트리뷰트의 값이 "_blank"인 모든 요소 */
+            a[target="_blank"] {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="http://www.poiemaweb.com">poiemaweb.com</a><br />
+        <a href="http://www.google.com" target="_blank">google.com</a><br />
+        <a href="http://www.naver.com" target="_top">naver.com</a>
+    </body>
+</html>
+```
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* a 요소 중에 target 어트리뷰트의 값이 "_blank"인 모든 요소 */
+    a[target="_blank"] { color: red; }
+  </style>
+</head>
+<body>
+  <a href="http://www.poiemaweb.com">poiemaweb.com</a><br>
+  <a href="http://www.google.com" target="_blank">google.com</a><br>
+  <a href="http://www.naver.com" target="_top">naver.com</a>
+</body>
+</html>
+
+---
+
+## `셀렉터[어트리뷰트~=”값”]`
+
+-   지정된 어트리뷰트의 값이 지정된 값을 (공백으로 분리된) 단어로 포함하는 요소를 선택한다.
+
+## 📝 EX )
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /* h1 요소 중에 title 어트리뷰트 값에 "first"를 단어로 포함하는 요소 */
+            h1[title~="first"] {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 title="heading first">Heading first</h1>
+        <h1 title="heading-first">Heading-first</h1>
+        <h1 title="heading second">Heading second</h1>
+        <h1 title="heading third">Heading third</h1>
+    </body>
+</html>
+```
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* h1 요소 중에 title 어트리뷰트 값에 "first"를 단어로 포함하는 요소 */
+    h2[title~="first"] { color: red; }
+  </style>
+</head>
+<body>
+  <h2 title="heading first">Heading first</h2>
+  <h2 title="heading-first">Heading-first</h2>
+  <h2 title="heading second">Heading second</h2>
+  <h2 title="heading third">Heading third</h2>
+</body>
+</html>
+
+## `셀렉터[어트리뷰트|=”값”]`
+
+-   지정된 어트리뷰트의 값과 일치하거나 지정 어트리뷰트 값 뒤 연이은 하이픈(“값-“)으로 시작하는 요소를 선택한다.
+
+## 📝 EX )
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /* p 요소 중에 lang 어트리뷰트 값이 "en"과 일치하거나 "en-"로 시작하는 요소 */
+            p[lang|="en"] {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <p lang="en">Hello!</p>
+        <p lang="en-us">Hi!</p>
+        <p lang="en-gb">Ello!</p>
+        <p lang="us">Hi!</p>
+        <p lang="no">Hei!</p>
+    </body>
+</html>
+```
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* p 요소 중에 lang 어트리뷰트 값이 "en"과 일치하거나 "en-"로 시작하는 요소 */
+    p[lang|="en"] { color: red; }
+  </style>
+</head>
+<body>
+  <p lang="en">Hello!</p>
+  <p lang="en-us">Hi!</p>
+  <p lang="en-gb">Ello!</p>
+  <p lang="us">Hi!</p>
+  <p lang="no">Hei!</p>
+</body>
+</html>
+
+## `셀렉터[어트리뷰트^=”값”]`
+
+-   지정된 어트리뷰트 값으로 시작하는 요소를 선택한다.
+
+## 📝 EX )
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /* a 요소 중에 href 어트리뷰트 값이 "https://"로 시작하는 요소 */
+            a[href^="https://"]
+            {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="https://www.test.com">https://www.test.com</a><br />
+        <a href="http://www.test.com">http://www.test.com</a>
+    </body>
+</html>
+```
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* a 요소 중에 href 어트리뷰트 값이 "https://"로 시작하는 요소 */
+    a[href^="https://"] { color: red; }
+  </style>
+</head>
+<body>
+  <a href="https://www.test.com">https://www.test.com</a><br>
+  <a href="http://www.test.com">http://www.test.com</a>
+</body>
+</html>
+
 ---
 
 ## CSS-Element
