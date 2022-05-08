@@ -1,5 +1,5 @@
-let N = +require("fs").readFileSync("/dev/stdin").toString().trim();
-
+// let N = +require("fs").readFileSync("/dev/stdin").toString().trim();
+N = 9;
 const getTop = (next) => {
     console.log(
         "탑 호출 : ",
