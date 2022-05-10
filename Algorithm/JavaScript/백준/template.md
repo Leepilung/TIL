@@ -27,3 +27,17 @@ const input = Number(require("fs").readFileSync("/dev/stdin"));
 
 console.log(input);
 ```
+
+
+
+# node.js 디버깅용
+
+```js
+// 예제.txt 에 input 내용 입력후 저장
+let input = require("fs")
+    .readFileSync(__dirname + "/예제.txt")
+    .toString()
+    .split("\n");
+
+const [n, ...arr] = input;
+```
