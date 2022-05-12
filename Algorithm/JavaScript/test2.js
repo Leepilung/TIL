@@ -33,6 +33,37 @@
 // console.log(solve(N));
 // console.log(solve(N).join("\n"));
 
-a = "416611";
+const arr = [12, 12, 12, 11];
 
-console.log(a.indexOf("666"));
+const getMode = (arr) => {
+    let mostFrequentCnt = 1;
+    const mode = [];
+    const _map = new Map();
+
+    for (const item of arr) {
+        const hasValue = _map.get(item);
+        const cnt = hasValue === undefined ? 1 : hasValue + 1;
+        _map.set(item, cnt);
+    }
+
+    for (const [key, value] of _map) {
+        if (value > mostFrequentCnt) {
+            mostFrequentCnt = value;
+        }
+    }
+
+    if (mostFrequentCnt === 1) return null;
+    for (const [key, value] of _map) {
+        if (value === mostFrequentCnt) {
+            mode.push(key);
+        }
+    }
+    if (mostFrequentCnt === arr.length) return null;
+    return mode;
+};
+
+if (getMode(arr)) {
+    console.log("최빈값:", getMode(arr).join(","));
+} else {
+    console.log("없다");
+}
