@@ -152,3 +152,279 @@ import ‘./App.css‘;
 로더에는 CSS 파일을 불러오는 css-loader, 웹 폰트나 미디어 팡리을 불러오는 file-loader, 자바스크립트 파일을 불러오면서 최신 자바스크립트 문법으로 작성된 코드를 `바벨`이라는 도구를 사용해 ES5 문법으로 변환시키는 babel-loader 등이 있다.
 
 이러한 웹팩의 로더는 원래 직접 설치하고 설정해야 하지만 create-react-app으로 프로젝트를 생성하면 이런 번거로운 작업을 모두 대신 해준다.
+
+# 🏷 JSX
+
+react에서 컴포넌트가 렌더링하는 HTML로 작성된 코드는 HTML도 아니고 문자열 템플릿도 아닌 JSX라고 부른다.
+
+JSX는 자바스크립트 확장 문법으로 XML과 유사하다고 한다. 이런 형식으로 작성된 코드는 브라우저에서 실행되기 이전 코드가 번들링되는 과정에서 바벨을 사용하여 일반 자바스크립트로 변환된다.
+
+```js
+// JSX문법 변환 전
+function App() {
+  return (
+    <div>
+      Hello <b>react</b>
+    </div>
+  );
+}
+
+// 변환 후 코드
+function App() {
+return React.createElement(“div“, null, “Hello “, React.createElement(“b“, null, “react“));
+}
+```
+
+## 👍 JSX 장점
+
+1. 보기 쉽고 익숙하다
+
+    HTML과 유사하다보니 결국 HTML 코드를 작성하는 것과 비슷.
+
+2. 높은 활용도
+
+    JSX에서는 div span등의 HTML 태그를 사용할 수 있고, 앞으로 만들 컴포넌트또한 JSX안에 작성이 가능하다.
+
+> 🔍 ReactDOM.render는 무엇인가?
+
+```js
+// src/index.js 파일
+import React from ‘react‘;
+import ReactDOM from ‘react-dom‘;
+import ‘./index.css‘;
+import App from ‘./App‘;
+import * as serviceWorker from ‘./serviceWorker‘;
+
+
+ReactDOM.render(<App />, document.getElementById(‘root‘));
+
+
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
+```
+
+React.render()는 컴포넌트를 페이지에 렌더링하는 역할을 하며, react-dom 모듈을 불러와 사용할 수 있다.
+
+이 함수의 첫번째 파라미터에는 페이지에 렌더링할 내용을 JSX로 작성하고, 두 번째 파라미터에는 해당 JSX를 렌더링할 document 내부 요소를 설정한다.
+
+---
+
+## 📚 JSX 문법
+
+JSX는 편리하지만 반드시 준수해야할 문법(규칙)이 존재한다.
+
+### 📗 감싸인 요소
+
+컴포넌트에 여러 요소가 있다면 반드시 부모 요소 하나로 감싸야 한다.
+
+> 📝 예시
+
+```js
+import logo from './logo.svg';
+
+function App() {
+  return (
+<h1>안녕ㅋㅋ</h1>
+<h2>동작 테스트</h2>
+  );
+}
+
+export default App;
+```
+
+다음과 같은 구조는 부모 요소가 없기 때문에 동작하지 않는다.
+
+`<div>` 태그나 `<Fragment>` 태그, `<>` 태그를 사용하여 하나의 요소로 감싸주어야 한다.
+
+Virtual DOM에서 컴포넌트 변화를 감지할 때 효율적으로 비교할 수 있도록 컴포넌트 내부는 하나의 DOM 트리 구조로 이뤄져야 한다는 규칙이 있기 때문이다.
+
+### 📕 자바스크립트 표현
+
+JSX 안에서는 자바스크립트 표현식을 쓸 수 있다. 자바스크립트 표현식을 작성하려면 JSX 내부에서 코드를 `{ }`로 감싸면 된다.
+
+## 🏷 if 문 대신 조건부 연산자(= 삼항 연산자)
+
+JSX 내부의 자바스크립트 표현식에서 if 문을 사용할 수 없다.
+
+조건에 따라 다른 내용을 렌더링해야 할 때는 JSX 밖에서 if 문을 사용하여 사전에 값을 설정하거나, { } 안에 조건부 연산자를 사용해야 한다.
+
+> 📝 예시
+
+```js
+import React from ‘react‘;
+
+function App() {
+  const name = ‘리액트‘;
+  return (
+    <div>
+      {name === ‘리액트‘ ? (
+        <h1>리액트입니다.</h1>
+      ) : (
+        <h2>리액트가 아닙니다.</h2>
+      )}
+    </div>
+  );
+}
+
+export default App;
+```
+
+변수명 name값에 따라 출력되는 문구가 다르다.
+
+## 🏷 AND 연산자(&&)를 사용한 조건부 렌더링
+
+특정 조건을 만족할 때 내용을 보여 주고, 만족하지 않을 때 아예 아무것도 렌더링하지 않아야 하는 상황에 사용한다.
+
+> 📝 예시
+
+```js
+// 삼항 연산자 이용
+import React from "react";
+
+function App() {
+    const name = "뤼왝트";
+    return <div>{name === "리액트" ? <h1>리액트입니다.</h1> : null}</div>;
+}
+
+export default App;
+
+// && 연산자 이용
+import React from ‘react‘;
+
+function App() {
+  const name = ‘뤼왝트‘;
+  return <div>{name === ‘리액트‘ && <h1>리액트입니다.</h1>}</div>;
+}
+
+export default App;
+```
+
+name 변수값에 따라 삼항연산자의 false 값을 null로 해둘 경우 아무것도 보여 주지 않는다.
+
+그러나 && 연산자를 사용하면 더욱 짧은 코드로 같은 작업을 할 수 있다.
+
+여기서 한 가지 주의해야 할 점은 falsy한 값인 0은 예외적으로 렌더가 된다는 것이다.
+
+> 📝 예시
+
+```js
+const number = 0;
+return number && <div>내용</div>;
+```
+
+이러한 코드는 화면에 숫자 0을 보여준다.
+
+## 🏷 undefined를 렌더링하지 않기
+
+리액트 멈포넌트에서는 함수에서 undefined만 반환하여 렌더링하는 상황을 만들어선 안된다고 나와있는데 테스트 결과 오류는 뜨지않고 아무것도 렌더만 되지않는다.
+
+> 📝 예시
+
+```js
+function App() {
+    const name = undefined;
+    return name;
+}
+```
+
+JSX에 감싸서 표현해도 똑같이 렌더만되지 않는다.
+
+```js
+function App() {
+    const name = undefined;
+    return <>{name}</>;
+}
+```
+
+값이 undefined 일 때 보여주고 싶다면
+
+```js
+function App() {
+    const name = undefined;
+    return <div>{name || "보여주고싶은 문구"}</div>;
+}
+```
+
+## 🏷 인라인 스타일링
+
+리액트에서 DOM 요소에 스타일을 적용할 때는 문자열 형태로 넣는 것이 아니라 객체 형태로 넣어 주어야 한다.
+
+그러므로 스타일 이름중에 `-`기호가 들어가는 경우 `-`문자를 없애고 카멜 케이스로 작성해야 한다.
+
+```js
+import React from "react";
+
+function App() {
+    const name = "리액트";
+    const style = {
+        // background-color는 backgroundColor와 같이 -가 사라지고 카멜 표기법으로 작성한다.
+        backgroundColor: "black",
+        color: "aqua",
+        fontSize: "48px", // font-size -> fontSize
+        fontWeight: "bold", // font-weight -> fontWeight
+        padding: 16, // 단위를 생략하면 px로 자동 지정된다.
+    };
+    return <div style={style}>{name} </div>;
+}
+
+export default App;
+```
+
+style 객체를 미리 선언하지 않고 바로 style 값을 지정할 수 있다.
+
+```js
+import React from "react";
+
+function App() {
+    const name = "리액트";
+    return (
+        <div
+            style={{
+                backgroundColor: "black", // 카멜케이스로
+                color: "aqua",
+                fontSize: "48px", // font-size -> fontSize
+                fontWeight: "bold", // font-weight -> fontWeight
+                padding: 16, // 단위를 생략하면 px로 지정된다.
+            }}
+        >
+            {name}
+        </div>
+    );
+}
+
+export default App;
+```
+
+## 🏷 class 대신 calssName
+
+일반 HTML에서 CSS 클래스를 사용할 때에는 `<div class="test"></div>` 와 같이 사용하는데 JSX는 class만 className으로 바꿔주면 된다.
+
+물론 class로해도 스타일은 적용되지만 개발자 도구 Console 탭에서 경고가 나타나게 된다.
+
+## 🏷 주석
+
+JSX 안에서 주석을 작성하는 방법은 일반 자바스크립트에서 주석을 작성할 때와 조금 다르다.
+
+```js
+function App() {
+    const name = "리액트";
+    return (
+        <>
+            {/* 주석은 이렇게 작성한다. */}
+            <div
+                className="react" // 시작 태그를 여러 줄로 작성하게 된다면 여기에 주석을 작성할 수 있다.
+            >
+                {name}
+            </div>
+            // 하지만 이런 주석이나 / 이런 주석은 페이지에 그대로 나타나게 된다.
+            */
+            <input />
+        </>
+    );
+}
+```
+
+JSX 내부에서 주석을 작성할 때는 `{/* …주석 내용 */}`와 같은 형식으로 작성한다.

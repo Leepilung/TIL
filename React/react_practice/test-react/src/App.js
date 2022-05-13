@@ -2,15 +2,20 @@ import React from "react";
 
 function App() {
     const name = "리액트";
-    const style = {
-        // background-color는 backgroundColor와 같이 -가 사라지고 카멜 표기법으로 작성됩니다.
-        backgroundColor: "black",
-        color: "aqua",
-        fontSize: "48px", // font-size -> fontSize
-        fontWeight: "bold", // font-weight -> fontWeight
-        padding: 16, // 단위를 생략하면 px로 지정됩니다.
-    };
-    return <div style={style}>{name} </div>;
+    return (
+        <>
+            {/* 주석은 이렇게 작성합니다. 
+            이건? 이것도되네 ㅋㅋ*/}
+            <div
+                className="react" // 시작 태그를 여러 줄로 작성하게 된다면 여기에 주석을 작성할 수 있습니다.
+            >
+                {name}
+            </div>
+            // 하지만 이런 주석이나 / 이런 주석은 페이지에 그대로 나타나게
+            됩니다. */
+            <input />
+        </>
+    );
 }
 
 export default App;
