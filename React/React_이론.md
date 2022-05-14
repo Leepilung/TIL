@@ -2,7 +2,7 @@
 
 복습용으로 최대한 축약하여 이해하는데 있어 어색함이나 부족함 없게끔 정리하는 것이 목표.
 
-# 📚 React란?
+# 🚩 React란?
 
 리액트는 자바스크립트 라이브러리로 사용자 인터페이스(User Interface)를 만드는데 사용하고 오직 `뷰(View)`만을 신경 쓰는 라이브러리이다.
 
@@ -153,7 +153,7 @@ import ‘./App.css‘;
 
 이러한 웹팩의 로더는 원래 직접 설치하고 설정해야 하지만 create-react-app으로 프로젝트를 생성하면 이런 번거로운 작업을 모두 대신 해준다.
 
-# 🏷 JSX
+# 🚩 JSX
 
 react에서 컴포넌트가 렌더링하는 HTML로 작성된 코드는 HTML도 아니고 문자열 템플릿도 아닌 JSX라고 부른다.
 
@@ -428,3 +428,131 @@ function App() {
 ```
 
 JSX 내부에서 주석을 작성할 때는 `{/* …주석 내용 */}`와 같은 형식으로 작성한다.
+
+# 🚩 컴포넌트
+
+리액트를 사용하여 어플리케이션의 인터페이스를 설계할 때 사용자가 볼 수 있는 요소는 여러개의 컴포넌트로 구성되어 있다.
+
+<img src="https://thebook.io/img/080203/084.jpg">
+
+위의 예시는 총 네 가지 컴포넌트를 사용하여 구성했다.
+
+화면 중앙의 사각형 레이아웃의 역할을 하며 전체적인 틀을 잡아주는 컴포넌트, 새로운 항목을 추가할 수 있는 컴포넌트, 할 일 항목을 여러개 보여주는 컴포넌트, 각 항목을 보여 주기 위해 사용되는 컴포넌트들이다.
+
+컴포넌트의 기능은 단순한 템플릿 이상이다. 데이터가 주어졌을 때 이에 맞추어 UI를 만들어 주는 것은 물론이고, 라이프사이클 API를 이용하여 컴포넌트가 화면에서 나타날 때, 사라질 때, 변화가 일어날 때 주어진 작업들을 처리할 수 있으며, 임의 메서드를 만들어 특별한 기능을 붙여 줄 수 있다.
+
+## 클래스형 컴포넌트
+
+앞의 예제에서 사용한 컴포넌트는 함수형 컴포넌트이다. 컴포넌트를 선언하는 방식은 함수평 컴포넌트와 클래스형 컴포넌트 2가지이다.
+
+```js
+// 함수형 컴포넌트
+import React from "react";
+import "./App.css";
+
+function App() {
+    const name = "리액트";
+    return <div className="react">{name}</div>;
+}
+
+export default App;
+
+// 클래스형 컴포넌트
+import React, { Component } from "react";
+
+class App extends Component {
+    render() {
+        const name = "react";
+        return <div className="react">{name}</div>;
+    }
+}
+
+export default App;
+```
+
+클래스형 컴포넌트로 바뀌었지만 역할은 함수형 컴포넌트와 동일하다.
+
+> 🔍 ES6의 클래스 문법
+
+ES6 이전에는 자바스크립트에 클래스(class)가 없었다. 개념 자체는 있었지만, 그것을 구현하려면 class 대신 prototype이라는 문법을 사용하여 다음과 같이 작업해야 했다.
+
+```js
+function Dog(name) {
+    this.name = name;
+}
+
+Dog.prototype.say = function () {
+    console.log(this.name + " : 멍멍");
+};
+var dog = new Dog("검둥이");
+dog.say(); // 검둥이 : 멍멍
+```
+
+ES6 문법부터는 이것과 기능이 똑같은 코드를 class를 사용하여 다음과 같이 작성할 수 있다.
+
+```js
+class Dog {
+    constructor(name) {
+        this.name = name;
+    }
+    say() {
+        console.log(this.name + ": 멍멍");
+    }
+}
+
+const dog = new Dog("흰둥이");
+dog.say(); // 흰둥이: 멍멍
+```
+
+클래스형 컴포넌트에서는 render 함수가 꼭 있어야 하고, 그 안에서 보여 주어야 할 JSX를 반환해야 한다.
+
+> 🔍 ES6의 클래스 문법
+
+화살표 함수(arrow function)는 ES6 문법에서 함수를 표현하는 새로운 방식이다. 그렇다고 기존의 function 선언 방식을 아예 대체하진 않는다.
+
+사용 용도가 서로 조금 다르기 때문인데 화살표 함수는 주로 함수를 파라미터로 전달할 때 유용하다.
+
+```js
+setTimeout(function() {
+  console.log('hello world');
+}, 1000);
+
+setTimeout(() => {
+  console.log('hello world')
+}), 1000);
+```
+
+무엇보다 서로 가리키는 this의 값이 다르기 때문이다.
+
+```js
+// function() 형식
+function BlackDog() {
+    this.name = "흰둥이";
+    return {
+        name: "검둥이",
+        bark: function () {
+            console.log(this.name + ": 멍멍!");
+        },
+    };
+}
+
+const blackDog = new BlackDog();
+blackDog.bark(); // 검둥이: 멍멍!
+
+// Arrow function 형식
+function WhiteDog() {
+    this.name = "흰둥이";
+    return {
+        name: "검둥이",
+        bark: () => {
+            console.log(this.name + ": 멍멍!");
+        },
+    };
+}
+
+const whiteDog = new WhiteDog();
+whiteDog.bark(); // 흰둥이: 멍멍!
+```
+function()을 사용했을 때는 검둥이가 나타나고, () =>를 사용했을 때는 흰둥이가 나타난다.
+
+일반 함수는 자신이 종속된 객체를 this로 가리키며, 화살표 함수는 자신이 종속된 인스턴스를 가리킵니다.
