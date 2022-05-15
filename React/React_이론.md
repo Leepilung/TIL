@@ -354,6 +354,8 @@ function App() {
 
 그러므로 스타일 이름중에 `-`기호가 들어가는 경우 `-`문자를 없애고 카멜 케이스로 작성해야 한다.
 
+> 📝 예시
+
 ```js
 import React from "react";
 
@@ -408,6 +410,8 @@ export default App;
 
 JSX 안에서 주석을 작성하는 방법은 일반 자바스크립트에서 주석을 작성할 때와 조금 다르다.
 
+> 📝 예시
+
 ```js
 function App() {
     const name = "리액트";
@@ -445,6 +449,8 @@ JSX 내부에서 주석을 작성할 때는 `{/* …주석 내용 */}`와 같은
 
 앞의 예제에서 사용한 컴포넌트는 함수형 컴포넌트이다. 컴포넌트를 선언하는 방식은 함수평 컴포넌트와 클래스형 컴포넌트 2가지이다.
 
+> 📝 예시
+
 ```js
 // 함수형 컴포넌트
 import React from "react";
@@ -475,6 +481,8 @@ export default App;
 > 🔍 ES6의 클래스 문법
 
 ES6 이전에는 자바스크립트에 클래스(class)가 없었다. 개념 자체는 있었지만, 그것을 구현하려면 class 대신 prototype이라는 문법을 사용하여 다음과 같이 작업해야 했다.
+
+> 📝 예시
 
 ```js
 function Dog(name) {
@@ -511,6 +519,8 @@ dog.say(); // 흰둥이: 멍멍
 화살표 함수(arrow function)는 ES6 문법에서 함수를 표현하는 새로운 방식이다. 그렇다고 기존의 function 선언 방식을 아예 대체하진 않는다.
 
 사용 용도가 서로 조금 다르기 때문인데 화살표 함수는 주로 함수를 파라미터로 전달할 때 유용하다.
+
+> 📝 예시
 
 ```js
 setTimeout(function() {
@@ -553,6 +563,91 @@ function WhiteDog() {
 const whiteDog = new WhiteDog();
 whiteDog.bark(); // 흰둥이: 멍멍!
 ```
+
 function()을 사용했을 때는 검둥이가 나타나고, () =>를 사용했을 때는 흰둥이가 나타난다.
 
-일반 함수는 자신이 종속된 객체를 this로 가리키며, 화살표 함수는 자신이 종속된 인스턴스를 가리킵니다.
+일반 함수는 자신이 종속된 객체를 this로 가리키며, 화살표 함수는 자신이 종속된 인스턴스를 가리킨다.
+
+또한 화살표 함수는 값을 연산하여 바로 반환해야 할 때 사용하면 가독성을 높일 수 있다.
+
+> 🔍 Reactjs Code Snippet
+
+Vscode 확장프로그램으로 설치했다면 컴포넌트 코드를 빠르고 간편하게 생성할 수 있다.
+
+에디터 창에서 src를 입력하고 엔터를 누르면 해당 파일의 이름을 가진 컴포넌트 형태를 빠르게 생성해준다.
+
+<img src="https://thebook.io/img/080203/090.jpg">
+
+클래스형은 안쓰곘지만 rcc를 입력하면 된다.
+
+# 📚 모듈 내보내기 및 불러오기
+
+## 📗 모듈 내보내기(export)
+
+작성한 컴포넌트에서 맨 아랫단 코드를 보면 다음과 같다.
+
+```js
+export default MyComponent;
+```
+
+이 코드는 다른 파일에서 이 파일을 import할 때, 위에서 선언한 MyComponent 클래스를 불러오도록 설정한다.
+
+## 📕모듈 불러오기(import)
+
+다른 컴포넌트에서 원하는 컴포넌트(MyComponent)를 불러오려면 다음과 같이 import 구문을 사용하면 된다.
+
+> 📝 예시
+
+```js
+import React from "react";
+import MyComponent from "./MyComponent";
+
+const App = () => {
+    return <MyComponent />;
+};
+
+export default App;
+```
+
+# props
+
+props는 properties의 줄인 표현으로 컴포넌트 속성을 설정할 때 사용하는 요소이다.
+
+props 값은 해당 컴포넌트를 불러와 사용하는 `부모 컴포넌트`에서 설정할 수 있다.
+
+## JSX 내부에서의 props 렌더링
+
+props 값은 컴포넌트 함수의 파라미터로 받아 와서 사용할 수 있다.
+
+props를 렌더링할 때는 JSX 내부에서 `{ }` 기호로 감싸 주면 된다.
+
+> 📝 예시
+
+```js
+// src/Components/MyComponent.js 파일
+import React from "react";
+
+const MyComponent = (props) => {
+    return <div>안녕하세요, 제 이름은 {props.name}입니다.</div>;
+};
+
+export default MyComponent;
+```
+
+## 컴포넌트에서 props 값 지정해주기
+
+부모 컴포넌트에서 우리가 사용할 컴포넌트의 props 값을 지정해야 사용할 수 있다.
+
+> 📝 예시
+
+```js
+// src/App.js(부모 컴포넌트)
+import React from "react";
+import MyComponent from "./MyComponent";
+
+const App = () => {
+    return <MyComponent name="이필웅" />;
+};
+
+export default App;
+```
