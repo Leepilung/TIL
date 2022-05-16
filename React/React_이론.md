@@ -609,13 +609,13 @@ const App = () => {
 export default App;
 ```
 
-# props
+# 📚 props
 
 props는 properties의 줄인 표현으로 컴포넌트 속성을 설정할 때 사용하는 요소이다.
 
 props 값은 해당 컴포넌트를 불러와 사용하는 `부모 컴포넌트`에서 설정할 수 있다.
 
-## JSX 내부에서의 props 렌더링
+## 📗JSX 내부에서의 props 렌더링
 
 props 값은 컴포넌트 함수의 파라미터로 받아 와서 사용할 수 있다.
 
@@ -634,7 +634,7 @@ const MyComponent = (props) => {
 export default MyComponent;
 ```
 
-## 컴포넌트에서 props 값 지정해주기
+## 📕컴포넌트에서 props 값 지정해주기
 
 부모 컴포넌트에서 우리가 사용할 컴포넌트의 props 값을 지정해야 사용할 수 있다.
 
@@ -651,3 +651,73 @@ const App = () => {
 
 export default App;
 ```
+
+## 📘 비구조화 할당 문법을 통해 props 내부 값 추출하기
+
+MyComponent에서 props 값을 조회할 때마다 props.name, props.children과 같이 props.이라는 키워드를 앞에 붙여 주고 있는데 `비구조화 할당`을 사용하면 더 쉽게 추출이 가능하다.
+
+> 📝 예시
+
+```js
+// 할당 전
+const MyComponent = (props) => {
+    return (
+        <div>
+            안녕하세요, 제 이름은 {props.name}입니다. <br />
+            children 값은 {props.children}
+            입니다.
+        </div>
+    );
+};
+
+// 할당 후
+const MyComponent = (props) => {
+    const { name, children } = props;
+    return (
+        <div>
+            안녕하세요, 제 이름은 {name}입니다. <br />
+            children 값은 {children}
+            입니다.
+        </div>
+    );
+};
+```
+
+## 📙propTypes를 통한 props 검증
+
+컴포넌트의 필수 props를 지정하거나 props의 타입(type)을 지정할 때는 propTypes를 사용한다.
+
+propTypes를 사용하려면 코드 상단에 import 구문을 사용하여 불러와야한다.
+
+> 📝 예시
+
+```js
+// import 구문
+import PropTypes from ‘prop-types‘;
+
+// propTypes 사용 구문
+MyComponent.propTypes = {
+  name: PropTypes.string
+};
+```
+
+물론 다른 형태의 값을 입력하여도 화면에 출력은 되지만 console창에 오류가 뜨게된다.
+
+## 📒isRequired를 사용하여 필수 propTypes 설정
+
+propTypes를 지정하지 않았을 때 경고 메시지를 띄워 주는 문법인데 뒤에 isRequired를 붙여 주면 된다.
+
+> 📝 예시
+
+```js
+MyComponent.propTypes = {
+    name: PropTypes.string.isRequired,
+};
+```
+
+동시에 다양한 종류의 값들을 설정할 수 있다. (https://github.com/facebook/prop-types 에서 확인 가능)
+
+> 🔍 defaultProps와 propTypes는 꼭 사용해야 하는가?
+
+필수는 아니나 큰 규모의 프로젝트로 가서 협업을 진행하게 될 때 어떤 컴포넌트에 어떤 props가 필요한지 쉽게 알 수 있게 해주는 도구 정도의 역할로 이해하면 좋을 것 같다.
+
