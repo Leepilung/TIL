@@ -3,6 +3,7 @@
 // 설명 : 쉬운줄 알았으나 개골떄렸던 문제. 정렬문제라는데.. 최빈값이 제일 골치아팠음
 // 최빈값의 경우 조건이 또 여러개면 두번째로 작은값 골라야되는 문제
 // 코드 길이가 너무긴데 단순화는 복기하면서 다시금 해봐야할듯.
+// https://www.acmicpc.net/source/31944332 숏코딩으로 복기한번 다시하기.
 
 const [N, ...nums] = require("fs")
     .readFileSync("/dev/stdin")
@@ -16,7 +17,7 @@ const sum = nums.reduce((acc, cur) => acc + cur, 0);
 if (Math.round(sum / N) === -0) console.log(0);
 else console.log(Math.round(sum / N));
 // 중앙값
-console.log(nums.sort((a, b) => a - b)[Math.ceil(N / 2) - 1]);
+console.log(nums.sort((a, b) => a - b)[Math.floor(N / 2)]);
 
 // 빈도값
 nums.sort((a, b) => a - b);
