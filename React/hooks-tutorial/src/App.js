@@ -8,8 +8,10 @@ const App = () => {
 
     return (
         <div>
+            <h1>Counter 컴포넌트</h1>
             <Counter />
             <hr />
+            <h1> Info 컴포넌트</h1>
             <button
                 onClick={() => {
                     setVisible(!visible);
@@ -20,6 +22,7 @@ const App = () => {
             <br />
             {visible && <Info />}
             <hr />
+            <h1> Average 컴포넌트</h1>
             <Average />
         </div>
     );
