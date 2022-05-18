@@ -351,3 +351,90 @@ useState의 파라미터는 상태의 기본값을 넣어 준다.
 // value값 변경
 setValue(5); // value의 값이 5로 변경됨.
 ```
+
+## useEffect
+
+useEffect는 리액트 컴포넌트가 렌러딩이 될 때마다 특정 작업을 수행하도록 설정할 수 있는 Hook이다.
+
+```js
+import React, { useState, useEffect } from ‘react‘;
+
+const Info = () => {
+  const [name, setName] = useState(“);
+  const [nickname, setNickname] = useState(“);
+  useEffect(() => {
+    console.log(‘렌더링이 완료되었습니다!’);
+    console.log({
+      name,
+      nickname
+    });
+  });
+
+  const onChangeName = e => {
+    setName(e.target.value);
+  };
+
+const onChangeNickname = e => {
+    setNickname(e.target.value);
+  };
+
+return (
+    (…)
+  );
+};
+
+export default Info;
+```
+
+<img src="https://thebook.io/img/080203/195.jpg">
+
+위와 같이 input창의 내용이 변경되서 리렌더링 될때마다 useEffect 안의 내용이 출력됨을 볼 수 있다.
+
+### 마운트될 때만 실행하고 싶을 때
+
+useEffect에서 설정한 함수를 컴포넌트가 화면에 맨 처음 렌더링될 때만 실행하고, 업데이트될 때는 실행하지 않으려면 함수의 두 번째 파라미터로 비어 있는 배열을 넣어 주면 된다.
+
+```js
+useEffect(() => {
+    console.log("마운트될 때만 실행됩니다.");
+}, []);
+```
+
+### 특정 값이 업데이트될 대만 실행하고 싶을 때
+
+useEffect를 사용할 때, 특정 값이 변경될 때만 호출하고 싶을 경우에는 다음과 같이 작성하면 된다.
+
+```js
+// name값이 바뀔 때마다 렌더하길 원하는 경우
+useEffect(() => {
+    console.log(name);
+}, [name]);
+```
+
+상태를 넣어도 되고 props를 넣어도 된다.
+
+### 뒷정리하기
+
+useEffect는 기본적으로 렌더링되고 난 직후마다 실행되며, 두 번째 파라미터 배열에 무엇을 넣는지에 따라 실행되는 조건이 달라진다.
+
+컴포넌트가 언마운트되기 전이나 업데이트되기 직전에 어떠한 작업을 수행하고 싶다면 useEffect에서 뒷정리(cleanup) 함수를 반환해 주어야 한다.
+
+```js
+// useEffect만 다음과 같이 바꿔보자
+useEffect(() => {
+    console.log(‘effect‘);
+    console.log(name);
+    return () => {
+      console.log(‘cleanup‘);
+      console.log(name);
+    };
+  });
+```
+
+실행해보면 마운트되자마자 cleanup이 출력된다.
+
+input창에 뭔가 입력하고 난 후에도 console창을 보면 업데이트 되기 전에 cleanup이 호출되고 effect와 name이 호출된다.
+
+<img src="https://thebook.io/img/080203/199.jpg">
+
+렌더링 될때마다 뒷정리 함수는 지속적으로 호출되고 뒷정리 함수가 호출될 때는 업데이트 되기 직전의 값을 보여준다.
