@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Counter from "./Components/useState/Counter";
 import Info from "./Components/useState/Info";
 import Average from "./Components/useState/Average";
-import useReflocal from "./Components/useState/useReflocal";
 
 const App = () => {
     const [visible, setVisible] = useState(false);
@@ -26,7 +25,6 @@ const App = () => {
             <h1> Average 컴포넌트</h1>
             <Average />
             <hr />
-            <useReflocal />
         </div>
     );
 };

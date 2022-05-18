@@ -853,3 +853,115 @@ export default Average;
 주석 처리한 부분이 ref를 설정하고 사용하면서 추가한 구문들이다.
 
 useRef를 사용하여 ref를 설정하면 useRef를 통해 만든 객체 안의 current 값이 실제 엘리먼트를 가리킨다.
+
+## 커스텀 Hooks 만들기
+
+여러 컴포넌트에서 비슷한 기능을 공유할 경우 커스텀 Hook을 작성하여 로직을 재사용할 수 있다.
+
+예를 들어 다음의 Info라는 컴포넌트에서 여러 인풋을 관리하기 위해 useReducer로 작성했던 로직을 useInputs 이라는 Hook을 만들어 분리해 보자.
+
+```js
+// 수정 전의 Info 컴포넌트
+import React, { useReducer } from "react";
+
+function reducer(state, action) {
+    return {
+        ...state,
+        [action.name]: action.value,
+    };
+}
+
+const Info = () => {
+    const [state, dispatch] = useReducer(reducer, {
+        name: "",
+        nickname: "",
+    });
+    const { name, nickname } = state;
+    const onChange = (e) => {
+        dispatch(e.target);
+    };
+
+    return (
+        <div>
+            <div>
+                <input name="name" value={name} onChange={onChange} />
+                <input name="nickname" value={nickname} onChange={onChange} />
+            </div>
+            <div>
+                <div>
+                    <b>이름:</b> {name}
+                </div>
+                <div>
+                    <b>닉네임: </b>
+                    {nickname}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Info;
+```
+
+여기서 useInput이라는 컴포넌트를 만들어보자
+
+```js
+import { useReducer } from "react";
+
+function reducer(state, action) {
+    return {
+        ...state,
+        [action.name]: action.value,
+    };
+}
+
+export default function useInputs(initialForm) {
+    const [state, dispatch] = useReducer(reducer, initialForm);
+    const onChange = (e) => {
+        dispatch(e.target);
+    };
+    return [state, onChange];
+}
+```
+
+이제 이렇게 만든 컴포넌트를 가지고 수정을 하면 다음과 같이 깔끔해진다.
+
+```js
+import React from "react";
+import useInputs from "./useInput"; // 컴포넌트 import 구문
+
+const Info = () => {
+    const [state, onChange] = useInputs({
+        // reducer function 삭제 후 해당 useInput 가져다가 사용
+        name: "",
+        nickname: "",
+    });
+    const { name, nickname } = state;
+
+    return (
+        <div>
+            <div>
+                <input name="name" value={name} onChange={onChange} />
+                <input name="nickname" value={nickname} onChange={onChange} />
+            </div>
+            <div>
+                <div>
+                    <b>이름:</b> {name}
+                </div>
+                <div>
+                    <b>닉네임: </b>
+                    {nickname}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Info;
+```
+
+## 📌 정리
+
+리액트에서 Hooks 패턴을 사용하면 클래스형 컴포넌트를 작성하지 않고도 대부분의 기능을 구현할 수 있다.
+
+동시에 매뉴얼에서는 새로 작성하는 컴포넌트의 경우 함수형 컴포넌트와 Hooks를 사용할 것을 권장하고 있으니 프로젝트를 개발할 때는 함수형 컴포넌트의 사용을 첫 번째 옵션으로 두고, 꼭 필요한 상황에서만 클래스형 컴포넌트를 사용하도록 하자.

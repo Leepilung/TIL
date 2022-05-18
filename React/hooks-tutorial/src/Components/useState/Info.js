@@ -1,21 +1,12 @@
-import React, { useReducer } from "react";
-
-function reducer(state, action) {
-    return {
-        ...state,
-        [action.name]: action.value,
-    };
-}
+import React from "react";
+import useInputs from "./useInput"; // 컴포넌트 import 구문
 
 const Info = () => {
-    const [state, dispatch] = useReducer(reducer, {
+    const [state, onChange] = useInputs({ // reducer function 삭제 후 해당 useInput 가져다가 사용
         name: "",
         nickname: "",
     });
     const { name, nickname } = state;
-    const onChange = (e) => {
-        dispatch(e.target);
-    };
 
     return (
         <div>
