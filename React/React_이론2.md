@@ -595,3 +595,110 @@ export default Info;
 매우 생소하다보니 어렵고 낯설게 느껴진다.. 자주 보고 사용해보는것으로 익숙해지자.
 
 useReducer에서의 액션은 그 어떤 값도 사용 가능하다. 이런 식으로 인풋을 관리하면 아무리 인풋의 개수가 많아져도 코드를 짧고 깔끔하게 유지할 수 있다.
+
+## useMemo
+
+useMemo를 사용하면 함수형 컴포넌트 내부에서 발생하는 연산을 최적화할 수 있다.
+
+한마디로 렌더링 성능을 최적화하기 위한 hook이다.
+
+리스트에 숫자를 추가하면 추가된 숫자들의 평균을 보여 주는 함수형 컴포넌트를 작성해 보자.
+
+```js
+// 평균 구하는 컴포넌트 Average.js
+import React, { useState } from "react";
+
+const getAverage = (numbers) => {
+    console.log("평균값 계산 중..");
+    if (numbers.length === 0) return 0;
+    const sum = numbers.reduce((a, b) => a + b);
+    return sum / numbers.length;
+};
+
+const Average = () => {
+    const [list, setList] = useState([]);
+    const [number, setNumber] = useState("");
+
+    const onChange = (e) => {
+        setNumber(e.target.value);
+    };
+    const onInsert = (e) => {
+        const nextList = list.concat(parseInt(number));
+        setList(nextList);
+        setNumber("");
+    };
+
+    return (
+        <div>
+            <input value={number} onChange={onChange} />
+            <button onClick={onInsert}>등록</button>
+            <ul>
+                {list.map((value, index) => (
+                    <li key={index}>{value}</li>
+                ))}
+            </ul>
+            <div>
+                <b>평균값:</b> {getAverage(list)}
+            </div>
+        </div>
+    );
+};
+
+export default Average;
+```
+
+그러나 위의 코드로는 getAverage() 메소드가 숫자를 등록할 때만이 아닌 인풋 내용이 수정될 때도 우리가 만든 getAverage 함수가 호출된다.
+
+`useMemo` Hook을 사용하면 이러한 작업을 최적화할 수 있다.
+
+렌더링하는 과정에서 특정 값이 바뀌었을 때만 연산을 실행하고, 원하는 값이 바뀌지 않았다면 이전에 연산했던 결과를 다시 사용하는 방식이다.
+
+useMemo를 사용해서 구문을 조금만 바꿔준다면 불필요한 함수 호출을 방지하게 된다.
+
+```js
+//useMemo 사용 후 코드
+import React, { useState, useMemo } from "react"; // useMemo import구문 추가
+
+const getAverage = (numbers) => {
+    console.log("평균값 계산 중..");
+    if (numbers.length === 0) return 0;
+    const sum = numbers.reduce((a, b) => a + b);
+    return sum / numbers.length;
+};
+
+const Average = () => {
+    const [list, setList] = useState([]);
+    const [number, setNumber] = useState("");
+
+    const onChange = (e) => {
+        setNumber(e.target.value);
+    };
+    const onInsert = (e) => {
+        const nextList = list.concat(parseInt(number));
+        setList(nextList);
+        setNumber("");
+    };
+
+    const avg = useMemo(() => getAverage(list), [list]); // useMemo를 활용한 구문
+
+    return (
+        <div>
+            <input value={number} onChange={onChange} />
+            <button onClick={onInsert}>등록</button>
+            <ul>
+                {list.map((value, index) => (
+                    <li key={index}>{value}</li>
+                ))}
+            </ul>
+            <div>
+                <b>평균값:</b> {avg}{" "}
+                {/* useMemo를 활용한 avg 변수로 출력값 변경 */}
+            </div>
+        </div>
+    );
+};
+
+export default Average;
+```
+
+이렇게하면 list 배열의 내용이 바뀔 때만 getAverage 함수가 호출된다.
