@@ -796,3 +796,60 @@ useMemo(() => {
 
 사용을 많이 안했던 Hooks들이라 여러번 반복해서 복습하자.
 
+## useRef
+
+useRef Hook은 앞서 다뤘던 ref를 함수형 컴포넌트에서도 사용할 수 있도록 해준다.
+
+다음 예시 컴포넌트는 등록 버튼을 눌렀을 때 포커스가 인풋 쪽으로 넘어가도록 하였다.
+
+```js
+import React, { useState, useMemo, useCallback, useRef } from "react";
+
+const getAverage = (numbers) => {
+    console.log("평균값 계산 중..");
+    if (numbers.length === 0) return 0;
+    const sum = numbers.reduce((a, b) => a + b);
+    return sum / numbers.length;
+};
+
+const Average = () => {
+    const [list, setList] = useState([]);
+    const [number, setNumber] = useState("");
+    const inputEl = useRef(null); // useRef 추가구문
+
+    const onChange = useCallback((e) => {
+        setNumber(e.target.value);
+    }, []);
+
+    const onInsert = useCallback(() => {
+        const nextList = list.concat(parseInt(number));
+        setList(nextList);
+        setNumber("");
+        inputEl.current.focus();
+    }, [number, list]);
+
+    const avg = useMemo(() => getAverage(list), [list]);
+
+    return (
+        <div>
+            <input value={number} onChange={onChange} ref={inputEl} />{" "}
+            {/* input에 ref 구문 추가*/}
+            <button onClick={onInsert}>등록</button>
+            <ul>
+                {list.map((value, index) => (
+                    <li key={index}>{value}</li>
+                ))}
+            </ul>
+            <div>
+                <b>평균값:</b> {avg}
+            </div>
+        </div>
+    );
+};
+
+export default Average;
+```
+
+주석 처리한 부분이 ref를 설정하고 사용하면서 추가한 구문들이다.
+
+useRef를 사용하여 ref를 설정하면 useRef를 통해 만든 객체 안의 current 값이 실제 엘리먼트를 가리킨다.
