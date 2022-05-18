@@ -2,13 +2,13 @@
 
 복습용으로 최대한 축약하여 이해하는데 있어 어색함이나 부족함 없게끔 정리하는 것이 목표.
 
-# 이벤트 핸들링
+# 🚩 이벤트 핸들링
 
 사용자가 웹 브라우저에서 DOM 요소들과 상호 작용하는 것을 `이벤트(event)`라고 한다.
 
 예를 들어 버튼에 마우스 커서를 올렸을 때는 onmouseover 이벤트를 실행하고, 클릭했을 때는 onclick 이벤트를 실행하는 것, Form 요소가 값이 바뀔 때 onchange 이벤트를 실행하는 것들이 해당된다.
 
-## React에서 이벤트를 사용할 때 주의 사항
+## ❗️ React에서 이벤트를 사용할 때 주의 사항
 
 > 1. 이벤트 이름은 카멜 표기법으로 작성한다.
 
@@ -42,7 +42,7 @@ div, button, input, form, span 등의 DOM 요소에는 이벤트를 설정할 �
 
 리액트에서 지원하는 이벤트 종류는 다음 [리액트 메뉴얼](https://facebook.github.io/react/docs/events.html)에서 확인하자.
 
-# e 객체(이벤트 객체)
+# 🏷 e 객체(이벤트 객체)
 
 > 📝 예시
 
@@ -60,7 +60,7 @@ onChange={
 
 아무튼 이벤트가 끝나고 나면 이벤트가 초기화되므로 정보를 참조할 수 없다. 예를들어 0.5초 뒤에 e 객체를 참조하면 e 객체 내부의 모든 값이 비워지게 된다.
 
-# ref
+# 📚 ref
 
 일반적으로 HTML에서 DOM 요소에 이름을 달 때는 id를 사용한다.
 
@@ -85,11 +85,11 @@ ref는 전역적으로 작동하지도 않고 컴포넌트 내부에서만 작�
 
 굳이 id를 사용해야 한다면 컴포넌트를 만들 때마다 id 뒷부분에 추가 텍스트를 붙여 중복 id를 방지하면 된다.
 
-## ref의 사용처
+## 📗 ref의 사용처
 
 ref는 DOM에 작업을 해야 할 때 사용한다는 것은 알았지만 어떤 작업을 해야할 때 사용하는가에 대해 알아보자면 'DOM을 직접적으로 건드려야 할 때' 사용한다.
 
-## DOM을 꼭 사용해야 하는 상황
+## 📕 DOM을 꼭 사용해야 하는 상황
 
 가끔 state만으로는 해결할 수 없는 기능이 있다.
 
@@ -99,9 +99,9 @@ ref는 DOM에 작업을 해야 할 때 사용한다는 것은 알았지만 어�
 
 위의 상황에서는 DOM에 직접적으로 접근해야 하는데, 이를 위해 바로 ref를 사용한다.
 
-## ref 사용방법
+## 📘 ref 사용방법
 
-### 콜백 함수를 통한 ref 설정
+### 🔖 콜백 함수를 통한 ref 설정
 
 ref를 만드는 가장 기본적인 방법은 콜백 함수를 사용하는 것이다. ref를 달고자 하는 요소에 ref라는 콜백 함수를 props로 전달해 주면 된다.
 
@@ -117,11 +117,11 @@ ref를 만드는 가장 기본적인 방법은 콜백 함수를 사용하는 것
 
 this.input은 input 요소의 DOM을 가리킨다. 이 때 ref의 이름은 원하는 것으로 자유롭게 지정이 가능하다. DOM 타입과 관계없이 this.spuerman = ref처럼 마음대로 지정이 가능하다.
 
-## 컴포넌트에 ref 달기
+## 📙 컴포넌트에 ref 달기
 
 리액트에서는 컴포넌트에도 ref를 달 수 있다. 이 방법은 주로 컴포넌트 내부에 있는 DOM을 컴포넌트 외부에서 사용할 때 쓴다.
 
-### 사용법
+### 🔖 사용법
 
 ```js
 <MyComponent
@@ -133,7 +133,7 @@ this.input은 input 요소의 DOM을 가리킨다. 이 때 ref의 이름은 원�
 
 이렇게 하면 예시에서 쓰인 MyComponent 내부의 메서드 및 멤버 변수에도 접근할 수 있다. 즉, 내부의 ref에도 접근할 수 있다(EX: myComponent.handleClick, myComponent.input 등).
 
-## 정리
+## 📌 정리
 
 컴포넌트 내부에서 DOM에 직접 접근해야 할 때는 ref를 사용한다. 먼저 ref를 사용하지 않고도 원하는 기능을 구현할 수 있는지 반드시 고려한 후에 활용하자.
 
@@ -142,3 +142,174 @@ this.input은 input 요소의 DOM을 가리킨다. 이 때 ref의 이름은 원�
 뭣보다 요샌 함수형 컴포넌트가 권장사항인지라 useRef라는 HOOK 함수를 주로 이용한다.
 
 ---
+
+# 📚 컴포넌트 반복
+
+리액트 프로젝트에서 반복적인 내용을 효율적으로 보여 주고 관리하는 방법을 알아보자.
+
+## 📗 자바스크립트 배열의 map() 함수 사용
+
+자바스크립트 배열 객체의 내장 함수인 `map() 함수`를 사용하여 반복되는 컴포넌트를 렌더링할 수 있다.
+
+`map() 함수`는 파라미터로 전달된 함수를 사용해서 배열 내 각 요소를 원하는 규칙에 따라 변환한 후 그 결과로 새로운 배열을 생성한다.
+
+## 🔍 Map() 함수
+
+> 📝 문법
+
+```js
+arr.map(callback(currentValue[, index[, array]])[, thisArg])
+```
+
+> 📝 파라미터
+
+-   callback: 새로운 배열의 요소를 생성하는 함수로 파라미터는 다음 세 가지입니다.
+
+    -   currentValue: 현재 처리하고 있는 요소
+
+    -   index: 현재 처리하고 있는 요소의 index 값
+
+    -   array: 현재 처리하고 있는 원본 배열
+
+-   thisArg(선택 항목): callback 함수 내부에서 사용할 this의 값
+
+> 📝 설명
+
+map은 callback 함수를 각각의 요소에 대해 한번씩 순서대로 불러 그 함수의 반환값으로 새로운 배열을 만든다.
+
+> 📝 예시
+
+```js
+const nums = [1, 2, 3, 4, 5];
+const processed = nums.map((num) => num * num);
+// processed(5)[(1, 4, 9, 16, 25)];
+```
+
+## 📕 key
+
+리액트에서 key는 컴포넌트 배열을 렌더링했을 때 어떤 원소에 변동이 있었는지 알아내려고 사용한다.
+
+예를 들어 유동적인 데이터를 다룰 때는 원소를 생성할 수도, 제거할 수도, 수정할 수도 있다.
+
+key가 없을 때는 Virtual DOM을 비교하는 과정에서 리스트를 순차적으로 비교하면서 변화를 감지한다. 그러나 key가 있다면 이 값을 사용하여 어떤 변화가 일어났는지 더 빠르게 알아 낼 수 있다.(React 동작 원리)
+
+## 📘 key 설정
+
+key 값을 설정할 때는 map 함수의 인자로 전달되는 함수 내부에서 컴포넌트 props를 설정하듯이 설정하면 된다.
+
+key값은 유일해야 하므로 고윳값을 사용해야 한다.
+
+> 📝 예시
+
+예로 들자면 게시판의 게실물을 렌더링한다면 게시물 번호를 key값으로 설정해야 한다. key값이 설정되있지 않은 경우 콘솔창에 에러가 지속적으로 출력된다.
+
+```js
+const articleList = articles.map(article => (
+  <Article
+      title={article.title}
+      writer={article.writer}
+      key={article.id}
+  />
+);
+```
+
+## 📙 동적 배열 렌더링
+
+흔히 key값을 설정할때 고정된 배열의 경우 key값으로 index를 사용하여 리렌더링 하는 경우도 있지만 이는 비효율적이다.
+
+이러한 상황에서 어떻게 고윳값을 만들 수 있는지 알아보자.
+
+### 🔖 초기 상태 설정하기
+
+우선 컴포넌트에서 useState를 사용하여 상태를 설정하자.
+
+예시에서 총 세 가지 상태를 사용하는데 하나는 데이터 배열, 하나는 텍스트를 입력할 수 있는 input의 상태, 데이터 배열에서 새로운 항목을 추가할 떄 사용할 고유 id이다.
+
+```js
+import React, { useState } from "react";
+
+const IterationSample = () => {
+    const [names, setNames] = useState([
+        { id: 1, text: "눈사람" },
+        { id: 2, text: "얼음" },
+        { id: 3, text: "눈" },
+        { id: 4, text: "바람" },
+    ]);
+    const [inputText, setInputText] = useState("");
+    const [nextId, setNextId] = useState(5); // 새로운 항목을 추가할 때 사용할 id
+
+    const namesList = names.map((name) => <li key={name.id}>{name.text}</li>);
+    return <ul>{namesList}</ul>;
+};
+
+export default IterationSample;
+```
+
+### 🔖 데이터 추가 기능 구현하기
+
+새로운 이름을 등록할 수 있는 기능을 구현하는 예제로 알아보자.
+
+```js
+// IterationSample.js
+import React, { useState } from ‘react‘;
+
+const IterationSample = () => {
+  const [names, setNames] = useState([
+    { id: 1, text: ‘눈사람‘ },
+    { id: 2, text: ‘얼음‘ },
+    { id: 3, text: ‘눈‘ },
+    { id: 4, text: ‘바람‘ }
+  ]);
+  const [inputText, setInputText] = useState(""); // names에 추가할 text
+  const [nextId, setNextId] = useState(5); // 새로운 항목을 추가할 때 사용할 id
+
+  const onChange = e => setInputText(e.target.value);
+  const onClick = () => {
+    const nextNames = names.concat({
+      id: nextId, // nextId 값을 id로 설정하고
+      text: inputText
+    });
+    setNextId(nextId + 1); // nextId 값에 1을 더해 준다.
+    setNames(nextNames); // names 값을 업데이트한다.
+    setInputText(“); // inputText를 비운다.
+  };
+const namesList = names.map(name => <li key={name.id}>{name.text}</li>);
+  return (
+    <>
+      <input value={inputText} onChange={onChange} />
+      <button onClick={onClick}>추가</button>
+      <ul>{namesList}</ul>
+    </>
+  );
+};
+
+export default IterationSample;
+```
+
+배열에 새 항목을 추가할 때 배열의 push 함수를 사용하지 않고 concat을 사용했는데 이는 push 함수는 기존 배열 자체를 변경하는 반면, concat은 새로운 배열을 만들어 준다는 차이가 있기 때문이다.
+
+리액트에서 상태를 업데이트할 때는 기존 상태를 그대로 두면서 새로운 값을 상태로 설정해야 한다. 이를 불변성 유지라고 하는데 불변성 유지를 해주어야 리액트 컴포넌트의 성능을 최적화할 수 있다.
+
+### 🔖 데이터 제거 기능 구현하기
+
+자바스크립트의 내장 함수 filter()를 사용하면 된다. 새로운 값을 생성하여 상태를 바꾸는게 낫기 때문이다.
+
+> 📝 예시
+
+```js
+const numbers = [1, 2, 3, 4, 5, 6];
+const biggerThanThree = numbers.filter((number) => number > 3);
+// 결과: [4, 5, 6]
+
+const numbers = [1, 2, 3, 4, 5, 6];
+const withoutThree = numbers.filter((number) => number !== 3);
+// 결과: [1, 2, 4, 5, 6]
+```
+
+## 📌 정리
+
+컴포넌트 배열을 렌더링할 때에는 언제나 key 값을 설정하는데 있어 주의해야 한다.
+
+또한 key값은 언제나 유일해야 한다. key 값이 중복된다면 렌더링 과정에서 오류가 발생하기 때문이다.
+
+또한 상태 안에서 배열을 변형할 대에는 배열에 직접 접근하여 수정하는 것이 아닌 concat, filter등의 배열 내장 함수를 사용하여 새로운 배열을 만든 후 이를 새로운 상태로 설정해 주어야 한다.
