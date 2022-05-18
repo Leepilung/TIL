@@ -438,3 +438,160 @@ input창에 뭔가 입력하고 난 후에도 console창을 보면 업데이트 
 <img src="https://thebook.io/img/080203/199.jpg">
 
 렌더링 될때마다 뒷정리 함수는 지속적으로 호출되고 뒷정리 함수가 호출될 때는 업데이트 되기 직전의 값을 보여준다.
+
+## useReducer
+
+useReducer는 useState보다 더 다양한 컴포넌트 상황에 따라 다양한 상태를 다른 값으로 업데이트해 주고 싶을 때 사용하는 Hook이다.
+
+리듀서는 현재 상태, 그리고 업데이트를 위해 필요한 정보를 담은 액션(action) 값을 전달받아 새로운 상태를 반환하는 함수이다.
+
+리듀서 함수에서 새로운 상태를 만들 때는 반드시 `불변성`을 지켜 주어야 한다.
+
+```js
+function reducer(state, action) {
+return { … }; // 불변성을 지키면서 업데이트한 새로운 상태를 반환합니다.
+}
+```
+
+액션 값은 주로 다음과 같은 형태로 이루어져 있다.
+
+```js
+{
+  type: "INCREMENT",
+  // 다른 값들이 필요하다면 추가로 들어감
+}
+```
+
+기존의 Counter.js 컴포넌트 예제가 다음과 같이 바뀐다.
+
+```js
+import React, { useReducer } from "react";
+
+function reducer(state, action) {
+    // action.type에 따라 다른 작업 수행
+    switch (action.type) {
+        case "INCREMENT":
+            return { value: state.value + 1 };
+        case "DECREMENT":
+            return { value: state.value - 1 };
+        default:
+            // 아무것도 해당되지 않을 때 기존 상태 반환
+            return state;
+    }
+}
+
+const Counter = () => {
+    const [state, dispatch] = useReducer(reducer, { value: 0 });
+
+    return (
+        <>
+            <p>
+                현재 카운터 값은 <b>{state.value}</b>입니다.
+            </p>
+            <button onClick={() => dispatch({ type: "INCREMENT" })}>+1</button>
+            <button onClick={() => dispatch({ type: "DECREMENT" })}>-1</button>
+        </>
+    );
+};
+
+export default Counter;
+```
+
+useReducer의 첫 번째 파라미터에는 리듀서 함수를 넣고, 두 번째 파라미터에는 해당 리듀서의 기본값을 넣어 준다.
+
+이 Hook을 사용하면 state 값과 dispatch 함수를 받아 오는데, 여기서 state는 현재 가리키고 있는 상태고, dispatch는 액션을 발생시키는 함수이다.
+
+dispatch(action)과 같은 형태로, 함수 안에 파라미터로 액션 값을 넣어 주면 리듀서 함수가 호출되는 구조이다.
+
+useReducer를 사용했을 때의 가장 큰 장점은 컴포넌트 업데이트 로직을 컴포넌트 바깥으로 빼낼 수 있다는 점이다.
+
+### useReducer를 사용하여 상태 관리하기
+
+기존에 input을 여러개 사용한 컴포넌트를 useReducer를 이용해 수정해보자.
+
+useReducer를 사용한다면 input을 여러개 사용해서 useState를 여러번 사용하는 컴포넌트들을 클래스형 컴포넌트에서 input에 name을 할당하고 e.target.name을 참조하여 변경해준 방식처럼 처리가 가능하다.
+
+```js
+// 기존의 Info 컴포넌트
+import React, { useState } from "react";
+
+const Info = () => {
+    const [name, setName] = useState("");
+    const [nickname, setNickname] = useState("");
+
+    const onChangeName = (e) => {
+        setName(e.target.value);
+    };
+
+    const onChangeNickname = (e) => {
+        setNickname(e.target.value);
+    };
+
+    return (
+        <div>
+            <div>
+                <input value={name} onChange={onChangeName} />
+                <input value={nickname} onChange={onChangeNickname} />
+            </div>
+            <div>
+                <div>
+                    <b>이름:</b> {name}
+                </div>
+                <div>
+                    <b>닉네임:</b> {nickname}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Info;
+```
+
+useReducer 사용한 이후
+
+```js
+import React, { useReducer } from "react";
+
+function reducer(state, action) {
+    return {
+        ...state,
+        [action.name]: action.value,
+    };
+}
+
+const Info = () => {
+    const [state, dispatch] = useReducer(reducer, {
+        name: "",
+        nickname: "",
+    });
+    const { name, nickname } = state;
+    const onChange = (e) => {
+        dispatch(e.target);
+    };
+
+    return (
+        <div>
+            <div>
+                <input name="name" value={name} onChange={onChange} />
+                <input name="nickname" value={nickname} onChange={onChange} />
+            </div>
+            <div>
+                <div>
+                    <b>이름:</b> {name}
+                </div>
+                <div>
+                    <b>닉네임: </b>
+                    {nickname}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Info;
+```
+
+매우 생소하다보니 어렵고 낯설게 느껴진다.. 자주 보고 사용해보는것으로 익숙해지자.
+
+useReducer에서의 액션은 그 어떤 값도 사용 가능하다. 이런 식으로 인풋을 관리하면 아무리 인풋의 개수가 많아져도 코드를 짧고 깔끔하게 유지할 수 있다.
