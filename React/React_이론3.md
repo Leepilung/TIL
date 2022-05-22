@@ -231,3 +231,9 @@ const MyComponent = ({ highlighted, theme }) => (
 설치 : npm install styled-components
 
 styled-components를 사용하면 자바스크립트 파일 하나에 스타일까지 작성할 수 있기 때문에 .css 또는 .scss 확장자를 가진 스타일 파일을 따로 만들지 않아도 된다는 장점이 있다.
+
+
+# React 개발자 도구
+
+리액트 개발자 도구는 브라우저에 나타난 리액트 컴포넌트를 심층 분석할 수 있도록 리액트 개발 팀이 만들었으며, 크롬 웹 스토어에서 React Developer Tools를 검색하여 설치할 수 있다.
+
