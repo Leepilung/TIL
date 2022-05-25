@@ -4,7 +4,7 @@ import {
   MdCheckBox,
   MdRemoveCircleOutline,
 } from 'react-icons/md';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 // 각 할 일 항목에 대한 정보를 보여 주는 컴포넌트
 const ListItem = styled.div`
@@ -29,21 +29,26 @@ const CheckBox = styled.div`
     // react-icons 아이콘 태그
     font-size: 1.5rem;
   }
-  &.checked {
-    svg {
-      color: #22b8cf;
-    }
 
-    Text {
-      color: pink;
-      text-decoration: line-through;
-    }
-  }
+  ${(props) =>
+    props.checked &&
+    css`
+      svg {
+        color: #22b8cf;
+      }
+    `}
 `;
 
 const Text = styled.div`
   margin-left: 0.5rem;
   flex: 1;
+
+  ${(props) =>
+    props.checked &&
+    css`
+      color: rgba(210, 210, 210, 1);
+      text-decoration: line-through;
+    `}
 `;
 
 const Delete = styled.div`
@@ -56,12 +61,13 @@ const Delete = styled.div`
   }
 `;
 
-const TodoListItem = () => {
+const TodoListItem = ({ todo }) => {
+  const { text, checked } = todo;
   return (
     <ListItem>
       <CheckBox>
-        <MdCheckBoxOutlineBlank />
-        <Text>할 일 </Text>
+        {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+        <Text checked={checked}>{text}</Text>
       </CheckBox>
       <Delete>
         <MdRemoveCircleOutline />
