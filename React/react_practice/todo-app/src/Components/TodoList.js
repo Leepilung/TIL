@@ -10,11 +10,16 @@ const List = styled.div`
   overflow-y: auto;
 `;
 
-const TodoList = ({ todos }) => {
+const TodoList = ({ todos, onRemove, onToggle }) => {
   return (
     <List>
       {todos.map((todo) => (
-        <TodoListItem todo={todo} key={todo.id} />
+        <TodoListItem
+          todo={todo}
+          key={todo.id}
+          onRemove={onRemove}
+          onToggle={onToggle}
+        />
       ))}
     </List>
   );

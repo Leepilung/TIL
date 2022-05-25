@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import TodoTemplate from './Components/TodoTemplate';
 import TodoInsert from './Components/TodoInsert';
 import TodoList from './Components/TodoList';
@@ -21,11 +21,44 @@ const App = () => {
       checked: false,
     },
   ]);
+
+  // 렌더링과 관련 없는 변수 사용 시 -> useRef 사용.
+  const nextId = useRef(4);
+
+  // input 입력 시 내용 추가
+  const onInsert = useCallback(
+    (text) => {
+      const todo = { id: nextId.current, text, checked: false };
+      setTodos(todos.concat(todo));
+      nextId.current += 1;
+    },
+    [todos],
+  );
+
+  // 내용 삭제
+  const onRemove = useCallback(
+    (id) => {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    },
+    [todos],
+  );
+
+  const onToggle = useCallback(
+    (id) => {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+        ),
+      );
+    },
+    [todos],
+  );
+
   return (
     <>
       <TodoTemplate>
-        <TodoInsert />
-        <TodoList todos={todos} />
+        <TodoInsert onInsert={onInsert} />
+        <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
       </TodoTemplate>
     </>
   );
