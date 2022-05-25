@@ -1,4 +1,5 @@
 import React from 'react';
+import { List } from 'react-virtualized';
 import TodoListItem from './TodoListItem';
 import styled from 'styled-components';
 
@@ -25,4 +26,8 @@ const TodoList = ({ todos, onRemove, onToggle }) => {
   );
 };
 
-export default TodoList;
+// 리스트 관련 컴포넌트 최적화 시 리스트 내부에서 사용하는 컴포넌트도 최적화해야 하고,
+// 리스트로 사용되는 컴포넌트 자체도 최적화 해주는 것이 좋다.
+// 내부 데이터가 100개를 안넘으면 굳이 할 필요가 없음.
+
+export default React.memo(TodoList);
