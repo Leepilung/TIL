@@ -1,6 +1,8 @@
 import React, { useRef, useCallback, useState } from "react";
 import produce from "immer";
 
+// immer의 경우 잘쓴다면 생산성을 높이는데 효과적. 그러나 불편하면 사용하지 않아도 무관.
+
 const App = () => {
     const nextId = useRef(1);
     const [form, setForm] = useState({ name: "", username: "" });
@@ -10,19 +12,14 @@ const App = () => {
     });
 
     // input 수정을 위한 함수
-    const onChange = useCallback(
-        (e) => {
-            const { name, value } = e.target;
-            setForm(
-                produce(form, (draft) => {
-                    draft[name] = value;
-                }),
-                // ...form,
-                // [name]: [value],
-            );
-        },
-        [form],
-    );
+    const onChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setForm(
+            produce((draft) => {
+                draft[name] = value;
+            }),
+        );
+    }, []);
 
     // form 등록을 위한 함수
     const onSubmit = useCallback(
@@ -36,7 +33,7 @@ const App = () => {
 
             // array에 새 항목 등록
             setData(
-                produce(data, (draft) => {
+                produce((draft) => {
                     draft.array.push(info);
                 }),
             );
@@ -48,23 +45,20 @@ const App = () => {
             });
             nextId.current += 1;
         },
-        [data, form.name, form.username],
+        [form.name, form.username],
     );
 
     // 항목 삭제 함수
-    const onRemove = useCallback(
-        (id) => {
-            setData(
-                produce(data, (draft) => {
-                    draft.array.splice(
-                        draft.array.findIndex((info) => info.id === id),
-                        1,
-                    );
-                }),
-            );
-        },
-        [data],
-    );
+    const onRemove = useCallback((id) => {
+        setData(
+            produce((draft) => {
+                draft.array.splice(
+                    draft.array.findIndex((info) => info.id === id),
+                    1,
+                );
+            }),
+        );
+    }, []);
 
     return (
         <>
