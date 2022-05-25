@@ -1,40 +1,60 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { MdAdd } from 'react-icons/md';
-import './TodoInsert.scss';
+import styled from 'styled-components';
 
-const TodoInsert = ({ onInsert }) => {
-  const [value, setValue] = useState('');
+// 새로운 항목을 입력하고 추가할 수 있는 컴포넌트
 
-  const onChange = useCallback((e) => {
-    console.log(e.target.value);
-    setValue(e.target.value);
-  }, []);
+const InsertForm = styled.form`
+  display: flex;
+  background: #495057;
+`;
 
-  const onSubmit = useCallback(
-    (e) => {
-      onInsert(value);
-      setValue(''); // value 값 초기화
+const TodoInput = styled.input`
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: white;
+  // 1로 선언하면 다른 요소가 차지하는 영역 제외하고 혼자 다먹음.
+  flex: 1;
 
-      // submit 이벤트는 브라우저에서 새로고침을 발생시킨다.
-      // 이를 방지하기 위해 이 함수를 호출한다.
-      e.preventDefault();
-    },
-    [onInsert, value],
-  );
+  &::placeholder {
+    color: #dee2e6;
+  }
+`;
 
+const TodoButton = styled.button`
+  // 기본 스타일 초기화 구문들
+  background: none;
+  outline: none;
+  border: none;
+
+  // 스타일 정의 구문
+  background: #868e96;
+  color: white;
+  padding: 0 1rem 0 1rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease-in;
+  &:hover {
+    background: #adb5bd;
+  }
+`;
+
+const TodoInsert = () => {
   return (
-    <div>
-      <form className="TodoInsert" onSubmit={onSubmit}>
-        <input
-          placeholder="할 일을 입력하세요"
-          value={value}
-          onChange={onChange}
-        />
-        <button type="submit">
+    <>
+      <InsertForm>
+        <TodoInput placeholder="할 일을 입력하시오" />
+        <TodoButton type="submit">
           <MdAdd />
-        </button>
-      </form>
-    </div>
+        </TodoButton>
+      </InsertForm>
+    </>
   );
 };
 
