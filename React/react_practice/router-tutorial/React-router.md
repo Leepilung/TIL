@@ -87,18 +87,79 @@ const About = ({ location }) => {
 
 ```js
 // v6
-import { useLocation } from 'react-reuter-dom';
+import { useLocation } from "react-reuter-dom";
 
 const About = () => {
-	const { search } = useLocation();
+    const { search } = useLocation();
 
-	//현재 지금 경로가(search) '?detail=true' 인지 확인
-	const detail = search === '?detail=true';
+    //현재 지금 경로가(search) '?detail=true' 인지 확인
+    const detail = search === "?detail=true";
 
-	return (
-		<div>
-			{detail && <p>해당 경로로 들어오면 보이는 텍스트입니다</p>}
-		</div>
-	)	
-}
+    return (
+        <div>{detail && <p>해당 경로로 들어오면 보이는 텍스트입니다</p>}</div>
+    );
+};
 ```
+
+# 서브 라우팅
+```js
+// v5
+// Profiles 컴포넌트에 있는 Route 
+return (
+  <div>
+    <Route
+      path="/profiles"
+      exact
+      render={() => <div>유저를 선택해주세요.</div>}
+    />
+    <Route path="/profiles/:username" component={Profile} />
+  </div>
+);
+
+// App.js
+const App = () => {
+  return (
+    <div>
+      <Route path="/" exact={true} component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/profiles" component={Profiles} />
+    </div>
+  );
+};
+```
+
+App.js에서는 `<Profiles /> `컴포넌트를 렌더링하고, Profiles 주소로 들어오면 render안에 작성한 `<div>` 태그를 렌더링, 그리고 `<Profiles />` 컴포넌트를 렌더링하는 해줬음.
+
+```js
+// v6
+// Profiles 컴포넌트에 있는 Route 
+return (
+  <Routes>
+			<Route path="/*" element={<div>유저를 선택해주세요.</div>} />
+      <Route path=":username" element={<Profile />} />
+  </Routes>
+);
+
+// App.js
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" exact={true} component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/profiles/*" element={<Profiles />} />
+    </Routes>
+  );
+};
+```
+
+- Routes로 무조건 감싸줘야하고
+- 하위 페이지가 있으면 부모 Rotue에 '/*' 추가해줘야함(exact가 대체된 것이라 함.
+- path에 부모경로까지 적을 필요 없이 :username만 적어도된다.
+
+
+
+# render -> element
+
+그리고 IIFE 구조 안해도됨.
+
+# history, useHistory 대신 useNavigate로 교체
