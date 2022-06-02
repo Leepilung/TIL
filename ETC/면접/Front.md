@@ -40,7 +40,7 @@ JavaScript는 흔히 `프로토 타입 기반 언어(prototype-basd language)`�
 
 함수를 `어디서 선언하였는지`에 따라 `상위 스코프를 결정하는 방식`을 말핣니다. 자바스크립트를 비롯한 대부분의 언어는 렉시컬 스코프를 따릅니다.
 
-# 🏷 브라우저의 렌더링 원리
+# 🏷 브라우저의 렌더링 과정(브라우저 동작 원리)
 
 참조 : [링크](https://patrick-f.tistory.com/9)
 
@@ -52,9 +52,9 @@ JavaScript는 흔히 `프로토 타입 기반 언어(prototype-basd language)`�
 
 2. DNS가 해당 주소의 서버를 찾아 실제 서버와 연결을 해줍니다(TCP IP를 이용)
 
-3. 홈페이지에 해당하는 파일(ex : index.js)을 서버에 요청, 서버는 응답으로 클라이언트 쪽으로 보내줍니다.
+3. 홈페이지에 해당하는 파일(ex : index.html)을 서버에 요청, 서버는 응답으로 해당 파일을 클라이언트 쪽으로 보내줍니다.
 
-4. 브라우저가 해당 파일을 받아와서 우선 HTML 파일을 파싱 후, DOM(Document Object Model) 트리 구축 (Parsing)
+4. 해당 파일을 받아오면 우선 HTML 파일을 파싱 후, DOM(Document Object Model) 트리 구축 (Parsing)
 
 5. html 파서는 파싱을 하다가 script tag를 만나면 JS 코드를 실행하기 위해서 파싱을 중단하고 제어 권한을 JS Engine에 넘기고 JS 코드와 파일을 로드하여 파싱하고 실행합니다.
 
@@ -62,7 +62,7 @@ JavaScript는 흔히 `프로토 타입 기반 언어(prototype-basd language)`�
 
     이 과정에서 Link tag등을 만나면 요청, 응답을 거쳐 Css 재 파싱
 
-7. DOM과 CSSOM을 조합하여 렌더링 트리(Rendering Tree) 구축 (Style)
+7. DOM 트리와 CSSOM 트리를 조합하여 렌더링 트리(Rendering Tree) 구축 (Style)
 
     ! 주의 사항 : `visibility: hidden`은 요소가 공간을 차지하고, 보이지만 않기 때문에 Render Tree에 포함이 되지만, `display: none` 의 경우 Render Tree에서 제외된다.
 
@@ -1013,6 +1013,8 @@ Call , apply는 함수를 호출하는 함수입니다. 첫번째 인자(this를
 
 React는 Facebook에서 만든 JavaScript 라이브러리이다.
 
+세부 내용은 React 이론 파트 참고하기. 해당 문서파트에 정리하는 내용은 토막 정보 위주로 서술하기.
+
 # React의 사용 이유
 
 배우기가 쉽다. 구문이 간편하고 바닐라 자바스크립트에 비해 동적인 웹 애플리케이션 구현이 쉬웠음.
@@ -1039,13 +1041,126 @@ React는 Facebook에서 만든 JavaScript 라이브러리이다.
 
 # 🆚 제어 컴포넌트 && 비제어 컴포넌트
 
-## 제어 컴포넌트
+## 🔖 제어 컴포넌트
 
 제어 컴포넌트란 사용자의 입력을 기반으로 자신의 state를 관리하고 업데이트하는 방식의 컴포넌를 말합니다.
 
-## 비제어 컴포넌트
+```js
+export default function App() {
+    const [input, setInput] = useState("");
+    const onChange = (e) => {
+        setInput(e.target.value);
+    };
+
+    return (
+        <div className="App">
+            <input onChange={onChange} />
+        </div>
+    );
+}
+```
+
+## 🔖 비제어 컴포넌트
 
 바닐라 자바스크립트처럼 필드에서 값을 트리거해서 얻는 방식을 의미합니다.
+
+```js
+export default function App() {
+    const inputRef = useRef(); // ref 사용
+    const onClick = () => {
+        console.log(inputRef.current.value);
+    };
+
+    return (
+        <div className="App">
+            <input ref={inputRef} />
+            <button type="submit" onClick={onClick}>
+                전송
+            </button>
+        </div>
+    );
+}
+```
+
+상태를 가지고 그리는 것이 아니기 때문에 컴포넌트간의 유기적인 연결이 어렵다.
+
+# 🏷 useState(세터함수)의 사용 이유
+
+리액트의 동작방식을 생각해보면 간단다. 상태는 객체인데 리액트의 동작 방식을 생각해보면 세터함수를 이용하지 않고 직접 변경 하는 것은 불변성을 지키지 않는 것이기도 하고, 비교할 객체를 생성하지 않았기 떄문에 라이프 사이클에서 업데이트 단게로 넘어가지 않아 리렌더링이 일어나지 않기때문이다.
+
+# 🏷 리액트의 메모이제이션
+
+메모이제이션은 동일한 계산을 반복해야 할 때, 이전 계산 값을 메모리에 저장하여 반복 수행을 제거하는 기술입니다.
+
+리액트에서 이런 메모이제이션이 쓰인 것은 크게 3가지가 있습니다.
+
+1. memo
+2. useMemo
+3. useCallback
+
+# 📚 React 렌더링 성능 최적화
+
+컴포넌트의 리렌더링 조건은 다음과 같다.
+
+-   부모에서 전달받은 props가 변경될때
+-   부모 컴포넌트가 리렌더링 될 때
+-   자신의 state가 변경 될 때
+
+## 🔖 최적화 방법 1. useMemo
+
+디펜던시로 걸어놓은 녀석이 변하지 않을 경우 함수 호출을 새로하지 않고 기존의 반환된 값을 사용하는 방식
+
+리턴되는 값을 메모이제이션하여 활용한다.
+
+```js
+useMemo(() => func, [input_dependency]);
+```
+
+## 🔖 최적화 방법 2. React.memo 컴포넌트 메모이제이션
+
+React.memo는 Hook이 아니기 때문에 어디서든 사용이 가능하다.
+
+컴포넌트의 props가 바뀌지 않았다면, 리렌더링 하지 않도록 설정하여 리렌더링 성능의 최적화를 노릴 수 있다.
+
+```js
+// export 구문에 추가하면 된다.
+export default memo(Item);
+```
+
+## 🔖 최적화 방법 3. useCallback
+
+useMemo는 리턴되는 값을 메모이제이션 한다면, useCallback은 `함수의 선언`을 메모이제이션 한다.
+
+## 🔖 최적화 방법 4. props로 객체를 넘겨줄 경우 변형하지 말기
+
+props를 전달할 때 객체 리터럴이나 생성자 함수로 전달하는 것은 객체를 새롭게 생성하기 때문에 데이터의 가공이 필요하다면 state를 넘겨 데이터 가공을 하위 컴포넌트에서 진행하는 방식으로 코드를 짜야한다.
+
+## 🔖 최적화 방법 5. 컴포넌트 매핑시에 key값으로 idnex 사용하지 않기
+
+무조건 적은 아니나 배열의 요소에 필터링, 정렬 삭제, 추가등의 기능이 들어간다면 사용하지 않는 것이 좋다.
+
+## 🔖 최적화 방법 6. useState의 함수형 업데이트 방식
+
+```js
+// 예시) 삭제 함수
+const onRemove = useCallback(
+    (id) => {
+        setTodos(todos.filter((todo) => todo.id !== id));
+    },
+    [todos],
+);
+
+// 예시) 함수형 업데이트 후
+const onRemove = useCallback((id) => {
+    setTodos((todos) => todos.filter((todo) => todo.id !== id));
+}, []);
+```
+
+위와 같이 사용하면 useCallback의 디펜던시 값을 생략할 수 있다.(React useCallback 부분에도 정리해놓은 내용)
+
+## 🔖 최적화 방법 7. Input의 onChange 최적화
+
+lodash라는 최적화 라이브러리를 사용하여 보통의 onChange 이벤트에 상태를 변경시켜 타이핑마다 컴포넌트의 렌더링을 방지하기도 한다.
 
 # Redux가 무엇인가?
 
@@ -1144,11 +1259,25 @@ Provider-Consumer의 구조로 상태를 주고 받는데, Provider 하위의 �
 
 useMemo나 useReducer와 함께 사용하면 좋은 코드 작성이 가능할 것 같다.
 
-# 함수형과 클래스형의 차이
+# 🆚 함수형 컴포넌트 && 클래스형 컴포넌트 차이점
 
-함수형 -> JSX를 return문을 사용해서 반환 , state를 사용할 수 없음 -> Hooks 사용해야함, 생명 주기 함수 작성 불가.
+## 🔖 함수형 컴포넌트
 
-클래스형 -> class 키워드로 시작, render()함수 사용해 JSX 반환. props 조회시 this키워드 사용해야함.
+-   JSX를 return문을 사용해서 반환한다.
+-   state를 Hook을 이용하여 사용해야 한다
+-   생명 주기 함수 작성 불가
+
+## 🔖 클래스형 컴포넌트
+
+-   class 키워드로 시직한다
+-   render() 함수를 사용해 JSX를 반환한다
+-   props 조회시 this키워드 사용해야한다
+
+# 생명주기 메소드 || 라이프 싸이클 메소드 (LifeCycle Method)
+
+생명주기 메소드 or 라이프 싸이클 메소드는 컴포넌트가 브라우저상에 나타나고, 업데이트되고, 사라지게 될 때 호출되는 메소드 입니다.
+
+물론 클래스형 컴포넌트에서만 사용이 가능하고, Hooks 에서의 useEffect와 비슷하게 동작한다. 함수형이 권장되는 오늘날 사용할 일들이 거의 없는 메소드들이기도 하다.
 
 ---
 
