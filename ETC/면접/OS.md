@@ -1,3 +1,9 @@
+<style>
+    h1 {
+        border-bottom : none;
+    }
+</style>
+
 # 운영체제 면접
 
 # 프로세스(Process)란 ?
