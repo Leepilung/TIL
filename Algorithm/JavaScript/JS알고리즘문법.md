@@ -113,7 +113,7 @@ const number = [1, 2, 3, 4, 5];
 console.log(number[number.length - 1]);
 ```
 
-# 자바스크립트 배열에서 최대값, 최소값 가져오는 방법
+# 🏷 자바스크립트 배열에서 최대값, 최소값 가져오는 방법
 
 Math모듈 사용해야함.
 
@@ -128,7 +128,7 @@ console.log(Math.min(...number));
 // 주의점 -> 배열에서 스프레드 연산자 안쓰면 인식안함.
 ```
 
-# 배열안에서 특정값이 있는지 아닌지 찾는 방법
+# 🏷 배열안에서 특정값이 있는지 아닌지 찾는 방법
 
 레퍼런스 : https://hianna.tistory.com/403
 
@@ -153,7 +153,7 @@ indexOf() 메소드나, lastIndexOf() 메소드는 찾으려는 값이 배열안
 
 좀더 깔끔한 함수는 includes()함수인 듯?
 
-## includes()
+## 🏷 includes()
 
 ```js
 arr.includes(valueToFind[,fromIndex])
@@ -335,7 +335,7 @@ console.log(searchResult);
 [2, 10];
 ```
 
-# 알파벳 소문자, 대문자로 이 뤄진 배열 만드는 방법
+# 🏷 알파벳 소문자, 대문자로 이뤄진 배열 만드는 방법
 
 ```js
 // 대문자의 경우
@@ -347,7 +347,7 @@ const arr = Array.from({ length: 26 }, (v, i) => String.fromCharCode(i + 97));
 console.log(arr);
 ```
 
-# 빈 배열 만들기
+# 🏷 빈 배열 만들기
 
 ```js
 const tmp = Array.from({length : 원하는 길이(숫자값)})
@@ -355,7 +355,7 @@ const tmp = Array.from({length : 원하는 길이(숫자값)})
 
 위와 같이 원하는 길이를 Number값으로 저장하고 출력하며 원하는 길이의 빈배열 탄생
 
-# 문자열 반전
+# 🏷 문자열 반전
 
 내장 함수인 split(), reverse(), join()을 사용하ㅐ면 간단하게 문자열의 반전이 가능하다.
 
@@ -364,11 +364,11 @@ function reverse_string(s) {
     return s.split("").reverse().join("");
 }
 
-var example = revers("love");
+var example = reverse("love");
 console.log(example); // -> "evol" 출력됨
 ```
 
-# 입력한 단일 문자열 for문으로 바로 순회하는 문법
+# 🏷 입력한 단일 문자열 for문으로 바로 순회하는 문법
 
 Python에서 문자열 인덱스 슬라이싱으로 알아서 나눠서 출력하는 문법.
 
@@ -409,7 +409,7 @@ string1.forEach((e) => console.log(e));
 // VM198:1 Uncaught TypeError: a.forEach is not a function 에러 발생
 ```
 
-# 딕셔너리
+# 🏷 딕셔너리
 
 기본적인 구조는 기존에 공부한 것과 동일
 

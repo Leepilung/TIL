@@ -14,9 +14,12 @@ const bucket = [];
 for (i of arr) {
     bucket.push(i.split(" ").map(Number));
 }
+
+console.log(bucket);
+
 bucket.sort((a, b) => {
     if (a[0] === b[0]) {
-        return a[1] - b[1];
+        return a[1] - b[1]; // 오름차순
     } else return a[0] - b[0];
 });
 
@@ -25,3 +28,6 @@ for (i of bucket) {
     ans += i[0] + " " + i[1] + "\n";
 }
 console.log(ans);
+
+// 2  -3 4 -2 -1
+// 1 2 3 4 5 

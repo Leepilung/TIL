@@ -14,6 +14,7 @@ const [N, ...arr] = require("fs")
 bucket = [];
 for (i of arr) {
     tmp = i.split(" ");
+    // console.log(tmp);
     bucket.push([parseInt(tmp[0]), tmp[1]]);
 }
 

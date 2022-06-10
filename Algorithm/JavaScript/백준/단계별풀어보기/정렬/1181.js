@@ -17,8 +17,8 @@ let [N, ...arr] = require("fs")
 let ans = "";
 
 arr.sort((a, b) => {
-    if (a.length > b.length) return 1;
-    if (a.length === b.length) {
+    if (a.length > b.length) return 1; // 길이 순 정렬
+    if (a.length === b.length) { // 길이 같으면 사전 순
         if (a > b) {
             return 1;
         } else return -1;

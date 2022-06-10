@@ -10,9 +10,11 @@ const input = require("fs")
     .split(/\s+/);
 
 const [n, ...arr] = input;
+console.log(arr);
 
 let answer = 0;
 for (let i of arr) {
+    console.log(i);
     let bucket = [];
     let toggle = 0;
     let prev;

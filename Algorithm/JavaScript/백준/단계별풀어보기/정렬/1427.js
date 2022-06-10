@@ -16,6 +16,6 @@ const input = require("fs")
 // for (i of input) {
 //     bucket.push(Number(i));
 // }
-
+console.log(input);
 input.sort((a, b) => b - a);
 console.log(input.join(""));
