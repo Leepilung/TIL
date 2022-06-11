@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import UseParamSample from "./UseParamSample";
 
 const data = {
     test: {
@@ -8,7 +9,7 @@ const data = {
     },
     test2: {
         name: "김테스트",
-        description: "fldorxm xptmxmdyd2",
+        description: "리액트 테스트용2",
     },
 };
 
@@ -27,6 +28,7 @@ const Profile = () => {
                 {username}({profile.name})
             </h3>
             <p>{profile.description}</p>
+            <UseParamSample />
         </div>
     );
 };

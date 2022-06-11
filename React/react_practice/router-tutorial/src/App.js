@@ -10,6 +10,8 @@ import NavigateSample from "./Components/NavigateSample";
 // 컴포넌트도 <컴포넌트이름/>의 형태
 // v5에서 배열로 여러개의 패스를 지정하는 방식은 사용할 수 없음. 그냥 그 이전에 사용하던 대로 여러개의 패스를 만들어야 함.
 
+// v5의 Switch 구문은 Routes로 바뀌면서 작성법또한 바뀌었다.
+
 const App = () => {
     return (
         <>
@@ -33,6 +35,10 @@ const App = () => {
                 <Route path="/about" element={<About />} />
                 <Route path="/profiles/*" element={<Profiles />} />
                 <Route path="/history" element={<NavigateSample />} />
+                <Route
+                    path="/*"
+                    element={<h1>존재하지 않는 페이지 입니다.</h1>}
+                />
             </Routes>
         </>
     );
