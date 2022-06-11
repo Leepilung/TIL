@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const data = {
     test: {
@@ -14,7 +14,9 @@ const data = {
 
 const Profile = () => {
     const { username } = useParams();
+    console.log("유저 네임 : ", { username });
     const profile = data[username];
+    console.log("프로필 데이터 :", profile);
 
     if (!profile) {
         return <div>존재하지 않는 사용자임</div>;
