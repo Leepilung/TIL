@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from '../../node_modules/axios/index';
 import NewsItem from './NewsItem';
-
+import usePromise from '../lib/usePromise';
 // api key : 86f6d5b7da5c46908969fcc1cacebde0
 
 const NewsListBlock = styled.div`
@@ -19,34 +19,12 @@ const NewsListBlock = styled.div`
   }
 `;
 
-// const sampleArticle = {
-//   title: '제목',
-//   description: '내용',
-//   url: 'https://google.com',
-//   urlToImage: 'https://via.placeholder.com/160',
-// };
-
 const NewsList = ({ category }) => {
-  const [articles, setArticles] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    // useEffect 구문 안에서 async/await 사용 하려면 별도의 함수 구문을 아래와 같이 생성해서 사용해야 함
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const query = category === 'All' ? '' : `&category=${category}`;
-        const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=86f6d5b7da5c46908969fcc1cacebde0`,
-        );
-        console.log(response);
-        setArticles(response.data.articles);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    };
-    fetchData();
+  const [loading, response, error] = usePromise(() => {
+    const query = category === 'All' ? '' : `&category=${category}`;
+    return axios.get(
+      `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=86f6d5b7da5c46908969fcc1cacebde0`,
+    );
   }, [category]);
 
   // 로딩 상태 관리
@@ -54,10 +32,16 @@ const NewsList = ({ category }) => {
     return <NewsListBlock> 로딩 중 ....</NewsListBlock>;
   }
 
-  // articles 값이 없을 경우의 예외처리
-  if (!articles) {
+  if (!response) {
     return null;
   }
+
+  if (error) {
+    return <NewsListBlock>에러 발생!</NewsListBlock>;
+  }
+
+  // response 값이 유요한 값일 때
+  const { articles } = response.data;
 
   return (
     <NewsListBlock>
