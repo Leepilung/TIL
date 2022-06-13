@@ -681,3 +681,45 @@ nth-child 의사 클래스는 형제의 목록에서, 선택하려는 요소의 
     형제 요소에서 짝수번째(2,4,6, ...)인 요소를 나타낸다.
 
 함수형 표기법도 가능하다.
+
+---
+
+# white-space
+
+[레퍼런스](https://developer.mozilla.org/ko/docs/Web/CSS/white-space)
+
+CSS `white-space` 속성은 요소가 공백 문자(sapce등의 빈 문자)를 처리하는 방법을 지정한다.
+
+## 구문
+
+```css
+/* Keyword values */
+white-space: normal;
+white-space: nowrap;
+white-space: pre;
+white-space: pre-wrap;
+white-space: pre-line;
+white-space: break-spaces;
+
+/* Global values */
+white-space: inherit;
+white-space: initial;
+white-space: unset;
+```
+
+## 값
+
+-   normal : 연속 공백을 하나로 합친다. 개행 문자(`\n`)도 다른 공백 문자와 동일하게 처리한다.
+
+-   nowrap : 연속 공백을 하나로 합친다. 줄 바꿈은 `<br>`로만 발생
+
+-   pre : 연속 공백을 유지한다. 줄 바꿈은 개행 문자와 `<br>`로만 발생
+
+-   pre-wrap : 연속 공백을 유지한다. 줄 바꿈은 개행 문자와 `<br>`요소에서 일어나며, 한 줄이 너무 길 경우 자동으로 줄 바꿈을 해준다.
+
+-   pre-line : 연속 공백을 하나로 합친다. 줄 바꿈은 개행 문자와 `<br>`로만 발생하며, 한 줄이 너무 길 경우 자동으로 줄 바꿈을 해준다.
+
+-   break-spaces : 두 개의 차이점을 제외하고 pre-wrap과 동일하다.
+    -   연속 공백이 줄의 끝에 위치하더라도 공간을 차지한다.
+    -   연속 공백의 중간과 끝에서도 자동으로 줄을 바꿀 수 있다.
+    -   유지한 연속 공백은 pre-wrap과 달리 요소 바깥으로 넘치지 않으며, 공간도 차지하므로 박스의 본질 크기(min-content, max-content)에 영향을 준다.
