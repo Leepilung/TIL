@@ -1,10 +1,10 @@
 // DUcks 패턴 -> 하나에 몰빵
 
+// 1. 액션타입 정의 -> 대문자로, '모듈 이름/액션 이름'의 형태
 const INCREASE = "counter/INCREASE";
 const DECREASE = "counter/DECREASE";
 
-// 1. 액션타입 정의 -> 대문자로, '모듈 이름/액션 이름'의 형태
-
+// 2. 액션 생성 함수
 export const increase = () => ({ type: INCREASE });
 export const decrease = () => ({ type: DECREASE });
 

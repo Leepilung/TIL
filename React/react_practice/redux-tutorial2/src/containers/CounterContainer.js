@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { increase, decrease } from "../modules/counter";
 
 const CounterContainer = () => {
+    // useSelect 사용하면 리덕스의 상태 조회 가능
     const number = useSelector((state) => state.counter.number);
     const dispatch = useDispatch();
 
@@ -23,14 +24,14 @@ const CounterContainer = () => {
     );
 };
 
-// // state를 파라미터로 받아 오며, 이 값은 스토어가 지니고 있는 상태를 가리킨다.
+// state를 파라미터로 받아 오며, 이 값은 스토어가 지니고 있는 상태를 가리킨다.
 // const mapStateToProps = (state) => ({
 //     number: state.counter.number,
 // });
 
-// // store의 내장 함수 dispatch를 파라미터로 가져옴.
+// store의 내장 함수 dispatch를 파라미터로 가져옴.
 // const mapDispatchToProps = (dispatch) => ({
-//     // 임시 함수
+       // 임시 함수
 //     increase: () => {
 //         console.log("increase");
 //         dispatch(increase());

@@ -93,6 +93,7 @@ const initialState = {
 //     }
 // }
 
+// immer 사용한 구문. immer 사용하지 않는 경우가 더 짧은 경우가 있어 사용에 유의해야함.
 const todos = handleActions(
     {
         [CHANGE_INPUT]: (state, { payload: input }) => ({
@@ -103,12 +104,15 @@ const todos = handleActions(
             ...state,
             todos: state.todos.concat(todo),
         }),
-        [TOGGLE]: (state, { payload: id }) => ({
-            ...state,
-            todos: state.todos.map((todo) =>
-                todo.id === id ? { ...todo, done: !todo.done } : todo,
-            ),
-        }),
+        [TOGGLE]: (state, { payload: id }) =>
+            produce(state, (draft) => {
+                const todo = draft.todos.find((todo) => todo.id === id);
+                todo.done = !todo.done;
+            }),
+        // ...state,
+        // todos: state.todos.map((todo) =>
+        //     todo.id === id ? { ...todo, done: !todo.done } : todo,
+        // ),
         [REMOVE]: (state, { payload: id }) => ({
             ...state,
             todos: state.todos.filter((todo) => todo.id !== id),

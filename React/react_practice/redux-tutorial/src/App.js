@@ -8,9 +8,9 @@ const App = () => {
         <div>
             <Counter number={0} />
             <hr />
-            <Todos />
+            {/* <Todos />
             <hr />
-            <MockTest />
+            <MockTest /> */}
         </div>
     );
 };
