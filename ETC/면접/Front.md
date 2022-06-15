@@ -205,6 +205,31 @@ async는 먼저 다운로드된 순서대로 실행하는 반면 defer는 선언
 
 ---
 
+# 🏷 브라우저의 속도 최적화 방법
+
+1. HTTP 요청 최소화
+2. CSS 스프라이트 기법
+3. 헤더에 만료 날짜 추가
+
+    헤더에 만료 날짜를 추가하는 이유는 이미지,스타일시트 파일, JS파일 등을 사용자 컴퓨터의 캐시에 저장하여 재사용하기 위함이다.
+
+4. 자바스크립트 파일 통합
+
+    네이버 메일의 사례로 파일 개수를 최소화하여 로딩속도를 개선했다고 함.
+
+5. 파일 크기 최소화
+
+    Gzip 압축을 이용하여 파일(JS && 스타일시트) 크기를 최소화 하는 방법
+
+6. 쿠키 크기 최소화 방법
+
+7. 레너링 성능 향상 방법
+
+    7-1. 스타일시트 파일을 최상단, JS 파일을 최하단에 배치
+    7-2. 마크업 최적화 (영역별로 렌더되게 끔)
+
+---
+
 # 🆚 CSR && SSR
 
 CSR(Client Side Rendering)과 SSR(Server Side Rendering)은 대척 관계에 있는 방식인만큼 장단점이 서로 엇갈려 있다.
@@ -1136,9 +1161,10 @@ ES6는 새로운 언어 기능이 포함된 주요 업데이트이며, 2009년�
 -   Import and export (가져오기 및 내보내기)
 -   Promise(프로미스)
 -   Rest Parameter and Spread Operator(나머지 매개 변수 및 확산 연산자)
--   Classs(클래스) 
+-   Classs(클래스)
 
     클래스는 상속 가능, 프로토타입은 상속 불가능(프로토타입 체인으로 구현함)
+
 -   Multi-line String
 
     문자열 줄바꿈시에 \n 사용하지 않아도 백틱(`)으로 묶으면 자동으로 인식가능
@@ -1195,17 +1221,19 @@ const nonpurity2 = (num1, num2) => {
 ## map
 
 배열을 하나씩 순회하면서 map의 콜백으로 주어진 함수를 실행시킨 결과물들을 배열에 넣어 이를 리턴합니다.
+
 ## reduce
 
 초기값을 정하고, 배열을 순회하면서 초기값을 계속 변형해나가면서 결국 하나의 값으로 리턴합니다.
+
 ## foreach
 
 주어진 함수를 배열 요소 각각에 대해 실행합니다.
 
 ```js
-const array1 = ['a', 'b', 'c'];
+const array1 = ["a", "b", "c"];
 
-array1.forEach(element => console.log(element));
+array1.forEach((element) => console.log(element));
 
 // expected output: "a"
 // expected output: "b"
@@ -1213,6 +1241,7 @@ array1.forEach(element => console.log(element));
 ```
 
 ## filter
+
 주어진 함수의 조건을 통과하는 모든 요소를 모아 하나의 배열로 반환핣니다.
 
 ## every
