@@ -1,3 +1,10 @@
+# 목차
+
+[- 프론트 엔드](#🚩-front-end)
+[- 자바스크립트](#🚩-javascript)
+[- 리액트](#🚩-react)
+[- 뷰](#🚩-vue)
+
 # 🚩 Front-end
 
 <style>
@@ -30,11 +37,11 @@
 
 6. CSS 파일 파싱 후, CSSOM(CSS Object Model) 트리 구축 (Parsing)
 
-    이 과정에서 Link tag등을 만나면 요청, 응답을 거쳐 Css 재 파싱
+   이 과정에서 Link tag등을 만나면 요청, 응답을 거쳐 Css 재 파싱
 
 7. DOM 트리와 CSSOM 트리를 조합하여 렌더링 트리(Rendering Tree) 구축 (Style)
 
-    ! 주의 사항 : `visibility: hidden`은 요소가 공간을 차지하고, 보이지만 않기 때문에 Render Tree에 포함이 되지만, `display: none` 의 경우 Render Tree에서 제외된다.
+   ! 주의 사항 : `visibility: hidden`은 요소가 공간을 차지하고, 보이지만 않기 때문에 Render Tree에 포함이 되지만, `display: none` 의 경우 Render Tree에서 제외된다.
 
 8. 렌더링 트리(Rendering Tree)에서 각 노드의 위치와 크기를 계산한다.(Layout)
 
@@ -56,56 +63,56 @@
 
 ## 🔖 리플로우의 원인들
 
--   윈도우 리사이징 (뷰포트 변화는 Global Layout에 영향)
--   폰트의 변화 (height계산에 영향을 주므로 Global Layout에 영향)
--   스타일 추가 또는 제거
--   내용 변화 (인풋박스에 텍스트 입력 등..)
--   :hover와 같은 CSS Pseudo Class
--   클래스 Attribute의 동적 변화
--   JS를 통한 DOM 동적 변화
--   엘리먼트에 대한 offsetWidth / offsetHeight (화면에서 보여지는 좌표) 계산시
--   스타일 Attribute 동적변화
+- 윈도우 리사이징 (뷰포트 변화는 Global Layout에 영향)
+- 폰트의 변화 (height계산에 영향을 주므로 Global Layout에 영향)
+- 스타일 추가 또는 제거
+- 내용 변화 (인풋박스에 텍스트 입력 등..)
+- :hover와 같은 CSS Pseudo Class
+- 클래스 Attribute의 동적 변화
+- JS를 통한 DOM 동적 변화
+- 엘리먼트에 대한 offsetWidth / offsetHeight (화면에서 보여지는 좌표) 계산시
+- 스타일 Attribute 동적변화
 
 ## 🔖 최대한 방지하는 방법
 
--   최대한 DOM 구조 상 말단 노드에만 클래스를 사용
+- 최대한 DOM 구조 상 말단 노드에만 클래스를 사용
 
-    (최대한 리플로우의 영향을 최소화하여 수행 비용을 줄여준다)
+  (최대한 리플로우의 영향을 최소화하여 수행 비용을 줄여준다)
 
--   인라인 스타일 자제
+- 인라인 스타일 자제
 
-    (인라인 스타일이 주어지면 리플로우가 수차례 발생하게 된다. 클래스를 사용하는 것이 좋다)
+  (인라인 스타일이 주어지면 리플로우가 수차례 발생하게 된다. 클래스를 사용하는 것이 좋다)
 
--   애니메이션은 positon을 absolute와 fixed로 사용
+- 애니메이션은 positon을 absolute와 fixed로 사용
 
-    (주변 레이아웃 영향이 없게끔 해야한다)
+  (주변 레이아웃 영향이 없게끔 해야한다)
 
--   퀄리티와 퍼포먼스를 타협
+- 퀄리티와 퍼포먼스를 타협
 
-    (애니메이션 계산, 페이지 Reflow에 대한 CPU 퍼포먼스 비용을 고려해야 한다)
+  (애니메이션 계산, 페이지 Reflow에 대한 CPU 퍼포먼스 비용을 고려해야 한다)
 
--   테이블로 구성된 레이아웃 자제
+- 테이블로 구성된 레이아웃 자제
 
-    (작은 변화도 테이블 전체 노드의 리플로우를 발생시킨다)
+  (작은 변화도 테이블 전체 노드의 리플로우를 발생시킨다)
 
--   CSS에서의 JS표현식 자제
+- CSS에서의 JS표현식 자제
 
-    (문서중 일부가 Reflow될 때마다 표현식이 다시 계산되기 때문이다)
+  (문서중 일부가 Reflow될 때마다 표현식이 다시 계산되기 때문이다)
 
--   JS를 통한 스타일 변화는 최대한 그룹화 하여 처리
+- JS를 통한 스타일 변화는 최대한 그룹화 하여 처리
 
--   CSS 하위 선택자는 필요한 만큼만 사용
+- CSS 하위 선택자는 필요한 만큼만 사용
 
-    (CSS Recalculation할 때, CSS Rule에 따라 오른쪽 -> 좌쪽으로 매치시킬 Rule이 없거나 잘못된 Rule이 튀어나올 때까지 계속 매칭하기 때문)
+  (CSS Recalculation할 때, CSS Rule에 따라 오른쪽 -> 좌쪽으로 매치시킬 Rule이 없거나 잘못된 Rule이 튀어나올 때까지 계속 매칭하기 때문)
 
--   일부 속성과 메서드는 자주 사용할 때 캐싱한다
+- 일부 속성과 메서드는 자주 사용할 때 캐싱한다
 
-    (사용한다는 이유만으로도 리플로우가 발생하는 속성과 메서드가 있기 때문)
+  (사용한다는 이유만으로도 리플로우가 발생하는 속성과 메서드가 있기 때문)
 
--   position: relative; 주의!
-    -   일반적인 경우: Box model → Normal flow
-    -   position:absolute or fixed: Box model → Out of flow(Positioning)
-    -   position:relative: Box model → Normal flow → Positioning
+- position: relative; 주의!
+  - 일반적인 경우: Box model → Normal flow
+  - position:absolute or fixed: Box model → Out of flow(Positioning)
+  - position:relative: Box model → Normal flow → Positioning
 
 ## 🏷 파싱
 
@@ -125,7 +132,7 @@
 
 1. 우선 이러한 이벤트가 발생했을 때 이벤트 핸들러를 코드로 구현합니다.
 
-    ex) 마우스 클릭이면 클릭 이벤트 핸들러 구현
+   ex) 마우스 클릭이면 클릭 이벤트 핸들러 구현
 
 2. 함수에서 this를 이용하거나 핸들러로인해 브라우저에서 생성된 이벤트 객체를 활용하여 이벤트 요소의 정보를 핸들러를 통해 인수 형태로 전달합니다.
 
@@ -139,9 +146,9 @@
 
 <img src="https://joshua1988.github.io/images/posts/web/javascript/event/event-bubble.png">
 
--   상위의 화면 요소란?
+- 상위의 화면 요소란?
 
-    HTML 요소는 기본적으로 트리 구조를 갖는다. 여기서는 트리 구조상 한단꼐 위의 요소를 상위 요소라 한다. body 태그는 최상위 요소라고 부릅니다.
+  HTML 요소는 기본적으로 트리 구조를 갖는다. 여기서는 트리 구조상 한단꼐 위의 요소를 상위 요소라 한다. body 태그는 최상위 요소라고 부릅니다.
 
 ## 이벤트 버를링을 막는 방법
 
@@ -169,24 +176,24 @@ function logEvent(event) {
 
 ```html
 <body>
-    <div class="one">
-        <div class="two">
-            <div class="three"></div>
-        </div>
+  <div class="one">
+    <div class="two">
+      <div class="three"></div>
     </div>
+  </div>
 </body>
 ```
 
 ```js
-var divs = document.querySelectorAll("div");
+var divs = document.querySelectorAll('div');
 divs.forEach(function (div) {
-    div.addEventListener("click", logEvent, {
-        capture: true, // default 값은 false입니다. capture를 true로 함으로써 구현 가능합니다.
-    });
+  div.addEventListener('click', logEvent, {
+    capture: true, // default 값은 false입니다. capture를 true로 함으로써 구현 가능합니다.
+  });
 });
 
 function logEvent(event) {
-    console.log(event.currentTarget.className);
+  console.log(event.currentTarget.className);
 }
 ```
 
@@ -211,22 +218,22 @@ async는 먼저 다운로드된 순서대로 실행하는 반면 defer는 선언
 2. CSS 스프라이트 기법
 3. 헤더에 만료 날짜 추가
 
-    헤더에 만료 날짜를 추가하는 이유는 이미지,스타일시트 파일, JS파일 등을 사용자 컴퓨터의 캐시에 저장하여 재사용하기 위함이다.
+   헤더에 만료 날짜를 추가하는 이유는 이미지,스타일시트 파일, JS파일 등을 사용자 컴퓨터의 캐시에 저장하여 재사용하기 위함이다.
 
 4. 자바스크립트 파일 통합
 
-    네이버 메일의 사례로 파일 개수를 최소화하여 로딩속도를 개선했다고 함.
+   네이버 메일의 사례로 파일 개수를 최소화하여 로딩속도를 개선했다고 함.
 
 5. 파일 크기 최소화
 
-    Gzip 압축을 이용하여 파일(JS && 스타일시트) 크기를 최소화 하는 방법
+   Gzip 압축을 이용하여 파일(JS && 스타일시트) 크기를 최소화 하는 방법
 
 6. 쿠키 크기 최소화 방법
 
 7. 레너링 성능 향상 방법
 
-    7-1. 스타일시트 파일을 최상단, JS 파일을 최하단에 배치
-    7-2. 마크업 최적화 (영역별로 렌더되게 끔)
+   7-1. 스타일시트 파일을 최상단, JS 파일을 최하단에 배치
+   7-2. 마크업 최적화 (영역별로 렌더되게 끔)
 
 ---
 
@@ -234,19 +241,19 @@ async는 먼저 다운로드된 순서대로 실행하는 반면 defer는 선언
 
 CSR(Client Side Rendering)과 SSR(Server Side Rendering)은 대척 관계에 있는 방식인만큼 장단점이 서로 엇갈려 있다.
 
--   SSR 단계
+- SSR 단계
 
-    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdGCZHY%2FbtrcOfdcohI%2FDKF2Cr2HHW5X8vNSaexEpK%2Fimg.png">
+  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdGCZHY%2FbtrcOfdcohI%2FDKF2Cr2HHW5X8vNSaexEpK%2Fimg.png">
 
--   CSR 단계
+- CSR 단계
 
-    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbkJ0my%2FbtrcOM9GT1V%2FaKDCRhm77MfHF8ushplGi0%2Fimg.png">
+  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbkJ0my%2FbtrcOM9GT1V%2FaKDCRhm77MfHF8ushplGi0%2Fimg.png">
 
 ## 차이점
 
--   웹페이지의 로딩 시간은 크게 2개로 나눌 수 있다.
-    -   웹페이지 로딩은 크게 첫 페이지를 로딩하는 것.
-    -   나머지를 로딩하는 것
+- 웹페이지의 로딩 시간은 크게 2개로 나눌 수 있다.
+  - 웹페이지 로딩은 크게 첫 페이지를 로딩하는 것.
+  - 나머지를 로딩하는 것
 
 `CSR`의 경우 HTML, CSS, 모든 스크립트를 한번에 불러온다.
 
@@ -258,7 +265,7 @@ CSR(Client Side Rendering)과 SSR(Server Side Rendering)은 대척 관계에 있
 
 ## 사용 권장 예시
 
--   SSR의 경우
+- SSR의 경우
 
 1. 네트워크가 느릴 경우에 사용
 2. SEO(Search Engine Optimization : 검색 엔진 최적화)가 필요할 경우
@@ -266,7 +273,7 @@ CSR(Client Side Rendering)과 SSR(Server Side Rendering)은 대척 관계에 있
 4. 메인 스크립트가 크고 로딩이 매우 느릴 때
 5. 웹 사이트가 상호작용이 별로 없을 때
 
--   CSR 사용의 경우
+- CSR 사용의 경우
 
 1. 네트워크가 빠를 때
 2. 서버의 성능이 좋지 않을 때
@@ -289,18 +296,18 @@ Web Storage는 기존 웹 환경의 `쿠키(Cookie)`와 매우 유사한 개념�
 
 ## 🔖 쿠키와의 차이점
 
--   쿠키는 매번 서버로 전송된다
+- 쿠키는 매번 서버로 전송된다
 
-    웹 사이트에서 쿠키를 설정하면 이후 모든 웹 요청은 쿠키정보를 포함하여 서버로 전송됩니다. 반면 Web Storage는 저장된 데이터가 클라이언트에 존재할 뿐 서버로 전송은 이루어지지 않아 네트워크 트래픽 비용이 절감됩니다.
+  웹 사이트에서 쿠키를 설정하면 이후 모든 웹 요청은 쿠키정보를 포함하여 서버로 전송됩니다. 반면 Web Storage는 저장된 데이터가 클라이언트에 존재할 뿐 서버로 전송은 이루어지지 않아 네트워크 트래픽 비용이 절감됩니다.
 
--   단순 문자열을 넘어 `객체정보를 저장`할 수 있다
+- 단순 문자열을 넘어 `객체정보를 저장`할 수 있다
 
-    객체를 저장할 수 있어 개발 편의성을 크게 올릴 수 있습니다.
+  객체를 저장할 수 있어 개발 편의성을 크게 올릴 수 있습니다.
 
--   용량의 제한이 없다
+- 용량의 제한이 없다
 
-    쿠키는 개수와 용량에 있어 제한이 있습니다. 하나의 사이트에 최대 20개, 최대 크기는 4KB로 제한되어 있습니다.
-    반면 Web Storage에는 이러한 제한이 없습니다.
+  쿠키는 개수와 용량에 있어 제한이 있습니다. 하나의 사이트에 최대 20개, 최대 크기는 4KB로 제한되어 있습니다.
+  반면 Web Storage에는 이러한 제한이 없습니다.
 
 ## 🔖 로컬 스토리지(Local Storage)
 
@@ -345,13 +352,13 @@ w3c 사이트등을 통해 표준 검사도를 검사할 수 있다.
 
 성능 최적화란 렌더링 최적화 + 로딩 최적화를 엮은 종합적인 의미이다.
 
--   style은 상단, JS는 하단에서 불러온다.
--   웹팩의 사용
--   html에서 불필요한 div 제거
--   css 최적화(리플로우, 리페인팅 방지, 셀렉터 단순화)
--   애니메이션은 CSS위주로
--   SEO(검색엔진최적화)
--   이미지 최적화(picture 태그, 레이지로딩, 스프라이트 이미지)
+- style은 상단, JS는 하단에서 불러온다.
+- 웹팩의 사용
+- html에서 불필요한 div 제거
+- css 최적화(리플로우, 리페인팅 방지, 셀렉터 단순화)
+- 애니메이션은 CSS위주로
+- SEO(검색엔진최적화)
+- 이미지 최적화(picture 태그, 레이지로딩, 스프라이트 이미지)
 
 ---
 
@@ -375,9 +382,9 @@ HTML 페이지에서 스크립트를 실행하면 그 페이지는 스크립트�
 
 ```js
 if (window.Worker) {
-    //웹 워커 사용 가능
+  //웹 워커 사용 가능
 } else {
-    //웹 워커 사용 불가능
+  //웹 워커 사용 불가능
 }
 ```
 
@@ -431,13 +438,13 @@ JavaScript의 런타임 모델은 코드의 실행, 이벤트의 수집과 처�
 ```js
 // 예제 코드
 function foo(b) {
-    let a = 10;
-    return a + b + 11;
+  let a = 10;
+  return a + b + 11;
 }
 
 function bar(x) {
-    let y = 3;
-    return foo(x * y);
+  let y = 3;
+  return foo(x * y);
 }
 
 const baz = bar(7); // 42를 baz에 할당
@@ -475,7 +482,7 @@ Javascript 런타임은 `큐(Queue)`라는 처리할 메시지의 대기열을 �
 ```js
 // 이벤트 루프 동작 함수화
 while (queue.waitForMessage()) {
-    queue.processNextMessage();
+  queue.processNextMessage();
 }
 ```
 
@@ -487,17 +494,17 @@ while (queue.waitForMessage()) {
 
 또한 명칭은 큐 (Queue) 이지만 실제 우리가 아는 자료구조의 큐와는 다른 우선순위 큐(Priority Queue) 라고 할 수 있는데, 이벤트 루프가 2개의 큐에서 태스크를 꺼내는 조건이 “제일 오래된 태스크” 이기 때문입니다.
 
--   콜백함수를 `매크로태스크 큐`에 넣는 함수들 ( 함수 실행시 함수 하나 )
+- 콜백함수를 `매크로태스크 큐`에 넣는 함수들 ( 함수 실행시 함수 하나 )
 
-    -   해당 컨텍스트 안의 함수들의 처리 순서(최상단의 함수)
+  - 해당 컨텍스트 안의 함수들의 처리 순서(최상단의 함수)
 
-    setTimeout, setInterval, setImmediate, requestAnimationFrame, I/O, UI 렌더링
+  setTimeout, setInterval, setImmediate, requestAnimationFrame, I/O, UI 렌더링
 
--   콜백함수를 `마이크로태스크 큐`에 넣는 함수들 ( 프로미스 들 )
+- 콜백함수를 `마이크로태스크 큐`에 넣는 함수들 ( 프로미스 들 )
 
-    -
+  -
 
-    process.nextTick, Promise, Object.observe, MutationObserver
+  process.nextTick, Promise, Object.observe, MutationObserver
 
 태스크의 처리는 마이크로태스크 큐의처리가 우선으로 처리됩니다.
 
@@ -536,10 +543,10 @@ Promise.resolve().then(() => console.log("마이크로태스크 큐!"));
 
 자바스크립트 엔진은 코드를 실행 하기 위해 다음과 같은 정보들을 알아야 한다.
 
--   변수 : 전역변수, 지역변수, 매개변수, 객체의 프로퍼티
--   함수 선언
--   변수의 유효범위(scope)
--   this
+- 변수 : 전역변수, 지역변수, 매개변수, 객체의 프로퍼티
+- 함수 선언
+- 변수의 유효범위(scope)
+- this
 
 이러한 정보를 형상화하고 구분하기 위해 JS엔진은 실행 컨텍스트를 `물리적 객체의 형태로 관리`한다.
 
@@ -559,9 +566,9 @@ Promise.resolve().then(() => console.log("마이크로태스크 큐!"));
 
 오직 코드가 실행될 때 엔진에 의해서만 참조되며 코드에서는 접근이 불가능한 객체이다.
 
--   변수
--   매개변수(parameter), 인수정보(argument)
--   함수 선언(함수 표현식 제외)
+- 변수
+- 매개변수(parameter), 인수정보(argument)
+- 함수 선언(함수 표현식 제외)
 
 VO는 프로퍼티이기 때문에 결국 다른 객체를 가리킨다. 그러나 전역 컨텍스트의 경우와 함수 컨텍스트의 경우 가리키는 객체가 달라진다.
 
@@ -663,15 +670,15 @@ DOM 이벤트, setTimeout과 같은 비동기 함수는 web API를 호출하여 
 
 new Promise()로 프로미스를 생성하고 종료될 때까지 3가지 상태를 갖습니다.
 
--   Pending(대기) : 비동기 처리 로직이 아직 완료되지 않은 상태
+- Pending(대기) : 비동기 처리 로직이 아직 완료되지 않은 상태
 
--   Fulfilled(이행) : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
+- Fulfilled(이행) : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
 
-    이행 상태가 되면 `then()`을 이용하여 처리 결과 값을 받을 수 있습니다.
+  이행 상태가 되면 `then()`을 이용하여 처리 결과 값을 받을 수 있습니다.
 
--   Rejected(실패) : 비동기 처리가 실패하거나 오류가 발생한 상태
+- Rejected(실패) : 비동기 처리가 실패하거나 오류가 발생한 상태
 
-    실패 상태가 되면 `catch()`를 이용하여 실패한 이유를 받을 수 있습니다.
+  실패 상태가 되면 `catch()`를 이용하여 실패한 이유를 받을 수 있습니다.
 
 ---
 
@@ -728,22 +735,22 @@ await 키워드를 사용하면 일반 비동기 처리처럼 바로 실행이 �
 
 ### 📝 프레임워크 예시
 
--   Java 개발자라면 Spring
+- Java 개발자라면 Spring
 
--   Python 개발자라면 Django
+- Python 개발자라면 Django
 
--   JavaScript 개발자라면 Node.js
+- JavaScript 개발자라면 Node.js
 
--   PHP 개발자라면 Laravel
+- PHP 개발자라면 Laravel
 
 등이 있다.
 
 ### 💡 프레임워크 특징
 
--   특정 개념들의 추상화를 제공하는 여러 클래스나 컴포넌트로 구성되어 있다.
--   추상적인 개념들이 문제를 해결하기 위해 같이 작업하는 방법을 정의한다.
--   컴포넌트들은 재사용이 가능하다.
--   높은 수준에서 패턴들을 조작화 할 수 있다.
+- 특정 개념들의 추상화를 제공하는 여러 클래스나 컴포넌트로 구성되어 있다.
+- 추상적인 개념들이 문제를 해결하기 위해 같이 작업하는 방법을 정의한다.
+- 컴포넌트들은 재사용이 가능하다.
+- 높은 수준에서 패턴들을 조작화 할 수 있다.
 
 ---
 
@@ -757,10 +764,10 @@ await 키워드를 사용하면 일반 비동기 처리처럼 바로 실행이 �
 
 ### 📝 라이브러리 예시
 
--   자바스크립트에서 가장 유명한 `jQuery`는 대표적인 라이브러리이다.
--   `그래픽 사용자 인터페이스(Graphical user interface , GUI)`에서 재사용하기 쉽게 버튼, 테이블 같은 구성 요소를 호출해서 쓸수 있도록 분리해두었다면 라이브러리이다.
--   Windows에서 간혹 보았을 dll 확장자는 `동적 링크 라이브러리(dynamic-link library, DLL)`의 약자로 라이브러리라고 할 수 있다.
--   `객체지향 프로그래밍(object-oriented programming, OOP)`은 기본적으로 각 기능마다 함수화하는 것으로 클래스 라이브러리라고 할수도 있다.
+- 자바스크립트에서 가장 유명한 `jQuery`는 대표적인 라이브러리이다.
+- `그래픽 사용자 인터페이스(Graphical user interface , GUI)`에서 재사용하기 쉽게 버튼, 테이블 같은 구성 요소를 호출해서 쓸수 있도록 분리해두었다면 라이브러리이다.
+- Windows에서 간혹 보았을 dll 확장자는 `동적 링크 라이브러리(dynamic-link library, DLL)`의 약자로 라이브러리라고 할 수 있다.
+- `객체지향 프로그래밍(object-oriented programming, OOP)`은 기본적으로 각 기능마다 함수화하는 것으로 클래스 라이브러리라고 할수도 있다.
 
 ---
 
@@ -837,11 +844,11 @@ var 함수명 = function () {
 
 ```js
 var coke = {
-    name: "coca",
-    price: 2980,
+  name: 'coca',
+  price: 2980,
 };
 var new_coke = coke;
-coke.name = "pepsi";
+coke.name = 'pepsi';
 console.log(coke.name, new_coke.name); //'pepsi' 'pepsi'
 ```
 
@@ -851,9 +858,9 @@ redux에서 사용하는 immer 라이브러리나 객체의 깊은 복사 방법
 
 ## 🔖 객체 깊은 복사 방법들
 
--   Object.assign() : Objecvt.assign({}, 객체명)
--   전개 연산자(Spread Operator) : ...객체명
--   JSON 객체 메소드 : stringify(), parse() 메소드
+- Object.assign() : Objecvt.assign({}, 객체명)
+- 전개 연산자(Spread Operator) : ...객체명
+- JSON 객체 메소드 : stringify(), parse() 메소드
 
 ---
 
@@ -874,7 +881,7 @@ tpyeof(str) // 'string'
 
 ```js
 // 객체 생성 방식
-let str2 = new String("문자열 객체");
+let str2 = new String('문자열 객체');
 
 typeof str2; // 'object'
 ```
@@ -912,7 +919,7 @@ ES6에서 추가된 기능으로 표현식을 허용하는 `문자열 리터럴`
 템플릿 리터럴의 표현식은 `${변수명}` 으로 표현합니다.
 
 ```js
-let str = "good";
+let str = 'good';
 let template = `${str} game is Heroes of the Storm`;
 console.log(template);
 // 'good game is Heroes of the Storm'
@@ -1001,14 +1008,14 @@ hoist(단어의 사전적 정의 : 끌어올리기). 인터프리터가 변수�
 
 ## 🔖 원시 값(Primitive type)
 
--   `불리언(BooleaN)` 타입 : True / False
--   `Null` 타입 : null(어떤 값이 의도적으로 비어있음을 표현, 불리언에서 false로 취급)
--   `undefined` 타입 : 값을 할당하지 않은 경우 undefined
--   `Number` 타입 : Number와 BigInt 두개의 숫자 타입으로 나뉜다.
-    -   Number : 64비트 이진형식으로 -(2^53-1)부터 ~ (2^53-1)까지의 수를 표현 가능하다. 이 외에 +Infinity, -Infinity, NaN이 있다.
-    -   BigInt : Number의 안전 한계를 넘는 수를 저장 및 연산이 가능하다.
--   `String` 타입 : 텍스트 데이터.
--   `Symbol` 타입 : Symbol은 고유하고 변경 불가능한 원시 값으로 키로 사용할 수 있다.
+- `불리언(BooleaN)` 타입 : True / False
+- `Null` 타입 : null(어떤 값이 의도적으로 비어있음을 표현, 불리언에서 false로 취급)
+- `undefined` 타입 : 값을 할당하지 않은 경우 undefined
+- `Number` 타입 : Number와 BigInt 두개의 숫자 타입으로 나뉜다.
+  - Number : 64비트 이진형식으로 -(2^53-1)부터 ~ (2^53-1)까지의 수를 표현 가능하다. 이 외에 +Infinity, -Infinity, NaN이 있다.
+  - BigInt : Number의 안전 한계를 넘는 수를 저장 및 연산이 가능하다.
+- `String` 타입 : 텍스트 데이터.
+- `Symbol` 타입 : Symbol은 고유하고 변경 불가능한 원시 값으로 키로 사용할 수 있다.
 
 ## 🔖 객체 (Object)
 
@@ -1030,7 +1037,7 @@ CS에서 `객체`란 식별자로써 참조할 수 있는 메모리 데이터를
 
 ```js
 a = String(123);
-b = Number("123");
+b = Number('123');
 c = Boolean(123);
 ```
 
@@ -1081,8 +1088,8 @@ const test8 = false + undefined // NaN
 
 주된 사용으로는 Window 객체를 오염시지키지 않기 위해 사용하며 `스코프를 이용해 변수의 접근 범위를 조절하는 것`에 있습니다.
 
--   외부함수 스코프에서 내부함수 스코프로 접근은 불가능
--   내부함수에서는 외부함수 스코프에서 선언된 변수에 접근이 가능
+- 외부함수 스코프에서 내부함수 스코프로 접근은 불가능
+- 내부함수에서는 외부함수 스코프에서 선언된 변수에 접근이 가능
 
 또한 클로저 안에 정의된 함수는 만들어진 환경을 `기억한다`. 여기서 `환경`이라 함은 클로저가 생성될 때 그 `범위`에 있던 여러 지역 변수들이 포함된 context를 의미한다.
 
@@ -1094,7 +1101,7 @@ const test8 = false + undefined // NaN
 
 ```js
 function foo(a, b, c) {
-    console.log(a + b + c);
+  console.log(a + b + c);
 }
 foo(1, 2, 3); // 6
 foo.call(null, 1, 2, 3); // 6
@@ -1153,21 +1160,21 @@ ES6는 새로운 언어 기능이 포함된 주요 업데이트이며, 2009년�
 
 ## 주요 문법들
 
--   const , let
--   Arrow function(화살표 함수)
--   Template Literals(템플릿 리터럴)
--   Default parameters(기본 매개 변수)
--   Array and object destructing(배열 및 객체 비구조화할당 = 구조분해할당)
--   Import and export (가져오기 및 내보내기)
--   Promise(프로미스)
--   Rest Parameter and Spread Operator(나머지 매개 변수 및 확산 연산자)
--   Classs(클래스)
+- const , let
+- Arrow function(화살표 함수)
+- Template Literals(템플릿 리터럴)
+- Default parameters(기본 매개 변수)
+- Array and object destructing(배열 및 객체 비구조화할당 = 구조분해할당)
+- Import and export (가져오기 및 내보내기)
+- Promise(프로미스)
+- Rest Parameter and Spread Operator(나머지 매개 변수 및 확산 연산자)
+- Classs(클래스)
 
-    클래스는 상속 가능, 프로토타입은 상속 불가능(프로토타입 체인으로 구현함)
+  클래스는 상속 가능, 프로토타입은 상속 불가능(프로토타입 체인으로 구현함)
 
--   Multi-line String
+- Multi-line String
 
-    문자열 줄바꿈시에 \n 사용하지 않아도 백틱(`)으로 묶으면 자동으로 인식가능
+  문자열 줄바꿈시에 \n 사용하지 않아도 백틱(`)으로 묶으면 자동으로 인식가능
 
 등이 존재한다. 각 함수에 대한 기능은 면접 문서가 아닌 별도의 문서에서 다룰 예정.
 
@@ -1184,7 +1191,7 @@ ES6는 새로운 언어 기능이 포함된 주요 업데이트이며, 2009년�
 ```js
 // 순수함수 예시
 const purity = (num1, num2) => {
-    return num1 + num2;
+  return num1 + num2;
 };
 ```
 
@@ -1197,7 +1204,7 @@ const purity = (num1, num2) => {
 ```js
 // 비순수함수 예시 1
 const nonpurity = (num1, num2) => {
-    return num1 + num2 + other;
+  return num1 + num2 + other;
 };
 ```
 
@@ -1207,8 +1214,8 @@ const nonpurity = (num1, num2) => {
 // 비순수함수 예시 2
 let other = 5;
 const nonpurity2 = (num1, num2) => {
-    other = num2;
-    return num1 + num2;
+  other = num2;
+  return num1 + num2;
 };
 ```
 
@@ -1231,7 +1238,7 @@ const nonpurity2 = (num1, num2) => {
 주어진 함수를 배열 요소 각각에 대해 실행합니다.
 
 ```js
-const array1 = ["a", "b", "c"];
+const array1 = ['a', 'b', 'c'];
 
 array1.forEach((element) => console.log(element));
 
@@ -1258,6 +1265,14 @@ console.log(array1.every(isBelowThreshold));
 ```
 
 ## sum
+
+---
+
+# JAM Stack
+
+Javascript, Api, MArkup Stack의 약자로 이 3가지로만 이루어진 웹의 구성을 말한다.
+
+[레퍼런스 링크](https://pks2974.medium.com/jam-stack-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC%ED%95%98%EA%B8%B0-17dd5c34edf7)
 
 ---
 
@@ -1303,16 +1318,16 @@ React는 Facebook에서 만든 JavaScript 라이브러리이다.
 
 ```js
 export default function App() {
-    const [input, setInput] = useState("");
-    const onChange = (e) => {
-        setInput(e.target.value);
-    };
+  const [input, setInput] = useState('');
+  const onChange = (e) => {
+    setInput(e.target.value);
+  };
 
-    return (
-        <div className="App">
-            <input onChange={onChange} />
-        </div>
-    );
+  return (
+    <div className="App">
+      <input onChange={onChange} />
+    </div>
+  );
 }
 ```
 
@@ -1322,19 +1337,19 @@ export default function App() {
 
 ```js
 export default function App() {
-    const inputRef = useRef(); // ref 사용
-    const onClick = () => {
-        console.log(inputRef.current.value);
-    };
+  const inputRef = useRef(); // ref 사용
+  const onClick = () => {
+    console.log(inputRef.current.value);
+  };
 
-    return (
-        <div className="App">
-            <input ref={inputRef} />
-            <button type="submit" onClick={onClick}>
-                전송
-            </button>
-        </div>
-    );
+  return (
+    <div className="App">
+      <input ref={inputRef} />
+      <button type="submit" onClick={onClick}>
+        전송
+      </button>
+    </div>
+  );
 }
 ```
 
@@ -1366,9 +1381,9 @@ export default function App() {
 
 컴포넌트의 리렌더링 조건은 다음과 같다.
 
--   부모에서 전달받은 props가 변경될때
--   부모 컴포넌트가 리렌더링 될 때
--   자신의 state가 변경 될 때
+- 부모에서 전달받은 props가 변경될때
+- 부모 컴포넌트가 리렌더링 될 때
+- 자신의 state가 변경 될 때
 
 ## 🔖 최적화 방법 1. useMemo
 
@@ -1410,15 +1425,15 @@ props를 전달할 때 객체 리터럴이나 생성자 함수로 전달하는 �
 ```js
 // 예시) 삭제 함수
 const onRemove = useCallback(
-    (id) => {
-        setTodos(todos.filter((todo) => todo.id !== id));
-    },
-    [todos],
+  (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  },
+  [todos],
 );
 
 // 예시) 함수형 업데이트 후
 const onRemove = useCallback((id) => {
-    setTodos((todos) => todos.filter((todo) => todo.id !== id));
+  setTodos((todos) => todos.filter((todo) => todo.id !== id));
 }, []);
 ```
 
@@ -1460,14 +1475,14 @@ lodash라는 최적화 라이브러리를 사용하여 보통의 onChange 이벤
 
 ## 👍 장점
 
--   Redux는 오직 하나의 스토어만을 가지고 하나의 객체 트리를 만들기 때문에 개발 확장성 및 디버깅에 강점이 있습니다.
+- Redux는 오직 하나의 스토어만을 가지고 하나의 객체 트리를 만들기 때문에 개발 확장성 및 디버깅에 강점이 있습니다.
 
--   스토어 내부의 상태는 action 객체에 의해서만 변경될 수 있습니다. 모든 상태 변화들이 하나의 store에 집중되어 있고, 단방향성을 갖기 때문에 항상 예측 가능한 결과를 낳게 됩니다.
+- 스토어 내부의 상태는 action 객체에 의해서만 변경될 수 있습니다. 모든 상태 변화들이 하나의 store에 집중되어 있고, 단방향성을 갖기 때문에 항상 예측 가능한 결과를 낳게 됩니다.
 
 ## 👎 단점
 
--   배우기가 어렵습니다.
--   큰 보일러 플레이트를 가집니다.(라이브러리 안썼을 때, ex : 리듀스 생성시)
+- 배우기가 어렵습니다.
+- 큰 보일러 플레이트를 가집니다.(라이브러리 안썼을 때, ex : 리듀스 생성시)
 
 라이브러리를 사용하면 사용하는 문법또한 간단해진다. -> 배우기 어려운건 변함없음.
 
@@ -1559,15 +1574,15 @@ useMemo나 useReducer와 함께 사용하면 좋은 코드 작성이 가능할 �
 
 ## 🔖 함수형 컴포넌트
 
--   JSX를 return문을 사용해서 반환한다.
--   state를 Hook을 이용하여 사용해야 한다
--   생명 주기 함수 작성 불가
+- JSX를 return문을 사용해서 반환한다.
+- state를 Hook을 이용하여 사용해야 한다
+- 생명 주기 함수 작성 불가
 
 ## 🔖 클래스형 컴포넌트
 
--   class 키워드로 시직한다
--   render() 함수를 사용해 JSX를 반환한다
--   props 조회시 this키워드 사용해야한다
+- class 키워드로 시직한다
+- render() 함수를 사용해 JSX를 반환한다
+- props 조회시 this키워드 사용해야한다
 
 ---
 
@@ -1591,9 +1606,9 @@ padding은 테두리 내부 요소에 공간을 만드는데 사용됩니다.
 
 position 속성은 문서 상에 요소를 배치하는 방법으로 여러 키워드 값을 가집니다.
 
--   static : 요소를 문서의 흐름에 따라 배치합니다.
--   relative : 자기 자신을 기준으로 Offset 을 적용합니다.
--   absolute : 요소를 일반적 문서 흐름에서 제거하고, 페이지 레이아웃에 공간도 배정하지 않습니다. 가장 가까운 조상요소에 대해 상대적으로 배치합니다.
+- static : 요소를 문서의 흐름에 따라 배치합니다.
+- relative : 자기 자신을 기준으로 Offset 을 적용합니다.
+- absolute : 요소를 일반적 문서 흐름에서 제거하고, 페이지 레이아웃에 공간도 배정하지 않습니다. 가장 가까운 조상요소에 대해 상대적으로 배치합니다.
 
 ---
 
@@ -1606,3 +1621,5 @@ position 속성은 문서 상에 요소를 배치하는 방법으로 여러 키�
 허나 정적 타입을 지원함으로써 코드 안정성이 올라가는 측면은 짧은 소견으로도 동의하는 바입니다. 공부할 계획.
 
 ---
+
+# 🚩 Vue
