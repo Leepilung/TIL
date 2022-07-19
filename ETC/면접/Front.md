@@ -185,15 +185,15 @@ function logEvent(event) {
 ```
 
 ```js
-var divs = document.querySelectorAll('div');
+var divs = document.querySelectorAll('div')
 divs.forEach(function (div) {
   div.addEventListener('click', logEvent, {
     capture: true, // default 값은 false입니다. capture를 true로 함으로써 구현 가능합니다.
-  });
-});
+  })
+})
 
 function logEvent(event) {
-  console.log(event.currentTarget.className);
+  console.log(event.currentTarget.className)
 }
 ```
 
@@ -438,16 +438,16 @@ JavaScript의 런타임 모델은 코드의 실행, 이벤트의 수집과 처�
 ```js
 // 예제 코드
 function foo(b) {
-  let a = 10;
-  return a + b + 11;
+  let a = 10
+  return a + b + 11
 }
 
 function bar(x) {
-  let y = 3;
-  return foo(x * y);
+  let y = 3
+  return foo(x * y)
 }
 
-const baz = bar(7); // 42를 baz에 할당
+const baz = bar(7) // 42를 baz에 할당
 ```
 
 위 예제 코드의 실행 순서는 다음과 같습니다.
@@ -482,7 +482,7 @@ Javascript 런타임은 `큐(Queue)`라는 처리할 메시지의 대기열을 �
 ```js
 // 이벤트 루프 동작 함수화
 while (queue.waitForMessage()) {
-  queue.processNextMessage();
+  queue.processNextMessage()
 }
 ```
 
@@ -778,13 +778,13 @@ await 키워드를 사용하면 일반 비동기 처리처럼 바로 실행이 �
 얕은 복사는 `참조(주소)값의 복사`를 의미합니다.
 
 ```js
-const obj = { value: 1 };
-const newObj = obj;
+const obj = { value: 1 }
+const newObj = obj
 
-newObj.value = 2;
+newObj.value = 2
 
-console.log(obj.value); // 2
-console.log(obj.value === newObj); // true
+console.log(obj.value) // 2
+console.log(obj.value === newObj) // true
 ```
 
 위와 같이 obj 객체를 newObj 객체에 할당 하였는데 이를 `참조 할당`이라 부릅니다.
@@ -798,14 +798,14 @@ console.log(obj.value === newObj); // true
 깊은 복사는 값 자체의 복사를 의미합니다.
 
 ```js
-let a = 1;
-let b = a;
+let a = 1
+let b = a
 
-b = 2;
+b = 2
 
-console.log(a); // 1
-console.log(b); // 2
-console.log(a === b); // false
+console.log(a) // 1
+console.log(b) // 2
+console.log(a === b) // false
 ```
 
 변수 a를 새로운 b에 할당하고, b의 값을 바꿨음에도 기존 a값은 변하지 않습니다. 비교하여도 false가 출력되며 서로의 값이 단독으로 존재합니다.
@@ -846,10 +846,10 @@ var 함수명 = function () {
 var coke = {
   name: 'coca',
   price: 2980,
-};
-var new_coke = coke;
-coke.name = 'pepsi';
-console.log(coke.name, new_coke.name); //'pepsi' 'pepsi'
+}
+var new_coke = coke
+coke.name = 'pepsi'
+console.log(coke.name, new_coke.name) //'pepsi' 'pepsi'
 ```
 
 객체의 경우 위와 같이 하나의 값만을 변경해도 모든 값들이 전부 변경됩니다.
@@ -881,9 +881,9 @@ tpyeof(str) // 'string'
 
 ```js
 // 객체 생성 방식
-let str2 = new String('문자열 객체');
+let str2 = new String('문자열 객체')
 
-typeof str2; // 'object'
+typeof str2 // 'object'
 ```
 
 이 경우엔 객체이기 때문에 `객체 리터럴` 입니다.
@@ -919,9 +919,9 @@ ES6에서 추가된 기능으로 표현식을 허용하는 `문자열 리터럴`
 템플릿 리터럴의 표현식은 `${변수명}` 으로 표현합니다.
 
 ```js
-let str = 'good';
-let template = `${str} game is Heroes of the Storm`;
-console.log(template);
+let str = 'good'
+let template = `${str} game is Heroes of the Storm`
+console.log(template)
 // 'good game is Heroes of the Storm'
 ```
 
@@ -1036,9 +1036,9 @@ CS에서 `객체`란 식별자로써 참조할 수 있는 메모리 데이터를
 말 그대로 값을 의도적으로 형태를 변형해서 사용하겠다는 선언.
 
 ```js
-a = String(123);
-b = Number('123');
-c = Boolean(123);
+a = String(123)
+b = Number('123')
+c = Boolean(123)
 ```
 
 각각의 형변환 메소드를 이용하여 형태를 변형시키는 방식으로 사용한다.
@@ -1101,11 +1101,11 @@ const test8 = false + undefined // NaN
 
 ```js
 function foo(a, b, c) {
-  console.log(a + b + c);
+  console.log(a + b + c)
 }
-foo(1, 2, 3); // 6
-foo.call(null, 1, 2, 3); // 6
-foo.apply(null, [1, 2, 3]); // 6
+foo(1, 2, 3) // 6
+foo.call(null, 1, 2, 3) // 6
+foo.apply(null, [1, 2, 3]) // 6
 ```
 
 JS에서 호출 방식과 관계없이 this에 접근이 가능합니다. 이 this를 특정 객체로 지정하는 방법이다.
@@ -1191,8 +1191,8 @@ ES6는 새로운 언어 기능이 포함된 주요 업데이트이며, 2009년�
 ```js
 // 순수함수 예시
 const purity = (num1, num2) => {
-  return num1 + num2;
-};
+  return num1 + num2
+}
 ```
 
 언제나 purity(10,5)는 항상 15의 값을 리턴한다.
@@ -1204,19 +1204,19 @@ const purity = (num1, num2) => {
 ```js
 // 비순수함수 예시 1
 const nonpurity = (num1, num2) => {
-  return num1 + num2 + other;
-};
+  return num1 + num2 + other
+}
 ```
 
 이 경우에는 other라는 변수에 따라 함수가 호출하는 결과값이 달라지기 때문에 순수함수가 아니다.
 
 ```js
 // 비순수함수 예시 2
-let other = 5;
+let other = 5
 const nonpurity2 = (num1, num2) => {
-  other = num2;
-  return num1 + num2;
-};
+  other = num2
+  return num1 + num2
+}
 ```
 
 이러한 경우에도 순수함수가 아니다. 함수가 외부의 값을 변경하는 코드를 가지고 있기 때문이다.
@@ -1238,9 +1238,9 @@ const nonpurity2 = (num1, num2) => {
 주어진 함수를 배열 요소 각각에 대해 실행합니다.
 
 ```js
-const array1 = ['a', 'b', 'c'];
+const array1 = ['a', 'b', 'c']
 
-array1.forEach((element) => console.log(element));
+array1.forEach((element) => console.log(element))
 
 // expected output: "a"
 // expected output: "b"
@@ -1274,6 +1274,74 @@ Javascript, Api, MArkup Stack의 약자로 이 3가지로만 이루어진 웹의
 
 [레퍼런스 링크](https://pks2974.medium.com/jam-stack-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC%ED%95%98%EA%B8%B0-17dd5c34edf7)
 
+---
+
+# NPM SEMVER 틸드(~), 캐럿(^)
+
+NPM은 SEMVER라는 유의적 버전 명세를 따른다.
+
+2.1.0 이라고 하면 2는 Major 버전 1은 Minor 버전, 0은 Patch 버전을 의미한다.
+
+버전 관리를 위한 규약으로
+
+NPM 패키지들은 위의 규약을 따라 버저닝을 명시한다.
+
+## 틸드(~) RANGE
+
+틸드는 지정된 범위의 level까지의 변경을 허용한다.
+
+예시를 통해 정리하자.
+
+> ~1.2.3
+
+minor 버전이 명시되어 있기 때문에 patch 레벨의 변경만을 허용한다
+
+1.3.0 버전 이하의 버전까지만 변경이 가능하다.( === 1.2.x )
+
+> ~1.2
+
+minor 버전이 지정되어 있으니 patch 레벨의 변경만을 허용한다.
+
+~1.2.3의 케이스와 똑같다. ( === 1.2.x )
+
+> ~1
+
+minor 버전이 지정되어 있지 않이 때문에 minor-level의 변경을 허용한다.
+
+2.0.0 버전 이하의 버전까지 변경이 가능하다. ( === 1.x.x )
+
+> ~3.10.0-alpha.1
+
+minor version이 지정되어 있으니 patch level 변경을 허용한다.
+
+3.10.0 이 일치하는 prerelease tag도 함께 포함된다.
+
+태그가 붙어 어려워 보이지만 다음과 동일하다. (>=3.10.0-alpha.1 <3.(10+1).0 )
+
+## 캐럿(^) RANGE
+
+[major, minor, patch]에서 가장 왼쪽에 있는 0이 아닌 요소를 수정하지 않는 변경을 허용한다.
+
+1.0.0 버전이라면 minor와 patch 버전을 업데이트를 허용
+
+0.X 버전이라면 patch 업데이트 허용
+
+0.X.X 버전이라면 업데이트를 허용하지 않는다.
+
+이 또한 예시로 알아보자.
+
+> ^1.2.3
+> 왼쪽에서 맨 처음 0이 아닌 요소는 major 이기 때문에 minor, patch 업데이트를 허용한다.
+> 이 구문은 다음과 같다. ( >=1.2.3 < 2.0.0 )
+
+> ^0.2.3
+왼쪽에서 맨 처음 0이 아닌 요소가 minor 이기 때문에 patch 업데이트를 허용한다.
+이 구문은 다음과 같다 ( >=0.2.3 <0.3.0 )
+
+> ^0.0.3
+왼쪽에서 맨 처음 0이 아닌 요소가 patch이기 때문에 업데이트를 허용하지 않음
+
+프리 릴리즈에 대한 정리도 추가로 필요할 듯. 추후 정리 후 해당 줄 삭제
 ---
 
 # 🚩 React
@@ -1318,16 +1386,16 @@ React는 Facebook에서 만든 JavaScript 라이브러리이다.
 
 ```js
 export default function App() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState('')
   const onChange = (e) => {
-    setInput(e.target.value);
-  };
+    setInput(e.target.value)
+  }
 
   return (
-    <div className="App">
+    <div className='App'>
       <input onChange={onChange} />
     </div>
-  );
+  )
 }
 ```
 
@@ -1337,19 +1405,19 @@ export default function App() {
 
 ```js
 export default function App() {
-  const inputRef = useRef(); // ref 사용
+  const inputRef = useRef() // ref 사용
   const onClick = () => {
-    console.log(inputRef.current.value);
-  };
+    console.log(inputRef.current.value)
+  }
 
   return (
-    <div className="App">
+    <div className='App'>
       <input ref={inputRef} />
-      <button type="submit" onClick={onClick}>
+      <button type='submit' onClick={onClick}>
         전송
       </button>
     </div>
-  );
+  )
 }
 ```
 
@@ -1392,7 +1460,7 @@ export default function App() {
 리턴되는 값을 메모이제이션하여 활용한다.
 
 ```js
-useMemo(() => func, [input_dependency]);
+useMemo(() => func, [input_dependency])
 ```
 
 ## 🔖 최적화 방법 2. React.memo 컴포넌트 메모이제이션
@@ -1403,7 +1471,7 @@ React.memo는 Hook이 아니기 때문에 어디서든 사용이 가능하다.
 
 ```js
 // export 구문에 추가하면 된다.
-export default memo(Item);
+export default memo(Item)
 ```
 
 React.memo()로 래핑되면, React는 컴포넌트를 렌더링하고 결과를 메모이징한다. 이후 렌더링이 일어날 떄 props가 같으면, 메모이징된 값을 재사용하는 방식.
@@ -1426,15 +1494,15 @@ props를 전달할 때 객체 리터럴이나 생성자 함수로 전달하는 �
 // 예시) 삭제 함수
 const onRemove = useCallback(
   (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    setTodos(todos.filter((todo) => todo.id !== id))
   },
   [todos],
-);
+)
 
 // 예시) 함수형 업데이트 후
 const onRemove = useCallback((id) => {
-  setTodos((todos) => todos.filter((todo) => todo.id !== id));
-}, []);
+  setTodos((todos) => todos.filter((todo) => todo.id !== id))
+}, [])
 ```
 
 위와 같이 사용하면 useCallback의 디펜던시 값을 생략할 수 있다.(React useCallback 부분에도 정리해놓은 내용)
@@ -1564,6 +1632,7 @@ Virtual DOM을 사용하는 프레임워크들은 실제 DOM 트리를 흉내 �
 
 # Context API
 
+ㄹ
 리액트가 자체적으로 가지고 있다. 정적인 데이터 위주로 처리하거나 업데이트가 빈번하지 않을 떄 적합하다.
 
 Provider-Consumer의 구조로 상태를 주고 받는데, Provider 하위의 모든 Consumer는 Provider의 속성이 변경될 때마다 리렌더링 된다는 단점이 존재한다.

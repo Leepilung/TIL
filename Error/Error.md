@@ -65,3 +65,23 @@ package.json 파일에서 main 경로가 제대로 기입되있는지, script부
 # Cannot find module
 
 아주 간단한 에러. 모듈 경로가 잘못 지정되면 출력됨. 어차피 ./ ../와 같이 입력하면 자동으로 현재 파일 위치를 기준으로 알아서 선택가능함
+
+
+# NPM -global 경로 설정
+
+NPM으로 패키지 설정 시 경로가 잘못되어 있는 경우가 있는데
+
+기본적으로 cli를 통해 global 패키지들의 설치 위치를 변경할 수 있다.
+
+```
+npm config set prefix {변경하려는 경로}
+```
+
+그리고 전역으로 명령어를 인식시키기 위해서 .zshrc를 수정해야 한다.
+
+~/.zshrc에 
+
+```
+export PATH=$PATH:~/.npm-global/bin
+```
+등으로 수정 구문 삽입하면 해결.
