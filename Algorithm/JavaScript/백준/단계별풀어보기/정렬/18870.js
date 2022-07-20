@@ -2,6 +2,10 @@
 // 링크 : https://www.acmicpc.net/problem/18870
 // 설명 :
 
+
+// forEach로 하나씩 꺼내면서 filter로 정렬하면 될거같은데
+
+
 const [N, ...arr] = require("fs")
     .readFileSync("/dev/stdin")
     .toString()
