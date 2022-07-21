@@ -23,7 +23,13 @@ export default {
 	methods: {
 		saveUserInfo() {
 			if (this.userInfo.name === '') {
-				return alert('사용자 이름을 입력하세요');
+				// swal 사용 구문
+				return this.$swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: '사용자 이름을 입력하세요!',
+					footer: '<a href="">Why do I have this issue?</a>',
+				});
 			}
 			if (this.userInfo.age === 0 || this.userInfo.age === '') {
 				return alert('나이를 입력하세요.');

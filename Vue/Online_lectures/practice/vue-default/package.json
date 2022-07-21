@@ -9,8 +9,12 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^13.0.2",
+    "sweetalert2": "^11.4.23",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vue-sweetalert2": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -43,5 +47,6 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ],"lint": "eslint --ext .js,.vue src"
+  ],
+  "lint": "eslint --ext .js,.vue src"
 }
