@@ -55,6 +55,16 @@ const routes = [
 		name: 'EventView',
 		component: () => import('../views/EventView.vue'),
 	},
+	{
+		path: '/computed',
+		name: 'ComputedView',
+		component: () => import('../views/ComputedView.vue'),
+	},
+	{
+		path: '/watch',
+		name: 'WatchView',
+		component: () => import('../views/WatchView.vue'),
+	},
 ];
 const router = createRouter({
 	history: createWebHistory(process.env.BASE_URL),

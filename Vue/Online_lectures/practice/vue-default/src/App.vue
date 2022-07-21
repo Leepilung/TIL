@@ -8,7 +8,9 @@
 		<router-link to="/example2">Example2</router-link> |
 		<router-link to="/rendering">Rendering</router-link>
 		<br />
-		<router-link to="/event">event</router-link>
+		<router-link to="/event">event</router-link> |
+		<router-link to="/computed">computed</router-link> |
+		<router-link to="/watch">watch</router-link>
 	</nav>
 	<router-view> </router-view>
 </template>

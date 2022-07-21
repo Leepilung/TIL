@@ -80,3 +80,102 @@ vue router
 ```
 
 를 입력하면 된다.
+
+---
+
+# computed
+
+script 태그 안에서 사용되며
+
+데이터 필드에 입력한 변수를 가지고 내부에 함수를 선언할 수 있음
+
+> 예시
+
+```vue
+<template lang="">
+	<div>
+		<input type="text" v-model="lastName" />
+		<input type="text" v-model="firstName" />
+		<h1>Hello, {{ fullName }}</h1>
+		<h1>Hello, {{ fullName }}</h1>
+		<h1>Hello, {{ fullName }}</h1>
+		<h1>Hello, {{ fullName }}</h1>
+		<h1>Hello, {{ fullName }}</h1>
+		<h1>Hello, {{ fullName }}</h1>
+	</div>
+</template>
+<script>
+export default {
+	data() {
+		return {
+			firstName: '재석',
+			lastName: '유',
+		};
+	},
+	// computed의 경우 연산 자체를 단 한번만 한다.
+	// 또한 computed는 안에 사용된 데이터 필드의 변경사항을 항상 감시하고 반영한다.
+	computed: {
+		fullName() {
+			return this.lastName + this.firstName;
+		},
+	},
+	// 그러나 getFullname()으로 매번 호출하면 매번 연산을 반복
+	methods: {
+		getFullName() {
+			return this.lastName + this.firstName;
+		},
+	},
+};
+</script>
+<style lang=""></style>
+```
+
+# Watch
+
+computed와 굉장히 유사하지만 computed에 비해 코스트가 굉장히 큰 녀석
+
+watch 안에 data에 선언된 데이터들을 함수 형태로 선언이 가능한데 그렇게 되면 해당 값들이 바뀔때 마다 값의 변경을 감지한다.
+
+
+```vue
+<template lang="">
+	<div>
+		<!-- input type을 바꿔도되고 v-model에 .number 추가해도 됨 -->
+		<input type="number" v-model="x1" />
+		<input type="text" v-model.number="x2" />
+		<button type="button" @click="plusNumber">계산</button>
+		<input type="text" v-model="y" />
+	</div>
+</template>
+<script>
+export default {
+	data() {
+		return {
+			x1: 0,
+			x2: 0,
+			y: 0, // computed 사용할 시에는 함수명과 중복 안됨.
+		};
+	},
+	// watch는 입력한 데이터 값의 변수를 계속해서 참조하기 떄문에 코스트가 꽤 큰 기능이라
+	// 꼭 필요한 부분에서만 사용해야 한다.
+	watch: {
+		x1() {
+			this.y = this.x1 + this.x2;
+		},
+		x2() {
+			this.y = this.x1 + this.x2;
+		},
+	},
+	computed: {
+		y() {
+			return this.x1 + this.x2;
+		},
+	},
+	methods: {
+		plusNumber() {
+			this.y = this.x1 + this.x2;
+		},
+	},
+};
+</script>
+```
