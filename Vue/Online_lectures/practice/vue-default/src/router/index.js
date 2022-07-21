@@ -65,6 +65,16 @@ const routes = [
 		name: 'WatchView',
 		component: () => import('../views/WatchView.vue'),
 	},
+	{
+		path: '/inquiry',
+		name: 'InquiryView',
+		component: () => import('../views/InquiryView.vue'),
+	},
+	{
+		path: '/save',
+		name: 'SaveView',
+		component: () => import('../views/SaveView.vue'),
+	},
 ];
 const router = createRouter({
 	history: createWebHistory(process.env.BASE_URL),

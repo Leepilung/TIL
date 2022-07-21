@@ -10,7 +10,9 @@
 		<br />
 		<router-link to="/event">event</router-link> |
 		<router-link to="/computed">computed</router-link> |
-		<router-link to="/watch">watch</router-link>
+		<router-link to="/watch">watch</router-link> |
+		<router-link to="/inquiry">Inquiry</router-link> |
+		<router-link to="/save">Save</router-link> |
 	</nav>
 	<router-view> </router-view>
 </template>
