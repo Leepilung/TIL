@@ -1,10 +1,13 @@
 <template lang="">
   <div>
+    <h1>부모 컴포넌트 제목 : {{ parentMessage }}</h1>
     <button type="button" @click="callChildFunc">부모에 있는 클릭</button>
     <!-- html에서 id와 동일한 기능을 하는 ref가 있다. -->
     <ChildEvent ref="child_component" />
     <hr />
-    <MsgComponents ref="ChildComponents" />
+    <!-- emit 사용시 첫번째 파라미터 아래와 같이 넣어줘야 함 -->
+    <MsgComponents @send-message="sendMessage" ref="ChildComponents" />
+    <button type="button" @click="showData">부모 버튼</button>
   </div>
 </template>
 <script>
@@ -15,7 +18,14 @@ export default {
   name: 'comPo',
   components: { ChildEvent, MsgComponents },
   data() {
-    return {};
+    return {
+      parentMessage: '',
+    };
+  },
+  computed: {
+    msg() {
+      return this.$refs.ChildComponents.msg;
+    },
   },
   methods: {
     callChildFunc() {
@@ -26,6 +36,12 @@ export default {
       // $refs -> 객체로 접근할 때 사용
 
       this.$refs.ChildComponents.msg = '부모 컴포넌트에서 바꾼 메세지';
+    },
+    sendMessage(data) {
+      this.parentMessage = data;
+    },
+    showData() {
+      alert(this.msg);
     },
   },
 };
