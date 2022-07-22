@@ -2,7 +2,15 @@
   <div>
     <div>
       <!-- 컴포넌트 삽입 -->
-      <PageTitle title="부모 컴포넌트에서 보낸 제목" />
+      <PageTitle :title="title" />
+      <!-- :likes="23"등의 숫자도 동적 바인딩이 된다. -->
+      <!-- :isOK의 경우처럼 Boolean을 보낼거면 동적바인딩 활용해야 함 -->
+      <ChildComponents
+        :likes="likes"
+        :isOk="true"
+        :isArray="isArray"
+        :isObject="isObject"
+      />
     </div>
     <button type="button" @click="getProductList">데이터 조회하기</button>
     <table>
@@ -27,13 +35,18 @@
 import axios from 'axios';
 // 컴포넌트 삽입 구문
 import PageTitle from '../components/PageTitle';
+import ChildComponents from '@/components/ChildComponents.vue';
 
 export default {
   name: 'NaNi',
-  components: { PageTitle },
+  components: { PageTitle, ChildComponents },
   data() {
     return {
       productList: [],
+      title: '부모 컴포넌트에서 보낸 제목',
+      likes: 23,
+      isArray: [1, 5, 2, 3],
+      isObject: { Author: '수박장수', title: '수박을 누가 먹었는가?' },
     };
   },
   methods: {
