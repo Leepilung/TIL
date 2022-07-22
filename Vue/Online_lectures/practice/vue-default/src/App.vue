@@ -15,6 +15,7 @@
     <router-link to="/save">Save</router-link> |
     <router-link to="/server">Server</router-link> |
     <router-link to="/component">component</router-link> |
+    <router-link to="/slot">slot</router-link> |
   </nav>
   <router-view> </router-view>
 </template>

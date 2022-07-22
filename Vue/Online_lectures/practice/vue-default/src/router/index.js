@@ -85,6 +85,11 @@ const routes = [
     name: 'ComponentView',
     component: () => import('../views/ComponentView.vue'),
   },
+  {
+    path: '/slot',
+    name: 'SlotUseModalLayout',
+    component: () => import('../views/SlotUseModalLayout.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
