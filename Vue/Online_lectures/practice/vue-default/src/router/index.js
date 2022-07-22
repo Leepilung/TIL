@@ -80,6 +80,11 @@ const routes = [
     name: 'ServerData',
     component: () => import('../views/ServerData.vue'),
   },
+  {
+    path: '/component',
+    name: 'ComponentView',
+    component: () => import('../views/ComponentView.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
