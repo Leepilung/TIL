@@ -5,9 +5,16 @@
   <div>isObject : {{ isObject }}</div>
   <div>isObject.Author : {{ isObject.Author }}</div>
   <div>isObject.title : {{ isObject.title }}</div>
+  <div>{{ msg }}</div>
+  <hr />
 </template>
 <script>
 export default {
+  data() {
+    return {
+      msg: '자식 컴포넌트에 있던 메시지',
+    };
+  },
   props: {
     likes: {
       type: Number,
