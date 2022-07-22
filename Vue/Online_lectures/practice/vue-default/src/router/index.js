@@ -90,6 +90,11 @@ const routes = [
     name: 'SlotUseModalLayout',
     component: () => import('../views/SlotUseModalLayout.vue'),
   },
+  {
+    path: '/project',
+    name: 'ProvideInject',
+    component: () => import('../views/ProvideInject.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
