@@ -85,3 +85,14 @@ npm config set prefix {변경하려는 경로}
 export PATH=$PATH:~/.npm-global/bin
 ```
 등으로 수정 구문 삽입하면 해결.
+
+
+# Git : The requested URL returned error: 403 (fatal: unable to access)
+
+403오류는 해당 레포지토리 주소에 접근 권한이 없을 경우 발생한다고 한다.
+
+```
+git remote set-url origin https://YOURUSERNAME@github.com/USERNAME/REPOSITORY.git
+```
+
+위와 같이 입력하고 팝업되고 있는 링크창에서 crendential을 발급 받으면 에러가 해결이 된다.
