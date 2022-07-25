@@ -19,6 +19,11 @@
     <router-link to="/project">project</router-link>
     <br />
     <router-link to="/mixin">mixin</router-link> |
+    <router-link to="/calculator">calculator</router-link> |
+    <router-link to="/compositionapi">CompositionAPI</router-link> |
+    <router-link to="/compositionapi2">CompositionAPI2</router-link> |
+    <router-link to="/compositionapi3">CompositionAPI3</router-link> |
+    <router-link to="/compositionapi4">CompositionAPI4</router-link> |
   </nav>
   <router-view> </router-view>
 </template>

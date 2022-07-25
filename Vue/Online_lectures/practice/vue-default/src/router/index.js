@@ -100,6 +100,31 @@ const routes = [
     name: 'Mixin',
     component: () => import('../views/MixinTest.vue'),
   },
+  {
+    path: '/calculator',
+    name: 'Calculator',
+    component: () => import('../views/CompoisionAPI/CalculatorView.vue'),
+  },
+  {
+    path: '/compositionapi',
+    name: 'CompositionAPI',
+    component: () => import('../views/CompoisionAPI/CompositionAPI.vue'),
+  },
+  {
+    path: '/compositionapi2',
+    name: 'CompositionAPI2',
+    component: () => import('../views/CompoisionAPI/CompositionAPI2.vue'),
+  },
+  {
+    path: '/compositionapi3',
+    name: 'CompositionAPI3',
+    component: () => import('../views/CompoisionAPI/CompositionAPI3.vue'),
+  },
+  {
+    path: '/compositionapi4',
+    name: 'CompositionAPI4',
+    component: () => import('../views/CompoisionAPI/CompositionAPI4.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
