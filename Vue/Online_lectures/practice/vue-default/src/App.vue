@@ -16,7 +16,9 @@
     <router-link to="/server">Server</router-link> |
     <router-link to="/component">component</router-link> |
     <router-link to="/slot">slot</router-link> |
-    <router-link to="/project">project</router-link> |
+    <router-link to="/project">project</router-link>
+    <br />
+    <router-link to="/mixin">mixin</router-link> |
   </nav>
   <router-view> </router-view>
 </template>

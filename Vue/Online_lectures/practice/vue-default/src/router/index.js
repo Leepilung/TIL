@@ -95,6 +95,11 @@ const routes = [
     name: 'ProvideInject',
     component: () => import('../views/ProvideInject.vue'),
   },
+  {
+    path: '/mixin',
+    name: 'Mixin',
+    component: () => import('../views/MixinTest.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
