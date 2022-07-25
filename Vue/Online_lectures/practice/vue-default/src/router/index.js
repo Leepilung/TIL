@@ -125,6 +125,11 @@ const routes = [
     name: 'CompositionAPI4',
     component: () => import('../views/CompoisionAPI/CompositionAPI4.vue'),
   },
+  {
+    path: '/compositionapiprovide',
+    name: 'CompositionAPIProvide',
+    component: () => import('../views/CompoisionAPI/CompositionAPIProvide.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

@@ -24,6 +24,8 @@
     <router-link to="/compositionapi2">CompositionAPI2</router-link> |
     <router-link to="/compositionapi3">CompositionAPI3</router-link> |
     <router-link to="/compositionapi4">CompositionAPI4</router-link> |
+    <router-link to="/compositionapiprovide">CompositionAPIProvide</router-link>
+    |
   </nav>
   <router-view> </router-view>
 </template>
