@@ -6,6 +6,7 @@ import mixins from './mixins';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import i18nPlugin from './plugins/i18n';
+import store from './store';
 
 const i18nStrings = {
   en: {
@@ -29,4 +30,6 @@ createApp(App)
     },
   })
   .use(i18nPlugin, i18nStrings)
+  // store 삽입 구문
+  .use(store)
   .mount('#app');

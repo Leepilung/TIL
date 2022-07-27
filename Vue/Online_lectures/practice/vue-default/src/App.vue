@@ -28,8 +28,8 @@
     |
     <router-link to="/customdirective">customDirective</router-link>
     |
-    <router-link to="/plugins">PluginsView</router-link>
-    |
+    <router-link to="/plugins">PluginsView</router-link> |
+    <router-link to="/storeacess">StoreAcess</router-link> |
   </nav>
   <router-view> </router-view>
 </template>

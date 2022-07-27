@@ -140,6 +140,11 @@ const routes = [
     name: 'plugins',
     component: () => import('../views/PluginsView.vue'),
   },
+  {
+    path: '/storeacess',
+    name: 'storeAcess',
+    component: () => import('../views/StoreAccess.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
