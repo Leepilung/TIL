@@ -135,6 +135,11 @@ const routes = [
     name: 'customdirective',
     component: () => import('../views/Directive/CustomDirective.vue'),
   },
+  {
+    path: '/plugins',
+    name: 'plugins',
+    component: () => import('../views/PluginsView.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
