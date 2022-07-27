@@ -130,6 +130,11 @@ const routes = [
     name: 'CompositionAPIProvide',
     component: () => import('../views/CompoisionAPI/CompositionAPIProvide.vue'),
   },
+  {
+    path: '/customdirective',
+    name: 'customdirective',
+    component: () => import('../views/Directive/CustomDirective.vue'),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

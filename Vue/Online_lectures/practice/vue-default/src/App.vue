@@ -26,6 +26,8 @@
     <router-link to="/compositionapi4">CompositionAPI4</router-link> |
     <router-link to="/compositionapiprovide">CompositionAPIProvide</router-link>
     |
+    <router-link to="/customdirective">customDirective</router-link>
+    |
   </nav>
   <router-view> </router-view>
 </template>
