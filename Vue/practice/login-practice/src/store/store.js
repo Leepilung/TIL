@@ -11,7 +11,7 @@ export default createStore({
     // 유저 데이터를 로컬 스토리지와 VueX에 저장
     SET_USER_DATA(state, userData) {
       state.user = userData;
-      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('token', JSON.stringify(userData));
       // axios 헤더에 토큰 삽입
       console.log('유저 토큰 :', userData.token);
       axios.defaults.headers.common[

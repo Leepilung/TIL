@@ -1,10 +1,13 @@
 <template>
   <div>
     <h1>Dashboard</h1>
-    <template v-if="!isLoading">
+    <template v-if="!isLoading || token">
       <EventCard v-for="event in events" :key="event.id" :event="event" />
     </template>
     <p v-else>Loading events</p>
+    <p>
+      {{ $store.state.user.token }}
+    </p>
   </div>
 </template>
 
@@ -18,6 +21,7 @@ export default {
     return {
       isLoading: true,
       events: [],
+      token: localStorage.getItem('token'),
     };
   },
   created() {
