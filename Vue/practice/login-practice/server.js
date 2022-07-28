@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const events = require('./db/events.json');
+const events = require('./src/db/events.json');
 
 const app = express();
 app.use(cors());
@@ -18,9 +18,20 @@ app.get('/', (req, res) => {
 });
 
 // 대쉬보드 get 요청
-app.get('/dashboard', (req, res) => {
-  res.json({
-    events: events,
+app.get('/dashboard', verifyToken, (req, res) => {
+  console.log('dashboard 이벤트 호출, 토근 값 :', req);
+  jwt.verify(req.token, 'the_secret_key', err => {
+    // 토큰 확인
+    if (err) {
+      // 토큰 이상하면 401에러
+      console.log(err, '에러 발생');
+      res.sendStatus(401);
+    } else {
+      // 토큰이 정상이면 아래 데이터 응답
+      res.json({
+        events: events,
+      });
+    }
   });
 });
 
@@ -35,12 +46,12 @@ app.post('/register', (req, res) => {
     };
 
     const data = JSON.stringify(user, null, 2);
-    var dbUserEmail = require('./db/user.json').email;
+    var dbUserEmail = require('./src/db/user.json').email;
 
     if (dbUserEmail === req.body.email) {
       res.sendStatus(400);
     } else {
-      fs.writeFile('./db/user.json', data, err => {
+      fs.writeFile('./src/db/user.json', data, err => {
         if (err) {
           console.log(err + data);
         } else {
@@ -60,7 +71,7 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const userDB = fs.readFileSync('./db/user.json');
+  const userDB = fs.readFileSync('./src/db/user.json');
   const userInfo = JSON.parse(userDB);
   if (
     req.body &&
@@ -81,6 +92,7 @@ app.post('/login', (req, res) => {
 
 // 토큰 검증 미들웨어
 function verifyToken(req, res, next) {
+  console.log('미들웨어 실행');
   const bearerHeader = req.headers['authorization'];
 
   if (typeof bearerHeader !== 'undefined') {
