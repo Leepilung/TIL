@@ -10,7 +10,7 @@
 
 <script>
 import axios from 'axios';
-import EventCard from '../components/EventCard';
+import EventCard from '../components/EventCard.vue';
 
 export default {
   components: { EventCard },
@@ -21,10 +21,15 @@ export default {
     };
   },
   created() {
-    axios.get('//localhost:3000/dashboard').then(({ data }) => {
-      this.events = data.events.events;
-      this.isLoading = false;
-    });
+    axios
+      .get('//localhost:3000/dashboard')
+      .then(({ data }) => {
+        this.events = data.events.events;
+        this.isLoading = false;
+      })
+      .catch(err => {
+        console.log('에러 발생 :', err);
+      });
   },
 };
 </script>
