@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import DashBoard from '../views/DashBoard.vue';
+import RegisterUser from '../views/RegisterUser.vue';
 
 const routes = [
   {
@@ -10,8 +11,13 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'DashBoard',
+    name: 'dashboard',
     component: DashBoard,
+  },
+  {
+    path: '/register',
+    name: 'RegisterUser',
+    component: RegisterUser,
   },
   {
     path: '/:PathMatch(.*)',
