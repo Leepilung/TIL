@@ -1,3 +1,5 @@
+require('@rushstack/eslint-patch/modern-module-resolution')
+
 module.exports = {
   root: true,
   // env : 프로젝트 사용 환결 설정으로 browser, es2021이 대표적
@@ -8,6 +10,7 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
+    '@vue/eslint-config-standard',
     'prettier',
     'plugin:prettier/recommended',
   ],
@@ -18,12 +21,12 @@ module.exports = {
   plugins: ['prettier'],
   // 프로젝트에서 사용하는 세부 규칙 적용 구문
   rules: {
-    indent: ['error', 2],
     'prettier/prettier': [
       'error',
       {
+        tabWidth: 2,
         singleQuote: true, // 따옴표
-        semi: true, // 세미콜론
+        semi: false, // 세미콜론
         trailingComma: 'all', // 후행 쉼표 추가 구문
         printWidth: 80, // 줄바꿈 길이 설정
         arrowParens: 'avoid', // 화살표 함수 괄호 사용 방식
@@ -34,4 +37,4 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
-};
+}
