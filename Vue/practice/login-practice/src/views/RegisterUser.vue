@@ -22,7 +22,7 @@ export default {
       name: '',
       email: '',
       password: '',
-    };
+    }
   },
   methods: {
     register() {
@@ -33,12 +33,12 @@ export default {
           password: this.password,
         })
         .then(() => {
-          console.log('라우팅 ㄱ');
-          this.$router.push({ name: 'dashboard' });
-        });
+          console.log('라우팅 ㄱ')
+          this.$router.push({ name: 'dashboard' })
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped></style>
