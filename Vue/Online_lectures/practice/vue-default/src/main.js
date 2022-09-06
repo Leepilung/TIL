@@ -2,11 +2,11 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import mixins from './mixins';
-
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import i18nPlugin from './plugins/i18n';
 import store from './store';
+import vClickOutside from 'v-click-outside';
 
 const i18nStrings = {
   en: {
@@ -22,6 +22,7 @@ const i18nStrings = {
 createApp(App)
   .use(router)
   .mixin(mixins)
+  .use(vClickOutside)
   .use(VueSweetalert2)
   // 글로벌 하게 사용할 수 도 있음.
   .directive('focus', {

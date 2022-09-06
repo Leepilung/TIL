@@ -13,9 +13,12 @@
     "node-sass": "^7.0.1",
     "sass-loader": "^13.0.2",
     "sweetalert2": "^11.4.23",
+    "v-click-outside": "^3.2.0",
     "vue": "^3.2.13",
+    "vue-click-outside": "^1.1.0",
     "vue-router": "^4.0.3",
     "vue-sweetalert2": "^5.0.5",
+    "vue3-click-away": "^1.2.4",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
