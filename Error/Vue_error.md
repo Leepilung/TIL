@@ -19,3 +19,19 @@ npm ci
 npm run serve
 ```
 위 순서대로 진행하여 ci를 새로 설치하고 다시 시작하면 해결.
+
+# Syntax Error: TypeError: this.getOptions is not a function
+
+위와 같은 에러는 vue 2.6 버젼대에서 sass-loader 를 11 버젼을 사용할 경우에 호환되지않아 발생한다.
+
+따라서 sass-loader 를 아래와 같이 10 버젼을 설치하면 해결된다.
+
+기존 sass-loader 를 삭제하고 10 버젼을 설치하는 명령어는 아래와 같다.
+
+```js
+// 기존 모듈 삭제
+npm uninstall sass-loader
+
+// 10번대 버젼 설치
+npm install --save sass-loader@10
+```
