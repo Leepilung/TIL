@@ -1,4 +1,11 @@
-# Axios란 ?
+# Axios란 ? (작성 중)
+
+추가 작성 진행중 [공식문서 링크](https://yamoo9.github.io/axios/guide/api.html#http-%EB%A9%94%EC%84%9C%EB%93%9C-%EB%B3%84%EC%B9%AD)
+
+> 목표
+
+1. Axios란 무엇인가에 대한 개념적인 이해
+2. 설치 방법 및 이해하지 못하고 있는 문법들에 대한 정리
 
 Axios는 브라우저, Node.js를 위한 Rpmise API를 활용하는 HTTP 비동기 통신 라이브러리이다.
 
